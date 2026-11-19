@@ -236,11 +236,16 @@ export default function GameRouteFrame({
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const navigateHome = useCallback(async (href) => {
+    const flushSaves = frameRef.current?.contentWindow?.__scummwebFlushSaveStorage;
     // Remove every overlay control before fullscreen teardown or navigation can wait.
     flushSync(() => setIsExiting(true));
     fullscreenExitExpected.current = true;
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
+    if (flushSaves) {
+      try { await flushSaves(); }
+      catch { /* The previous committed copy remains available after a failed write. */ }
+    }
     const destination = withDropboxPreview(getSafeHref(href));
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
@@ -506,6 +511,11 @@ export default function GameRouteFrame({
           setIsResuming(Number.isInteger(event.data.latestSlot));
         }
         window.dispatchEvent(new Event("scummweb:saves-changed"));
+        return;
+      }
+      if (event.data?.type === "scummweb:save-storage-error" && event.source === frameRef.current?.contentWindow) {
+        const warning = "Could not store the latest save on this device. Your previous saves are retained.";
+        setCompatibilityWarnings(current => current.includes(warning) ? current : [...current, warning]);
         return;
       }
 

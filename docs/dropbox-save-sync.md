@@ -96,7 +96,10 @@ an active sync spinner. A compact **Disconnect**
 button sits beside it and can cancel an ongoing sync.
 
 Completed player saves are captured with companion files and queued in
-IndexedDB before network publication. Pending native writes and isolated agent
+IndexedDB before network publication. Active saves are also stored in IndexedDB,
+including when Dropbox is disabled. On the first visit, ScummWEB automatically
+moves legacy browser saves and their metadata after committing a recoverable
+copy. A failed migration leaves the original storage intact. Pending native writes and isolated agent
 runs are excluded. Files remaining in the game's save folder are retained even
 when absent from the native save list or named like a skip-intro checkpoint;
 only the shell's exact-byte checkpoint cleanup can identify bundled copies.

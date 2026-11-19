@@ -14,20 +14,22 @@ export function editionLockName(edition) {
 // Also used by the inline library reader. Follow only directory pointers;
 // a game in another tab can be writing one of its own data blocks.
 export function readSaveTree(storage, edition, namespace = "", layout = { editionDirectory, saveDirectory }) {
+  function bytes(key) {
+    if (storage.getBytes) return storage.getBytes(key);
+    const value = storage.getItem(key);
+    return value ? Uint8Array.from(atob(value), byte => byte.charCodeAt(0)) : null;
+  }
   function inode(key) {
-    const value = key && storage.getItem(key);
-    if (!value) return null;
-    const binary = atob(value);
-    if (binary.length <= 30) return null;
-    const header = new DataView(Uint8Array.from(binary.slice(0, 30), byte => byte.charCodeAt(0)).buffer);
-    return { dataKey: binary.slice(30), size: header.getUint32(0, true),
+    const value = key && bytes(key);
+    if (!value || value.length <= 30) return null;
+    const header = new DataView(value.buffer, value.byteOffset, value.byteLength);
+    return { dataKey: new TextDecoder().decode(value.subarray(30)), size: header.getUint32(0, true),
       type: header.getUint16(4, true) & 0xf000, modifiedAt: header.getFloat64(14, true) };
   }
   function directory(key) {
     const entry = inode(key);
     if (entry?.type !== 0x4000) return {};
-    const bytes = Uint8Array.from(atob(storage.getItem(entry.dataKey) || ""), byte => byte.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes));
+    return JSON.parse(new TextDecoder().decode(bytes(entry.dataKey)));
   }
   const root = directory("/");
   const editions = edition ? directory(root[layout.editionDirectory]) : {};

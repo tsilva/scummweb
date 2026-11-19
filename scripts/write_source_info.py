@@ -51,6 +51,7 @@ BUILD_FILES = (
     "web-shell/player-controls.mjs",
     "web-shell/rotating-autosaves.mjs",
     "web-shell/save-editions.mjs",
+    "web-shell/save-storage.mjs",
     "web-shell/scummvm.html",
     "web-shell/scummvm_fs.js",
     f"{SKILL}/references/patches.json",

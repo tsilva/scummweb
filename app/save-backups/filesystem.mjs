@@ -1,4 +1,4 @@
-// BrowserFS 2's LocalStorage format. Publish a changed tree by swapping only
+// BrowserFS 2's inode format. Publish a changed tree by swapping only
 // the root inode, so quota failures cannot leave half an imported save set.
 import { editionDirectory, matchesLegacySave, readSaveTree, saveDirectory } from "../../web-shell/save-editions.mjs";
 
@@ -31,21 +31,22 @@ export function safePath(path) {
 export function captureFilesystem(storage, skipEditionContents = false) {
   const values = new Map();
   const seen = new Set();
+  const raw = key => storage.getBytes ? storage.getBytes(key) ?? null : storage.getItem(key);
   function value(key) {
-    const data = storage.getItem(key);
+    const data = raw(key);
     if (data === null) throw new Error("Browser save storage is incomplete. Export your existing data before repairing it.");
     values.set(key, data);
-    return data;
+    return typeof data === "string" ? decodeBytes(data) : data;
   }
   function read(key, depth = 0, name = "") {
     if (depth > 32 || seen.has(key) || seen.size > 20000) throw new Error("Browser save storage contains an invalid directory.");
     seen.add(key);
-    const bytes = decodeBytes(value(key));
+    const bytes = value(key);
     if (bytes.length <= 30) throw new Error("Browser save storage contains an invalid file.");
     const meta = new DataView(bytes.buffer);
     const mode = meta.getUint16(4, true);
     const dataKey = decoder.decode(bytes.subarray(30));
-    const data = decodeBytes(value(dataKey));
+    const data = value(dataKey);
     const node = { key, dataKey, mode, modifiedAt: meta.getFloat64(14, true) };
     if ((mode & 0xf000) === 0x4000) {
       node.children = new Map();
@@ -60,10 +61,10 @@ export function captureFilesystem(storage, skipEditionContents = false) {
     else throw new Error("Unsupported file type in browser save storage.");
     return node;
   }
-  const rootValue = storage.getItem("/");
+  const rootValue = raw("/");
   const root = rootValue === null ? { children: new Map(), mode: 0x41ff } : read("/");
   values.set("/", rootValue);
-  const revision = JSON.stringify([...values].sort(([a], [b]) => a.localeCompare(b)));
+  const revision = storage.revision ?? JSON.stringify([...values].sort(([a], [b]) => a.localeCompare(b)));
   function saveFiles(home, namespace) {
     const files = [];
     function walk(node, prefix = "") {
@@ -114,7 +115,8 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
   validateTree(snapshot.root);
   function put(key, value) {
     staged.push(key);
-    storage.setItem(key, value);
+    if (storage.setValue) storage.setValue(key, value);
+    else storage.setItem(key, encodeBytes(value));
   }
   function persist(node, isRoot = false) {
     if (node.key && !dirty.has(node)) return node.key;
@@ -123,7 +125,7 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
     const data = node.children ? encoder.encode(JSON.stringify(Object.fromEntries(
       [...node.children].map(([name, child]) => [name, persist(child)])
     ))) : node.data;
-    put(dataKey, encodeBytes(data));
+    put(dataKey, data);
     const inode = new Uint8Array(30 + dataKey.length);
     const view = new DataView(inode.buffer);
     view.setUint32(0, node.children ? 4096 : data.length, true);
@@ -132,17 +134,19 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
     view.setFloat64(14, Number.isFinite(node.modifiedAt) ? node.modifiedAt : now, true);
     view.setFloat64(22, now, true);
     inode.set(encoder.encode(dataKey), 30);
-    if (isRoot) return encodeBytes(inode);
-    put(key, encodeBytes(inode));
+    if (isRoot) return inode;
+    put(key, inode);
     return key;
   }
   try {
     const rootInode = persist(snapshot.root, true);
     for (const [key, oldValue] of snapshot.values) {
-      if (storage.getItem(key) !== oldValue) throw new Error("Saves changed during import. Close other games and retry.");
+      const current = storage.getBytes ? storage.getBytes(key) ?? null : storage.getItem(key);
+      if (current !== oldValue) throw new Error("Saves changed during import. Close other games and retry.");
     }
     // Every new data block is durable before the only visible pointer changes.
-    storage.setItem("/", rootInode);
+    if (storage.setValue) storage.setValue("/", rootInode);
+    else storage.setItem("/", encodeBytes(rootInode));
   } catch (error) {
     for (const key of staged) storage.removeItem(key);
     if (error.name === "QuotaExceededError") {
@@ -200,6 +204,10 @@ export function initializeSaveEdition(storage, edition, initialConfig) {
     }
   }, true);
   return readSaveTree(storage, edition).editionRoot;
+}
+
+export function initializeSaveRoot(storage, initialConfig) {
+  if (storage.getItem("/") === null) editFilesystem(storage, captureFilesystem(storage, true), initialConfig, () => {}, true);
 }
 
 export function restoreSaveGroups(storage, updates, expectedRevision, initialConfig) {

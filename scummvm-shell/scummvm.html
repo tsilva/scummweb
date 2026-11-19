@@ -189,7 +189,10 @@ function installAgentControls(scope, saveScope) {
       && !scope.__scummwebSaveStatus?.saves.some(save => save.slot === pending.value)) {
       error = "ScummVM did not confirm the saved slot";
     }
-    finish(error);
+    if (!error && pending.operation === "save" && scope.__scummwebFlushSaveStorage) {
+      void scope.__scummwebFlushSaveStorage().then(() => finish(),
+        () => finish("Could not store the save on this device"));
+    } else finish(error);
   };
 }
 
@@ -349,7 +352,10 @@ function installPlayerControls(scope, requestMenu) {
       scope.__scummwebAutosaves?.afterLoad();
       scope.__scummwebAutosaveAfterLoad?.();
     }
-    resolve(error ? { error } : { slot });
+    if (!error && operation === "save" && scope.__scummwebFlushSaveStorage) {
+      void scope.__scummwebFlushSaveStorage().then(() => resolve({ slot }),
+        () => resolve({ error: "Could not store this save on this device. Your previous save is retained." }));
+    } else resolve(error ? { error } : { slot });
   };
 
   if (requestMenu) {
@@ -566,10 +572,15 @@ function installRotatingAutosaves(scope, FS, savePath, params) {
       const contents = encodeAutosave({ ...identity, ...result, slot, savedAt,
         progress: scope.__scummwebReadAutosaveProgress?.() ?? null });
       if (!parseAutosave(contents)) return false;
+      const storage = scope.__scummwebSaveStorage;
+      const checkpoint = storage?.checkpoint();
       try {
         FS.writeFile(`${savePath}/${name}`, contents);
-        if (read(name) !== contents) return false;
-      } catch { return false; }
+        if (read(name) !== contents) throw new Error("Incomplete autosave");
+      } catch {
+        if (checkpoint) storage.rollback(checkpoint);
+        return false;
+      }
       lastSavedAt = savedAt;
       due = Date.now() + intervalMs;
       return true;
@@ -634,13 +645,7 @@ window.ScummvmFSReady = (async () => {
 })();
 // Observe early failures here and let setupFilesystem handle them when Wasm is ready.
 window.ScummvmFSReady.catch(() => {});
-</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}function decodeInode(e){_readUInt16LE=function(e,t){return e[t>>>=0]|e[t+1]<<8},_readUInt32LE=function(e,t){return(e[t]|e[t+1]<<8|e[t+2]<<16)+16777216*e[t+3]};for(var t=window.atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return{id:t.substr(30),size:_readUInt32LE(n,0),mode:_readUInt16LE(n,4),atime:0,mtime:0,ctime:0}}function encodeInode(e,t,n,o,i,r){_writeUInt16LE=function(e,t,n){return t=+t,e[n>>>=0]=255&t,e[n+1]=t>>>8,n+2},_writeUInt32LE=function(e,t,n){return t=+t,e[(n>>>=0)+3]=t>>>24,e[n+2]=t>>>16,e[n+1]=t>>>8,e[n]=255&t,n+4};var s=new Uint8Array(30+e.length);_writeUInt32LE(s,t,0),_writeUInt16LE(s,n,4);for(var a=0;a<e.length;a++)s[30+a]=e.charCodeAt(a);var l="";for(a=0;a<s.length;a++)l+=String.fromCharCode(s[a]);return btoa(l)}function encodeUtf8Base64(text) {
-  let binary = "";
-  for (const byte of new TextEncoder().encode(text)) binary += String.fromCharCode(byte);
-  return btoa(binary);
-}
-function setupDefaultLocalData(){return null===localStorage.getItem("/")?fetch(buildVersionedAssetUrl("scummvm.ini")).then((e=>e.text().then((function(e){for(key in ini_data=encodeUtf8Base64(e),folder_inode_id="b3da6754-64c0-40f0-92ad-83b6ca6ffec9",folder_inode={id:folder_inode_id,size:4096,mode:16895},ini_inode_id="1b4a97d1-4ce0-417f-985c-e0f22ca21aef",ini_inode={id:ini_inode_id,size:atob(ini_data).length,mode:33206},folder_entry_id="70879b79-8d58-400c-8143-332242320b34",folder_listing={"scummvm.ini":folder_entry_id},defaultLocalStorage={},defaultLocalStorage["/"]=encodeInode(folder_inode.id,folder_inode.size,folder_inode.mode,0,0,0),defaultLocalStorage[folder_inode_id]=btoa(JSON.stringify(folder_listing)),defaultLocalStorage[folder_entry_id]=encodeInode(ini_inode.id,ini_inode.size,ini_inode.mode,0,0,0),defaultLocalStorage[ini_inode_id]=ini_data,defaultLocalStorage)localStorage.setItem(key,defaultLocalStorage[key])})))):Promise.resolve()}
-
+</script><script>var statusElement=document.getElementById("status"),progressElement=document.getElementById("progress");function loadingDoneMessage(){return document.getElementById("progress").style.zIndex=0,window.__scummwebSetReadyStatePhase?window.__scummwebSetReadyStatePhase("runtime-ready","runtime-ready"):window.__scummwebPendingReadyStatePhase={state:"runtime-ready",reason:"runtime-ready"},"All downloads complete."}
 // BrowserFS 2 uses methods that expect their operation table as the receiver.
 // Emscripten 4 calls operations such as getattr and readdir as bare functions.
 function bindBrowserFsOperations(filesystem) {
@@ -670,20 +675,22 @@ function editionLockName(edition) {
 // Also used by the inline library reader. Follow only directory pointers;
 // a game in another tab can be writing one of its own data blocks.
 function readSaveTree(storage, edition, namespace = "", layout = { editionDirectory, saveDirectory }) {
+  function bytes(key) {
+    if (storage.getBytes) return storage.getBytes(key);
+    const value = storage.getItem(key);
+    return value ? Uint8Array.from(atob(value), byte => byte.charCodeAt(0)) : null;
+  }
   function inode(key) {
-    const value = key && storage.getItem(key);
-    if (!value) return null;
-    const binary = atob(value);
-    if (binary.length <= 30) return null;
-    const header = new DataView(Uint8Array.from(binary.slice(0, 30), byte => byte.charCodeAt(0)).buffer);
-    return { dataKey: binary.slice(30), size: header.getUint32(0, true),
+    const value = key && bytes(key);
+    if (!value || value.length <= 30) return null;
+    const header = new DataView(value.buffer, value.byteOffset, value.byteLength);
+    return { dataKey: new TextDecoder().decode(value.subarray(30)), size: header.getUint32(0, true),
       type: header.getUint16(4, true) & 0xf000, modifiedAt: header.getFloat64(14, true) };
   }
   function directory(key) {
     const entry = inode(key);
     if (entry?.type !== 0x4000) return {};
-    const bytes = Uint8Array.from(atob(storage.getItem(entry.dataKey) || ""), byte => byte.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes));
+    return JSON.parse(new TextDecoder().decode(bytes(entry.dataKey)));
   }
   const root = directory("/");
   const editions = edition ? directory(root[layout.editionDirectory]) : {};
@@ -733,7 +740,7 @@ function acquireEditionSession(locks, edition) {
     }).catch(reject);
   });
 }
-// BrowserFS 2's LocalStorage format. Publish a changed tree by swapping only
+// BrowserFS 2's inode format. Publish a changed tree by swapping only
 // the root inode, so quota failures cannot leave half an imported save set.
 
 const encoder = new TextEncoder();
@@ -765,21 +772,22 @@ function safePath(path) {
 function captureFilesystem(storage, skipEditionContents = false) {
   const values = new Map();
   const seen = new Set();
+  const raw = key => storage.getBytes ? storage.getBytes(key) ?? null : storage.getItem(key);
   function value(key) {
-    const data = storage.getItem(key);
+    const data = raw(key);
     if (data === null) throw new Error("Browser save storage is incomplete. Export your existing data before repairing it.");
     values.set(key, data);
-    return data;
+    return typeof data === "string" ? decodeBytes(data) : data;
   }
   function read(key, depth = 0, name = "") {
     if (depth > 32 || seen.has(key) || seen.size > 20000) throw new Error("Browser save storage contains an invalid directory.");
     seen.add(key);
-    const bytes = decodeBytes(value(key));
+    const bytes = value(key);
     if (bytes.length <= 30) throw new Error("Browser save storage contains an invalid file.");
     const meta = new DataView(bytes.buffer);
     const mode = meta.getUint16(4, true);
     const dataKey = decoder.decode(bytes.subarray(30));
-    const data = decodeBytes(value(dataKey));
+    const data = value(dataKey);
     const node = { key, dataKey, mode, modifiedAt: meta.getFloat64(14, true) };
     if ((mode & 0xf000) === 0x4000) {
       node.children = new Map();
@@ -794,10 +802,10 @@ function captureFilesystem(storage, skipEditionContents = false) {
     else throw new Error("Unsupported file type in browser save storage.");
     return node;
   }
-  const rootValue = storage.getItem("/");
+  const rootValue = raw("/");
   const root = rootValue === null ? { children: new Map(), mode: 0x41ff } : read("/");
   values.set("/", rootValue);
-  const revision = JSON.stringify([...values].sort(([a], [b]) => a.localeCompare(b)));
+  const revision = storage.revision ?? JSON.stringify([...values].sort(([a], [b]) => a.localeCompare(b)));
   function saveFiles(home, namespace) {
     const files = [];
     function walk(node, prefix = "") {
@@ -848,7 +856,8 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
   validateTree(snapshot.root);
   function put(key, value) {
     staged.push(key);
-    storage.setItem(key, value);
+    if (storage.setValue) storage.setValue(key, value);
+    else storage.setItem(key, encodeBytes(value));
   }
   function persist(node, isRoot = false) {
     if (node.key && !dirty.has(node)) return node.key;
@@ -857,7 +866,7 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
     const data = node.children ? encoder.encode(JSON.stringify(Object.fromEntries(
       [...node.children].map(([name, child]) => [name, persist(child)])
     ))) : node.data;
-    put(dataKey, encodeBytes(data));
+    put(dataKey, data);
     const inode = new Uint8Array(30 + dataKey.length);
     const view = new DataView(inode.buffer);
     view.setUint32(0, node.children ? 4096 : data.length, true);
@@ -866,17 +875,19 @@ function editFilesystem(storage, snapshot, initialConfig, edit, skipEditionConte
     view.setFloat64(14, Number.isFinite(node.modifiedAt) ? node.modifiedAt : now, true);
     view.setFloat64(22, now, true);
     inode.set(encoder.encode(dataKey), 30);
-    if (isRoot) return encodeBytes(inode);
-    put(key, encodeBytes(inode));
+    if (isRoot) return inode;
+    put(key, inode);
     return key;
   }
   try {
     const rootInode = persist(snapshot.root, true);
     for (const [key, oldValue] of snapshot.values) {
-      if (storage.getItem(key) !== oldValue) throw new Error("Saves changed during import. Close other games and retry.");
+      const current = storage.getBytes ? storage.getBytes(key) ?? null : storage.getItem(key);
+      if (current !== oldValue) throw new Error("Saves changed during import. Close other games and retry.");
     }
     // Every new data block is durable before the only visible pointer changes.
-    storage.setItem("/", rootInode);
+    if (storage.setValue) storage.setValue("/", rootInode);
+    else storage.setItem("/", encodeBytes(rootInode));
   } catch (error) {
     for (const key of staged) storage.removeItem(key);
     if (error.name === "QuotaExceededError") {
@@ -936,6 +947,10 @@ function initializeSaveEdition(storage, edition, initialConfig) {
   return readSaveTree(storage, edition).editionRoot;
 }
 
+function initializeSaveRoot(storage, initialConfig) {
+  if (storage.getItem("/") === null) editFilesystem(storage, captureFilesystem(storage, true), initialConfig, () => {}, true);
+}
+
 function restoreSaveGroups(storage, updates, expectedRevision, initialConfig) {
   const snapshot = captureFilesystem(storage);
   if (snapshot.revision !== expectedRevision) throw new Error("Saves changed after the review opened. Review the backup again.");
@@ -965,10 +980,248 @@ function restoreSaveGroups(storage, updates, expectedRevision, initialConfig) {
     }
   });
 }
-globalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName };
+const indexedSaveStorage = (() => {
+
+const saveStorageEvent = "scummweb.save-storage.v1";
+const saveStorageKey = "scummweb.save-storage.changed.v1";
+const indexPrefix = "scummweb.continue.v1:";
+const blockId = /^[a-f0-9-]{36}$/i;
+const decoder = new TextDecoder();
+const encoder = new TextEncoder();
+
+function decode(value) {
+  return Uint8Array.from(atob(value), char => char.charCodeAt(0));
+}
+
+function encode(bytes) {
+  let raw = "";
+  for (let start = 0; start < bytes.length; start += 8192) {
+    raw += String.fromCharCode(...bytes.subarray(start, start + 8192));
+  }
+  return btoa(raw);
+}
+
+let opening;
+let factory;
+function openDatabase() {
+  if (!opening || factory !== indexedDB) {
+    factory = indexedDB;
+    opening = new Promise((resolve, reject) => {
+      const request = indexedDB.open("scummweb.active-saves", 1);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        db.createObjectStore("entries", { keyPath: "key" });
+        db.createObjectStore("migration", { autoIncrement: true });
+      };
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        db.onversionchange = () => { db.close(); opening = undefined; };
+        db.onclose = () => { opening = undefined; };
+        resolve(db);
+      };
+    }).catch(error => { opening = undefined; throw error; });
+  }
+  return opening;
+}
+
+function transaction(db, stores, mode, operation) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(stores, mode, mode === "readwrite" ? { durability: "strict" } : undefined);
+    tx.onabort = () => reject(tx.error || new Error("Could not commit saved games."));
+    tx.oncomplete = () => resolve(result?.result);
+    let result;
+    try { result = operation(tx); }
+    catch (error) { tx.abort(); reject(error); }
+  });
+}
+
+function announceChange() {
+  // A cache invalidation signal also reaches other tabs and older host pages.
+  try { localStorage.setItem(saveStorageKey, crypto.randomUUID()); } catch { /* Refresh on focus as well. */ }
+  globalThis.window?.dispatchEvent(new Event(saveStorageEvent));
+}
+
+function legacySnapshot(storage) {
+  const original = new Map();
+  const entries = new Map();
+  const seen = new Set();
+  function read(key) {
+    const value = storage.getItem(key);
+    if (value === null) return null;
+    original.set(key, value);
+    try { return decode(value); } catch { return null; }
+  }
+  function visit(key, depth = 0) {
+    if (depth > 32 || seen.has(key) || (key !== "/" && !blockId.test(key))) return false;
+    seen.add(key);
+    const inode = read(key);
+    if (!inode || inode.length <= 30) return false;
+    const dataKey = decoder.decode(inode.subarray(30));
+    if (!blockId.test(dataKey) || seen.has(dataKey)) return false;
+    seen.add(dataKey);
+    let data = read(dataKey);
+    if (!data) return false;
+    const mode = new DataView(inode.buffer).getUint16(4, true) & 0xf000;
+    if (mode === 0x4000) {
+      let listing;
+      try { listing = JSON.parse(decoder.decode(data)); } catch { return false; }
+      if (!listing || Array.isArray(listing) || typeof listing !== "object") return false;
+      const children = Object.entries(listing);
+      const kept = children.filter(([, child]) => typeof child === "string" && visit(child, depth + 1));
+      if (kept.length !== children.length) data = encoder.encode(JSON.stringify(Object.fromEntries(kept)));
+    } else if (mode !== 0x8000) return false;
+    entries.set(key, inode);
+    entries.set(dataKey, data);
+    return true;
+  }
+  if (storage.getItem("/") !== null && !visit("/")) {
+    throw new Error("Could not read the existing save directory. The original data is still on this device.");
+  }
+  for (let position = 0; position < storage.length; position++) {
+    const key = storage.key(position);
+    if (!key || !key.startsWith(indexPrefix) && !blockId.test(key)) continue;
+    const value = storage.getItem(key);
+    if (value === null) continue;
+    original.set(key, value);
+    if (key.startsWith(indexPrefix)) entries.set(key, value);
+  }
+  return { original, entries };
+}
+
+async function migrate(db) {
+  const migrated = () => transaction(db, "entries", "readonly", tx => tx.objectStore("entries").get("migrated"));
+  if (await migrated() && localStorage.getItem("/") === null) return;
+  if (!navigator.locks) throw new Error("This browser cannot safely migrate saved games.");
+  await navigator.locks.request(saveLockName + ":migration", async () => {
+    if (await migrated() && localStorage.getItem("/") === null) return;
+    return navigator.locks.request(saveLockName, { ifAvailable: true }, async lock => {
+      if (!lock) {
+        const error = new Error("Another game is using save storage. Close it or wait before trying again.");
+        error.name = "SaveSessionBusyError";
+        throw error;
+      }
+      const complete = await migrated();
+      if (complete && localStorage.getItem("/") === null) return;
+      const { original, entries } = legacySnapshot(localStorage);
+      await transaction(db, ["entries", "migration"], "readwrite", tx => {
+        // Keep the source bytes independently of the active tree. A stale site
+        // tab can still make a legacy write; retain its whole tree for recovery.
+        if (original.size) tx.objectStore("migration").add({ original, recovery: complete ? entries : null });
+        if (complete) return;
+        const store = tx.objectStore("entries");
+        for (const [key, value] of entries) store.put({ key, value });
+        store.put({ key: "migrated", value: true });
+      });
+      // Release space only after the copy commits. Remove the legacy root first,
+      // so an interrupted cleanup cannot leave a reachable half-cleared tree.
+      if (original.get("/") === localStorage.getItem("/")) localStorage.removeItem("/");
+      for (const [key, value] of original) {
+        if (key !== "/" && localStorage.getItem(key) === value) localStorage.removeItem(key);
+      }
+      announceChange();
+    });
+  });
+}
+
+let migration;
+async function ensureSaveStorage() {
+  const db = await openDatabase();
+  if (!migration) {
+    migration = migrate(db).finally(() => { migration = undefined; });
+  }
+  await migration;
+  return db;
+}
+
+function storageView(entries, db, revision = "legacy") {
+  const changes = new Map();
+  let flight = Promise.resolve();
+  let queued = 0;
+  let failed = new Map();
+  return {
+    get length() { return entries.size; },
+    get revision() { return revision; },
+    key: position => [...entries.keys()][position] ?? null,
+    keys: () => entries.keys(),
+    getItem(key) {
+      const value = entries.get(key);
+      return value instanceof Uint8Array ? encode(value) : value ?? null;
+    },
+    setItem(key, value) { this.setValue(key, key.startsWith(indexPrefix) ? String(value) : decode(value)); },
+    removeItem(key) {
+      entries.delete(key);
+      changes.set(key, null);
+    },
+    getBytes: key => entries.get(key),
+    setValue(key, value) {
+      if (entries.get(key) === value) return;
+      entries.set(key, value);
+      changes.set(key, value);
+    },
+    checkpoint() { return { entries: new Map(entries), changes: new Map(changes) }; },
+    rollback(checkpoint) {
+      entries = checkpoint.entries;
+      changes.clear();
+      for (const [key, value] of checkpoint.changes) changes.set(key, value);
+    },
+    isCommitted: () => !queued && !changes.size && !failed.size,
+    commit() {
+      if (!changes.size && (!failed.size || queued)) return flight;
+      const batch = new Map(changes);
+      changes.clear();
+      function write() {
+        const updates = new Map([...failed, ...batch]);
+        const nextRevision = [...updates.keys()].some(key => !key.startsWith(indexPrefix)) ? crypto.randomUUID() : revision;
+        return transaction(db, "entries", "readwrite", tx => {
+          const store = tx.objectStore("entries");
+          for (const [key, value] of updates) {
+            if (value === null) store.delete(key);
+            else store.put({ key, value });
+          }
+          if (nextRevision !== revision) store.put({ key: "revision", value: nextRevision });
+        }).then(() => {
+          failed.clear();
+          revision = nextRevision;
+          announceChange();
+        }, error => {
+          failed = updates;
+          throw error;
+        });
+      }
+      // Seal each batch before waiting. A later native save can start while
+      // this transaction commits and its partial writes must stay in memory.
+      const writing = queued++ ? flight.then(write, write) : write();
+      flight = writing.finally(() => { queued--; });
+      return flight;
+    },
+  };
+}
+
+// Migrate before acquiring a player or restore lock, then take a fresh view
+// inside the lock. Commits touch only changed keys, including native indexes.
+async function openSaveStorage(db) {
+  db ||= await ensureSaveStorage();
+  const rows = await transaction(db, "entries", "readonly", tx => tx.objectStore("entries").getAll());
+  const entries = new Map(rows.map(({ key, value }) => [key, value]));
+  const revision = entries.get("revision") || "initial";
+  entries.delete("migrated");
+  entries.delete("revision");
+  return storageView(entries, db, revision);
+}
+
+async function openLegacyRecoveryStorage() {
+  const db = await ensureSaveStorage();
+  const rows = await transaction(db, "migration", "readonly", tx => tx.objectStore("migration").getAll());
+  return rows.filter(row => row.recovery).map(row => storageView(row.recovery, db));
+}
+return { ensureSaveStorage, openSaveStorage };
+})();
+globalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName, ...indexedSaveStorage };
 })();
 async function prepareSaveRoot() {
-  const { editionKey, acquireEditionSession, initializeSaveEdition, readSaveTree, saveLockName } = globalThis.__scummwebSaveEditions;
+  const { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName,
+    ensureSaveStorage, openSaveStorage } = globalThis.__scummwebSaveEditions;
   const params = scummwebLaunchUrl.searchParams;
   const namespace = params.get("saveNamespace");
   const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
@@ -976,22 +1229,20 @@ async function prepareSaveRoot() {
   const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
   const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
   const edition = agentSaveScope ? "" : editionKey(namespace, target);
-  const locks = globalThis.navigator?.locks;
+  const db = await ensureSaveStorage();
+  const locks = navigator.locks;
   await acquireEditionSession(locks, edition);
-  if (!edition || !locks) {
-    await setupDefaultLocalData();
-    return edition && readSaveTree(localStorage, edition).editionRoot;
-  }
   return locks.request(saveLockName + ":setup", async () => {
-    const existing = readSaveTree(localStorage, edition).editionRoot;
-    if (existing) return existing;
+    const storage = await openSaveStorage(db);
     let config;
-    if (localStorage.getItem("/") === null) {
+    if (storage.getItem("/") === null) {
       const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
       if (!response.ok) throw new Error("Could not initialize save storage. Try again when online.");
       config = await response.text();
     }
-    return initializeSaveEdition(localStorage, edition, config);
+    const editionRoot = edition ? initializeSaveEdition(storage, edition, config) : initializeSaveRoot(storage, config);
+    await storage.commit();
+    return { editionRoot, storage };
   });
 }
 
@@ -1002,23 +1253,43 @@ function setupLocalFilesystem() {
     EIO: 29, EISDIR: 31, ENOENT: 44, ENOSPC: 51, ENOTDIR: 54,
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
-  return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([editionRoot]) => new Promise((resolve, reject) => {
-    BrowserFS.FileSystem.LocalStorage.Create((storageError, storage) => {
+  return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([{ editionRoot, storage }]) => new Promise((resolve, reject) => {
+    BrowserFS.FileSystem.InMemory.Create((storageError, filesystemStorage) => {
       if (storageError) return reject(storageError);
-      if (editionRoot) {
-        // BrowserFS 2.0's synchronous store uses "/" as its root inode key.
-        // Pin it to this edition so other tabs can publish their own roots
-        // without changing any directory this runtime resolves or writes.
-        const store = storage.store;
-        const keyFor = (key) => key === "/" ? editionRoot : key;
-        storage.store = Object.assign(Object.create(store), {
-          get: (key) => store.get(keyFor(key)),
-          put: (key, data, overwrite) => store.put(keyFor(key), data, overwrite),
-          del: (key) => store.del(keyFor(key)),
-          clear: () => { throw new Error("Cannot clear shared browser storage"); },
-        });
-      }
-      BrowserFS.FileSystem.MountableFileSystem.Create({ "/": storage }, (mountError, mount) => {
+      const { Buffer } = BrowserFS.BFSRequire("buffer");
+      const keyFor = key => key === "/" && editionRoot ? editionRoot : key;
+      let flushTimer;
+      const flush = () => {
+        clearTimeout(flushTimer);
+        return storage.commit();
+      };
+      const scheduleFlush = () => {
+        clearTimeout(flushTimer);
+        if (globalThis.__scummwebSaveWriteInProgress?.()) return;
+        flushTimer = setTimeout(() => {
+          if (globalThis.__scummwebSaveWriteInProgress?.()) return;
+          void flush().catch(error => console.error("Could not commit game storage", error.name));
+        }, 0);
+      };
+      globalThis.__scummwebSaveStorage = storage;
+      globalThis.__scummwebFlushSaveStorage = () => globalThis.__scummwebSaveWriteInProgress?.()
+        ? Promise.resolve() : flush();
+      filesystemStorage.store = Object.assign(Object.create(filesystemStorage.store), {
+        get(key) {
+          const bytes = storage.getBytes(keyFor(key));
+          return bytes && Buffer.from(bytes);
+        },
+        put(key, data, overwrite) {
+          const mapped = keyFor(key);
+          if (!overwrite && storage.getBytes(mapped)) return false;
+          storage.setValue(mapped, new Uint8Array(data));
+          scheduleFlush();
+          return true;
+        },
+        del(key) { storage.removeItem(keyFor(key)); scheduleFlush(); },
+        clear() { throw new Error("Cannot clear shared browser storage"); },
+      });
+      BrowserFS.FileSystem.MountableFileSystem.Create({ "/": filesystemStorage }, (mountError, mount) => {
         if (mountError) return reject(mountError);
         BrowserFS.initialize(mount);
         const filesystem = new BrowserFS.EmscriptenFS(FS, PATH, errnoCodes);
@@ -1352,6 +1623,10 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
   const pending = new Set();
   const writers = new Map();
   const ioFailures = new Set();
+  const storage = scope.__scummwebSaveStorage || scope.localStorage;
+  let writeCheckpoint;
+  let pendingBeforeWrite;
+  let writeFailed = false;
   let restoredPending = false;
   let needsPublish = false;
   let scannedFiles;
@@ -1376,7 +1651,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     snapshot.pending = [...pending];
     snapshot.revision = saveRevision(files());
     try {
-      scope.localStorage.setItem(indexKey(), JSON.stringify(snapshot));
+      storage.setItem(indexKey(), JSON.stringify(snapshot));
       lastRevision = snapshot.revision;
       needsPublish = false;
     } catch {
@@ -1385,7 +1660,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     }
     if (legacyIndexKey) {
       try {
-        scope.localStorage.removeItem(legacyIndexKey);
+        storage.removeItem(legacyIndexKey);
         legacyIndexKey = undefined;
       } catch { /* The canonical index was already published. */ }
     }
@@ -1401,10 +1676,17 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     } catch { return true; }
   }
   // Native save ownership brackets the complete compressed output lifetime.
-  // Persist the pending name BEFORE opening/truncating a previously indexed slot.
+  // The IndexedDB backend holds the prior bytes until all native streams close.
+  // The older synchronous backend uses a pending index before truncation.
+  scope.__scummwebSaveWriteInProgress = () => writers.size > 0;
   scope.__scummwebBeginSaveWrite = (name) => {
     if (scope.__scummwebDiagnosticSaves?.active) return scope.__scummwebDiagnosticSaves.beginWrite(name);
     if (!snapshot || !validName(name) || writers.has(name)) return false;
+    if (storage.checkpoint && !writers.size) {
+      writeCheckpoint = storage.checkpoint();
+      pendingBeforeWrite = [...pending];
+      writeFailed = false;
+    }
     const wasPending = pending.has(name);
     pending.add(name);
     const previousSaves = snapshot.saves;
@@ -1432,6 +1714,15 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     if (success && !ioFailures.has(name)) {
       pending.delete(name);
       scope.__scummwebPlayerSaveWritten?.(name);
+    } else writeFailed = true;
+    if (!writers.size && writeCheckpoint) {
+      if (writeFailed) {
+        storage.rollback(writeCheckpoint);
+        pending.clear();
+        for (const savedName of pendingBeforeWrite) pending.add(savedName);
+      }
+      writeCheckpoint = undefined;
+      pendingBeforeWrite = undefined;
     }
     needsPublish = true;
     // Native code calls refresh only after the last output stream has closed.
@@ -1448,6 +1739,7 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     scope.__scummwebScanningSaves = true;
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
+    if (storage.commit && params.has("saveQuery") && params.get("v")) snapshot.checkedByRuntime = params.get("v");
     if (scope.__scummwebPublishPlayerSaves) {
       playerSaves = [];
       occupiedSlots = new Set();
@@ -1455,14 +1747,14 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     if (!restoredPending) {
       restoredPending = true;
       try {
-        const previous = JSON.parse(scope.localStorage.getItem(indexKey()));
+        const previous = JSON.parse(storage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
       } catch { /* Missing or invalid cache. */ }
       const archiveId = params.get("catalogGame") || params.get("saveGameId");
       if (!storageNamespace && archiveId && archiveId !== target) {
         const key = saveIndexKey("", archiveId);
         try {
-          const previous = JSON.parse(scope.localStorage.getItem(key));
+          const previous = JSON.parse(storage.getItem(key));
           if (previous?.target === target && previous.engineId === engineId
             && previous.gameId === gameId && previous.extra?.toLowerCase() === extra.toLowerCase()) {
             for (const name of previous.pending || []) if (validName(name)) pending.add(name);
@@ -1500,10 +1792,21 @@ function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl }) {
     }
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot };
-    if (!agentSaveScope) {
+    const publish = () => {
+      if (agentSaveScope) return;
       scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
         ...snapshot, persisted, latestSlot }, launchUrl.origin);
-    }
+    };
+    if (scope.__scummwebFlushSaveStorage) {
+      // A message advertising this index can trigger Dropbox publication.
+      const listed = snapshot;
+      void scope.__scummwebFlushSaveStorage().then(() => {
+        if (snapshot === listed) publish();
+      }, () => {
+        needsPublish = true;
+        scope.parent.postMessage({ type: "scummweb:save-storage-error", query: params.get("saveQuery") }, launchUrl.origin);
+      });
+    } else publish();
     scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
     return params.get("continue") === "1" ? autoSlot >= 0 ? autoSlot : save?.slot ?? -1 : -1;
   };

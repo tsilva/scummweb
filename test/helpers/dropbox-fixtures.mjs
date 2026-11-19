@@ -7,12 +7,12 @@ export function memoryStorage() {
 export function browserSaveStorage(files = {}) {
   const storage = memoryStorage();
   const bytes = (text) => new TextEncoder().encode(text);
-  let next = 0;
+  const blockKey = () => crypto.randomUUID();
   function inode(tree, key) {
     const directory = !(tree instanceof Uint8Array);
-    const dataKey = `data-${++next}`;
+    const dataKey = blockKey();
     const data = directory ? bytes(JSON.stringify(Object.fromEntries(Object.entries(tree).map(([name, child]) => {
-      const childKey = `inode-${++next}`;
+      const childKey = blockKey();
       inode(child, childKey);
       return [name, childKey];
     })))) : tree;
@@ -31,7 +31,7 @@ export function browserSaveStorage(files = {}) {
 export function indexedDbFixture() {
   const databases = new Map();
   const durability = [];
-  return { databases, durability, open(name) {
+  const fixture = { databases, durability, open(name) {
     const request = {};
     queueMicrotask(() => {
       const fresh = !databases.has(name);
@@ -39,17 +39,36 @@ export function indexedDbFixture() {
       const tables = databases.get(name);
       request.result = {
         createObjectStore(table) { tables.set(table, new Map()); }, close() {},
-        transaction(table, mode, options) {
-          durability.push({ name, table, mode, durability: options?.durability });
-          const tx = { objectStore() {
-            const records = tables.get(table);
-            return { get: (key) => { const request = { result: structuredClone(records.get(key)) }; queueMicrotask(() => request.onsuccess?.()); return request; },
-              getAll: (range) => ({ result: structuredClone([...records.values()].filter(({ id }) =>
-                !range || id >= range.lower && id < range.upper)) }),
-              put: (record) => { records.set(record.id, structuredClone(record)); return { result: record.id }; },
-              delete: (key) => { records.delete(key); return {}; } };
-          } };
-          setTimeout(() => tx.oncomplete?.(), 0);
+        transaction(names, mode, options) {
+          durability.push({ name, table: names, mode, durability: options?.durability });
+          const writes = [];
+          let aborted = false;
+          const tx = {
+            abort() { aborted = true; queueMicrotask(() => tx.onabort?.()); },
+            objectStore(table = names) {
+              const records = tables.get(table);
+              function put(record, key) {
+                writes.push({ table, key, record: structuredClone(record) });
+                return { result: key };
+              }
+              return { get: (key) => { const request = { result: structuredClone(records.get(key)) }; queueMicrotask(() => request.onsuccess?.()); return request; },
+                getAll: (range) => ({ result: structuredClone([...records.values()].filter(({ id }) =>
+                  !range || id >= range.lower && id < range.upper)) }),
+                put: (record) => put(record, record.id ?? record.key),
+                add: (record) => put(record, records.size + 1),
+                delete: (key) => { writes.push({ table, key }); return {}; } };
+            },
+          };
+          setTimeout(() => {
+            if (aborted) return;
+            tx.error = fixture.fail?.({ name, names, mode, writes });
+            if (tx.error) { tx.onabort?.(); return; }
+            for (const { table, key, record } of writes) {
+              if (record === undefined) tables.get(table).delete(key);
+              else tables.get(table).set(key, record);
+            }
+            tx.oncomplete?.();
+          }, 0);
           return tx;
         },
       };
@@ -58,6 +77,7 @@ export function indexedDbFixture() {
     });
     return request;
   } };
+  return fixture;
 }
 
 

@@ -12,6 +12,7 @@ import { captureFilesystem } from "../save-backups/filesystem.mjs";
 import { readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 import { readGameSources } from "../game-sources.mjs";
 import { editionDirectory, editionKey, editionLockName, matchesLegacySave, saveDirectory } from "../../web-shell/save-editions.mjs";
+import { ensureSaveStorage, openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const ownerKey = "scummweb.dropbox-owner.v1";
 const listeners = new Set();
@@ -95,8 +96,13 @@ function stopAccountActivity() {
 }
 async function lockedSaves(action) {
   if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
+  const db = await ensureSaveStorage().catch(error => {
+    if (error.name !== "SaveSessionBusyError") throw error;
+    return null;
+  });
+  if (!db) return { busy: true };
   return navigator.locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
-    (lock) => lock ? action() : { busy: true });
+    async (lock) => lock ? action(await openSaveStorage(db)) : { busy: true });
 }
 // Baselines and cached nodes belong to this storage layout and snapshot format.
 const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
@@ -152,9 +158,9 @@ async function syncAccount(auth, epoch, signal, progress) {
     });
     check();
     if (client.hasDamagedArchives()) {
-      await lockedSaves(async () => {
-        const active = await getActiveSaveSets(localStorage, destinations);
-        const incomplete = readIncompleteSaveWrites(localStorage, destinations);
+      await lockedSaves(async (storage) => {
+        const active = await getActiveSaveSets(storage, destinations);
+        const incomplete = readIncompleteSaveWrites(storage, destinations);
         // When history cannot be verified, only seed empty editions. Keep
         // existing local progress and avoid writing a new cloud history.
         if (incomplete.some(entry => !destinations.some(({ key }) => key === entry.destinationKey))) return;
@@ -168,13 +174,13 @@ async function syncAccount(auth, epoch, signal, progress) {
         }
         if (!rows.length) return;
         let initialConfig;
-        if (!captureFilesystem(localStorage).root.key) {
+        if (!active.hasRoot) {
           const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
           if (!response.ok) return;
           initialConfig = await response.text();
         }
         check();
-        await applyImport({ storage: localStorage, destinations, rows, revision: active.revision, initialConfig, check });
+        await applyImport({ storage, destinations, rows, revision: active.revision, initialConfig, check });
         window.dispatchEvent(new Event("scummweb:saves-changed"));
       });
       update({ phase: "connected", message: "", verified: false });
@@ -182,10 +188,10 @@ async function syncAccount(auth, epoch, signal, progress) {
     }
     const preservedHashes = new Set();
     const groups = new Map();
-    const collected = await lockedSaves(async () => {
+    const collected = await lockedSaves(async (storage) => {
       check();
-      const active = await getActiveSaveSets(localStorage, destinations);
-      const incomplete = readIncompleteSaveWrites(localStorage, destinations, active.sets);
+      const active = await getActiveSaveSets(storage, destinations);
+      const incomplete = readIncompleteSaveWrites(storage, destinations, active.sets);
       const blocked = new Set();
       for (const entry of incomplete) {
         const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
@@ -222,7 +228,7 @@ async function syncAccount(auth, epoch, signal, progress) {
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
-      return { busy: false, blocked };
+      return { busy: false, blocked, revision: active.revision };
     });
     check();
     for (const item of await syncStore.all(recordKey(account, "pending", ""))) {
@@ -272,37 +278,39 @@ async function syncAccount(auth, epoch, signal, progress) {
         }
         const restoreKey = recordKey(account, "restore-space", profile);
         const previous = restoreSpaceWait.get(restoreKey);
-        if (previous?.hash === remoteHash && previous.root === localStorage.getItem("/") && Date.now() < previous.retryAt) {
+        if (previous?.hash === remoteHash && previous.revision === collected.revision && Date.now() < previous.retryAt) {
           spaceBlocked.add(profile);
           continue;
         }
         const remote = await readSnapshot(client, profile, remoteHash);
         check();
-        const restored = await lockedSaves(async () => {
+        let restoreRevision;
+        const restored = await lockedSaves(async (storage) => {
           check();
           const destinationKey = matchDestination(remote, destinations);
-          for (const entry of readIncompleteSaveWrites(localStorage, destinations)) {
+          for (const entry of readIncompleteSaveWrites(storage, destinations)) {
             const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
             if (!destination || await saveProfileId({ destination }) === profile) return { changed: true };
           }
-          const current = await getActiveSaveSets(localStorage, destinations);
+          const current = await getActiveSaveSets(storage, destinations);
+          restoreRevision = current.revision;
           const local = current.sets.find((set) => matchDestination(remote, [set.destination]));
           if (local && local.hash !== group.browserSet?.hash) return { changed: true };
           let initialConfig;
-          if (destinationKey && !captureFilesystem(localStorage).root.key) {
+          if (destinationKey && !current.hasRoot) {
             const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
             if (!response.ok) throw new DropboxError("Could not initialize restored saves.");
             initialConfig = await response.text();
           }
           check();
           activity({ stage: "restore", title: remote.destination.title, percentage: 100 });
-          await applyImport({ storage: localStorage, destinations, revision: current.revision, initialConfig, check,
+          await applyImport({ storage, destinations, revision: current.revision, initialConfig, check,
             rows: [{ set: remote, destinationKey, choice: "imported" }] });
           activity({ stage: "verify", title: remote.destination.title, percentage: 100 });
           return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
         }).catch((error) => {
           if (!isQuotaError(error)) throw error;
-          restoreSpaceWait.set(restoreKey, { hash: remoteHash, root: localStorage.getItem("/"), retryAt: Date.now() + 120000 });
+          restoreSpaceWait.set(restoreKey, { hash: remoteHash, revision: restoreRevision, retryAt: Date.now() + 120000 });
           return { quota: true };
         });
         if (restored.quota) {
@@ -370,15 +378,18 @@ async function emptyCatalogEdition(destination) {
   if (destination.namespace || destination.key !== `catalog:${destination.family}` || !navigator.locks) return false;
   const edition = editionKey("", destination.family);
   if (!edition) return false;
+  const db = await ensureSaveStorage().catch(() => null);
+  if (!db) return false;
   // Other isolated players hold a shared root lock. Read only this edition,
   // excluding legacy-wide operations and a player using this same edition.
   return navigator.locks.request(saveLockName, { mode: "shared", ifAvailable: true }, async (rootLock) => {
     if (!rootLock) return false;
-    return navigator.locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, (lock) => {
+    return navigator.locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, async (lock) => {
       if (!lock) return false;
       try {
-        if (readIncompleteSaveWrites(localStorage).length) return false;
-        const { root } = captureFilesystem(localStorage, true);
+        const storage = await openSaveStorage(db);
+        if (readIncompleteSaveWrites(storage).length) return false;
+        const { root } = captureFilesystem(storage, true);
         const editions = root.children.get(editionDirectory);
         if (editions && (!editions.children || editions.children.has(edition))) return false;
         let legacy = root;
