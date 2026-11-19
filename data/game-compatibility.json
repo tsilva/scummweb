@@ -1717,6 +1717,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Christmas Card 1986 (Demo)",
+      "status": "startup-verified",
+      "gameId": "agi:xmascard",
+      "edition": "xmascard-dos-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS AGI card accepted a custom greeting, displayed multiple animated scenes, and looped without a missing-file warning. The official ZIP contains VOL.0; its directory tables also reference two volumes absent from the archive. Native F1 Help and F9 restart worked. The tested scene rejected saving."
+    },
+    {
       "title": "Christmas Card 1988",
       "status": "startup-verified",
       "gameId": "sci:christmas1988",

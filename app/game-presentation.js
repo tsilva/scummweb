@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "xmascard-demo": {
+    ...retroGameArtwork["agi:xmascard"],
+    heroImageMobilePosition: "73% -9vh",
+    title: "Christmas Card 1986 (Demo)",
+    year: "1986",
+    language: "en",
+    summary: "Type your own holiday greeting and watch it scroll across a ribbon in Sierra’s animated 1986 Christmas card, with sleigh rides and reindeer.",
+  },
   "slater-demo": {
     ...retroGameArtwork["sci:slater"],
     heroImageMobilePosition: "83% -5vh",
