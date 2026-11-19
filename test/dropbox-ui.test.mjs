@@ -90,14 +90,14 @@ async function row(state, { online = true, configured = true } = {}) {
 test("verified routine checks show an up-to-date status and only the disconnect action", async () => {
   const { tree, calls } = await row({ phase: "connected", checking: true, verified: true, message: "" });
   const status = nodes(tree).find(({ props }) => props?.role === "status");
-  assert.match(text(status), /Saves up to date/);
-  assert.match(text(status), /sync automatically/);
+  assert.equal(text(status), "Saves up to date");
   assert.equal(nodes(status).some(({ type }) => type === "button"), false);
   assert.equal(text(tree).includes("Syncing"), false);
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-spinner"), false);
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
   const actions = nodes(tree).filter(({ type }) => type === "button");
   assert.deepEqual(actions.map(text), ["Disconnect"]);
+  assert.equal(actions[0].props.className, "secondary-button");
   await actions[0].props.onClick();
   assert.deepEqual(calls, ["disconnect"]);
   const firstCheck = await row({ phase: "connected", checking: true, verified: false, message: "" });
@@ -226,6 +226,8 @@ test("export hands the ZIP to the browser without adding a second download link"
 
 test("the normal panel hides routine saves; recovery groups backups and leaves progress untouched", async () => {
   const fixture = await settingsFixture(); let tree = fixture.render();
+  assert.match(text(tree), /Transfer saves to or from your ScummVM apps/);
+  assert.doesNotMatch(text(tree), /Exported ZIPs/);
   assert.equal(text(tree).includes("Beneath a Steel Sky"), false);
   assert.equal(text(tree).includes("Only active"), false);
   assert.equal(text(tree).includes("Game files are not included"), false);

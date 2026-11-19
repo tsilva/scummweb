@@ -57,8 +57,6 @@ export default function DropboxRow() {
     description = "Sync resumes automatically when you’re back online.";
   } else if (reconnect && !online) {
     description = "Go online to reconnect Dropbox.";
-  } else if (phase === "connected") {
-    description = "Saves and Recently Played sync automatically.";
   }
 
   const message = !busy && (notice || (!offline && state.message));
@@ -97,7 +95,7 @@ export default function DropboxRow() {
     <div className="dropbox-actions">
       {showConnect && <button type="button" className="secondary-button" aria-label={reconnect ? undefined : "Connect Dropbox"}
         disabled={busy || !configured || !online} onClick={connect}>{reconnect ? "Reconnect Dropbox" : "Connect"}</button>}
-      {connected && <button type="button" className="dropbox-disconnect" aria-label="Disconnect Dropbox"
+      {connected && <button type="button" className="secondary-button" aria-label="Disconnect Dropbox"
         disabled={disconnecting} onClick={disconnect}>
         Disconnect
       </button>}

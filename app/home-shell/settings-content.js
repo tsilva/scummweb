@@ -222,7 +222,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       {!review && !recovering && <>
         <DropboxPreview><DropboxRow /></DropboxPreview>
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
-          <div><h3>Transfer saves</h3><p>Transfer saves to or from desktop ScummVM. Exported ZIPs keep the original save filenames.</p></div>
+          <div><h3>Transfer saves</h3><p>Transfer saves to or from your ScummVM apps.</p></div>
           <div className="settings-transfer-actions">
             <button type="button" className="secondary-button settings-wide" disabled={transferring || (!savedCount && !data.stored.length)} onClick={download}>
               {exportState === "idle" ? <Download size={20} aria-hidden="true" />
