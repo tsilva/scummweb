@@ -443,6 +443,8 @@ The original DOS Christmas Card 1988 opens a message editor. Type a greeting and
 
 The original DOS EGA edition of The Seasoned Professional plays Sierra’s animated holiday short. Press F9 and choose Restart to replay it. The title opens directly into the original animation.
 
+The original DOS Christmas Card 1992 starts its animated holiday greeting when launched. Use the ScummWEB game menu for playback speed or to return to the library.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
