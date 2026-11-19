@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "maniac-demo": {
+    ...retroGameArtwork["scumm:maniac"],
+    heroImageMobilePosition: "81% -9vh",
+    title: "Maniac Mansion (Demo)",
+    year: "1987",
+    language: "en",
+    summary: "Try the original Commodore 64 preview of Dr. Fred’s mansion. Explore the grounds in the hands-on demo or watch the self-running tour.",
+  },
   "newkid-demo": {
     ...retroGameArtwork["mohawk:newkid"],
     heroImageMobilePosition: "80% -9vh",

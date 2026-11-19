@@ -22126,6 +22126,17 @@
           3550502428
         ]
       ]
+    },
+    "maniac-demo": {
+      "url": "https://games.scummweb.tsilva.eu/maniac.zip",
+      "fingerprint": "50bdfa52a630f064f5eadecda3c0710a78391030390d5cbd0945f03688b232fe",
+      "files": [
+        [
+          "maniacdemo.d64",
+          174848,
+          846994005
+        ]
+      ]
     }
   }
 }

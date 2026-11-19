@@ -755,6 +755,14 @@
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
     },
     {
+      "title": "Maniac Mansion (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:maniac",
+      "edition": "maniac-c64-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original 1987 Commodore 64 demo disk with hands-on and self-running modes. Native choice, character movement, F7 menu return and restoring a changed character position through ScummWEB Save and Load were verified. Audible output was unverified."
+    },
+    {
       "title": "Mickey's Space Adventure",
       "status": "startup-verified",
       "gameId": "agi:mickey",

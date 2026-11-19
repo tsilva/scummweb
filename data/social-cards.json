@@ -1690,6 +1690,11 @@
       "file": "the-new-kid-on-the-block-demo-cc9ea6167f5108cef3f7651defc770408ed2d74fd4fbccf0bc0fca7a0ad1272d.jpg",
       "inputHash": "cc9ea6167f5108cef3f7651defc770408ed2d74fd4fbccf0bc0fca7a0ad1272d",
       "imageHash": "5ab40555ef7cabf2c85459c7b3726d24e03f3ae1395c8139d81daa2f603d4235"
+    },
+    "maniac-mansion-demo": {
+      "file": "maniac-mansion-demo-64c46ab500c7cf0c77b73d664e7aaabd59f4cb691f99a0dcc5dc54b0205b5d38.jpg",
+      "inputHash": "64c46ab500c7cf0c77b73d664e7aaabd59f4cb691f99a0dcc5dc54b0205b5d38",
+      "imageHash": "74522e7247bb4630776f16ceb02c9cdce2cef1eca4997f9b8aa56d2885edd6ee"
     }
   }
 }

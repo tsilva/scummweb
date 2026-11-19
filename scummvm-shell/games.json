@@ -1035,6 +1035,16 @@
       "platform": "windows",
       "extra": "Demo v1.1",
       "readmeHref": ""
+    },
+    {
+      "target": "maniac-demo",
+      "title": "Maniac Mansion (Demo)",
+      "path": "/games/maniac",
+      "engineId": "scumm",
+      "gameId": "maniac",
+      "platform": "c64",
+      "extra": "C64 Demo",
+      "readmeHref": ""
     }
   ]
 }
