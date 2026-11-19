@@ -220,6 +220,60 @@ test("a clean browser restores cloud progress before the launch gate completes",
   assert.equal(changes, 1, "an actual restore notifies the library once");
 });
 
+test("a flagged launch restores the selected game before an unrelated upload finishes", async (t) => {
+  const catalog = ["sky", "queen"].map(target => ({ target, displayTitle: target }));
+  const { runtime, server, destinations } = await setup(t, "older local Sky save", catalog);
+  const selected = { destination: { ...destinations.find(({ family }) => family === "queen"), isolated: true },
+    files: [{ path: "queen.s01", data: bytes("selected game from Dropbox"), modifiedAt: 200 }] };
+  selected.hash = await identifySet(selected);
+  const original = await writeSnapshot(server, await makeSnapshot(selected));
+  const cloudName = original.id + ".zip";
+  const archived = server.files.get(cloudName);
+  await syncStore.put({ id: "native/dropbox/" + account, config: "[cloud]\nstorage_Dropbox_access_token=synthetic\n" });
+  const baseFetch = globalThis.fetch;
+  const count = { list: 0, selected: 0, readbacks: 0 };
+  const revision = server.revision.bind(server);
+  server.revision = name => revision(name)?.padStart(9, "0");
+  globalThis.fetch = async (url, options) => {
+    if (url !== "https://content.dropboxapi.com/2/files/download") return baseFetch(url, options);
+    const { path } = JSON.parse(options.headers["Dropbox-API-Arg"]);
+    if (path === "/play-activity-v1.json") return Response.json({ error: { ".tag": "path", path: { ".tag": "not_found" } } }, { status: 409 });
+    const name = path.split("/").at(-1);
+    if (name === cloudName) count.selected++;
+    else count.readbacks++;
+    const blob = await server.download(name);
+    return new Response(blob, { headers: { "Dropbox-API-Result": JSON.stringify({ name, rev: server.revision(name), size: blob.size }) } });
+  };
+  const { promise: firstList, resolve: enteredList } = Promise.withResolvers();
+  const { promise: releaseFirst, resolve: resumeList } = Promise.withResolvers();
+  const { promise: otherUpload, resolve: enteredUpload } = Promise.withResolvers();
+  const { promise: releaseUpload, resolve: resumeUpload } = Promise.withResolvers();
+  server.onRequest = async ({ op }) => {
+    if (op === "list" && ++count.list === 1) { enteredList(); await releaseFirst; }
+    if (op === "upload") { enteredUpload(); await releaseUpload; }
+  };
+  const background = runtime.syncDropbox();
+  await firstList;
+  const launch = runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: selected.destination.key });
+  try {
+    assert.equal(await Promise.race([launch.then(() => true), new Promise(resolve => setTimeout(() => resolve(false), 1000))]), true);
+    await otherUpload;
+    const { sets } = await activeSets(destinations);
+    assert.deepEqual(sets.find(({ destination }) => destination.key === selected.destination.key).files, selected.files);
+    assert.deepEqual(sets.find(({ destination }) => destination.family === "sky").files[0].data, bytes("older local Sky save"));
+    assert.equal(server.uploads, 1, "the unrelated save is still waiting on its upload");
+    assert.equal(runtime.getDropboxState().verified, false);
+  } finally {
+    resumeUpload();
+    resumeList();
+    await Promise.all([background, launch, runtime.syncDropbox()]);
+  }
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.equal(count.selected, 1);
+  assert.equal(count.readbacks, 1);
+  assert.equal(server.files.get(cloudName), archived);
+});
+
 test("Continue uses an intact local save while an unrelated cloud archive is still downloading", async (t) => {
   const sky = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
   const lure = { target: "lure", displayTitle: "Lure of the Temptress" };
@@ -571,12 +625,24 @@ test("unknown cloud editions stay preserved until their matching game is availab
     files: [{ path: "game.001", data: bytes("preserve"), modifiedAt: 100 }] };
   set.hash = await identifySet(set);
   await publishProfile({ client: await createSaveCollection(server), profile: await saveProfileId(set), local: set });
+  const download = server.download.bind(server);
+  let downloads = 0;
+  server.download = (...args) => { downloads++; return download(...args); };
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal((await activeSets(destinations)).sets.length, 0);
   assert.ok((await readStoredSets()).some(({ hash }) => hash === set.hash));
+  const firstDownloads = downloads;
   await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(downloads, firstDownloads, "an already preserved, unmatched save needs no repeat download");
   assert.equal(changes, 0, "preserving an unavailable edition must not trigger another sync pass");
   assert.equal(storage.getItem("/"), null);
+  globalThis.fetch = fetcher;
+  const source = { id: "reinstalled-source", name: "Missing edition.zip", fingerprint: set.destination.fingerprint };
+  await saveGameSources([source]);
+  await runtime.syncDropbox({ beforeLaunch: true });
+  const { sets } = await activeSets(await getSaveDestinations([], [source]));
+  assert.deepEqual(sets.find(({ hash }) => hash === set.hash)?.files, set.files);
+  assert.ok((await readStoredSets()).some(({ hash }) => hash === set.hash));
 });
 
 test("cloud changes never replace a running player's working copy", async (t) => {
@@ -762,6 +828,7 @@ test("Baseball recovery keeps both originals, restores verified history and comp
   const badHead = await writeSnapshot(server, await makeSnapshot(bad, [original.id]));
   const [before, damagedBefore] = await Promise.all([server.download(original.id + ".zip"), server.download(badHead.id + ".zip")]);
   await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: destination.key });
+  await runtime.syncDropbox();
   assert.equal(runtime.getDropboxState().verified, true);
   const working = await getWorking();
   assert.deepEqual(working.files.find(file => file.path === baseballPath), valid.files[0]);

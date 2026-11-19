@@ -20,6 +20,7 @@ const listeners = new Set();
 let state = { phase: "disconnected", message: "", conflicts: [], checking: false, verified: false, transferProgress: null };
 let flight = null, flightController, queue = Promise.resolve(), generation = 0, contextPromise;
 let connecting = false, localGeneration = 0;
+let flightPriority;
 let launchSyncSnapshot = null;
 let activityController;
 const restoreSpaceWait = new Map();
@@ -41,7 +42,7 @@ function connection() {
 }
 function session() { return dropboxPreviewEnabled() && connection()?.enabled ? connection() : null; }
 function failure(error) {
-  if (error.kind === "cancelled") return;
+  if (error.kind === "cancelled" || error.kind === "priority") return;
   if (error.kind === "integrity") { update({ phase: "connected", message: "", verified: false }); return; }
   update({ phase: !connection()?.enabled ? "disconnected" : error.kind === "auth" ? "reconnect" : "waiting",
     message: error instanceof DropboxError ? error.message : isQuotaError(error) ? restoreSpaceMessage
@@ -172,7 +173,7 @@ export function queuePlayerSave(set) {
   return queue;
 }
 
-async function syncAccount(auth, epoch, signal, progress) {
+async function syncAccount(auth, epoch, signal, progress, priority) {
   const account = auth.accountId;
   const check = () => {
     signal.throwIfAborted();
@@ -190,6 +191,8 @@ async function syncAccount(auth, epoch, signal, progress) {
   const transport = trackCloudTransfers(await createNativeCloudClient(auth, { signal, progress }), activity);
   try {
     const { destinations, sources } = await context();
+    const launchDestination = destinations.find(({ key }) => key === priority?.destination);
+    const launchProfile = launchDestination && await saveProfileId({ destination: launchDestination });
     check();
     syncAccountActivity(transport.activityClient(), auth, sources);
     const historyPrefix = recordKey(account, "history", "");
@@ -233,8 +236,12 @@ async function syncAccount(auth, epoch, signal, progress) {
       update({ phase: "connected", message: "", verified: false });
       return { retry: false };
     }
+    const baselinePrefix = recordKey(account, "base", "");
+    const baselines = new Map((await syncStore.all(baselinePrefix)).map(record => [record.id.slice(baselinePrefix.length), record]));
     const preservedHashes = new Set();
+    const preservedUnmatched = new Set();
     const groups = new Map();
+    const scanGeneration = localGeneration;
     const collected = await lockedSaves(async (storage) => {
       check();
       const active = await recoverInterruptedBaseballRecords(storage, destinations, client, check);
@@ -261,7 +268,9 @@ async function syncAccount(auth, epoch, signal, progress) {
       }
       for (const set of stored) {
         const profile = await saveProfileId(set);
-        preservedHashes.add(`${profile}/${set.hash}`);
+        const identity = `${profile}/${set.hash}`;
+        preservedHashes.add(identity);
+        if (!matchDestination(set, destinations)) preservedUnmatched.add(identity);
         if (blocked.has(profile)) continue;
         const usable = await withoutEmptyRecords(set);
         if (!usable) continue;
@@ -275,7 +284,7 @@ async function syncAccount(auth, epoch, signal, progress) {
         // Never replace a durable outbox with an older browser working copy.
         const pending = await syncStore.get(recordKey(account, "pending", profile));
         check();
-        if (group.local && !pending) await enqueue(account, group.local);
+        if (group.local && !pending && group.local.hash !== baselines.get(profile)?.hash) await enqueue(account, group.local);
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
@@ -305,17 +314,49 @@ async function syncAccount(auth, epoch, signal, progress) {
     for (const profile of client.profiles()) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
     }
+    const ordered = new Map();
+    if (launchProfile) ordered.set(launchProfile, groups.get(launchProfile) ?? { local: null, alternatives: [] });
+    for (const [profile, group] of groups) ordered.set(profile, group);
+    const sameHead = (profile, head) => {
+      const latest = client.head(profile);
+      return latest.active === head.active && latest.tips.join() === head.tips.join();
+    };
+    const inputFor = (profile, group) => {
+      const baseline = baselines.get(profile);
+      return { profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], check };
+    };
+    const hasIndependentWorkingCopy = (input) => input.browserSet && input.browserSet.hash !== input.local?.hash
+      && input.browserSet.hash !== input.base;
+    async function stageBackground() {
+      let wrote = false;
+      for (const [profile, group] of ordered) {
+        check();
+        if (profile === launchProfile || collected.blocked?.has(profile)) continue;
+        const input = inputFor(profile, group);
+        if (!hasIndependentWorkingCopy(input)) wrote = await client.stage(input) || wrote;
+      }
+      if (wrote) await client.refresh();
+    }
     const readyProfiles = new Set();
+    const committedHeads = new Map();
     const spaceBlocked = new Set();
     const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
     let deferred = false;
     let deferredMessage = "";
-    for (const [profile, group] of groups) {
+    let stagedBackground = false;
+    for (const [profile, group] of ordered) {
       check();
       if (collected.blocked?.has(profile)) continue;
-      const baseline = await syncStore.get(recordKey(account, "base", profile));
-      let result = await publishProfile({ client, profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
-      if (group.browserSet && group.browserSet.hash !== group.local?.hash && group.browserSet.hash !== baseline?.hash) {
+      const focused = profile === launchProfile;
+      if (!focused && !stagedBackground) {
+        await stageBackground();
+        stagedBackground = true;
+      }
+      const input = inputFor(profile, group);
+      const baseline = baselines.get(profile);
+      const independent = hasIndependentWorkingCopy(input);
+      let result = focused || independent ? await client.publish({ ...input, refreshUnchanged: false }) : await client.reconcile(input);
+      if (independent) {
         // If the working copy ALSO changed independently, preserve it as an independent branch.
         // Automatic convergence retains both complete local histories.
         group.local = group.browserSet;
@@ -331,7 +372,8 @@ async function syncAccount(auth, epoch, signal, progress) {
         preservedHashes.add(identity);
       }
       const remoteHash = result.head.active;
-      if (remoteHash && (result.action === "download" || !collected.busy && remoteHash !== group.browserSet?.hash)) {
+      if (remoteHash && !preservedUnmatched.has(`${profile}/${remoteHash}`)
+        && (result.action === "download" || !collected.busy && remoteHash !== group.browserSet?.hash)) {
         if (collected.busy) {
           if (baseline?.hash !== remoteHash) {
             deferred = true;
@@ -399,6 +441,20 @@ async function syncAccount(auth, epoch, signal, progress) {
       await syncStore.put({ id: recordKey(account, "base", profile), hash: result.head.active, tips: result.head.tips });
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
       readyProfiles.add(profile);
+      committedHeads.set(profile, result.head);
+      if (focused && !collected.busy && !collected.incomplete && scanGeneration === localGeneration) {
+        // Check the selected edition again before letting it start. The
+        // account-wide pass still verifies all editions before reporting done.
+        await client.refresh();
+        check();
+        if (client.hasDamagedArchives()) return { retry: true };
+        if (!sameHead(profile, result.head)) return { retry: true };
+        await queue.catch(() => {});
+        const pending = await syncStore.get(recordKey(account, "pending", profile));
+        check();
+        if (pending || scanGeneration !== localGeneration) return { retry: true };
+        priority.ready();
+      }
     }
     if (spaceBlocked.size) {
       deferred = true;
@@ -409,7 +465,9 @@ async function syncAccount(auth, epoch, signal, progress) {
     // arrivals/deletions before launch, without one network trip per game.
     const cloudChanged = await client.refresh();
     check();
-    if (cloudChanged) {
+    const reconciliationChanged = client.profiles().some(profile => !ordered.has(profile))
+      || [...committedHeads].some(([profile, head]) => !sameHead(profile, head));
+    if (cloudChanged || reconciliationChanged) {
       launchSyncSnapshot = null;
       update({ phase: "waiting", conflicts: [],
         message: "Cloud saves changed during sync. Checking them again shortly." });
@@ -501,11 +559,21 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     if (beforeLaunch) throw error;
     return;
   }
+  if (beforeLaunch && launchDestinationKey && flight && !flightPriority) {
+    // Existing publications are immutable and outbox entries remain durable
+    // until acknowledged. Restart a background-only pass with this game first.
+    flightController?.abort(new DropboxError("Prioritizing the game being launched.", "priority"));
+    await flight.catch(() => {});
+    return syncDropbox({ beforeLaunch, launchDestinationKey });
+  }
   if (!flight) {
     launchSyncSnapshot = null;
     const epoch = generation;
     const controller = new AbortController();
     flightController = controller;
+    const priority = beforeLaunch && launchDestinationKey ? { destination: launchDestinationKey } : null;
+    if (priority) priority.promise = new Promise(resolve => { priority.ready = () => resolve(true); });
+    flightPriority = priority;
     let deadline;
     const progress = () => {
       clearTimeout(deadline);
@@ -522,7 +590,12 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
         if (!lock) throw new DropboxError("Another ScummWEB tab is syncing. Try again shortly.");
         controller.signal.throwIfAborted();
         for (let attempt = 0; attempt < 3; attempt++) {
-          const result = await Promise.race([syncAccount(auth, epoch, controller.signal, progress), aborted]);
+          const result = await Promise.race([syncAccount(auth, epoch, controller.signal, progress, priority), aborted])
+            .catch(error => {
+              if (error.kind !== "changed") throw error;
+              update({ phase: "waiting", message: error.message, verified: false });
+              return { retry: true };
+            });
           if (!result?.retry || attempt === 2) break;
           controller.signal.throwIfAborted();
           update({ conflicts: [] });
@@ -535,12 +608,14 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
       throw error;
     })
       .finally(() => {
-        clearTimeout(deadline); flight = null;
+        clearTimeout(deadline); flight = null; flightPriority = null;
         if (flightController === controller) flightController = null;
         if (epoch === generation) update({ checking: false });
       });
   }
   try {
+    const priority = beforeLaunch && launchDestinationKey === flightPriority?.destination ? flightPriority : null;
+    if (priority && await Promise.race([flight, priority.promise]) === true) return;
     await flight;
     if (!dropboxPreviewEnabled()) return;
     if (beforeLaunch && state.phase !== "connected" && !await launchIsVerified(launchDestinationKey)) {
