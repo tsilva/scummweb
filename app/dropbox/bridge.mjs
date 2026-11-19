@@ -8,10 +8,12 @@ export function dropboxEnabled() {
 }
 export async function prepareDropboxLaunch(launchDestinationKey = null, resumeGame = null) {
   if (!dropboxEnabled()) return;
-  // Continue can use an intact local checkpoint without waiting for every
-  // cloud edition. Completed saves still go through the durable outbox.
-  if (resumeGame && await readStoredBrowserSave(resumeGame).catch(() => null) !== null) return;
   const sync = await import("./runtime.mjs");
+  if (resumeGame) {
+    const local = await readStoredBrowserSave(resumeGame).catch(() => null);
+    const restored = await sync.waitForDownloadedSave(launchDestinationKey);
+    if (restored || local !== null) return;
+  }
   await sync.syncDropbox({ beforeLaunch: true, launchDestinationKey });
 }
 
