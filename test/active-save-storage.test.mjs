@@ -63,6 +63,32 @@ test("missing save data does not block migration of its siblings", async t => {
   assert.ok(archive.original.has(damagedKey));
 });
 
+test("migration preserves truncated legacy bytes as evidence and keeps intact slots active", async t => {
+  const { localStorage, indexedDB } = setup(t, {
+    "SKY-VM.001": Uint8Array.of(1, 2, 3),
+    "SKY-VM.002": Uint8Array.of(4, 5, 6),
+  });
+  const tree = readSaveTree(localStorage, "");
+  const damaged = tree.inode(tree.files["SKY-VM.002"]);
+  const truncated = btoa(String.fromCharCode(4, 5));
+  localStorage.setItem(damaged.dataKey, truncated);
+
+  const { files } = captureFilesystem(await openSaveStorage());
+  assert.deepEqual(files.map(({ path, data }) => [path, [...data]]), [["SKY-VM.001", [1, 2, 3]]]);
+  const [archive] = indexedDB.databases.get("scummweb.active-saves").get("migration").values();
+  assert.equal(archive.original.get(damaged.dataKey), truncated);
+});
+
+test("an unreadable legacy root leaves the original data untouched", async t => {
+  const { localStorage, indexedDB } = setup(t, { "SKY-VM.001": Uint8Array.of(7) });
+  const tree = readSaveTree(localStorage, "");
+  localStorage.setItem("/", localStorage.getItem(tree.files["SKY-VM.001"]));
+  const before = new Map(localStorage.values);
+  await assert.rejects(openSaveStorage(), /Could not read the existing save directory/);
+  assert.deepEqual(localStorage.values, before);
+  assert.equal(indexedDB.databases.get("scummweb.active-saves").get("entries").size, 0);
+});
+
 test("IndexedDB saves larger than the old limit survive reopening and failed transactions retain earlier bytes", async t => {
   const { indexedDB } = setup(t, { "SKY-VM.001": Uint8Array.of(1) });
   const initial = await openSaveStorage();

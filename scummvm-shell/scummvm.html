@@ -1062,7 +1062,9 @@ function legacySnapshot(storage) {
     seen.add(dataKey);
     let data = read(dataKey);
     if (!data) return false;
-    const mode = new DataView(inode.buffer).getUint16(4, true) & 0xf000;
+    const header = new DataView(inode.buffer);
+    const mode = header.getUint16(4, true) & 0xf000;
+    if (key === "/" && mode !== 0x4000) return false;
     if (mode === 0x4000) {
       let listing;
       try { listing = JSON.parse(decoder.decode(data)); } catch { return false; }
@@ -1070,7 +1072,11 @@ function legacySnapshot(storage) {
       const children = Object.entries(listing);
       const kept = children.filter(([, child]) => typeof child === "string" && visit(child, depth + 1));
       if (kept.length !== children.length) data = encoder.encode(JSON.stringify(Object.fromEntries(kept)));
-    } else if (mode !== 0x8000) return false;
+    } else if (mode !== 0x8000 || header.getUint32(0, true) !== data.length) {
+      // A readable Base64 block may still be a partial write. Keep its raw
+      // bytes in the migration archive without advertising it as a save.
+      return false;
+    }
     entries.set(key, inode);
     entries.set(dataKey, data);
     return true;
