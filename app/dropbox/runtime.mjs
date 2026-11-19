@@ -101,7 +101,7 @@ function stopAccountActivity() {
   activityController = null;
   if (state.activityWaiting) update({ activityWaiting: false });
 }
-async function lockedSaves(action, { readWhilePlaying = false, destination } = {}) {
+async function lockedSaves(action, { readOnly = false, destination } = {}) {
   if (!navigator.locks) throw new DropboxError("This browser cannot safely coordinate cloud saves.");
   const db = await ensureSaveStorage().catch(error => {
     if (error.name !== "SaveSessionBusyError") throw error;
@@ -110,15 +110,17 @@ async function lockedSaves(action, { readWhilePlaying = false, destination } = {
   const busy = { busy: true };
   if (!db) return busy;
   const locks = navigator.locks;
+  // IndexedDB returns a committed snapshot even while an isolated player is
+  // running. Reading it must not take the exclusive lock used to restore saves.
+  if (readOnly) return locks.request(saveLockName, { mode: "shared", ifAvailable: true },
+    async lock => lock ? action(await openSaveStorage(db)) : busy);
   const exclusive = await locks.request(saveLockName, { mode: "exclusive", ifAvailable: true },
     async (lock) => lock ? action(await openSaveStorage(db), false) : busy);
   if (exclusive !== busy) return exclusive;
   const edition = destination?.key !== "shared" && editionKey(destination?.namespace, destination?.family);
-  if (!readWhilePlaying && !edition) return busy;
+  if (!edition) return busy;
   return locks.request(saveLockName, { mode: "shared", ifAvailable: true }, async root => {
     if (!root) return busy;
-    // The readonly IndexedDB transaction sees only complete player commits.
-    if (readWhilePlaying) return action(await openSaveStorage(db), true);
     return locks.request(editionLockName(edition), { mode: "exclusive", ifAvailable: true }, editionLock => {
       if (!editionLock) return { busy: true, playing: true };
       // Taking the same setup lock as the native player serializes changes to
@@ -130,9 +132,9 @@ async function lockedSaves(action, { readWhilePlaying = false, destination } = {
 }
 // Baselines and cached nodes belong to this storage layout and snapshot format.
 const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
-async function recoverInterruptedBaseballRecords(storage, destinations, client, check) {
-  let active = await getActiveSaveSets(storage, destinations);
-  for (const entry of readIncompleteSaveWrites(storage, destinations, active.sets)) {
+function baseballRepairs(storage, destinations, active, incomplete) {
+  const repairs = [];
+  for (const entry of incomplete) {
     if (entry.engineId !== "scumm" || entry.gameId !== "baseball" || entry.files.length !== 1
       || entry.files[0].name !== baseballRecordsPath || entry.files[0].size !== 0) continue;
     const destination = destinations.find(({ key }) => key !== "shared" && key === entry.destinationKey);
@@ -142,7 +144,16 @@ async function recoverInterruptedBaseballRecords(storage, destinations, client, 
     const editionSets = active.sets.filter(set => set.destination.key === destination.key);
     const damaged = editionSets.filter(hasEmptyBaseballRecords);
     if (damaged.length !== 1) continue;
-    const copy = { destination: damaged[0].destination, files: damaged[0].files.filter(file => file.path === baseballRecordsPath && !file.data.length) };
+    repairs.push({ entry, destination, index, editionSets, damaged: damaged[0] });
+  }
+  return repairs;
+}
+
+async function recoverInterruptedBaseballRecords(storage, destinations, client, check) {
+  let active = await getActiveSaveSets(storage, destinations);
+  const incomplete = readIncompleteSaveWrites(storage, destinations, active.sets);
+  for (const { entry, destination, index, editionSets, damaged } of baseballRepairs(storage, destinations, active, incomplete)) {
+    const copy = { destination: damaged.destination, files: damaged.files.filter(file => file.path === baseballRecordsPath && !file.data.length) };
     copy.hash = await identifySet(copy);
     // Strictly commit the recovery copy before touching the working file.
     await preserveSets([copy]);
@@ -161,6 +172,24 @@ async function recoverInterruptedBaseballRecords(storage, destinations, client, 
     active = await getActiveSaveSets(storage, destinations);
   }
   return active;
+}
+
+async function scanLocalSaves(destinations, client, check) {
+  // Release the shared lock after the snapshot, before hashing saves or
+  // touching the separate Dropbox outbox and recovery databases.
+  const snapshot = await lockedSaves(storage => storage, { readOnly: true });
+  if (snapshot.busy) return snapshot;
+  check();
+  const active = await getActiveSaveSets(snapshot, destinations);
+  const incomplete = readIncompleteSaveWrites(snapshot, destinations, active.sets);
+  if (baseballRepairs(snapshot, destinations, active, incomplete).length) {
+    const repaired = await lockedSaves(async storage => {
+      const active = await recoverInterruptedBaseballRecords(storage, destinations, client, check);
+      return { active, incomplete: readIncompleteSaveWrites(storage, destinations, active.sets) };
+    });
+    if (!repaired.busy) return repaired;
+  }
+  return { active, incomplete };
 }
 
 async function withoutEmptyRecords(set) {
@@ -253,14 +282,18 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       },
     });
     check();
+    const scanGeneration = localGeneration;
+    const scanned = await scanLocalSaves(destinations, client, check);
+    check();
     if (client.hasDamagedArchives()) {
-      await lockedSaves(async (storage) => {
-        const active = await recoverInterruptedBaseballRecords(storage, destinations, client, check);
-        const incomplete = readIncompleteSaveWrites(storage, destinations);
-        // When history cannot be verified, only seed empty editions. Keep
-        // existing local progress and avoid writing a new cloud history.
-        if (incomplete.some(entry => !destinations.some(({ key }) => key === entry.destinationKey))) return;
-        const occupied = new Set([...active.sets.map(set => set.destination.key), ...incomplete.map(entry => entry.destinationKey)]);
+      // Only seed empty editions when ancestry cannot be verified. Read any
+      // cloud candidates outside the save lock and check again before import.
+      const occupiedEditions = (active, incomplete) => new Set([
+        ...active.sets.map(set => set.destination.key), ...incomplete.map(entry => entry.destinationKey),
+      ]);
+      const isUnmatched = entry => !destinations.some(({ key }) => key === entry.destinationKey);
+      if (!scanned.busy && !scanned.incomplete.some(isUnmatched)) {
+        const occupied = occupiedEditions(scanned.active, scanned.incomplete);
         const rows = [];
         for await (const snapshot of client.verifiedFallbacks()) {
           const set = await withoutEmptyRecords(snapshot);
@@ -270,17 +303,25 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
           occupied.add(destinationKey);
           rows.push({ set, destinationKey, choice: "imported" });
         }
-        if (!rows.length) return;
-        let initialConfig;
-        if (!active.hasRoot) {
-          const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
-          if (!response.ok) return;
-          initialConfig = await response.text();
-        }
-        check();
-        await applyImport({ storage, destinations, rows, revision: active.revision, initialConfig, check });
-        window.dispatchEvent(new Event("scummweb:saves-changed"));
-      });
+        if (rows.length) await lockedSaves(async storage => {
+          check();
+          const active = await getActiveSaveSets(storage, destinations);
+          const incomplete = readIncompleteSaveWrites(storage, destinations);
+          if (incomplete.some(isUnmatched)) return;
+          const occupied = occupiedEditions(active, incomplete);
+          const imports = rows.filter(row => !occupied.has(row.destinationKey));
+          if (!imports.length) return;
+          let initialConfig;
+          if (!active.hasRoot) {
+            const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
+            if (!response.ok) return;
+            initialConfig = await response.text();
+          }
+          check();
+          await applyImport({ storage, destinations, rows: imports, revision: active.revision, initialConfig, check });
+          window.dispatchEvent(new Event("scummweb:saves-changed"));
+        });
+      }
       update({ phase: "connected", message: "", verified: false });
       return { retry: false };
     }
@@ -289,12 +330,8 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
     const preservedHashes = new Set();
     const preservedUnmatched = new Set();
     const groups = new Map();
-    const scanGeneration = localGeneration;
-    const collected = await lockedSaves(async (storage, shared) => {
-      check();
-      const active = shared ? await getActiveSaveSets(storage, destinations)
-        : await recoverInterruptedBaseballRecords(storage, destinations, client, check);
-      const incomplete = readIncompleteSaveWrites(storage, destinations, active.sets);
+    const collected = scanned.busy ? scanned : await (async () => {
+      const { active, incomplete } = scanned;
       const blocked = new Set();
       for (const entry of incomplete) {
         const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
@@ -331,14 +368,14 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         group.browserSet = group.local;
         // A killed browser can flush IndexedDB and BrowserFS at different times.
         // Never replace a durable outbox with an older browser working copy.
-        const pending = await syncStore.get(recordKey(account, "pending", profile));
-        check();
-        if (group.local && !pending && group.local.hash !== baselines.get(profile)?.hash) await enqueue(account, group.local);
+        if (group.local && group.local.hash !== baselines.get(profile)?.hash) {
+          await syncStore.putIfAbsent({ id: recordKey(account, "pending", profile), profile, set: group.local });
+        }
         // Preserved imports/migration data survive a browser purge as well.
         for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
-      return { busy: false, shared, blocked, revision: active.revision };
-    }, { readWhilePlaying: true });
+      return { busy: false, blocked, revision: active.revision };
+    })();
     check();
     for (const item of await syncStore.all(recordKey(account, "pending", ""))) {
       if (collected.blocked?.has(item.profile) || collected.incomplete) continue;
@@ -439,7 +476,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
           continue; // Never replace a running game's files.
         }
         const identity = `${profile}/${remoteHash}`;
-        if (profile === playingProfile && collected.shared && preservedHashes.has(identity)) {
+        if (profile === playingProfile && preservedHashes.has(identity)) {
           const edition = editionKey(playingDestination.namespace, playingDestination.family);
           const locks = await navigator.locks.query?.();
           if (edition && locks?.held.some(lock => lock.name === editionLockName(edition))) {

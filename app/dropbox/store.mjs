@@ -22,6 +22,11 @@ async function operate(mode, action) {
 export const syncStore = {
   get: (id) => operate("readonly", (store) => store.get(id)),
   put: (record) => operate("readwrite", (store) => store.put(record)),
+  putIfAbsent: (record) => operate("readwrite", (store) => {
+    const request = store.get(record.id);
+    request.onsuccess = () => { if (!request.result) store.put(record); };
+    return request;
+  }),
   remove: (id) => operate("readwrite", (store) => store.delete(id)),
   removeIf: (id, predicate) => operate("readwrite", (store) => {
     const request = store.get(id);

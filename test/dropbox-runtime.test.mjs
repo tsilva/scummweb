@@ -8,7 +8,7 @@ import { dropboxEnabled, prepareDropboxLaunch, reportDropboxSave } from "../app/
 import { captureFilesystem, initializeSaveEdition } from "../app/save-backups/filesystem.mjs";
 import { createSaveCollection, makeSnapshot, publishProfile, readNode, readSnapshot, saveProfileId, writeSnapshot } from "../app/dropbox/protocol.mjs";
 import { openSaveStorage } from "../web-shell/save-storage.mjs";
-import { readSaveTree } from "../web-shell/save-editions.mjs";
+import { editionKey, readSaveTree, saveLaunchBlocked, saveLockName } from "../web-shell/save-editions.mjs";
 import { syncStore } from "../app/dropbox/store.mjs";
 import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, preserveSets, readStoredSets } from "../app/save-backups/backups.mjs";
 import { browserSaveStorage, fakeNativeStorage, nativeCloudBrowser, indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
@@ -328,9 +328,8 @@ test("Continue lets an already downloaded save for its edition commit before ope
   const request = locks.request.bind(locks);
   const { promise: downloaded, resolve: ready } = Promise.withResolvers();
   const { promise: hold, resolve: release } = Promise.withResolvers();
-  let saveLocks = 0;
   t.mock.method(locks, "request", async (name, options, run) => {
-    if (name === "scummweb-saves" && options.mode === "exclusive" && ++saveLocks === 2) {
+    if (name === saveLockName && options.mode === "exclusive") {
       ready();
       await hold;
     }
@@ -394,7 +393,7 @@ test("a full browser defers only the affected restore, retains both sets and ret
 });
 
 test("a damaged newer cloud archive quietly falls back to verified progress on an empty device", async (t) => {
-  const { runtime, storage, destinations, server } = await setup(t, null);
+  const { runtime, storage, destinations, server, locks } = await setup(t, null);
   const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("previous save"), modifiedAt: 100 }] };
   set.hash = await identifySet(set);
   const older = await writeSnapshot(server, await makeSnapshot(set));
@@ -408,11 +407,45 @@ test("a damaged newer cloud archive quietly falls back to verified progress on a
   assert.equal(runtime.getDropboxState().phase, "connected");
   assert.equal(runtime.getDropboxState().message, "");
   assert.deepEqual(server.files, before, "recovery must not rewrite damaged or missing ancestry");
+  const request = locks.request.bind(locks);
+  t.mock.method(locks, "request", (name, options, run) => {
+    if (name === saveLockName) assert.equal(options.mode, "shared", "a populated edition requires no repair lock");
+    return request(name, options, run);
+  });
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.deepEqual((await activeSets(destinations)).sets[0].files, set.files);
 });
 
-test("idle synchronization checks the collection twice rather than once per saved game", async (t) => {
+test("an empty-edition fallback preserves local progress that arrived after the scan", async (t) => {
+  const { runtime, destinations, server, locks } = await setup(t, null);
+  await activeSets(destinations);
+  const destination = destinations[0];
+  const saved = { destination, files: [{ path: "SKY-VM.001", data: bytes("old cloud save"), modifiedAt: 100 }] };
+  saved.hash = await identifySet(saved);
+  await writeSnapshot(server, await makeSnapshot(saved));
+  server.files.set(`${"f".repeat(64)}.zip`, new Blob(["damaged"]));
+  const local = { ...saved, files: [{ path: "SKY-VM.002", data: bytes("new local save"), modifiedAt: 200 }] };
+  local.hash = await identifySet(local);
+  const request = locks.request.bind(locks);
+  let arrived = false;
+  t.mock.method(locks, "request", async (name, options, run) => {
+    if (!arrived && name === saveLockName && options.mode === "exclusive") {
+      arrived = true;
+      const storage = await openSaveStorage();
+      const { revision } = await getActiveSaveSets(storage, destinations);
+      await applyImport({ storage, destinations, revision, initialConfig: "[scummvm]\n",
+        rows: [{ set: local, destinationKey: destination.key, choice: "imported" }] });
+    }
+    return request(name, options, run);
+  });
+  await runtime.syncDropbox({ beforeLaunch: true });
+  assert.equal(arrived, true);
+  assert.deepEqual((await activeSets(destinations)).sets[0].files, local.files);
+});
+
+test("idle synchronization rechecks the collection without blocking Continue", async (t) => {
   const catalog = ["sky", "queen", "lure"].map((target) => ({ target, displayTitle: target }));
-  const { runtime, server, destinations } = await setup(t, null, catalog);
+  const { runtime, server, locks, destinations } = await setup(t, null, catalog);
   const client = await createSaveCollection(server);
   for (const destination of destinations.filter(({ family }) => family !== "shared")) {
     const set = { destination: { ...destination, isolated: true },
@@ -424,10 +457,20 @@ test("idle synchronization checks the collection twice rather than once per save
   let listings = 0;
   const list = server.list.bind(server), uploads = server.uploads;
   server.list = () => { listings++; return list(); };
+  const request = locks.request.bind(locks);
+  const saveLockModes = [];
+  t.mock.method(locks, "request", (name, options, run) => {
+    if (name === saveLockName) {
+      saveLockModes.push(options.mode);
+      assert.equal(saveLaunchBlocked({ held: [{ name, mode: options.mode }] }, editionKey("", "sky")), false);
+    }
+    return request(name, options, run);
+  });
   const idleStates = [];
   const unsubscribe = runtime.subscribeDropbox(() => idleStates.push(structuredClone(runtime.getDropboxState())));
   await runtime.syncDropbox({ beforeLaunch: true });
   unsubscribe();
+  assert.deepEqual(saveLockModes, ["shared"], "a routine snapshot uses a shared root lock only");
   assert.equal(listings, 2, "fresh start and final checks cover the whole collection");
   assert.equal(server.uploads, uploads, "an idle check must not publish more history");
   assert.equal(runtime.getDropboxState().phase, "connected");
@@ -783,10 +826,13 @@ test("missing persisted native credentials require reconnect without cloud write
   assert.equal(runtime.getDropboxState().phase, "reconnect");
 });
 
-test("acknowledgements cannot remove a newer pending save or recreate disconnected credentials", async (t) => {
+test("scans and acknowledgements preserve newer pending saves and disconnected credentials", async (t) => {
   await setup(t);
   const id = key("pending", "synthetic-profile");
+  await syncStore.putIfAbsent({ id, set: { hash: "first scan" } });
+  assert.equal((await syncStore.get(id)).set.hash, "first scan");
   await syncStore.put({ id, set: { hash: "newer" } });
+  await syncStore.putIfAbsent({ id, set: { hash: "older snapshot" } });
   await syncStore.removeIf(id, (record) => record.set.hash === "older");
   assert.equal((await syncStore.get(id)).set.hash, "newer");
   const credential = "native/dropbox/" + account;

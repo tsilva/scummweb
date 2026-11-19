@@ -111,9 +111,10 @@ still sync.
 Continue chooses the newest intact manual save or autosave at launch. If
 Dropbox has already downloaded progress for that edition, Continue lets the
 restore finish before choosing. An intact local save can open while unrelated
-games are still syncing. A launch that needs cloud progress verifies and
-restores the selected edition first, then lets the other games continue
-syncing in the background.
+games are still syncing. Routine background checks read a committed save
+snapshot while the game's launch controls stay available. A launch that needs
+cloud progress verifies and restores the selected edition first, then lets the
+other games continue syncing in the background.
 On the first sync of an account, ScummWEB downloads and verifies unseen
 snapshots in small groups. Large ZIPs are verified one at a time. Subsequent
 checks reuse the metadata for unchanged Dropbox revisions. Changed editions
