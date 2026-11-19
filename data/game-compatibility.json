@@ -1942,6 +1942,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Let's Explore the Farm (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:farm",
+      "edition": "farm-win-demo-us.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "English Windows demo. Native Skip Intro, barn exploration, the illustrated glossary and its Cow entry were verified. The original demo does not support saving. Full activity coverage and audible output were unverified."
+    },
+    {
       "title": "Let's Explore the Jungle",
       "status": "startup-verified",
       "gameId": "scumm:jungle",

@@ -1655,6 +1655,11 @@
       "file": "let-s-explore-the-airport-demo-dd9c318295a295cc0b34658099e9354b6af4f15dc61564b157d10a7f45fe0f79.jpg",
       "inputHash": "dd9c318295a295cc0b34658099e9354b6af4f15dc61564b157d10a7f45fe0f79",
       "imageHash": "c8e8fa2a0852e9128e904185572e2ae2d55a118702ab2fd2947c50d0fd1ed49c"
+    },
+    "let-s-explore-the-farm-demo": {
+      "file": "let-s-explore-the-farm-demo-c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95.jpg",
+      "inputHash": "c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95",
+      "imageHash": "b7e1481259cf80923b94565ef92183b3478caa02627e1b70630b70f58a09a2b5"
     }
   }
 }
