@@ -431,6 +431,8 @@ The original Windows demo of Arthur’s Birthday contains one page in English an
 
 The original Windows v1.0 demo of Just Grandma and Me contains one animated page in English, Japanese and Spanish. Choose a language, then open Read to Me or Let Me Play. The round marker beside the text replays the passage. Saving and loading through the ScummWEB menu are unavailable.
 
+The original Windows demo of Arthur’s Teacher Trouble contains one animated school hallway page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page. Saving and loading through the ScummWEB menu are unavailable.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

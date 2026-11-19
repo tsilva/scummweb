@@ -1995,6 +1995,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Arthur's Teacher Trouble (Demo)",
+      "status": "startup-verified",
+      "gameId": "mohawk:arthur",
+      "edition": "arthur-win-demo-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the classroom animation, the publisher’s end-of-demo page and Spanish Read to Me were verified. ScummWEB save and load menus were unavailable. Audible narration was unverified."
+    },
+    {
       "title": "Mixed Up Fairy Tales",
       "status": "startup-verified",
       "gameId": "sci:fairytales",
