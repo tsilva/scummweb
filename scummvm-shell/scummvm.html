@@ -673,6 +673,25 @@ function editionLockName(edition) {
   return `${saveLockName}:edition:${edition}`;
 }
 
+function saveLaunchBlocked(snapshot, edition) {
+  const lockName = edition && editionLockName(edition);
+  return [...(snapshot?.held || []), ...(snapshot?.pending || [])].some(({ name, mode }) =>
+    name === lockName || (name === saveLockName && (!edition || mode === "exclusive")));
+}
+
+async function waitForSaveSession(openSession, { timeoutMs = 5000, retryMs = 100 } = {}) {
+  const deadline = performance.now() + timeoutMs;
+  for (;;) {
+    try {
+      return await openSession();
+    } catch (error) {
+      const remaining = deadline - performance.now();
+      if (error?.name !== "SaveSessionBusyError" || remaining <= 0) throw error;
+      await new Promise(resolve => setTimeout(resolve, Math.min(retryMs, remaining)));
+    }
+  }
+}
+
 // Also used by the inline library reader. Follow only directory pointers;
 // a game in another tab can be writing one of its own data blocks.
 function readSaveTree(storage, edition, namespace = "", layout = { editionDirectory, saveDirectory }) {
@@ -1240,11 +1259,11 @@ async function openLegacyRecoveryStorage() {
 }
 return { ensureSaveStorage, openSaveStorage };
 })();
-globalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName, ...indexedSaveStorage };
+globalThis.__scummwebSaveEditions = { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName, waitForSaveSession, ...indexedSaveStorage };
 })();
 async function prepareSaveRoot() {
   const { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName,
-    ensureSaveStorage, openSaveStorage } = globalThis.__scummwebSaveEditions;
+    ensureSaveStorage, openSaveStorage, waitForSaveSession } = globalThis.__scummwebSaveEditions;
   const params = scummwebLaunchUrl.searchParams;
   const namespace = params.get("saveNamespace");
   const args = decodeURI(scummwebLaunchUrl.hash.slice(1)).trim().split(/\s+/);
@@ -1252,9 +1271,14 @@ async function prepareSaveRoot() {
   const directTarget = !params.has("localGame") && (args.length === 1 || args.length === 3 && args[0] === "-x") ? args.at(-1) : "";
   const target = params.get("catalogSaveTarget") || params.get("saveTarget") || catalogTarget || directTarget;
   const edition = agentSaveScope ? "" : editionKey(namespace, target);
-  const db = await ensureSaveStorage();
   const locks = navigator.locks;
-  await acquireEditionSession(locks, edition);
+  const openSession = async () => {
+    const db = await ensureSaveStorage();
+    await acquireEditionSession(locks, edition);
+    return db;
+  };
+  const db = params.get("hostPlayer") === "1" && !params.has("saveQuery") && agentSaveScope === null
+    ? await waitForSaveSession(openSession) : await openSession();
   return locks.request(saveLockName + ":setup", async () => {
     const storage = await openSaveStorage(db);
     let config;

@@ -247,6 +247,10 @@ The ZIP includes active and preserved saves. Saves live in the current browser
 profile and clearing site data removes them. Backup and restore require Web
 Locks for site-wide coordination.
 
+When save storage is busy, the game's launch button shows **Updating…** and
+becomes available once storage is ready. Exiting a game flushes pending writes
+before the player releases its save locks.
+
 On the destination device, add the matching game edition and choose **Import
 saves** in **Transfer saves**. Select ordinary ScummVM files or a ZIP. Original
 filenames and companion files are required; unrecognized filenames prompt for

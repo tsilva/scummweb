@@ -164,6 +164,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     addEventListener(name, handler) { if (name === "message") messages.add(handler); },
     removeEventListener(name, handler) { if (name === "message") messages.delete(handler); },
   };
+  const exits = [];
+  window.location.replace = href => exits.push(href);
   if (agentSaveScope) window.location.searchParams.set("agentSaveScope", agentSaveScope);
   function memo(factory, deps) {
     const index = cursor++;
@@ -223,6 +225,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       };
       if (name === "./skip-intro-config.mjs") return skipIntroConfig;
       if (name === "./controller-device.mjs") return controllerDevice;
+      if (name.endsWith("/immersive-mode.mjs")) return { isTouchMobileClient: () => false };
       if (name.endsWith("/game-menu.mjs")) return gameMenu;
       if (name.endsWith("/telemetry.mjs")) return telemetry;
       if (name.endsWith("/story-progress.mjs")) return { getStoryProgressRevision, observeStoryProgress: (_scope, frame, game) => {
@@ -236,7 +239,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         return () => { observer.stopped = true; };
       } };
       if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
-      if (name === "next/navigation") return { useRouter: () => ({}) };
+      if (name === "next/navigation") return { useRouter: () => ({ replace: href => exits.push(href) }) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, options) => {
         archiveOptions.push(options);
@@ -255,7 +258,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
         return bootModule.exports;
       }
       if (name.endsWith("/useImmersiveMode")) return { useImmersiveMode: () => ({
-        isMobileViewport: Boolean(visualViewport),
+        isMobileViewport: Boolean(visualViewport), exitImmersiveMode() {},
       }) };
       if (name.endsWith("/useTouchClickMode")) return { useTouchClickActions: () => ({ unlockTouchControls() {} }) };
       if (name.endsWith("/useTouchCursorPad")) return { useTouchCursorPad: () => ({}) };
@@ -290,7 +293,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers, playObservers,
+    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers, playObservers, exits,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -702,18 +705,35 @@ test("catalog and imported launches retain distinct compatibility warnings from 
   }
 });
 
-test("save-lock contention explains recovery and rejects messages from unrelated frames", () => {
+test("save-lock contention returns to the launcher only for the active player frame", async () => {
   const player = pendingArchivePlayer();
   player.render();
   player.saveSessionBusy("https://untrusted.test");
   player.saveSessionBusy("https://example.test", {});
   player.render();
   assert.equal(player.overlay.hasBootFailed, false);
+  assert.deepEqual(player.exits, []);
   player.saveSessionBusy();
-  player.genericError();
+  await new Promise(setImmediate);
+  assert.equal(player.children.some(({ type }) => type === "iframe"), false);
+  assert.equal(player.overlay.hasBootFailed, false);
+  assert.deepEqual(player.exits, ["/"]);
+  player.unmount();
+});
+
+test("exit waits for the save flush before removing the player frame or navigating", async () => {
+  const player = pendingArchivePlayer();
   player.render();
-  assert.equal(player.overlay.hasBootFailed, true);
-  assert.match(player.overlay.bootStatusText, /This game edition is already open/);
+  const flush = Promise.withResolvers();
+  player.frame.contentWindow.__scummwebFlushSaveStorage = () => flush.promise;
+  const exit = player.controls.onExit();
+  await new Promise(setImmediate);
+  assert.ok(player.children.some(({ type }) => type === "iframe"));
+  assert.deepEqual(player.exits, []);
+  flush.resolve();
+  await exit;
+  assert.equal(player.children.some(({ type }) => type === "iframe"), false);
+  assert.deepEqual(player.exits, ["/"]);
   player.unmount();
 });
 

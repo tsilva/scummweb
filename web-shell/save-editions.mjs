@@ -11,6 +11,25 @@ export function editionLockName(edition) {
   return `${saveLockName}:edition:${edition}`;
 }
 
+export function saveLaunchBlocked(snapshot, edition) {
+  const lockName = edition && editionLockName(edition);
+  return [...(snapshot?.held || []), ...(snapshot?.pending || [])].some(({ name, mode }) =>
+    name === lockName || (name === saveLockName && (!edition || mode === "exclusive")));
+}
+
+export async function waitForSaveSession(openSession, { timeoutMs = 5000, retryMs = 100 } = {}) {
+  const deadline = performance.now() + timeoutMs;
+  for (;;) {
+    try {
+      return await openSession();
+    } catch (error) {
+      const remaining = deadline - performance.now();
+      if (error?.name !== "SaveSessionBusyError" || remaining <= 0) throw error;
+      await new Promise(resolve => setTimeout(resolve, Math.min(retryMs, remaining)));
+    }
+  }
+}
+
 // Also used by the inline library reader. Follow only directory pointers;
 // a game in another tab can be writing one of its own data blocks.
 export function readSaveTree(storage, edition, namespace = "", layout = { editionDirectory, saveDirectory }) {

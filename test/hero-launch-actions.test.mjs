@@ -16,6 +16,7 @@ import { buildGameExitHref } from "../app/home-shell/hero-selection.mjs";
 
 await swc.loadBindings();
 let savedIdentity = null;
+let blockedTarget = null;
 const saveHooks = { useState: () => [savedIdentity, () => {}], useEffect() {} };
 let stateIndex = 0, preferredVersion = null, heroMedia = null, preloadCalls = 0;
 let heroImageProps = {};
@@ -47,6 +48,8 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
       if (name.endsWith("/dropbox/feature.mjs")) return preview;
       if (name === "./dropbox/use-preview-href") return { useDropboxPreviewHref: href => href };
       if (name.endsWith("/useLaunchFeedback")) return imports[name] || (() => ({ show() {}, dismiss() {}, overlay: null }));
+      if (name.endsWith("/use-save-launch-block")) return useSaveLaunchBlock;
+      if (name.endsWith("/launch-pending")) return LaunchPending;
       return imports[name] || {};
     },
   });
@@ -56,6 +59,7 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
 const LaunchPending = await loadComponent("../app/launch-pending.js");
 const useBrowserSave = (game) => savedIdentity === undefined ? undefined
   : savedIdentity === (game.saveVersionId || game.target) ? 0 : null;
+const useSaveLaunchBlock = (game, enabled) => enabled && game.target === blockedTarget;
 const LaunchButton = await loadComponent("../app/launch-button.js", {
   "next/navigation": { useRouter: () => ({ push() {} }) },
   "./game-player/immersive-mode.mjs": { beginGameLaunch: () => false },
@@ -293,6 +297,28 @@ test("imports offer Play during save reconciliation and retain access/reconnecti
   version.action.needsAccess = true;
   assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), />Allow file access<\/button>/);
   assert.match(renderToStaticMarkup(LaunchButton({ game: { ...game, importRequired: true } })), />Game not included/);
+});
+
+test("blocked save storage disables launch until Continue can read the saved game", () => {
+  savedIdentity = "sky";
+  const catalog = { game };
+  const version = { game, action: { onClick() {}, onContinue() {} } };
+  blockedTarget = game.target;
+  try {
+    const included = renderToStaticMarkup(LaunchButton(catalog));
+    const imported = renderToStaticMarkup(SourceLaunchActions({ version }));
+    for (const html of [included, imported]) {
+      assert.match(html, /launch-button-pending[^>]*disabled="" aria-busy="true"[^>]*>Updating…<\/button>/);
+      assert.doesNotMatch(html, /href="[^"]*\/play|>Continue</);
+    }
+    assert.match(included, /start-fresh-button" aria-disabled="true"/);
+    assert.match(imported, /start-fresh-button" disabled=""/);
+    assert.match(renderToStaticMarkup(LaunchButton({ game: { ...game, target: "queen" } })), />Play<\/a>/);
+  } finally {
+    blockedTarget = null;
+  }
+  assert.match(renderToStaticMarkup(LaunchButton(catalog)), /href="[^"]*#continue">Continue<\/a>/);
+  assert.match(renderToStaticMarkup(SourceLaunchActions({ version })), />Continue<\/button>/);
 });
 
 test("save hook reads cached slots synchronously with a hydration-safe Play fallback", async () => {
