@@ -125,8 +125,11 @@ each axis to preserve symmetric spacing around cutouts.
   picker or closes the menu. Clicking or tapping outside the menu closes it
   when no save or load is in progress. The game pauses at a supported update
   boundary.
-  Sound Volume starts at 100%, Game Speed at 1.0×, and subtitles enabled with
-  speech each launch. Game Speed ranges from 0.5× to 2× in 0.1× steps.
+  **Sound Volume** starts at 100% and scales the whole audio mix. Each player
+  launch sets ScummVM's music and effects levels to maximum and clears their
+  mute settings, including overrides carried over from earlier sessions.
+  Game Speed starts at 1.0× and ranges from 0.5× to 2× in 0.1× steps.
+  Subtitles start enabled with speech each launch.
   Games with optional subtitles show a **Subtitles** switch;
   changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library. Choosing Exit or Quit Game

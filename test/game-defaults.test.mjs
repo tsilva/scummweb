@@ -29,3 +29,25 @@ test("Windows line endings and a final header without a newline remain valid", (
   assert.equal(applyGameDefaults("[scummvm]"),
     "[scummvm]\noriginalsaveload=true\noriginal_gui=true\noriginal_menus=true\n");
 });
+
+test("hosted player launch restores music and effects even with saved per-game overrides", () => {
+  const config = ["[scummvm]", "music_volume=0", " mute = true", "music_driver=null", "",
+    "[sky]", "music_mute=true", "SFX_VOLUME = 20", "sfx_mute=true", "music_driver=adlib", "save_slot=1", "",
+    "[local-game]", "music_driver = null", "speech_volume=90", "speech_mute=true", "# music_volume=0"].join("\r\n");
+  const settings = { useMasterVolume: true };
+  const updated = applyGameDefaults(config, settings);
+  assert.equal(updated, ["[scummvm]", "originalsaveload=true", "original_gui=true", "original_menus=true",
+    "sfx_volume=255", "music_mute=false", "sfx_mute=false", "music_volume=255", "mute=false", "music_driver=auto", "",
+    "[sky]", "music_mute=false", "sfx_volume=255", "sfx_mute=false", "music_driver=adlib", "save_slot=1", "",
+    "[local-game]", "music_driver=auto", "speech_volume=90", "speech_mute=true", "# music_volume=0"].join("\r\n"));
+  assert.equal(applyGameDefaults(updated, settings), updated);
+  assert.match(applyGameDefaults(config), /music_volume=0\r\n mute = true\r\nmusic_driver=null/);
+});
+
+test("hosted imports without [scummvm] inherit the same music and effects levels", () => {
+  const config = "[local-game]\ngameid=sky\n";
+  const updated = applyGameDefaults(config, { useMasterVolume: true });
+  const [application] = updated.split("[local-game]");
+  assert.match(application, /music_volume=255\nsfx_volume=255\nmute=false\nmusic_mute=false\nsfx_mute=false\n/);
+  assert.ok(updated.endsWith(config));
+});

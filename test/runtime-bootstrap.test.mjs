@@ -89,7 +89,7 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
   const prefetched = [];
   const mounts = [];
   const dependencies = new Set();
-  let config = "[scummvm]\nsavepath=/saves\n\n[dreamweb-cd]\nengineid=dreamweb\n";
+  let config = "[scummvm]\nsavepath=/saves\n\n[dreamweb-cd]\nengineid=dreamweb\nmusic_volume=0\nsfx_mute=true\n";
   class ScummvmFS {
     constructor(fs, index) { this.FS = fs; this.index = index; }
     prefetch(name) { prefetched.push(name); return engine.promise; }
@@ -101,14 +101,17 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
     mount(filesystem, _options, name) {
       assert.match(config, /\[scummvm\]\noriginalsaveload=true\noriginal_gui=true\noriginal_menus=true\n/,
         "original screen defaults are installed before engine entry");
+      assert.match(config, /\[dreamweb-cd\]\nengineid=dreamweb\nmusic_volume=255\nsfx_mute=false\n/,
+        "the hosted import clears old audio overrides before engine entry");
       assert.equal(filesystem.FS, FS, "late binding uses the initialized Emscripten filesystem");
       mounts.push(name);
     },
   };
   const context = createContext({
     URL, URLSearchParams, Promise, FS, Module: {},
-    location: new URL("https://example.test/scummvm.html?localGame=1&engine=dreamweb&catalogGame=dreamweb&v=sha-shell#dreamweb-cd"),
+    location: new URL("https://example.test/scummvm.html?hostPlayer=1&localGame=1&engine=dreamweb&catalogGame=dreamweb&v=sha-shell#dreamweb-cd"),
     parent: {}, performance: { mark() {} },
+    addEventListener() {},
     document: {
       baseURI: "https://example.test/scummvm.html?v=sha-shell",
       createElement: () => ({}),
@@ -126,7 +129,7 @@ test("generated shell overlaps engine, storage and runtime loading and mounts on
   });
   context.window = context;
   function run(script) { return new Script(script.replace(/\bimport\(/g, "loadModule(")).runInContext(context); }
-  run(html.match(/function applyGameDefaults\(iniText\) \{[\s\S]*?\n\}/)[0]);
+  run(html.match(/function applyGameDefaults\(iniText,[^\n]*\n[\s\S]*?\n\}/)[0]);
   run(html.match(/function setupGameDefaults\(\) \{[\s\S]*?\n\}/)[0]);
   run(scripts.find((script) => script.startsWith("globalThis.SCUMMWEB_RUNTIME_ASSETS=")));
   run(scripts.find((script) => script.includes("const scummwebBrowserFsReady=")));
