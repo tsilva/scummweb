@@ -474,7 +474,7 @@ async function setupLocalGame() {
 function setupGameDefaults() {
   const configPath = "/home/web_user/scummvm.ini";
   const config = FS.readFile(configPath, { encoding: "utf8" });
-  const updated = applyGameDefaults(config);
+  const updated = applyGameDefaults(config, { useMasterVolume: Boolean(window.scummwebPlayerControls) });
   if (updated !== config) FS.writeFile(configPath, updated);
 }
 
