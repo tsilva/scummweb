@@ -1738,6 +1738,14 @@
       "observation": "A game frame renders at startup."
     },
     {
+      "title": "Christmas Card 1992 (Demo)",
+      "status": "startup-verified",
+      "gameId": "sci:christmas1992",
+      "edition": "christmas1992-dos-en.zip",
+      "recordedOn": "2026-11-19",
+      "observation": "The original English DOS Christmas Card 1992 opened Sierra’s splash and animated forest and cottage scenes. Playback-speed controls and return to the library were checked. The tested scene rejected saving and audible music was unverified."
+    },
+    {
       "title": "Crazy Nick's Software Picks: King Graham's Board Game Challenge",
       "status": "startup-verified",
       "gameId": "sci:cnick-kq",

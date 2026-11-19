@@ -120,6 +120,14 @@ const bundledArtworkByTarget = {
 };
 
 const artByTarget = {
+  "christmas1992-demo": {
+    ...retroGameArtwork["sci:christmas1992"],
+    heroImageMobilePosition: "92% -8vh",
+    title: "Christmas Card 1992 (Demo)",
+    year: "1992",
+    language: "en",
+    summary: "Watch deer cross a moonlit forest and snow fall outside a cottage in Sierra’s animated holiday greeting.",
+  },
   "christmas1990-demo": {
     ...retroGameArtwork["sci:christmas1990"],
     heroImageMobilePosition: "76% -8vh",

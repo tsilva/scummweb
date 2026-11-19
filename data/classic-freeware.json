@@ -1499,6 +1499,24 @@
       "config": {
         "path": "/games/christmas1990/16CARD"
       }
+    },
+    {
+      "target": "christmas1992-demo",
+      "title": "Christmas Card 1992 (Demo)",
+      "engineId": "sci",
+      "gameId": "christmas1992",
+      "platform": "dos",
+      "extra": "Demo",
+      "archive": "christmas1992-dos-en.zip",
+      "url": "https://downloads.scummvm.org/frs/demos/sci/christmas1992-dos-en.zip",
+      "sha256": "82b1d8a32a2a9eb1a3d3cf10d8d1e85239c9be797611548f82218b7b25d73bfe",
+      "preserveArchive": true,
+      "redistributionReview": {
+        "reviewedOn": "2026-11-19",
+        "sourcePage": "https://www.scummvm.org/demos/",
+        "basis": "ScummVM lists this exact DOS holiday greeting. Its two resource signatures match the pinned SCI detector. All 31 original files and 57 decoded SCI1.1 resources were checked. The original readme identifies the Sierra greeting. Generic installation help marks a NoLoad driver as not for shipping, and that driver is absent from the ZIP. The review found no package-specific copying restriction applying to the included files. Eligibility uses the cautious official promotional-hosting assessment.",
+        "preservation": "Serve the complete unchanged ZIP with original installation material, notices, story resources, audio, DOS interpreter and drivers. No downloaded executable was run."
+      }
     }
   ]
 }
