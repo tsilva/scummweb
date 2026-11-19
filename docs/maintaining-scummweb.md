@@ -454,6 +454,8 @@ The original DOS Christmas Card 1992 starts its animated holiday greeting when l
 
 The original DOS guide opens at its instructions. Press Space to visit the next attraction.
 
+The original DOS game begins its scrolling arcade sequence after launch. Move the pointer over the playfield to guide Ms. Astro Chicken.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.
