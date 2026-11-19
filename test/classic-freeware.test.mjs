@@ -27,6 +27,7 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
 
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
+    ["maniac-demo", [["maniacdemo.d64", 174848, 846994005]]],
     ["newkid-demo", [["NEWKID.512", 561, 3039353385], ["SHADONE.IBM", 1363607, 238202727], ["SHADTWO.IBM", 1468430, 3615371406]]],
     ["ruff-demo", [["P01EP.IBM", 2744050, 2588385377], ["P01SP.IBM", 2767560, 2980424538], ["RUFF.512", 693, 2000887134]]],
     ["arthur-demo", [["P01E.IBM", 3374954, 1365000791], ["P01S.IBM", 3609898, 2006794541], ["PAGES.512", 642, 2220535430]]],

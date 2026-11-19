@@ -437,6 +437,8 @@ The original Windows demo of Ruff’s Bone contains one animated story page in E
 
 The original Windows v1.1 demo of The New Kid on the Block includes one English poem. Read to Me shows one illustrated page. Let Me Play includes two interactive pages. The right arrow advances to the original publisher message after the last page. Saving and loading through the ScummWEB menu are unavailable.
 
+The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-Running Demo. F7 returns to the original menu. ScummWEB can save and restore progress in the hands-on mode.
+
 The Neverhood’s English Windows demo keeps its complete unchanged archive,
 including its original data, executable and Smacker library. The original opening
 and first clay room render; native intro skip, waking Klaymen and walking work.

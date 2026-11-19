@@ -1,6 +1,7 @@
 import { getVersionMetadata } from "../game-versions.mjs";
 
 const launchTagsByTarget = new Map([
+  ["maniac-demo", ["Point-and-click", "Horror comedy"]],
   ["newkid-demo", ["Point-and-click", "Interactive poetry"]],
   ["ruff-demo", ["Point-and-click", "Interactive storybook"]],
   ["arthur-demo", ["Point-and-click", "Interactive storybook"]],

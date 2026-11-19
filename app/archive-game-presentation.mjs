@@ -14,6 +14,10 @@ const fileGroups = [
 // These are ZIP directory signatures, not proof that ScummVM can run the game.
 const signatures = [
   {
+    title: "Maniac Mansion (Demo)", target: "maniac-demo", engineId: "scumm", gameId: "maniac",
+    files: [["maniacdemo.d64", 174848, 846994005]],
+  },
+  {
     title: "The New Kid on the Block (Demo)", target: "newkid-demo", engineId: "mohawk", gameId: "newkid",
     files: [["newkid.512", 561, 3039353385], ["shadone.ibm", 1363607, 238202727], ["shadtwo.ibm", 1468430, 3615371406]],
   },

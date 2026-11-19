@@ -64,6 +64,8 @@ test("demos and unrelated or unidentified titles remain separate", () => {
 
 test("version labels retain real metadata and distinguish identical copies", () => {
   assert.deepEqual(getVersionMetadata({}, "Game (CD DOS, German).zip"), { language: "German", platform: "DOS", media: "CD", graphics: undefined, revision: undefined });
+  assert.equal(getVersionMetadata({ platform: "c64" }).platform, "Commodore 64");
+  assert.equal(getVersionMetadata({}, "Maniac Mansion (C64 Demo).zip").platform, "Commodore 64");
   assert.equal(getVersionMetadata({}, "Game.zip").language, undefined);
   assert.equal(getVersionMetadata({}, "Discworld 1 (CD DOS v2).zip").revision, "v2");
   const groups = libraryItems([], [imported("one", "Discworld (CD DOS).zip"), imported("two", "Discworld (CD DOS).zip")]);

@@ -1,5 +1,6 @@
 const platformNames = { pc: "DOS", dos: "DOS", amiga: "Amiga", windows: "Windows", win: "Windows",
-  mac: "Macintosh", macintosh: "Macintosh", atarist: "Atari ST", apple2: "Apple II", linux: "Linux" };
+  mac: "Macintosh", macintosh: "Macintosh", atarist: "Atari ST", apple2: "Apple II", linux: "Linux",
+  c64: "Commodore 64" };
 const languageNames = { en: "English", de: "German", fr: "French", es: "Spanish", it: "Italian",
   pt: "Portuguese", pl: "Polish", ru: "Russian", nl: "Dutch", ja: "Japanese" };
 
@@ -11,6 +12,7 @@ function knownValue(value) {
 
 function readPlatform(text) {
   return [["Atari ST", /\batari\s*st\b/i], ["Apple II", /\bapple\s*(?:ii|2)\b/i],
+    ["Commodore 64", /\b(?:commodore\s*64|c64)\b/i],
     ["Amiga", /\bamiga\b/i], ["Windows", /\bwindows?\b/i], ["Linux", /\blinux\b/i],
     ["Macintosh", /\bmac(?:intosh)?\b/i], ["DOS", /\bdos\b/i]]
     .filter(([, pattern]) => pattern.test(text)).map(([name]) => name).join(" / ") || undefined;
