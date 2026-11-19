@@ -21681,6 +21681,82 @@
           2103246622
         ]
       ]
+    },
+    "arthurbday-demo": {
+      "url": "https://scummvm-games.tsilva.eu/arthurbday.zip",
+      "fingerprint": "6f0eeaff007ada336707dafb8d388c0c3b3c694ace8b2ffa55938f7102625034",
+      "files": [
+        [
+          "BIRTHDAY.512",
+          699,
+          2545112256
+        ],
+        [
+          "BIRTHDAY.EXE",
+          62464,
+          3998289148
+        ],
+        [
+          "DATA/CP/COVER.IBM",
+          133908,
+          3882791804
+        ],
+        [
+          "DATA/CP/INTRO.IBM",
+          298788,
+          3477183934
+        ],
+        [
+          "DATA/CP/OPTION.IBM",
+          198302,
+          3737260651
+        ],
+        [
+          "DATA/CP/PANEL.IBM",
+          1120314,
+          3841947481
+        ],
+        [
+          "DATA/CP/PDP.IBM",
+          13675,
+          2669673931
+        ],
+        [
+          "DATA/CP/QUIT.IBM",
+          89902,
+          1813028927
+        ],
+        [
+          "DATA/EP/P01EP.IBM",
+          2478313,
+          1454066852
+        ],
+        [
+          "DATA/ER/P01ER.IBM",
+          513665,
+          3220915203
+        ],
+        [
+          "DATA/SP/P01SP.IBM",
+          2837914,
+          702361151
+        ],
+        [
+          "DATA/SR/P01SR.IBM",
+          655870,
+          1454076090
+        ],
+        [
+          "FILE.DLL",
+          6144,
+          3183172242
+        ],
+        [
+          "RSRC.DLL",
+          10752,
+          1033696743
+        ]
+      ]
     }
   }
 }
