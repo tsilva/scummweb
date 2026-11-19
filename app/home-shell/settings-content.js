@@ -18,13 +18,11 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   const [error, setError] = useState("");
   const [data, setData] = useState({ sets: [], stored: [], unmatched: new Set(), matches: new Map(), destinations: [], revision: "" });
   const [review, setReview] = useState(null);
-  const [downloadUrl, setDownloadUrl] = useState(null);
   const [exportState, setExportState] = useState("idle");
   const [recovering, setRecovering] = useState(false);
   const [importGame, setImportGame] = useState("");
   const [needsImportGame, setNeedsImportGame] = useState(false);
 
-  useEffect(() => () => { if (downloadUrl) URL.revokeObjectURL(downloadUrl); }, [downloadUrl]);
   useEffect(() => {
     if (exportState !== "downloaded") return;
     const timer = setTimeout(() => setExportState("idle"), 1800);
@@ -53,7 +51,6 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     setBusy(true);
     setError("");
     setNotice("");
-    setDownloadUrl(null);
     try { await action(); }
     catch (failure) { setError(failure?.message || "Could not update saved games. Your current progress is still available."); }
     finally { working.current = false; setBusy(false); }
@@ -88,6 +85,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     await run(async () => {
       setExportState("exporting");
       let downloaded = false;
+      let href;
       try {
         const [{ withSaveLock }, { exportScummvmSaves }] = await Promise.all([
           import("../save-backups/backups.mjs"), import("../save-backups/scummvm-transfer.mjs"),
@@ -96,11 +94,10 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
           const current = await refresh();
           return exportScummvmSaves([...current.sets, ...current.stored]);
         });
-        const href = URL.createObjectURL(blob);
+        href = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = href;
         link.download = `scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`;
-        setDownloadUrl(href);
         setExportState("downloading");
         // Let the browser paint the handoff state before starting its download.
         await new Promise((resolve) => setTimeout(resolve, 400));
@@ -110,6 +107,8 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         downloaded = true;
         setExportState("downloaded");
       } finally {
+        // Give the browser time to resolve the download before releasing its URL.
+        if (href) setTimeout(() => URL.revokeObjectURL(href), 1000);
         if (!downloaded) setExportState("idle");
       }
     });
@@ -232,7 +231,6 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
             </button>
             <button type="button" className="launch-button settings-wide" disabled={transferring} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
           </div>
-          {downloadUrl && <a href={downloadUrl} download={`scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`}>Download the exported ZIP again</a>}
           {needsImportGame && <label className="settings-import-game">Game for imported saves
             <select value={importGame} disabled={busy} onChange={chooseImportGame}>
               <option value="">Detect automatically</option>
