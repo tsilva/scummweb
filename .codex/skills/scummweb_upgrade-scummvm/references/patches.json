@@ -1562,18 +1562,20 @@
     {
       "path": "patches/scummvm/99z-isolate-bug-report-saves.patch",
       "status": "active",
-      "sha256": "b08fd810cead84849f1a39983d6d5ecf0f6bec803c44409d050e0635625e6b7b",
-      "purpose": "Capture diagnostic saves in nonpersistent MEMFS without changing player saves, Continue metadata or library synchronization.",
+      "sha256": "a23a13235cc690c7fc77ded7a909a135e7800c849f1336c53e691687bbb62cb1",
+      "purpose": "Capture diagnostic saves and read backup slots in nonpersistent MEMFS without changing player saves, Continue metadata or library synchronization.",
       "invariants": [
         "Diagnostic savepath redirection is scoped to an acknowledged hosted-player capture and never changes ConfMan or agent save scope.",
         "Report saves and all companion files stay under /tmp/scummweb-bug-report; save refreshes are suppressed until capture completion.",
-        "The native capability export prevents a newer shell from saving into the player directory with an older compiled runtime."
+        "The native capability exports guard isolated capture and backup listing when the shell and compiled runtime differ.",
+        "The isolated scan invalidates the native filename cache on every copy and uses the engine's slot listing. Its callbacks must never publish active save metadata."
       ],
       "verification": [
         "Run diagnostic-saves, player-controls and bug-report collector regression tests.",
-        "In Brave, capture a catalog game and an imported game; compare save bytes and Continue index before/after, verify attached saves restore and cancellation or capture timeout never changes player progress."
+        "In Brave, capture a catalog game and an imported game; compare save bytes and Continue index before/after, verify attached saves restore and cancellation or capture timeout never changes player progress.",
+        "Load a backup that overlaps an active slot and has companion files. Verify the old game state, retained active bytes and normal manual saving after load."
       ],
-      "retire_when": "Upstream exposes an equivalent isolated in-memory runtime save export with capability detection and no player-save metadata publication."
+      "retire_when": "Upstream exposes equivalent isolated in-memory save capture, enumeration and loading with capability detection and no player-save metadata publication."
     },
     {
       "path": "patches/scummvm/100-host-cloud-service.patch",

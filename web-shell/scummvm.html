@@ -389,7 +389,7 @@ function setupSkipIntroSaves() {
           delete globalThis.__scummwebBeginIntroCheckpoint;
           if (target !== skipIntroTarget) return;
           globalThis.__scummwebHasIntroCheckpoint = (name) => names.has(name) &&
-            !globalThis.__scummwebScanningSaves &&
+            !globalThis.__scummwebScanningSaves && !globalThis.__scummwebDiagnosticSaves?.active &&
             (matchingGame.engineId !== "sword25" || globalThis.__scummwebSword25LoadingIntro);
         };
         finishIntroCheckpoint = () => {

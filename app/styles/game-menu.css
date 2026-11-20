@@ -175,6 +175,19 @@
 .game-menu-note { margin: .5rem 0; }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
 
+.game-menu-backups-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding: .5rem .25rem;
+  border: 0;
+  background: transparent;
+  color: #c5c5c5;
+}
+.game-menu-backups-toggle:hover:not(:disabled) { color: var(--ink); }
+.game-menu-backups-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
 .game-menu-load-status {
   position: fixed;
   inset: 0 0 0 auto;

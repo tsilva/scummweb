@@ -197,14 +197,25 @@ async function withSetStore(mode, operation) {
     });
   } finally { db.close(); }
 }
-export async function readStoredSets() {
+export async function readStoredSets(destinations) {
+  const matches = (set) => !destinations || Boolean(matchDestination(set, destinations));
   const [stored, legacy] = await Promise.all([
-    withSetStore("readonly", (store) => store.getAll()), openLegacyRecoveryStorage(),
+    withSetStore("readonly", (store) => {
+      if (!destinations) return store.getAll();
+      const sets = [];
+      const cursor = store.openCursor();
+      cursor.onsuccess = () => {
+        if (!cursor.result) return;
+        if (matches(cursor.result.value)) sets.push(cursor.result.value);
+        cursor.result.continue();
+      };
+      return { result: sets };
+    }), openLegacyRecoveryStorage(),
   ]);
   const copies = await Promise.all(legacy.map(async storage => {
     const blocked = new Set(readIncompleteSaveWrites(storage).map(entry => entry.destinationKey));
     const { sets } = await getActiveSaveSets(storage, []);
-    return sets.filter(set => !blocked.has(set.destination.key));
+    return sets.filter(set => !blocked.has(set.destination.key) && matches(set));
   }));
   const unique = new Map(stored.map(set => [`${set.destination.key}:${set.hash}`, set]));
   for (const sets of copies) {

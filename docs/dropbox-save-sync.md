@@ -66,9 +66,12 @@ Export starts the ZIP download automatically. Its button shows **Exporting**,
 **Downloading**, then briefly **Downloaded** before returning to **Export saves**.
 Both transfer buttons stay disabled throughout this sequence. **Downloaded**
 indicates the download was handed to the browser; the browser manages saving the file.
-To load an earlier copy, expand **Restore a backup** below the transfer buttons,
-choose a game and backup, then select **Review backup**. Confirming the restore
-keeps your current progress as a backup.
+To play from an earlier copy, open the matching game edition and go to
+**Load Game → Backed-up saves**. Select a slot to load it directly. ScummWEB
+opens the backup and its companion files in temporary storage. Your active
+save files stay intact. Use **Save Game** to keep playing from that point
+in a normal save slot. The backup list appears in games that support
+loading through the ScummWEB menu.
 The status is read-only. Routine metadata checks keep **Saves up to date** and
 its checkmark visible after verification. Before verification, the status shows
 **Checking saves…** or **Connected**. A completed new save shows
@@ -152,8 +155,8 @@ cannot guarantee that an engine can load a particular save format.
 
 Import shows a confirmation of the incoming saves, without conflict choices.
 Compatible separate slots are combined; incoming overlapping slots take precedence.
-A changed companion/index selects the complete incoming copy. Previous progress is available through
-**Restore a backup**. Additional copies for the same game are retained for
+A changed companion/index selects the complete incoming copy. Previous progress is available under
+**Load Game → Backed-up saves**. Additional copies for the same game are retained for
 recovery. Confirmation refreshes current saves under the exclusive save lock and
 merges the original incoming files again, so background synchronization during
 review does not discard newly completed compatible slots or require reopening the ZIP. Games absent from an exported collection remain unchanged.
@@ -205,7 +208,7 @@ device and directory listing order. Compatible separate slots are retained.
 When a changed companion/index or file/folder collision makes combining unsafe,
 the complete preferred copy is selected. All original competing copies are
 published and verified as recovery copies before the result is acknowledged;
-they remain available through **Restore a backup**. The recorded preference
+their playable slots remain available under **Load Game → Backed-up saves**. The recorded preference
 time is included in the immutable snapshot identity.
 
 Recorded save times cannot establish which story position is furthest ahead,

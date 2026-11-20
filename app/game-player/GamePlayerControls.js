@@ -57,6 +57,7 @@ function TouchMouseButton({ button, frameRef }) {
 
 export default function GamePlayerControls({
   autoHide = false,
+  backupDestinationKey,
   compatibilityWarnings,
   frameRef,
   gameMenuOpen,
@@ -177,6 +178,7 @@ export default function GamePlayerControls({
       </div>
       {gameMenuOpen && (
         <GameMenuDrawer
+          backupDestinationKey={backupDestinationKey}
           frameRef={frameRef}
           initialPage={gameMenuPage}
           onClose={onCloseMenu}

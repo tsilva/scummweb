@@ -1,5 +1,6 @@
 import { ArrowLeft, Bug, Check, ChevronRight, FolderOpen, LoaderCircle, Save, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import GameBackupSaves from "./GameBackupSaves";
 import GameBugReport from "./GameBugReport";
 
 const defaultSettings = { volume: 100, speed: 1, subtitles: true, canToggleSubtitles: false, saves: [] };
@@ -39,7 +40,7 @@ function MenuSlider({ label, value, min, max, step, text, onChange, disabled }) 
   );
 }
 
-export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose, onExit, onNativeMenu, reportGame, title }) {
+export default function GameMenuDrawer({ backupDestinationKey, frameRef, initialPage = "menu", onClose, onExit, onNativeMenu, reportGame, title }) {
   const dialogRef = useRef(null);
   const pressedBackdrop = useRef(false);
   const controller = useRef(null);
@@ -249,11 +250,20 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
                     </li>
                   ))}
                 </ul>
-              ) : <p className="game-menu-note">{page === "save" ? "No saves can be overwritten here." : "No saved games yet."}</p>}
+              ) : <p className="game-menu-note">{page === "save" ? "No saves can be overwritten here." : "No current saves yet."}</p>}
             </>
           )}
           {busy && page === "save" && <p className="game-menu-note" role="status">Saving…</p>}
           {error && <p className="game-menu-note" role="alert">{error}</p>}
+          {page === "load" && settings.canLoadBackups && backupDestinationKey && (
+            <GameBackupSaves
+              destinationKey={backupDestinationKey}
+              disabled={busy}
+              fingerprint={reportGame?.saveFingerprint}
+              frameRef={frameRef}
+              onLoad={save => void run("load", save)}
+            />
+          )}
         </div>
       )}
       {page === "load" && (
