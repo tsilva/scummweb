@@ -337,6 +337,8 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   Verify the loaded script size and callback bytes when matching a save layout.
   Use the active Gob engine’s detected edition to enumerate saves for a
   browser import. Its transient target can omit the configured edition fields.
+  Refresh the Goblins Quest 3 save list after engine creation so slots from
+  earlier sessions appear and stay occupied when the player reopens an import.
   Humongous titles may use named slots and a separate caption catalog. Check
   the exact game data before enabling slot operations, and verify restores
   through both the hosted controls and the original game menu.

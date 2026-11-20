@@ -1783,6 +1783,19 @@
         "Import the full DOS CD v1.02 ZIP, save through the ScummWEB drawer on a fresh first scene, and load the listed slot after moving. Verify listing also finds an existing native slot."
       ],
       "retire_when": "Upstream uses detected Gob save layouts consistently in its save enumeration and runtime APIs."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzz-gob3-refresh-imported-saves.patch",
+      "status": "active",
+      "sha256": "5b8b87a7c4aa189c06d5e46a4547121c7775fae3d7003c1e4c6c1c2da22a80d1",
+      "purpose": "Publish existing imported Goblins Quest 3 save slots after engine detection on relaunch.",
+      "invariants": [
+        "Keep the pre-engine launcher scan and its startup behavior. Refresh the player list once after the detected engine and its metaengine are attached; preserve existing files and occupied slots."
+      ],
+      "verification": [
+        "Make a save from an imported DOS CD v1.02 ZIP. Relaunch from the same archive, verify the existing caption is discoverable, create a second non-overwriting slot, and load both from gameplay."
+      ],
+      "retire_when": "The hosted player receives the correct Gob save listing after detection without a second native scan."
     }
   ]
 }
