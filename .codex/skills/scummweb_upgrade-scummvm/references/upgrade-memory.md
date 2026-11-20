@@ -335,6 +335,8 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   the original ORACLE setup before serialization and its redraw after restore.
 - Gob’s executable script size excludes the appended text and resource tables.
   Verify the loaded script size and callback bytes when matching a save layout.
+  Use the active Gob engine’s detected edition to enumerate saves for a
+  browser import. Its transient target can omit the configured edition fields.
   Humongous titles may use named slots and a separate caption catalog. Check
   the exact game data before enabling slot operations, and verify restores
   through both the hosted controls and the original game menu.

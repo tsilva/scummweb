@@ -1770,6 +1770,19 @@
         "For the English DOS interactive v1.2 CD demo, create an original F2 save, select it in the drawer from a changed scene, then restore a new drawer save through the F3 interface after a restart."
       ],
       "retire_when": "Upstream MADE exposes the native Return to Zork CD save format and original room reconstruction through its runtime API."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzz-gob3-detected-save-layout.patch",
+      "status": "active",
+      "sha256": "b433dc57a9ca04eb30881094542e83d3ff83160feb54a4cb0a37c3e30ec52ae7",
+      "purpose": "List original Goblins Quest 3 slots for auto-detected imports using the active engine's edition or matched script layout.",
+      "invariants": [
+        "Bind live metadata to the engine's own target. Keep the configured-target fallback for startup scans and preserve script guards, native file formats, and existing Woodruff discovery."
+      ],
+      "verification": [
+        "Import the full DOS CD v1.02 ZIP, save through the ScummWEB drawer on a fresh first scene, and load the listed slot after moving. Verify listing also finds an existing native slot."
+      ],
+      "retire_when": "Upstream uses detected Gob save layouts consistently in its save enumeration and runtime APIs."
     }
   ]
 }
