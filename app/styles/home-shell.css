@@ -1164,7 +1164,8 @@ button.nav-icon-link {
 .recent-game-cover {
   width: 6rem;
   height: 9rem;
-  object-fit: contain;
+  object-fit: var(--artwork-fit, contain);
+  object-position: var(--artwork-position, center);
   align-self: start;
 }
 

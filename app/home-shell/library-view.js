@@ -148,7 +148,8 @@ export default function LibraryView({ items, heading, notice, onAddGame, importD
               <GameSelectionLink game={game} aria-current={key === selectedKey ? "page" : undefined}
                 aria-disabled={editing || undefined} tabIndex={editing ? -1 : undefined} draggable={false}
                 className={`poster-card ${game.tone}`} data-game-target={game.target}>
-                <GamePoster title={title} image={game.posterImage} editionLabel={game.editionLabel} count={visible.length + 1} />
+                <GamePoster title={title} image={game.posterImage} imagePosition={game.posterImagePosition}
+                  editionLabel={game.editionLabel} count={visible.length + 1} />
                 {needsFiles && <span className="source-poster-hint" data-checking={checkingFiles || undefined}>
                   {checkingFiles ? <>
                     <LoaderCircle size={12} className="source-poster-spinner" aria-hidden="true" />

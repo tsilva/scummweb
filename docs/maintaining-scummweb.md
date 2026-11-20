@@ -938,6 +938,9 @@ Demos and full versions share the same hero and box art; keep demo labels and
 edition-specific gameplay captures separate from those shared images.
 Card covers and their loading previews align to the top of the card and retain
 the proportions of the box front. Trim added padding at the artwork boundary.
+For an illustrated fallback such as Fun Seeker's Guide, set
+`posterImagePosition` to fill the card with the same crop for the artwork and
+its loading preview. Record the source illustration in the poster credit.
 Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
 The hero slideshow uses the catalogue's Featured order, including imported games
 and demos, regardless of the catalogue's current sort or genre filter.

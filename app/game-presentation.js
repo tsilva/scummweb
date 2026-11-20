@@ -1197,6 +1197,7 @@ export function getImportedGamePresentation(filename) {
           heroImagePosition: retro.heroImagePosition,
           heroImageMobilePosition: retro.heroImageMobilePosition,
           posterImage: retro.posterImage,
+          posterImagePosition: retro.posterImagePosition,
           screenshots: retro.screenshots,
           summary: retro.summary,
           studio: retro.studio,

@@ -83,7 +83,7 @@ function RecentGameCard({ group, now, localActivity, synced }) {
   return <article ref={cardRef} className={`recent-game-card ${game.tone}`} data-game-target={game.target} aria-label={game.displayTitle}>
     <div className="recent-game-details">
       {game.posterImage ? <DecorativeImage className="recent-game-cover"
-        {...getPosterImageProps(game.posterImage, false, 12, artwork)} sizes="96px" /> : <span className="recent-game-cover" />}
+        {...getPosterImageProps(game.posterImage, false, 12, artwork, game.posterImagePosition)} sizes="96px" /> : <span className="recent-game-cover" />}
       <div className="recent-game-summary">
         <GameSelectionLink game={game} onClick={onLaunch} className="recent-game-title"><h3>{game.displayTitle}</h3></GameSelectionLink>
         <div className="recent-game-progress">

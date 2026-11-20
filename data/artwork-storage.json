@@ -40124,6 +40124,74 @@
       "contentType": "image/webp",
       "width": 480,
       "height": 343
+    },
+    "/launcher/freddi-fish-4-publisher-portrait-cover.webp": {
+      "key": "artwork/5d00f271d157d1f92b6f3156266bc7dbd6a7d3ac4b581eae25a4b36ee33b76b9/freddi-fish-4-publisher-portrait-cover.webp",
+      "sha256": "5d00f271d157d1f92b6f3156266bc7dbd6a7d3ac4b581eae25a4b36ee33b76b9",
+      "bytes": 57258,
+      "contentType": "image/webp",
+      "width": 600,
+      "height": 800,
+      "placeholder": "UklGRmgAAABXRUJQVlA4IFwAAADQAQCdASoJAAwAAsBIJaACdAELPxK6AAD+CLEHbrrQkNngAwa5fGZPOJWl1nFCNZRl8fx23EfnvvxwXK3iUtOIDj4iiGEmiKaWdr02mPI3YNbgMwAhquFYjpxgAA=="
+    },
+    "/launcher/pajama-sam-2-publisher-portrait-cover.webp": {
+      "key": "artwork/dc6413bfad1c11fd7d04f32bfb2a96d2d58370863caff5b903141f8cebcdf2b4/pajama-sam-2-publisher-portrait-cover.webp",
+      "sha256": "dc6413bfad1c11fd7d04f32bfb2a96d2d58370863caff5b903141f8cebcdf2b4",
+      "bytes": 86608,
+      "contentType": "image/webp",
+      "width": 600,
+      "height": 800,
+      "placeholder": "UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoJAAwAAsBIJYgCdADdlCn5LoYAAP7t2OfVBtj1VTHWbMJnM2Ncc3Wv8ZKItQF/8+1TL8gk/2pCPGGnfut2xJQxcJymnmgwNt2ffWfJ0MyEWtx5fyadL+AA"
+    },
+    "/launcher/putt-putt-saves-the-zoo-publisher-portrait-cover.webp": {
+      "key": "artwork/7f16eb981c77e86b14f65a212fb5526bff4320893ad65dc1c7a0ff6ebdb5ec99/putt-putt-saves-the-zoo-publisher-portrait-cover.webp",
+      "sha256": "7f16eb981c77e86b14f65a212fb5526bff4320893ad65dc1c7a0ff6ebdb5ec99",
+      "bytes": 71050,
+      "contentType": "image/webp",
+      "width": 570,
+      "height": 760,
+      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAACQAgCdASoJAAwAAsBIJbACdFQA5/8DGybEQ0IrAAD5EcLVl+8CzM/bjN0lH8uJyXXzmAK+b/W0GK/rvrPXmq41oKLx/l44EjhDhVz/EAFNUTroJgN/zRKcslE1QyAGoRqkvM9p1SnVgAAA"
+    },
+    "/launcher/putt-putt-travels-through-time-publisher-portrait-cover.webp": {
+      "key": "artwork/ce92d859ac8f39f24f23da7e349e39f2c0332056afad778b54d3ec07e6a5b09b/putt-putt-travels-through-time-publisher-portrait-cover.webp",
+      "sha256": "ce92d859ac8f39f24f23da7e349e39f2c0332056afad778b54d3ec07e6a5b09b",
+      "bytes": 61322,
+      "contentType": "image/webp",
+      "width": 600,
+      "height": 800,
+      "placeholder": "UklGRnAAAABXRUJQVlA4IGQAAADwAQCdASoJAAwAAsBIJQBOj+AQUpMncAAA/uhgi0++7N0IQDqaAqrTT/8SGD1VO4lYvb/4+Fmr5WLNz6Wn6FJpNn85JtN0u+1zkrX8o/OvSb9H3LJin1eEXCqy8oUWxC2gAAAA"
+    },
+    "/launcher/responsive/freddi-fish-4-publisher-portrait-cover-320.webp": {
+      "key": "artwork/5ff8ad47f42796eb6793c74e703a36c1e8a5fd895a7b0c573e16aa57cde9a4bf/freddi-fish-4-publisher-portrait-cover-320.webp",
+      "sha256": "5ff8ad47f42796eb6793c74e703a36c1e8a5fd895a7b0c573e16aa57cde9a4bf",
+      "bytes": 25064,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/pajama-sam-2-publisher-portrait-cover-320.webp": {
+      "key": "artwork/632e07feb2a74cc5226067b6fc0f9c9d9035153f674192329afc9f5ef420992d/pajama-sam-2-publisher-portrait-cover-320.webp",
+      "sha256": "632e07feb2a74cc5226067b6fc0f9c9d9035153f674192329afc9f5ef420992d",
+      "bytes": 32362,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/putt-putt-saves-the-zoo-publisher-portrait-cover-320.webp": {
+      "key": "artwork/5ae6c557ac4385dac2c30b76a66f0c5a13b3228ef469f976743eca224d30de68/putt-putt-saves-the-zoo-publisher-portrait-cover-320.webp",
+      "sha256": "5ae6c557ac4385dac2c30b76a66f0c5a13b3228ef469f976743eca224d30de68",
+      "bytes": 29114,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/putt-putt-travels-through-time-publisher-portrait-cover-320.webp": {
+      "key": "artwork/856722cedb9cdd14e02626dc7a98b037aefb3e65a331d47afbf3ad93d12641e4/putt-putt-travels-through-time-publisher-portrait-cover-320.webp",
+      "sha256": "856722cedb9cdd14e02626dc7a98b037aefb3e65a331d47afbf3ad93d12641e4",
+      "bytes": 24970,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
     }
   },
   "images": {

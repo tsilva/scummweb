@@ -3408,5 +3408,33 @@
       320,
       640
     ]
+  },
+  "/launcher/freddi-fish-4-publisher-portrait-cover.webp": {
+    "width": 600,
+    "height": 800,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/pajama-sam-2-publisher-portrait-cover.webp": {
+    "width": 600,
+    "height": 800,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/putt-putt-saves-the-zoo-publisher-portrait-cover.webp": {
+    "width": 570,
+    "height": 760,
+    "widths": [
+      320
+    ]
+  },
+  "/launcher/putt-putt-travels-through-time-publisher-portrait-cover.webp": {
+    "width": 600,
+    "height": 800,
+    "widths": [
+      320
+    ]
   }
 }

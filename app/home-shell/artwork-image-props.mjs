@@ -1,8 +1,9 @@
 import { artworkObjectUrl, artworkPath, artworkStorage, artworkUrl } from "../../lib/artwork-storage.mjs";
 
 // Match the 3:4 poster cards and the grid breakpoints in home-shell.css.
-export function getPosterSizes(aspect, count = 8) {
-  const scale = Math.ceil(Math.min(1, aspect / 0.75) * 1.04 * 1000) / 1000;
+export function getPosterSizes(aspect, count = 8, fill = false) {
+  const fit = fill ? Math.max(1, aspect / 0.75) : Math.min(1, aspect / 0.75);
+  const scale = Math.ceil(fit * 1.04 * 1000) / 1000;
   const entries = [];
   for (const [start, end, padding] of [[0, 48.001, 2.5], [48.001, 64, 6.5]]) {
     const breaks = [start, ...Array.from({ length: 4 }, (_, i) => padding + (i + 2) * 10 + (i + 1))
