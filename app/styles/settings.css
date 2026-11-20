@@ -3,7 +3,8 @@
 .dropbox-icon { color: #f5f5f5; flex: none; width: 1.25rem; height: 1.25rem; }
 .dropbox-actions { display: flex; align-self: center; align-items: center; gap: .4rem; }
 .dropbox-actions > button { min-height: 2.75rem; padding: .5rem .75rem; border-radius: 4px; font-size: .8125rem; }
-.settings-content .dropbox-status { display: flex; align-items: center; gap: .4rem; color: var(--ink); }
+.settings-content .dropbox-status { display: flex; align-items: center; gap: .4rem; }
+.settings-content .dropbox-status:not(:has(> .dropbox-check)) { color: var(--ink); }
 .settings-content .dropbox-status[data-state="attention"], .settings-content .dropbox-notice { color: #e9c395; }
 .settings-content .dropbox-status[data-state="disconnected"] { color: #c5c5c5; }
 .dropbox-check, .dropbox-spinner { flex-shrink: 0; color: var(--accent-strong); }

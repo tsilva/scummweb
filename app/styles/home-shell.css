@@ -2047,8 +2047,46 @@ button.nav-icon-link {
   display: none !important;
 }
 
-.hero-initial-actions [aria-disabled="true"] {
+.hero-initial-actions :is([aria-disabled="true"]:not(.game-unavailable), select:disabled) {
   cursor: wait;
+  transform: none;
+}
+
+/* Keep familiar labels in place and show progress only if restoration lingers. */
+.hero-initial-actions:not(:has(> .launch-button-pending)) > :is(
+  .launch-button[aria-disabled="true"]:not(.game-unavailable),
+  .launch-button[href] ~ .hero-version-control:has(select:disabled)
+) {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0.25rem;
+    width: 1.25rem;
+    height: 2px;
+    margin-inline: auto;
+    border-radius: 1px;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    animation: hero-actions-reveal 300ms step-end forwards;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &::after {
+      animation: hero-restore-indicator 1s 300ms ease-in-out infinite alternate;
+    }
+  }
+}
+
+@keyframes hero-restore-indicator {
+  from { opacity: 0.35; }
+  to { opacity: 0.7; }
+}
+
+@keyframes hero-actions-reveal {
+  to { opacity: 1; }
 }
 
 .hero-actions-placeholder {
@@ -2061,6 +2099,8 @@ button.nav-icon-link {
   max-width: 100%;
   height: var(--hero-action-height);
   pointer-events: none;
+  opacity: 0;
+  animation: hero-actions-reveal 300ms step-end forwards;
 }
 
 .hero-actions-placeholder span {

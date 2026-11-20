@@ -238,13 +238,13 @@ html:has(.game-route-boot-overlay.is-visible) {
   pointer-events: none;
 }
 .dashboard-nav-home[data-scrolled] {
-  background: rgb(17 17 17 / 92%);
-  backdrop-filter: blur(12px);
+  background: var(--surface);
   box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+  pointer-events: auto;
 }
 @media (prefers-reduced-motion: no-preference) {
   .dashboard-nav-home {
-    transition: background-color 160ms ease-out, box-shadow 160ms ease-out;
+    transition: box-shadow 160ms ease-out;
   }
 }
 .dashboard-nav-home > * { pointer-events: auto; }
