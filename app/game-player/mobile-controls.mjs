@@ -1,7 +1,12 @@
 const zorkStories = new Set(["zork1", "zork2", "zork3"]);
+const kyraDungeonGames = new Set(["lol", "eob", "eob2"]);
+const agosDungeonGames = new Set(["elvira1", "elvira2", "waxworks"]);
 
-export function hasDungeonWalkControls({ engineId, gameId } = {}) {
-  return engineId === "kyra" && gameId === "lol";
+export function getDungeonWalkLayout({ engineId, gameId, target } = {}) {
+  const id = gameId || target;
+  if (engineId === "kyra" && kyraDungeonGames.has(id)) return "six-way";
+  if (engineId === "agos" && agosDungeonGames.has(id)) return "four-way";
+  return null;
 }
 
 export function getMobileControlMode({ engineId, gameId } = {}) {

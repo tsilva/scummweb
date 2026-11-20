@@ -1144,9 +1144,20 @@ test("Castle Master uses a movement gamepad only during ready landscape mobile p
   assert.equal(mobileControls.getMobileControlMode({ engineId: "freescape", gameId: "driller" }), "mouse");
 });
 
-test("Lands of Lore switches between Walk and Cursor in ready landscape mobile play", () => {
-  for (const target of ["lol", "lol-demo", "custom-import"]) {
-    const game = { engineId: "kyra", gameId: "lol", target };
+test("Dungeon games switch between Walk and Cursor in ready landscape mobile play", () => {
+  const supportedGames = [
+    ["kyra", "lol", "lol", "six-way"],
+    ["kyra", "lol", "lol-demo", "six-way"],
+    ["kyra", "lol", "custom-import", "six-way"],
+    ["kyra", "eob", "eob-custom-import", "six-way"],
+    ["kyra", undefined, "eob", "six-way"],
+    ["kyra", undefined, "eob2", "six-way"],
+    ["agos", undefined, "elvira1", "four-way"],
+    ["agos", undefined, "elvira2", "four-way"],
+    ["agos", undefined, "waxworks", "four-way"],
+  ];
+  for (const [engineId, gameId, target, layout] of supportedGames) {
+    const game = { engineId, gameId, target };
     const player = readyPlayer(game, { mobile: true });
     assert.equal(player.cursorPad.showTouchCursorPad, true);
     assert.equal(player.cursorPad.showTouchWalk, false);
@@ -1156,6 +1167,7 @@ test("Lands of Lore switches between Walk and Cursor in ready landscape mobile p
     player.render();
     assert.equal(player.cursorPad.showTouchCursorPad, false);
     assert.equal(player.cursorPad.showTouchWalk, true);
+    assert.equal(player.cursorPad.walkLayout, layout);
     assert.equal(player.controls.showTouchClickButtons, false);
 
     player.cursorPad.onSelectMode("cursor");
@@ -1168,8 +1180,9 @@ test("Lands of Lore switches between Walk and Cursor in ready landscape mobile p
       assert.equal(readyPlayer(game, options).cursorPad.onSelectMode, undefined);
     }
   }
-  for (const gameId of ["eob", "eob2", "kyra1"]) {
-    const player = readyPlayer({ engineId: "kyra", gameId, target: gameId }, { mobile: true });
+  for (const [engineId, gameId, target] of [["kyra", "kyra1", "eob"], ["agos", undefined, "simon1"],
+    ["scumm", "eob", "eob"]]) {
+    const player = readyPlayer({ engineId, gameId, target }, { mobile: true });
     assert.equal(player.cursorPad.onSelectMode, undefined);
     assert.equal(player.cursorPad.showTouchCursorPad, true);
   }

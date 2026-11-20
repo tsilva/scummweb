@@ -187,9 +187,12 @@ hidden. They return to their normal visibility when the action disappears.
   cursor control: moving your finger moves the cursor; holding still does not.
   Lifting resets the cap without repositioning the game cursor. Arrows mark
   movement controls, which retain each game's directional behavior.
-- In Lands of Lore, tap the four-way arrow above the pad to switch from
-  Cursor to Walk. Tap a sector to step forward or back, sidestep, or turn.
-  Tap the pointer icon to return to Cursor and show the **L** and **R** buttons.
+- In Lands of Lore, Eye of the Beholder I–II, Elvira I–II, and Waxworks, tap
+  the four-way arrow above the pad to switch from Cursor to Walk. Lands of Lore
+  and Eye of the Beholder use six sectors for stepping, sidestepping, and
+  turning. Elvira and Waxworks use four sectors for moving forward, turning
+  left or right, and turning around. Tap the pointer icon to return to Cursor
+  and show the **L** and **R** buttons.
 - In Grim Fandango and Escape from Monkey Island, the stick walks or turns. The lightning button opens
   Use/Talk, Examine, Pick up/Put away, and Inventory. When dialogue choices are
   available, the right-hand actions become a single checkmark to confirm the
