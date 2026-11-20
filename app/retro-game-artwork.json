@@ -4392,7 +4392,7 @@
       "Myst (CD Windows)",
       "Myst Masterpiece (DVD Windows)"
     ],
-    "posterImage": "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/myst-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-myst-shot-play-1.webp",
       "/launcher/retro-mohawk-myst-shot-play-2.webp",
@@ -4400,19 +4400,20 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "asset": "/launcher/retro-mohawk-myst-poster.webp",
-            "kind": "box-scan",
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Myst.png",
-            "sha256": "da8c76a4e8d0debc2dfe1acdb590fd803bcdc24fedf2d7cf6db528ea9ee0d35b",
-            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://bigboxcollection.com/images/textures/front/Myst.webp",
+        "credit": "Cyan and Brøderbund original Windows retail box, EU 1995, digitized by Big Box Collection.",
+        "sha256": "58f2b3f57a6ed429599560356004b48d190b159b1325dca4de0c950e09bd468c",
+        "sourceDimensions": [
+          2048,
+          2592
+        ],
+        "crop": {
+          "left": 52,
+          "top": 0,
+          "width": 1944,
+          "height": 2592
+        }
       },
       "screenshots": [
         {
@@ -6935,7 +6936,7 @@
     "aliases": [
       "Ms Astro Chicken (Floppy DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-msastrochicken-poster.webp",
+    "posterImage": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
     "screenshots": [
       "/launcher/retro-sci-msastrochicken-shot.webp",
       "/launcher/retro-sci-msastrochicken-shot-2.webp",
@@ -6943,8 +6944,9 @@
     ],
     "sources": {
       "poster": {
-        "kind": "title-screen-poster",
-        "url": "https://www.gamerscreed.com/attachments/ms-astro-chicken-001-png.3459/"
+        "kind": "hero-illustration-crop",
+        "asset": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
+        "credit": "ScummWEB promotional illustration for Ms. Astro Chicken. Source references are recorded in the hero credit."
       },
       "screenshots": [
         {
@@ -6986,7 +6988,8 @@
     "genre": "Arcade action",
     "category": "Action & arcade",
     "heroImage": "/launcher/msastrochicken-scummweb-generated-2026-11-06-r1-hero.webp",
-    "heroImagePosition": "80% 38%"
+    "heroImagePosition": "80% 38%",
+    "posterImagePosition": "right center"
   },
   "sci:pepper": {
     "title": "Pepper's Adventures in Time",
@@ -9282,7 +9285,7 @@
     "aliases": [
       "Big Thinkers 1st Grade (Windows)"
     ],
-    "posterImage": "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-thinker1-shot.webp",
       "/launcher/retro-scumm-thinker1-shot-2.webp",
@@ -9290,19 +9293,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "asset": "/launcher/retro-scumm-thinker1-poster.webp",
-            "kind": "box-scan",
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Big%20Thinkers%201st%20Grade.png",
-            "sha256": "5c5cd24d90c8e60fe4f059c126019a852e6acd051a439ccdd07cdd84a828b3b0",
-            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
-          }
-        ]
+        "kind": "official-promotional-art",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/376770/library_600x900_2x.jpg",
+        "credit": "Humongous Entertainment official Steam library portrait",
+        "sha256": "283545496fcacfd35d7bb07491605394492f513bec1ab476e00cfd021d45a645",
+        "sourceDimensions": [
+          600,
+          900
+        ],
+        "crop": {
+          "left": 0,
+          "top": 0,
+          "width": 600,
+          "height": 864
+        },
+        "canvas": {
+          "left": 24,
+          "right": 24,
+          "extendWith": "copy"
+        }
       },
       "screenshots": [
         {
@@ -10212,7 +10221,7 @@
     "aliases": [
       "Tony Tough and the Night of the Roasted Moths (CD Windows)"
     ],
-    "posterImage": "/launcher/tony-scummweb-generated-2026-11-06-r1-cover.webp",
+    "posterImage": "/launcher/tony-tough-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-tony-tony-shot.webp",
       "/launcher/retro-tony-tony-shot-2.webp",
@@ -10220,19 +10229,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-06",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "asset": "/launcher/retro-tony-tony-poster.webp",
-            "kind": "box-scan",
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png",
-            "sha256": "b5df691bfa6030887308aed38993c0d521c73a4a922e2328f043fb5863852d48",
-            "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Tony%20Tough%20and%20the%20Night%20of%20the%20Roasted%20Moths.png",
+        "credit": "Got Game Entertainment original English retail front, archived by Libretro.",
+        "sha256": "06bf6cf30ea346597cd40798cc1b0fa1b91de2f7b7d7d438493e5daffb632b01",
+        "sourceDimensions": [
+          512,
+          744
+        ],
+        "crop": {
+          "left": 5,
+          "top": 2,
+          "width": 502,
+          "height": 740
+        },
+        "canvas": {
+          "left": 26,
+          "right": 27,
+          "extendWith": "copy"
+        }
       },
       "screenshots": [
         {
@@ -11660,7 +11675,7 @@
     "aliases": [
       "Backyard Football (CD Windows)"
     ],
-    "posterImage": "/launcher/backyard-football-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/backyard-football-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-football-shot-1.webp",
       "/launcher/retro-scumm-football-shot-2.webp",
@@ -11668,18 +11683,20 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Football.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "33aaef6dadaf6db775aa2aadeebe203ba01d3550392d5cdd4fa823b61e99bee5"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3170570/library_600x900_2x.jpg",
+        "credit": "Playground Productions official Backyard Football ’99 Steam library portrait.",
+        "sha256": "5ca19cbec9af07a53a2d14ae21d3b7751c2bcd88e9d76cc1cfbdfe645b801a07",
+        "sourceDimensions": [
+          600,
+          900
+        ],
+        "crop": {
+          "left": 0,
+          "top": 60,
+          "width": 600,
+          "height": 800
+        }
       },
       "screenshots": [
         {
@@ -12587,7 +12604,7 @@
     "aliases": [
       "Blue's ABC Time (Windows)"
     ],
-    "posterImage": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/blues-abc-time-activities-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-bluesabctime-shot-1.webp",
       "/launcher/retro-scumm-bluesabctime-shot-2.webp",
@@ -12606,7 +12623,17 @@
             "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
             "sha256": "35f32de85cfbc1a939b9f50768b754a14caeddf63de27ec6dd4bec78471b1d06"
           }
-        ]
+        ],
+        "adaptedFrom": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+        "sourceSha256": "601a7fd135948a3b7d4eefc713b789570e8044873e7da104d47f7ab13fcaf911",
+        "sourceDimensions": [
+          900,
+          1014
+        ],
+        "canvas": {
+          "bottom": 186,
+          "background": "#012e7b"
+        }
       },
       "screenshots": [
         {
@@ -12742,7 +12769,7 @@
       "Blue's Birthday Adventure Red (Windows)",
       "Blue's Birthday Adventure Yellow (Windows)"
     ],
-    "posterImage": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/blues-birthday-adventure-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-bluesbirthday-shot-1.webp",
       "/launcher/retro-scumm-bluesbirthday-shot-2.webp",
@@ -12750,18 +12777,24 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Blue's%20Birthday%20Adventure.png",
-            "kind": "box-scan",
-            "credit": "Original Blue’s Clues Humongous Entertainment retail front, Libretro",
-            "sha256": "e5aa88cca1b671f1239b9ef70c8ac307ecd573caefb0daf55a04698a6307693b"
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://commondatastorage.googleapis.com/images.pricecharting.com/c21fbcef02ae4f9716f59b419c2af53452a508761541b59d683426fc735b2d33/1600.jpg",
+        "credit": "Humongous Entertainment original US retail front with CompUSA insert promotion, archived by PriceCharting.",
+        "sha256": "7fade3c0211a31fd7a384dc59629d02db5eaa95ff1d9a58c28448ad5a555621b",
+        "sourceDimensions": [
+          401,
+          500
+        ],
+        "crop": {
+          "left": 1,
+          "top": 0,
+          "width": 399,
+          "height": 500
+        },
+        "canvas": {
+          "bottom": 32,
+          "background": "#0c3a85"
+        }
       },
       "screenshots": [
         {
@@ -13351,7 +13384,7 @@
     "aliases": [
       "Fatty Bear's Birthday Surprise (CD Windows)"
     ],
-    "posterImage": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
+    "posterImage": "/launcher/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-fbear-shot-1.webp",
       "/launcher/retro-scumm-fbear-shot-2.webp",
@@ -13359,18 +13392,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Fatty%20Bear's%20Birthday%20Surprise.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "45aa7830434eb708de2a7e6728c282ff5a77150604ee31b92834699a294f494a"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/317030/library_600x900_2x.jpg",
+        "credit": "Humongous Entertainment official Steam library portrait",
+        "sha256": "4a0fa1f3ea5df6f6f7b59a8aa7e59d535c8df0e4971baf46b77b62b4ea990588",
+        "sourceDimensions": [
+          600,
+          900
+        ],
+        "crop": {
+          "left": 0,
+          "top": 43,
+          "width": 600,
+          "height": 836
+        },
+        "canvas": {
+          "left": 13,
+          "right": 14,
+          "extendWith": "copy"
+        }
       },
       "screenshots": [
         {
@@ -14333,7 +14373,7 @@
     "aliases": [
       "Living Books - Just Grandma and Me (CD Windows)"
     ],
-    "posterImage": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/just-grandma-and-me-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-grandma-shot-1.webp",
       "/launcher/retro-mohawk-grandma-shot-2.webp",
@@ -14341,17 +14381,13 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Just%20Grandma%20and%20Me.png",
-            "kind": "box-scan",
-            "credit": "Original Living Books retail front, Libretro",
-            "sha256": "9367fb9cd1da8e4f332440fe43ca77bf11ba250cd9b7827732eb2ad025aabb30"
-          }
+        "kind": "box-scan",
+        "url": "https://images.igdb.com/igdb/image/upload/t_720p/co6oqg.jpg",
+        "credit": "The orange Brøderbund Living Books front for Mercer Mayer’s Just Grandma and Me, archived by IGDB.",
+        "sha256": "e51c1421e419e90b9bc81ea77d6952c40512b980e9db7d4a93ca150184742b89",
+        "sourceDimensions": [
+          540,
+          720
         ]
       },
       "screenshots": [
@@ -14790,7 +14826,7 @@
     "aliases": [
       "Living Books - Arthur's Teacher Trouble (CD Windows)"
     ],
-    "posterImage": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-arthur-shot-1.webp",
       "/launcher/retro-mohawk-arthur-shot-2.webp",
@@ -14798,17 +14834,13 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthurs%20Teacher%20Trouble.png",
-            "kind": "box-scan",
-            "credit": "Original Living Books retail front, Libretro",
-            "sha256": "e16681d393aecafcded2fde817d2fb317e5eea9ae9a9fda98f4a31a9294effc4"
-          }
+        "kind": "box-scan",
+        "url": "https://images.igdb.com/igdb/image/upload/t_1080p/co6om5.jpg",
+        "credit": "Brøderbund Living Books packaging artwork for Marc Brown’s Arthur’s Teacher Trouble, archived by IGDB.",
+        "sha256": "8bb174991da8c9a686b1d0f5749cd714d92259cf423a5401d5bb2712b4bb1e95",
+        "sourceDimensions": [
+          810,
+          1080
         ]
       },
       "screenshots": [
@@ -15253,7 +15285,7 @@
     "aliases": [
       "Pajama Sam 3 - You Are What You Eat From Your Head to Your Feet (CD Windows)"
     ],
-    "posterImage": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/pajama-sam-3-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-pajama3-shot-1.webp",
       "/launcher/retro-scumm-pajama3-shot-2.webp",
@@ -15261,18 +15293,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%203_%20You%20Are%20What%20You%20Eat%20from%20Your%20Head%20to%20Your%20Feet.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "2f6f7ea2e86d7a4fecf531335be9b769093d525204d5327468dc887f66258e00"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292800/library_600x900_2x.jpg",
+        "credit": "Humongous Entertainment official Steam library portrait",
+        "sha256": "8e6adcf171afba90e7f0fdf26c320b6df1603f2280da6fcdd3fcfe2f8e928510",
+        "sourceDimensions": [
+          600,
+          900
+        ],
+        "crop": {
+          "left": 0,
+          "top": 56,
+          "width": 600,
+          "height": 824
+        },
+        "canvas": {
+          "left": 9,
+          "right": 9,
+          "extendWith": "copy"
+        }
       },
       "screenshots": [
         {
@@ -17087,7 +17126,7 @@
     "aliases": [
       "Spy Fox 1 Dry Cereal (CD Windows, US)"
     ],
-    "posterImage": "/launcher/spy-fox-in-dry-cereal-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-spyfox-shot-1.webp",
       "/launcher/retro-scumm-spyfox-shot-2.webp",
@@ -17095,18 +17134,25 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Spy%20Fox%20in%20Dry%20Cereal.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "cd4d3448b905b7d5ffb03f6906e9facc787236abed40a1e4ed5c9f6d848393f6"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/283980/library_600x900_2x.jpg",
+        "credit": "Humongous Entertainment official Steam library portrait",
+        "sha256": "f79e51735fc48dfc7d230d93370984fe044c5c1cabe3b4aed26e135a3d98499f",
+        "sourceDimensions": [
+          600,
+          900
+        ],
+        "crop": {
+          "left": 0,
+          "top": 16,
+          "width": 600,
+          "height": 832
+        },
+        "canvas": {
+          "left": 12,
+          "right": 12,
+          "extendWith": "copy"
+        }
       },
       "screenshots": [
         {
@@ -17694,7 +17740,7 @@
     "aliases": [
       "Living Books - The New Kid on the Block (CD Windows)"
     ],
-    "posterImage": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-mohawk-newkid-shot-1.webp",
       "/launcher/retro-mohawk-newkid-shot-2.webp",
@@ -17702,17 +17748,13 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20The%20New%20Kid%20On%20the%20Block.png",
-            "kind": "box-scan",
-            "credit": "Original Brøderbund Living Books retail front, Libretro",
-            "sha256": "eb0803146cbcc5a17658adf951bd396083abc9b6747e3947bccd2bca128ac061"
-          }
+        "kind": "box-scan",
+        "url": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co6on1.jpg",
+        "credit": "Living Books and Brøderbund original packaging artwork, archived by IGDB.",
+        "sha256": "5353a8001c4b5f6ae6b6febdf6d85207bad1be476759b4eb604495a3e9e54408",
+        "sourceDimensions": [
+          528,
+          704
         ]
       },
       "screenshots": [
@@ -18409,7 +18451,8 @@
         "https://www.himalayastudios.com/games/mages/",
         "https://store.steampowered.com/app/270610/"
       ]
-    }
+    },
+    "posterImagePosition": "center"
   },
   "ags:primordia": {
     "title": "Primordia",
