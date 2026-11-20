@@ -213,8 +213,9 @@ hidden. They return to their normal visibility when the action disappears.
 
 In the Dropbox preview (`?dropbox=true`), **Continue** loads the latest intact ScummWEB autosave for the selected
 edition. It skips damaged checkpoints and can fall back to older checkpoints
-or an eligible native save. Supported games keep three hidden checkpoints,
+or an eligible native save. Supported games keep up to three checkpoints,
 updated about every two minutes and at the first safe moment after loading.
+**Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. Saved story progress uses checkpoint data where a
 compatible story map is available. Outside the preview, **Continue** uses the

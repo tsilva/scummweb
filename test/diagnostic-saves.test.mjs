@@ -3,8 +3,9 @@ import test from "node:test";
 import { installDiagnosticSaves } from "../web-shell/diagnostic-saves.mjs";
 import { installPlayerControls } from "../web-shell/player-controls.mjs";
 import { installContinueSaves, defaultSavePath } from "../web-shell/continue-saves.mjs";
+import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
 
-function fixture(supported = true) {
+function fixture(supported = true, query = "") {
   const files = new Map([[`${defaultSavePath}/game.001`, new Uint8Array([7, 8, 9])]]);
   const directories = new Set([defaultSavePath]);
   const storage = new Map([["unrelated", "unchanged"]]);
@@ -31,12 +32,13 @@ function fixture(supported = true) {
     stat(path) { return { size: files.get(path).length, mtime: 42, mode: 1 }; },
     isFile: () => true,
     readFile: (path) => files.get(path),
+    writeFile: (path, contents) => files.set(path, contents),
     unlink: (path) => files.delete(path),
   };
   installPlayerControls(scope);
   installDiagnosticSaves(scope, FS, scope.Module);
   installContinueSaves({ scope, FS, Module: scope.Module,
-    launchUrl: new URL("https://example.test/scummvm.html?catalogGame=game"), assetUrl: (url) => url });
+    launchUrl: new URL(`https://example.test/scummvm.html?catalogGame=game${query}`), assetUrl: (url) => url });
   scope.__scummwebBeginSaveScan("scumm", "monkey", "game", true);
   scope.__scummwebAddSave(1, "game.001", "Player save", true);
   scope.__scummwebEndSaveScan();
@@ -70,6 +72,52 @@ test("report snapshots capture all native companion files without modifying play
   assert.deepEqual([...storage], previousStorage);
   assert.deepEqual(controls.read().saves, previousSaves);
   assert.equal(directories.has("/tmp/scummweb-bug-report"), false);
+});
+
+test("Load Game can select either autosave sharing a manual slot and restores its own companion files", async () => {
+  const { scope, controls, files, directories, storage } = fixture(true, "&hostPlayer=1&dropbox=true");
+  const [older, newer, corrupt] = [0, 1, 2].map(index => `.scummweb-autosave.${index}`);
+  for (const [name, savedAt] of [[older, 100], [newer, 200]]) {
+    files.set(`${defaultSavePath}/${name}`, encodeAutosave({
+      engineId: "scumm", gameId: "monkey", target: "game", savedAt, slot: 1,
+      files: [
+        { name: "game.001", data: new Uint8Array([savedAt]) },
+        { name: "game.001.meta", data: new Uint8Array([savedAt + 1]) },
+      ],
+    }));
+  }
+  files.set(`${defaultSavePath}/${corrupt}`, "corrupt");
+  const directory = "/tmp/scummweb-bug-report";
+  const before = [...files];
+  const indexBefore = [...storage];
+  const boundary = () => scope.__scummwebAgentFrameBoundary(false, 2, 2, true, true);
+  const loadEntries = controls.read({ includeAutosaves: true }).saves;
+  assert.deepEqual(loadEntries.map(({ checkpoint, name }) => checkpoint ?? name), [newer, older, "game.001"]);
+  assert.deepEqual(controls.read().saves.map(({ name }) => name), ["game.001"]);
+  assert.equal(controls.run("save", older).error, "This save slot is unavailable.");
+  assert.equal(controls.run("load", corrupt).error, "This save is unavailable.");
+
+  for (const [name, savedAt, error] of [[older, 100, null], [newer, 200, "Native load failed"]]) {
+    const result = controls.run("load", name);
+    assert.equal(scope.__scummwebDiagnosticSaves.active, false);
+    assert.equal(boundary(), 3);
+    assert.equal(boundary(), -1, "keep the staged files until native load completes");
+    assert.equal(scope.__scummwebDiagnosticSaves.active, true);
+    assert.deepEqual([...files.get(`${directory}/game.001`)], [savedAt]);
+    assert.deepEqual([...files.get(`${directory}/game.001.meta`)], [savedAt + 1]);
+    scope.__scummwebAgentSaveResult(error);
+    assert.deepEqual(await result, error ? { error } : { slot: 1 });
+    assert.equal(scope.__scummwebDiagnosticSaves.active, false);
+    assert.equal(directories.has(directory), false);
+    assert.deepEqual([...files], before);
+    assert.deepEqual([...storage], indexBefore);
+  }
+
+  const manualLoad = controls.run("load", 1);
+  assert.equal(boundary(), 3);
+  assert.equal(scope.__scummwebDiagnosticSaves.active, false);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await manualLoad, { slot: 1 });
 });
 
 test("older runtime and unsupported saving never dispatch a normal player save", async () => {

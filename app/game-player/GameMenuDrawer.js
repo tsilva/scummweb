@@ -4,8 +4,10 @@ import GameBugReport from "./GameBugReport";
 
 const defaultSettings = { volume: 100, speed: 1, subtitles: true, canToggleSubtitles: false, saves: [] };
 const formatDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+const formatAutosaveDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" });
 
 function saveTitle(save) {
+  if (save.checkpoint) return "Autosave";
   return save.description?.trim() || `Save ${save.slot}`;
 }
 
@@ -53,13 +55,13 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     const player = frameRef.current?.contentWindow?.scummwebPlayerControls;
     controller.current = player;
     player?.setMenuOpen(true);
-    setSettings(player?.read() ?? defaultSettings);
+    setSettings(player?.read({ includeAutosaves: initialPage === "load" }) ?? defaultSettings);
     if (!dialog.open) dialog.showModal();
     return () => {
       player?.setMenuOpen(false);
       controller.current = null;
     };
-  }, [frameRef]);
+  }, [frameRef, initialPage]);
 
   useEffect(() => {
     if (busy) return;
@@ -76,7 +78,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
   }, [saved]);
 
   function go(next) {
-    setSettings(controller.current?.read() ?? defaultSettings);
+    setSettings(controller.current?.read({ includeAutosaves: next === "load" }) ?? defaultSettings);
     setError(null);
     setSaved(false);
     setOverwrite(null);
@@ -97,7 +99,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     try {
       const result = await player.run(operation, slot);
       if (player !== controller.current) return;
-      setSettings(player.read());
+      setSettings(player.read({ includeAutosaves: operation === "load" }));
       if (result.error) setError(result.error);
       else if (operation === "load") dialogRef.current?.close();
       else {
@@ -229,16 +231,18 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
               {slots.length ? (
                 <ul className="game-menu-slots">
                   {slots.map((save, index) => (
-                    <li key={save.slot}>
+                    <li key={save.checkpoint ?? save.slot}>
                       <button
                         data-menu-focus={index === 0 ? "" : undefined}
                         disabled={busy}
-                        onClick={() => page === "save" ? setOverwrite(save) : void run("load", save.slot)}
+                        onClick={() => page === "save" ? setOverwrite(save) : void run("load", save.checkpoint ?? save.slot)}
                         type="button"
                       >
                         <span>
                           <strong>{saveTitle(save)}</strong>
-                          {Number.isFinite(save.modifiedAt) && <small>{formatDate.format(save.modifiedAt)}</small>}
+                          {Number.isFinite(save.modifiedAt) && (
+                            <small>{(save.checkpoint ? formatAutosaveDate : formatDate).format(save.modifiedAt)}</small>
+                          )}
                         </span>
                         <ChevronRight aria-hidden="true" size={22} />
                       </button>
