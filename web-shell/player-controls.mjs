@@ -12,6 +12,8 @@ export function installPlayerControls(scope, requestMenu) {
   let reservedSlot = 0;
   let canSave = false;
   let canLoad = false;
+  let canSaveHere;
+  let onSaveAvailabilityChange;
   let saves = [];
   let occupied = new Set();
   let pending;
@@ -39,7 +41,7 @@ export function installPlayerControls(scope, requestMenu) {
         ? saves.concat(scope.__scummwebAutosaves?.list() ?? []).sort(byRecency)
         : saves;
       return {
-        volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
+        volume, speed, canSave, canLoad, canSaveHere, dialogueActive, nextSlot: nextSlot(),
         canLoadBackups: canLoad && scope.__scummwebDiagnosticSaves?.backupSupported() === true,
         ...subtitleState(),
         saves: entries.filter(({ slot }) => slot <= maxSlot),
@@ -53,8 +55,10 @@ export function installPlayerControls(scope, requestMenu) {
       }
       applyVolume();
     },
-    setMenuOpen(open) {
+    setMenuOpen(open, onSaveAvailability) {
       menuOpen = open;
+      onSaveAvailabilityChange = onSaveAvailability;
+      if (!open) canSaveHere = undefined;
       applyVolume();
     },
     listBackup(files) {
@@ -79,6 +83,7 @@ export function installPlayerControls(scope, requestMenu) {
       if (diagnostic) {
         if (slot > maxSlot) return { status: "unavailable", files: [], reason: "no-manual-slot" };
       } else if (operation === "save") {
+        if (canSaveHere === false) return { error: "You can’t save in this location." };
         if (!canSave || !Number.isInteger(slot) || slot < 1 || slot > maxSlot || slot === reservedSlot ||
             (!isNew && !entry?.writable)) return { error: "This save slot is unavailable." };
       } else if (operation !== "load" || !canLoad || (!entry && !isolated)
@@ -98,6 +103,12 @@ export function installPlayerControls(scope, requestMenu) {
   });
 
   scope.__scummwebSetDialogueActive = (active) => { dialogueActive = Boolean(active); };
+  scope.__scummwebPublishSaveAvailability = (available) => {
+    available = Boolean(available);
+    if (!menuOpen || canSaveHere === available) return;
+    canSaveHere = available;
+    onSaveAvailabilityChange?.();
+  };
 
   scope.__scummwebPlayerMillis = (millis) => {
     if (rawClock === undefined) gameClock = millis;

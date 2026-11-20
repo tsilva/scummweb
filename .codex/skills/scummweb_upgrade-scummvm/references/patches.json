@@ -1614,6 +1614,21 @@
       "retire_when": "Upstream routes engine-specific nonfatal compatibility notices to an opted-in browser host, preserving fallback behavior and native dialogs elsewhere."
     },
     {
+      "path": "patches/scummvm/99zzz-report-player-save-availability.patch",
+      "status": "active",
+      "sha256": "8fa349a032c260a57989a1947a1921ff8de04a1d42d4dccad072aeb9a99b3a3a",
+      "purpose": "Report whether the hosted save button is usable at the paused engine boundary.",
+      "invariants": [
+        "Sample the existing native save guard before the shared backend pauses the engine and retain that result while held. Sky and Queen sample their dedicated boundaries.",
+        "Preserve native save and load validation, unsupported-game fallback, and the agent timing and command protocol."
+      ],
+      "verification": [
+        "Verify the menu disables manual saving with the location note when the engine rejects the scene. Resume, move to a saveable scene, reopen the menu and verify native save and restore. Exercise a shared backend game and the dedicated Sky and Queen paths.",
+        "Run player and agent control tests and validate the rebuilt runtime and corresponding source."
+      ],
+      "retire_when": "The hosted runtime exposes equivalent save eligibility from the native boundary used for manual saves."
+    },
+    {
       "path": "patches/scummvm/99y-complete-iceman-opening.patch",
       "status": "active",
       "sha256": "199926cf4623b1994fca7663ebb134cd79ac1c30f127e304fcd67a35e006fc14",

@@ -285,6 +285,12 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 
 ## Shared game menu
 
+- Runtime save support is separate from current-scene eligibility. Sample the
+  native save guard at the hosted hold point, before acquiring the shared
+  backend's pause token. Reuse the result while the same frame is held and
+  retain the native guard on execution. Sky and Queen have dedicated hold
+  points. Closing the drawer invalidates the previous scene result.
+
 - Bug-report snapshots redirect the default save manager to nonpersistent MEMFS
   only during the native save operation. Suppress progress publication until all
   output streams close; retain the active capture after a dispatched timeout

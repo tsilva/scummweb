@@ -103,6 +103,41 @@ test("hosted save operations honor occupied slots, autosaves, and native confirm
   assert.equal(boundary(), 0);
 });
 
+test("the paused engine reports scene save availability before a manual request", async () => {
+  const { scope, controls, timers } = createPlayer();
+  const boundary = () => scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true);
+  const updates = [];
+  const openMenu = () => controls.setMenuOpen(true, () => updates.push(controls.read().canSaveHere));
+
+  boundary();
+  openMenu();
+  assert.equal(controls.read().canSaveHere, undefined);
+  assert.equal(boundary(), -1);
+  scope.__scummwebPublishSaveAvailability(false);
+  scope.__scummwebPublishSaveAvailability(false);
+  assert.equal(controls.read().canSave, true);
+  assert.equal(controls.read().canLoad, true);
+  assert.deepEqual(updates, [false]);
+  assert.match(controls.run("save", null).error, /can’t save in this location/);
+  assert.equal(timers.size, 0);
+
+  controls.setMenuOpen(false);
+  scope.__scummwebPublishSaveAvailability(false);
+  assert.equal(controls.read().canSaveHere, undefined);
+  assert.equal(boundary(), 0);
+
+  openMenu();
+  assert.equal(boundary(), -1);
+  scope.__scummwebPublishSaveAvailability(true);
+  assert.deepEqual(updates, [false, true]);
+  const save = controls.run("save", null);
+  assert.equal(boundary(), 1);
+  scope.__scummwebPublishPlayerSaves([{ slot: 1, name: "game.001" }], [1]);
+  scope.__scummwebPlayerSaveWritten("game.001");
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await save, { slot: 1 });
+});
+
 test("a timed-out dispatched load cannot complete a newer request", async () => {
   const { scope, controls, timers } = createPlayer();
   scope.__scummwebPublishPlayerSaves([{ slot: 4 }], [4]);

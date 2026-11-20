@@ -55,7 +55,10 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
     const dialog = dialogRef.current;
     const player = frameRef.current?.contentWindow?.scummwebPlayerControls;
     controller.current = player;
-    player?.setMenuOpen(true);
+    player?.setMenuOpen(true, () => {
+      const { canSave, canSaveHere, nextSlot } = player.read();
+      setSettings((current) => ({ ...current, canSave, canSaveHere, nextSlot }));
+    });
     setSettings(player?.read({ includeAutosaves: initialPage === "load" }) ?? defaultSettings);
     if (!dialog.open) dialog.showModal();
     return () => {
@@ -118,6 +121,8 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
     ? settings.saves.filter((save) => save.writable && save.slot > 0)
     : settings.saves;
   const SaveIcon = busy ? LoaderCircle : saved ? Check : Save;
+  const saveBlockedHere = settings.canSave && settings.canSaveHere === false;
+  const saveAvailabilityPending = settings.canSave === undefined || (settings.canSave && settings.canSaveHere === undefined);
 
   return (
     <dialog
@@ -165,11 +170,22 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
       {page === "menu" ? (
         <>
           <div className="game-menu-actions">
-            <button aria-busy={busy} className="game-menu-outlined" data-menu-focus disabled={busy || saved} onClick={saveGame} type="button">
+            <button
+              aria-busy={busy}
+              aria-describedby={saveBlockedHere ? "game-menu-save-unavailable" : undefined}
+              className="game-menu-outlined"
+              data-menu-focus
+              disabled={busy || saved || saveBlockedHere || saveAvailabilityPending}
+              onClick={saveGame}
+              type="button"
+            >
               <SaveIcon aria-hidden="true" className={busy ? "game-menu-saving-spinner" : undefined} size={22} />
               <span>{busy ? "Saving…" : saved ? "Saved" : "Save Game"}</span>
             </button>
             <span className="game-menu-save-status" role="status">{busy ? "Saving game" : saved ? "Game saved" : ""}</span>
+            {saveBlockedHere && (
+              <p className="game-menu-save-unavailable" id="game-menu-save-unavailable">You can’t save in this location.</p>
+            )}
             {error && <p className="game-menu-note" role="alert">{error}</p>}
             <button className="game-menu-outlined" disabled={busy} onClick={() => go("load")} type="button">
               <FolderOpen aria-hidden="true" size={22} /><span>Load Game</span><ChevronRight aria-hidden="true" size={19} />
