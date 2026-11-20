@@ -232,7 +232,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   gap: 1rem;
   min-height: 4.25rem;
   padding-inline: max(var(--toolbar-gutter), env(safe-area-inset-left))
-    max(var(--toolbar-gutter), env(safe-area-inset-right));
+    max(1rem, env(safe-area-inset-right));
   background: transparent;
   backdrop-filter: none;
   pointer-events: none;

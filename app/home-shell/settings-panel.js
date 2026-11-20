@@ -52,14 +52,16 @@ export default function SettingsPanel(props) {
           <span className="settings-progress" role="status">{busy ? "Working…" : ""}</span>
           <button type="button" className="settings-close" aria-label="Close settings" aria-disabled={busy || undefined} onClick={close}><X size={24} /></button>
         </header>
-        {open && (SettingsContent
-          ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />
-          : loadFailed
-            ? <p className="settings-status" role="alert">Could not load settings. Reload this page to try again.</p>
-            : <div className="settings-loader" role="status">
-              <LoaderCircle size={28} aria-hidden="true" />
-              <span>Loading settings…</span>
-            </div>)}
+        <div className="settings-body">
+          {open && (SettingsContent
+            ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />
+            : loadFailed
+              ? <p className="settings-status" role="alert">Could not load settings. Reload this page to try again.</p>
+              : <div className="settings-loader" role="status">
+                <LoaderCircle size={28} aria-hidden="true" />
+                <span>Loading settings…</span>
+              </div>)}
+        </div>
       </div>
     </dialog>
   </>;
