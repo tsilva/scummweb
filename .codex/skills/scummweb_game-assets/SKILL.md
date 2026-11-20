@@ -60,8 +60,9 @@ remain distinct actions within the user's requested scope.
 2. Run `pnpm run artwork:plan`. It preserves the active storage mapping, retains previously published records without local originals, and prepares a private upload plan and exact image copies. It generates a WebP preview up to 12 pixels per side from each new or changed original. Keep this evidence under the repository's ignored `.internal/` directory.
 3. Use an authorized credential route to run `pnpm run publish:artwork`. The publisher targets the existing bucket's reserved `artwork/` namespace, creates content-addressed objects conditionally, and checks every object's bytes and metadata by readback. It does not overwrite or prune existing objects or change bucket settings.
 4. Run `pnpm run artwork:activate`. This verifies every public image's checksum, length, MIME type, and immutable cache metadata before atomically switching the tracked storage manifest.
-5. After activation, run `pnpm run artwork:retire-local`. It verifies public delivery again, preserves exact private copies, and removes registered image files from local source and staging directories. It rejects changed originals and preserves notices and skip-intro saves. Keep older R2 objects available for older deployments.
-6. Run `pnpm run prepare` and the relevant verification below. Commit the mappings, credits, storage and rendition manifests, and any intended source-image deletions when committing is authorized. A publishing request does not itself authorize a Git push or deployment.
+5. After activation and before the application build, run the [responsive cover check](#responsive-cover-check) for every changed cover.
+6. Run `pnpm run artwork:retire-local`. It verifies public delivery again, preserves exact private copies, and removes registered image files from local source and staging directories. It rejects changed originals and preserves notices and skip-intro saves. Keep older R2 objects available for older deployments.
+7. Run `pnpm run prepare` and the relevant verification below. Commit the mappings, credits, storage and rendition manifests, and any intended source-image deletions when committing is authorized. A publishing request does not itself authorize a Git push or deployment.
 
 Publishing requires approval of the exact artwork plan and authorized bucket access.
 Keep credentials out of logs, files and browser assets. Do not broaden access or
@@ -71,6 +72,26 @@ For verification-only requests, run `pnpm run artwork:plan` to prepare the inten
 
 Normal builds need no storage credentials. Social-card generation reads checksum-verified public or cached originals after local inputs are retired, so a fresh checkout needs access to the public bucket. Published responsive mappings survive builds without local originals. For runtime changes, follow the maintenance guide's separate ScummVM rebuild procedure.
 The storage manifest's optional `images` map activates optimized fallbacks and complete responsive format sets alongside verified object records. Keep logical source paths and credits unchanged. AVIF picture sources must cover every WebP candidate width; keep WebP when a complete, smaller set does not meet the quality checks. Normal builds never rerun AVIF encoding.
+
+### Responsive cover check
+
+From the release candidate root, pass the affected logical poster paths from the
+game mappings, including reused artwork when a card changes to it.
+
+```sh
+node .codex/skills/scummweb_game-assets/scripts/verify-cover-delivery.mjs \
+  /launcher/example-cover.webp /launcher/another-cover.webp
+```
+
+The script uses the homepage's compact artwork payload and the card renderer.
+It checks the fallback plus every emitted WebP and AVIF candidate, including
+width descriptors, against the full manifest. Each URL must identify a published,
+content-addressed R2 object. Activation verifies those objects over the network.
+
+If an image resolves to a local `/launcher/` path or a candidate is missing,
+check its `images` entry in `data/artwork-storage.json`. Register the verified
+fallback and responsive objects there so the homepage payload includes them.
+Rerun the check before building.
 
 ## ZIP handoff for newly supported personal games
 
