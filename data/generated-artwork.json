@@ -8003,7 +8003,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 924
       },
       "deliveryOptimized": true,
       "master": {
@@ -8012,9 +8012,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "064dfeed6a31b5c6d78a47b1918c25a9fcaa756194111877fbd2c4472bd1e717",
+        "sha256": "f0c08bc7687cc1043374087b87023c36a37eecb89cee3507c5282a7ceaf01d97",
         "width": 900,
-        "height": 1200,
+        "height": 924,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -8028,7 +8028,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: Sleeping Cub's Test of Courage. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: Sleeping Cub's Test of Courage. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "064dfeed6a31b5c6d78a47b1918c25a9fcaa756194111877fbd2c4472bd1e717",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 112,
+          "bottom": 164
+        },
+        "inputSha256": "b10d57c70f1c7c5240c04240d5f5d49324299a80277556cfc9ccca6a854ad239"
+      }
     },
     {
       "target": "fw",
@@ -8188,7 +8203,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1004
       },
       "deliveryOptimized": true,
       "master": {
@@ -8197,9 +8212,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "18efa08a112cd6b752d135dd36199e422db30054b1929c856b3d5a02df821c40",
+        "sha256": "a7113d96ea92065343fbbad8386249738f44fe8b3725f23964479af89f515b64",
         "width": 900,
-        "height": 1200,
+        "height": 1004,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -8213,7 +8228,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Gnap (U.F.O.s). Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Gnap (U.F.O.s). Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "18efa08a112cd6b752d135dd36199e422db30054b1929c856b3d5a02df821c40",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 98,
+          "bottom": 98
+        },
+        "inputSha256": "20b7cc206d2cfde2076ea4f877ef29792eba200416acff8bfdc1d1d550e30a63"
+      }
     },
     {
       "target": "draci",
@@ -8262,7 +8292,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 863
       },
       "deliveryOptimized": true,
       "master": {
@@ -8271,9 +8301,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "81dc7908b8b5d7fa79a70b66c64d4204e6ffc518d8abf992a20871390458ca4c",
+        "sha256": "f2d0a8784551bc230b03e3ca89c71210ec2ebd29b6b3993827e7842cb72b0eda",
         "width": 900,
-        "height": 1200,
+        "height": 863,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -8287,7 +8317,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: The Princess and the Crab. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Magic Tales: The Princess and the Crab. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "81dc7908b8b5d7fa79a70b66c64d4204e6ffc518d8abf992a20871390458ca4c",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 116,
+          "bottom": 221
+        },
+        "inputSha256": "acf1dd6df5e9e104af86abc94cbe398c6efdf5d66e003b84ac005434e707fe17"
+      }
     },
     {
       "target": "bargon",
@@ -9009,7 +9054,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 926
       },
       "deliveryOptimized": true,
       "master": {
@@ -9018,9 +9063,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "9f63b367a3b42028df8ab91cb1fc3d2e9272a058cc5be7ce1f7bec0d8f51159c",
+        "sha256": "885b0d74957a4a314649c7de17d24b6d6d2427694f3de81d43c85067e67fc27a",
         "width": 900,
-        "height": 1200,
+        "height": 926,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -9034,7 +9079,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Lost in Time. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Lost in Time. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "9f63b367a3b42028df8ab91cb1fc3d2e9272a058cc5be7ce1f7bec0d8f51159c",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 136,
+          "bottom": 138
+        },
+        "inputSha256": "30b06115708540e5b3558cb180efee1ec89c6e21ba88a4980eafd60cd9822b2d"
+      }
     },
     {
       "target": "urban",
@@ -10120,7 +10180,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 900
       },
       "deliveryOptimized": true,
       "master": {
@@ -10129,9 +10189,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "65d5ae270b4fc33fd7025a69ac9498041bdde6b18109b8db00ca4394048f16a0",
+        "sha256": "d5f5843cbf0be0b8d59477fba733ad9c8929b0fbef100dbeb1170b02431c51f9",
         "width": 900,
-        "height": 1200,
+        "height": 900,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -10145,7 +10205,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Big Thinkers! 1st Grade. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Big Thinkers! 1st Grade. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "65d5ae270b4fc33fd7025a69ac9498041bdde6b18109b8db00ca4394048f16a0",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 150,
+          "bottom": 150
+        },
+        "inputSha256": "e23d20f41a23e7a8a7c9d58af298549fc4ecbe229f16994ef88499166d247e27"
+      }
     },
     {
       "target": "rosetattoo",
@@ -10601,7 +10676,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1038
       },
       "deliveryOptimized": true,
       "master": {
@@ -10610,9 +10685,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "921df510af6d7928743dec49b3c32d2a7c99a5373e7f6b0b1b1f774214b95252",
+        "sha256": "bd09c83fe4edc29e9abc70a645caccdbb05a6d9adbe816a5364a843215cdba4f",
         "width": 900,
-        "height": 1200,
+        "height": 1038,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -10626,7 +10701,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Myst. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Myst. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "921df510af6d7928743dec49b3c32d2a7c99a5373e7f6b0b1b1f774214b95252",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 81,
+          "bottom": 81
+        },
+        "inputSha256": "9184ec36197ef5ae77dc201f5c189d689e730b750fa3782fac020a48132d9d4e"
+      }
     },
     {
       "target": "rodney",
@@ -11970,7 +12060,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 896
       },
       "deliveryOptimized": true,
       "master": {
@@ -11979,9 +12069,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "90a05dbea84f5490a2f8c4fc7d106d09e696f955e1bfb2c61607f540b9ed945c",
+        "sha256": "4a1af11803b2e122ac6fc6536feefe13205347a23d7b39ea9eef058517153896",
         "width": 900,
-        "height": 1200,
+        "height": 896,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -11995,7 +12085,22 @@
           "credit": "Original game box-front scan retained by ScummWEB; original artwork, lettering and brands belong to their respective creators and rights holders."
         }
       ],
-      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Voyeur. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork."
+      "prompt": "Use case: identity-preserve. Restore the supplied ORIGINAL GAME BOX FRONT as a clean, high-resolution flat cover for ScummWEB. This is a faithful box-front restoration, not a new cover design or hero illustration. Preserve the original illustration, faces, clothing, medium, composition, palette, title typography, logos, publisher/developer branding, borders and printed layout. Reproduce all clearly readable original lettering VERBATIM, matching distinctive letterforms and hierarchy. Game identification below is context only: do not replace original lettering with the catalog title or add edition labels that are not printed on the reference. Improve print clarity, illustration detail and legibility; remove scan blur, dust, scratches, skew and external scan padding. Remove clearly adhesive retail/TANDY/price stickers, while preserving original printed promotional badges, platform/edition notices and publisher marks. Do not invent new text or credit lines; retain indistinct tiny print as unobtrusive print detail. Render the flat front face only: no spine, 3D box, perspective mockup, shadow, desk or decorative frame. PORTRAIT1200x1600,3:4 aspect, at least900x1200. Keep the complete original front visible, with minimal matching neutral margins if needed to preserve its actual proportions; do not crop title, logos or important art, stretch characters or redesign to force a ratio. No new watermark or ScummWEB branding. Game identification: Voyeur. Preserve the exact game-specific original box-front design and all clearly readable original title lettering, logos and artwork.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "90a05dbea84f5490a2f8c4fc7d106d09e696f955e1bfb2c61607f540b9ed945c",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 152,
+          "bottom": 152
+        },
+        "inputSha256": "d983ec0b2d14c4b62c22d57e027acbc09f43c6ba13490cc311996eac513fa0e7"
+      }
     },
     {
       "target": "tucker",
@@ -12840,7 +12945,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1123
       },
       "deliveryOptimized": true,
       "master": {
@@ -12849,9 +12954,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "9a5cf1b3c06061091236764b6c7551cc0cb10e2694cbb40b04ef504593f49231",
+        "sha256": "eb2d50ea046399a9cbe8b1fe9cbd96dcf0db10c5b98824ec9b184fe5fcc36d33",
         "width": 900,
-        "height": 1200,
+        "height": 1123,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -12864,7 +12969,22 @@
           "sha256": "ccf417fb8b0303e68503c03be3a83232edd757f85ca63ed8fa02ad3de8f618c3"
         }
       ],
-      "prompt": "Attachment one is the exact original Mortville Manor box front, authoritative. Attachment two is a near-final restoration, the edit target. Output the same 3:4 portrait restoration, retaining original title, castle illustration, black side framing with ATARI ST and MYSTERY, and the lower-left mark. Correct only the lower-right white logo tile. Use the original logo as printed: a fine black outlined circular mark with the correct angular K-like monogram and diagonal bolt, plus the words “KYILKHOR CREATION” exactly once around the ring. Preserve the original shape, orientation and scale, avoiding any new wording. Do not redesign or alter the other art or typography."
+      "prompt": "Attachment one is the exact original Mortville Manor box front, authoritative. Attachment two is a near-final restoration, the edit target. Output the same 3:4 portrait restoration, retaining original title, castle illustration, black side framing with ATARI ST and MYSTERY, and the lower-left mark. Correct only the lower-right white logo tile. Use the original logo as printed: a fine black outlined circular mark with the correct angular K-like monogram and diagonal bolt, plus the words “KYILKHOR CREATION” exactly once around the ring. Preserve the original shape, orientation and scale, avoiding any new wording. Do not redesign or alter the other art or typography.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "9a5cf1b3c06061091236764b6c7551cc0cb10e2694cbb40b04ef504593f49231",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 41,
+          "bottom": 36
+        },
+        "inputSha256": "f4575fab6ed5bf784e1271281583cc7cae5d4127ff22d32b97b8db4203a18dcb"
+      }
     },
     {
       "target": "pajama",
@@ -13295,7 +13415,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 888
       },
       "deliveryOptimized": true,
       "master": {
@@ -13304,9 +13424,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "c71111f26ffc2e5aed747694cb26831300684148f661bc7895968f1aaf1a3983",
+        "sha256": "dadaa292eb69cee655cf6d364298d7a17a55ff89ce2961014d26949e3d647cdc",
         "width": 900,
-        "height": 1200,
+        "height": 888,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -13319,7 +13439,22 @@
           "sha256": "a98fedf50975247777ba251a66a31e73f878cf7b98e4d5f24700d1626eb532ec"
         }
       ],
-      "prompt": "Restore just the lower-right purple Humongous Entertainment publisher seal in the first attachment, the near-final freddi fish 4 box-front edit target. The second attachment is this game's exact retail source. The third attachment contains a clean example of the same original H/e mark at bottom-right and supplies the exact lettering. The purple ring must read “HUMONGOUS” once on the upper arc and “ENTERTAINMENT” once on the lower arc, with the original H/e logo inside. Match the target's existing placement and size and copy the exact typography from reference three. Keep the rest of the first image, title and illustration intact, including all other publisher logos and details. Flat 3:4 portrait, no changes to the art or layout outside the publisher seal."
+      "prompt": "Restore just the lower-right purple Humongous Entertainment publisher seal in the first attachment, the near-final freddi fish 4 box-front edit target. The second attachment is this game's exact retail source. The third attachment contains a clean example of the same original H/e mark at bottom-right and supplies the exact lettering. The purple ring must read “HUMONGOUS” once on the upper arc and “ENTERTAINMENT” once on the lower arc, with the original H/e logo inside. Match the target's existing placement and size and copy the exact typography from reference three. Keep the rest of the first image, title and illustration intact, including all other publisher logos and details. Flat 3:4 portrait, no changes to the art or layout outside the publisher seal.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "c71111f26ffc2e5aed747694cb26831300684148f661bc7895968f1aaf1a3983",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 161,
+          "bottom": 151
+        },
+        "inputSha256": "324e54b472ce875e268de2fa08f9e752e0730b087dd00e837f3ba33895bf236b"
+      }
     },
     {
       "target": "freddi2",
@@ -13610,7 +13745,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 950
       },
       "deliveryOptimized": true,
       "master": {
@@ -13619,9 +13754,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "6aad0972830431ae5e43699a73be69c6d19dcc95b86393f1fdc3473b55dafce3",
+        "sha256": "ce3ad086556854c00c2d3f090dae1ce239e5975bf857e823e85f11da546786cd",
         "width": 900,
-        "height": 1200,
+        "height": 950,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -13634,7 +13769,22 @@
           "sha256": "1545117c10df7012d90ed3b1c30d5c571ea73afd4f735ed2a15899cf6817e0fa"
         }
       ],
-      "prompt": "Restore the exact attached original front of Marc Brown's Arthur's Reading Race for a ScummWEB 3:4 portrait card, native dimensions at least 1080×1440. Use the attached authentic front as the edit target. Preserve the actual original design, typography, original publisher and platform marks, logos, and illustration. Remove age damage and scan noise. Frame all important lettering safely within the card, use minimal plain margins where needed, and preserve all artwork exactly. No fake print, redesign, missing logos, spine, 3D package or mockup. The attachment is the original jewel-case front insert, including the “User’s Guide” line printed on the original front. Preserve it verbatim along with MARC BROWN, ARTHUR’S READING RACE, the Living Books logo, and “SOCCER” on the blue book. Preserve the near-square artwork within the 3:4 card with minimal plain warm neutral margins above and below. Keep its exact pastel colors, illustrated town, character placement and line quality."
+      "prompt": "Restore the exact attached original front of Marc Brown's Arthur's Reading Race for a ScummWEB 3:4 portrait card, native dimensions at least 1080×1440. Use the attached authentic front as the edit target. Preserve the actual original design, typography, original publisher and platform marks, logos, and illustration. Remove age damage and scan noise. Frame all important lettering safely within the card, use minimal plain margins where needed, and preserve all artwork exactly. No fake print, redesign, missing logos, spine, 3D package or mockup. The attachment is the original jewel-case front insert, including the “User’s Guide” line printed on the original front. Preserve it verbatim along with MARC BROWN, ARTHUR’S READING RACE, the Living Books logo, and “SOCCER” on the blue book. Preserve the near-square artwork within the 3:4 card with minimal plain warm neutral margins above and below. Keep its exact pastel colors, illustrated town, character placement and line quality.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "6aad0972830431ae5e43699a73be69c6d19dcc95b86393f1fdc3473b55dafce3",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 103,
+          "bottom": 147
+        },
+        "inputSha256": "86cd40ceb10d8a6543257b196d4dd124f4210c412b955216f0c8967bda6d76a4"
+      }
     },
     {
       "target": "baseball",
@@ -13680,7 +13830,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1112
       },
       "deliveryOptimized": true,
       "master": {
@@ -13689,9 +13839,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "0c8e1b58ac7a1eecd466f3ec4583f2cf168eb9c7b0bdf62a79d3dc15d05b2fea",
+        "sha256": "f4224c4c9b536ee48ab8b27cda9fb5d7284d19be1b76dd72976dece6d80bd433",
         "width": 900,
-        "height": 1200,
+        "height": 1112,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -13704,7 +13854,22 @@
           "sha256": "5e7f4f92b535a1913381837db3ddcdee89edd6d809ea89c8d93e8da08dc220a1"
         }
       ],
-      "prompt": "Restore the exact attached original front of Backyard Baseball for a ScummWEB 3:4 portrait card, native dimensions at least 1080×1440. Use the attached authentic front as the edit target. Preserve the actual original design, typography, original publisher and platform marks, logos, and illustration. Remove age damage and scan noise. Frame all important lettering safely within the card, use minimal plain margins where needed, and preserve all artwork exactly. No fake print, redesign, missing logos, spine, 3D package or mockup. Preserve the exact original CD front. Keep original purple-capped Pablo and the other kids in their positions, red handwritten “Backyard” and blue varsity “BASEBALL”, illustrated baseball behind the type, platform detail and original Junior Sports age mark. Fit its square art into 3:4 with minimal neutral padding above/below. Remove only damage; preserve the original background and any original promotional marks."
+      "prompt": "Restore the exact attached original front of Backyard Baseball for a ScummWEB 3:4 portrait card, native dimensions at least 1080×1440. Use the attached authentic front as the edit target. Preserve the actual original design, typography, original publisher and platform marks, logos, and illustration. Remove age damage and scan noise. Frame all important lettering safely within the card, use minimal plain margins where needed, and preserve all artwork exactly. No fake print, redesign, missing logos, spine, 3D package or mockup. Preserve the exact original CD front. Keep original purple-capped Pablo and the other kids in their positions, red handwritten “Backyard” and blue varsity “BASEBALL”, illustrated baseball behind the type, platform detail and original Junior Sports age mark. Fit its square art into 3:4 with minimal neutral padding above/below. Remove only damage; preserve the original background and any original promotional marks.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "0c8e1b58ac7a1eecd466f3ec4583f2cf168eb9c7b0bdf62a79d3dc15d05b2fea",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 44,
+          "bottom": 44
+        },
+        "inputSha256": "f6d0107b7145163d8a02c0498fea7dba68adc72339400f0a2f755b63d825c53c"
+      }
     },
     {
       "target": "baseball2001",
@@ -13750,7 +13915,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 897
       },
       "deliveryOptimized": true,
       "master": {
@@ -13759,9 +13924,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "024410f9dd3b2c4d33a15327e92badf3fb3d0b759de7bc37b26d05a7cc2e680f",
+        "sha256": "6c01c0115d7803efc7bd3d058d0992016b88afb86ed367bdc00771972eb18b11",
         "width": 900,
-        "height": 1200,
+        "height": 897,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -13774,7 +13939,22 @@
           "sha256": "5576332291cf3c96a653c680a1c8e976793fce09c703ee53edf9005278a08ae1"
         }
       ],
-      "prompt": "Restore the attached exact original Backyard Baseball 2001 retail front, as a flat 3:4 portrait for a ScummWEB card, native resolution at least 1080×1440. Match the source illustration, typography, palette, faces, layout and publisher marks, down to spelling and exact title. Improve scan clarity and preserve intentional texture. Important text must remain safely inset. No invented layouts, decorations, graphics, alternate logos, mockup or spine. Faithfully reproduce the original 2001 edition lettering, yellow Backyard, bold red BASEBALL, green backing and white 2001, exact printed MLB and Humongous Sports marks, ‘Major League Baseball players take the field as kids’ banner, Win/Mac note, original illustration and text placements. Fit its near-square shape with a clean neutral top/bottom extension only."
+      "prompt": "Restore the attached exact original Backyard Baseball 2001 retail front, as a flat 3:4 portrait for a ScummWEB card, native resolution at least 1080×1440. Match the source illustration, typography, palette, faces, layout and publisher marks, down to spelling and exact title. Improve scan clarity and preserve intentional texture. Important text must remain safely inset. No invented layouts, decorations, graphics, alternate logos, mockup or spine. Faithfully reproduce the original 2001 edition lettering, yellow Backyard, bold red BASEBALL, green backing and white 2001, exact printed MLB and Humongous Sports marks, ‘Major League Baseball players take the field as kids’ banner, Win/Mac note, original illustration and text placements. Fit its near-square shape with a clean neutral top/bottom extension only.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "024410f9dd3b2c4d33a15327e92badf3fb3d0b759de7bc37b26d05a7cc2e680f",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 152,
+          "bottom": 151
+        },
+        "inputSha256": "38c4c6b5bc8a1b2ed747cb72b4cde3e9883d320363e3317440f3f36a07e30a01"
+      }
     },
     {
       "target": "baseball2003",
@@ -14100,7 +14280,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 932
       },
       "deliveryOptimized": true,
       "master": {
@@ -14109,9 +14289,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "112862561b231b9e09dc799d0dfa17410a90a849d7f74837ccf8b0fc81c2c895",
+        "sha256": "3c84e26a4e1ded9457c0ce68ef00e16fa9d86eeea62aff7ff91a48bb5f5838c2",
         "width": 900,
-        "height": 1200,
+        "height": 932,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -14124,7 +14304,22 @@
           "sha256": "819f97bd6be63871187d227b270ecf08f66be236743509e58d9927901f2f95c2"
         }
       ],
-      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's 123 Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament."
+      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's 123 Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "112862561b231b9e09dc799d0dfa17410a90a849d7f74837ccf8b0fc81c2c895",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 125,
+          "bottom": 143
+        },
+        "inputSha256": "a2517b4bcd8e47d9f4db539d647285283f191f4a4965e0f89f67cd37b5425c90"
+      }
     },
     {
       "target": "bluesabctime",
@@ -14170,7 +14365,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1014
       },
       "deliveryOptimized": true,
       "master": {
@@ -14179,9 +14374,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "0299613cde62ec4495c0ae1981f354cbd4ce1496da5021edc318c69317cfb334",
+        "sha256": "601a7fd135948a3b7d4eefc713b789570e8044873e7da104d47f7ab13fcaf911",
         "width": 900,
-        "height": 1200,
+        "height": 1014,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -14194,7 +14389,22 @@
           "sha256": "35f32de85cfbc1a939b9f50768b754a14caeddf63de27ec6dd4bec78471b1d06"
         }
       ],
-      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's ABC Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament."
+      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's ABC Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "0299613cde62ec4495c0ae1981f354cbd4ce1496da5021edc318c69317cfb334",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 85,
+          "bottom": 101
+        },
+        "inputSha256": "b051960647d998ac8e6a35b3a234c87249d53c25494a0dc366425d865e5f7dce"
+      }
     },
     {
       "target": "arttime",
@@ -14310,7 +14520,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 887
       },
       "deliveryOptimized": true,
       "master": {
@@ -14319,9 +14529,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "2c08b77b1738ab653c595062e86d0cede8661acff09f5b48f935d20715edccb6",
+        "sha256": "1cf50047b1d01ec4bc50bba4c2374388bca6c83d7b6e7fceab4e9f05f8265c3d",
         "width": 900,
-        "height": 1200,
+        "height": 887,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -14334,7 +14544,22 @@
           "sha256": "e5aa88cca1b671f1239b9ef70c8ac307ecd573caefb0daf55a04698a6307693b"
         }
       ],
-      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's Birthday Adventure, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament."
+      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's Birthday Adventure, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "2c08b77b1738ab653c595062e86d0cede8661acff09f5b48f935d20715edccb6",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 163,
+          "bottom": 150
+        },
+        "inputSha256": "ba1a2e37b221c483938826818c45d180dc915b6d2f2942d0c869c4b8e8101357"
+      }
     },
     {
       "target": "readtime",
@@ -14380,7 +14605,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1127
       },
       "deliveryOptimized": true,
       "master": {
@@ -14389,9 +14614,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "2101592283586170579898fc17c54814d69264911be06a6542c1f9f0d17113e7",
+        "sha256": "b4dc9cb11d97a267eb6d68a53111182e1efb5c7a092d448ce8fe50709aee8bc5",
         "width": 900,
-        "height": 1200,
+        "height": 1127,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -14404,7 +14629,22 @@
           "sha256": "a8f2a9e1f16e5270e93b5dfdebebf2842ccb798cb9abc09688177b603acf0695"
         }
       ],
-      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's Reading Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament."
+      "prompt": "Create a faithful clean restoration of the attached ORIGINAL front packaging scan of Blue's Reading Time Activities, for a ScummWEB cover. Output the full front centered and readable on a 3:4 portrait canvas, native at least 900×1200. Preserve all original title typography and capitalization, same colored art, Blue's face and pose, exact Blue's Clues paw logo, age and format labels, Humongous seal and publisher marks, positions, borders, lettering, and proportions. This is a careful scan restoration. Preserve the full original square or rectangular layout with restrained flat color framing only where needed to fit the 3:4 canvas, never cut or stretch the packaging or introduce new logos or copy. Straight front-on crisp print, no case glare, mockup, surface shadows or new ornament.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "2101592283586170579898fc17c54814d69264911be06a6542c1f9f0d17113e7",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 33,
+          "bottom": 40
+        },
+        "inputSha256": "6c347ff6da4edfbc49282572b9942b55c43e6b4717c75eb8ca72540b9794a32e"
+      }
     },
     {
       "target": "cnick-kq",
@@ -15710,7 +15950,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1031
       },
       "deliveryOptimized": true,
       "master": {
@@ -15719,9 +15959,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "7c8583cd46c230f8d99cb8478b86f9e2a05ddf11a2b553ed77a7ba798d555254",
+        "sha256": "0e2af9b63a32190d741ec124bac6cb9543ed987b9e187564ec7e1d5ca9626f68",
         "width": 900,
-        "height": 1200,
+        "height": 1031,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -15734,7 +15974,22 @@
           "sha256": "9367fb9cd1da8e4f332440fe43ca77bf11ba250cd9b7827732eb2ad025aabb30"
         }
       ],
-      "prompt": "Restore the attached original full front of Just Grandma and Me as a ScummWEB cover. Retain its exact layout, title text and distinctive original lettering, publisher logos, marks, retail details, colors and art. Repair scratches, straighten the scan and improve print clarity. Keep the full original at correct proportions and frame as needed with the smallest matching flat margins on a 3:4 canvas. No new text or elements, do not redraw the layout or change edition. At least 900×1200 at 3:4."
+      "prompt": "Restore the attached original full front of Just Grandma and Me as a ScummWEB cover. Retain its exact layout, title text and distinctive original lettering, publisher logos, marks, retail details, colors and art. Repair scratches, straighten the scan and improve print clarity. Keep the full original at correct proportions and frame as needed with the smallest matching flat margins on a 3:4 canvas. No new text or elements, do not redraw the layout or change edition. At least 900×1200 at 3:4.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "7c8583cd46c230f8d99cb8478b86f9e2a05ddf11a2b553ed77a7ba798d555254",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 84,
+          "bottom": 85
+        },
+        "inputSha256": "04d0915d4531f01b5f84eb1631c05faaba557c238008701d23f9ab46f5adfa0b"
+      }
     },
     {
       "target": "fbear",
@@ -15745,7 +16000,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1008
       },
       "deliveryOptimized": true,
       "master": {
@@ -15754,9 +16009,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "e417a91a1b51c3713b43f1bf33c0e785165fd0604923e2e7e317c324db422dd6",
+        "sha256": "aa05883a87c3b3e68002b8a621b91b22911ddbdc6f04b536f610dfbd5ff161df",
         "width": 900,
-        "height": 1200,
+        "height": 1008,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -15769,7 +16024,22 @@
           "sha256": "45aa7830434eb708de2a7e6728c282ff5a77150604ee31b92834699a294f494a"
         }
       ],
-      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait."
+      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "e417a91a1b51c3713b43f1bf33c0e785165fd0604923e2e7e317c324db422dd6",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 96,
+          "bottom": 96
+        },
+        "inputSha256": "1fc7faf6091f3f77896cebeced1e5b1a7aaf89359e4adb71bffe30e09575f549"
+      }
     },
     {
       "target": "maze",
@@ -15780,7 +16050,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 998
       },
       "deliveryOptimized": true,
       "master": {
@@ -15789,9 +16059,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "2800e9d58bd343b19123ab6050ed7e75e9af7d04daaf17765f13326d83f22127",
+        "sha256": "5868ba592cfcd50845c6401ef299661f33853700db8dbf2c810c0f71c16d96b0",
         "width": 900,
-        "height": 1200,
+        "height": 998,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -15804,7 +16074,22 @@
           "sha256": "edf587dd69f28325109cf0fed99ab550acb7b4b5a0e8adbd6d23715c09ac34fd"
         }
       ],
-      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait."
+      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "2800e9d58bd343b19123ab6050ed7e75e9af7d04daaf17765f13326d83f22127",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 92,
+          "bottom": 110
+        },
+        "inputSha256": "78827dbebc962b0259fee5b874ea50396a89150092d947218fdf6f7ff4bd1144"
+      }
     },
     {
       "target": "water",
@@ -15815,7 +16100,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1033
       },
       "deliveryOptimized": true,
       "master": {
@@ -15824,9 +16109,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "18e1f3aa45eebec533ddc280e7f0bb2895aed42abaf4cb7806a9340235afe773",
+        "sha256": "087999fd09df1d3e671a11bc6da324f9c5142945c27bafb6c09e77c7618a2918",
         "width": 900,
-        "height": 1200,
+        "height": 1033,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -15839,7 +16124,22 @@
           "sha256": "454e043185d40a94afc4a3b0f0bd4fc98dae0d35bc149a1fd63d286ba1694a73"
         }
       ],
-      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait."
+      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "18e1f3aa45eebec533ddc280e7f0bb2895aed42abaf4cb7806a9340235afe773",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 83,
+          "bottom": 84
+        },
+        "inputSha256": "87a7c05bc95b2e91a19f14df0f40c3d6deeb36fc863e7ae87d1f972405276bd9"
+      }
     },
     {
       "target": "harryhh",
@@ -15850,7 +16150,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1008
       },
       "deliveryOptimized": true,
       "master": {
@@ -15859,9 +16159,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "315066db2e53803b3e74c094e84f49e0fa13f73c7b56f85cd37b12507098e494",
+        "sha256": "0f9b42c6162eba254914d8d7c0fc4de543e41398eb1a4b20fc6d1eec6d7c9f75",
         "width": 900,
-        "height": 1200,
+        "height": 1008,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -15874,7 +16174,22 @@
           "sha256": "205feb9748d2a678bebd6151eca5249b0ec6ae14667e9c45f084ee28c368b701"
         }
       ],
-      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait."
+      "prompt": "Adjust the CANVAS ONLY of the first attached, visually approved cover restoration so its actual output is exactly a tall 3:4 portrait canvas, ideally 1080 pixels wide and 1440 pixels high. The second attached image is the original retail front for fidelity. Preserve the first image’s complete existing package face including title spelling, all typography and logos, figures, layout and edges. If the original artwork is broader than the requested canvas, reduce its scale uniformly and center the entire package with restrained flat margins above and below. If the original is narrower, extend plain side margins. Do not add artwork, copy, marks, frames or texture in these margins and do not crop, stretch, redesign or blur the original front. Native 1080×1440, 3:4 portrait.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "315066db2e53803b3e74c094e84f49e0fa13f73c7b56f85cd37b12507098e494",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 89,
+          "bottom": 103
+        },
+        "inputSha256": "c60585f66e9137caba3a956c28ac6958849d377bc56c96fa1cb9c8c0dbd84210"
+      }
     },
     {
       "target": "hires0",
@@ -16270,7 +16585,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 976
       },
       "deliveryOptimized": true,
       "master": {
@@ -16279,9 +16594,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "0993a8975f731c1e9360b2d4dac202a607a19f4c46f0085bf94d5f3034cc1c2d",
+        "sha256": "1a2f7d72863a1332b6b47265e3832c629227bd8c850a46ce1e8cf4b08d2c8713",
         "width": 900,
-        "height": 1200,
+        "height": 976,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -16294,7 +16609,22 @@
           "sha256": "eabbd75b3537e25c893053d1bc1c2e9517b2b191e703bba066bacc2ac6580481"
         }
       ],
-      "prompt": "Faithfully restore the original full package front of Little Monster at School for a 3:4 portrait card. Retain exact print type, original title letters, art, all characters, logos, credits, casing, edition and platform details and positions. Improve line definition and print wear without adding details or changing the layout. Center the full existing rectangular package at the correct aspect ratio inside the 3:4 canvas, using only subtle flat letterboxing if necessary. No frame, mock-up, perspective, glare or new text. Output actual 1080×1440 portrait or larger at 3:4."
+      "prompt": "Faithfully restore the original full package front of Little Monster at School for a 3:4 portrait card. Retain exact print type, original title letters, art, all characters, logos, credits, casing, edition and platform details and positions. Improve line definition and print wear without adding details or changing the layout. Center the full existing rectangular package at the correct aspect ratio inside the 3:4 canvas, using only subtle flat letterboxing if necessary. No frame, mock-up, perspective, glare or new text. Output actual 1080×1440 portrait or larger at 3:4.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "0993a8975f731c1e9360b2d4dac202a607a19f4c46f0085bf94d5f3034cc1c2d",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 110,
+          "bottom": 114
+        },
+        "inputSha256": "9ff24aa43037a236427328f6ac679e6b7e0c0b747bcd084649fd37bfa7fcce53"
+      }
     },
     {
       "target": "arthur",
@@ -16340,7 +16670,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1038
       },
       "deliveryOptimized": true,
       "master": {
@@ -16349,9 +16679,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "19f3a033bd4096ff2974e15be09f75144d0bbcad62131d517e4ba997adfbbbe5",
+        "sha256": "43634356cd8d9c10f1adddeb33178a913339890528b77f9ccd79692b347f5a2c",
         "width": 900,
-        "height": 1200,
+        "height": 1038,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -16364,7 +16694,22 @@
           "sha256": "e16681d393aecafcded2fde817d2fb317e5eea9ae9a9fda98f4a31a9294effc4"
         }
       ],
-      "prompt": "Restore the attached original full front of Marc Brown’s Arthur’s Teacher Trouble. Make the output actual 1080×1440 portrait, a 3:4 canvas. Use the original full frame unchanged in proportion, fit it centrally with minimal matching flat margins. Preserve all original box art, title type and spelling, logos, credits, platform notes, figures, layout, and colors in their original locations. Clean scan wear and improve clarity, no new text, perspective, gloss or redesign. The output canvas must be 3:4 portrait regardless of the package's original proportions."
+      "prompt": "Restore the attached original full front of Marc Brown’s Arthur’s Teacher Trouble. Make the output actual 1080×1440 portrait, a 3:4 canvas. Use the original full frame unchanged in proportion, fit it centrally with minimal matching flat margins. Preserve all original box art, title type and spelling, logos, credits, platform notes, figures, layout, and colors in their original locations. Clean scan wear and improve clarity, no new text, perspective, gloss or redesign. The output canvas must be 3:4 portrait regardless of the package's original proportions.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "19f3a033bd4096ff2974e15be09f75144d0bbcad62131d517e4ba997adfbbbe5",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 66,
+          "bottom": 96
+        },
+        "inputSha256": "14f6bcb6c93d5630df9b563b6ed1c8ffcc5240a6fd1533c9f3efb81bee12360e"
+      }
     },
     {
       "target": "fairytales",
@@ -16550,7 +16895,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1083
       },
       "deliveryOptimized": true,
       "master": {
@@ -16559,9 +16904,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "0edaeca39ec3eacfc88a299980c7db7c2f838aff2f076e2bccddfc126b987e2b",
+        "sha256": "ec28c83e170212d6ba7c04d00b58458e4e587bc286e1ae9cf8fd3c18b09501df",
         "width": 900,
-        "height": 1200,
+        "height": 1083,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -16574,7 +16919,22 @@
           "sha256": "36c08c47ceae266ff27874e06c6ab89011c6636fb159a83cf4a0a426ae7d251b"
         }
       ],
-      "prompt": "Restore the attached original full front of Mixed-Up Mother Goose Deluxe. Make the output actual 1080×1440 portrait, a 3:4 canvas. Use the original full frame unchanged in proportion, fit it centrally with minimal matching flat margins. Preserve all original box art, title type and spelling, logos, credits, platform notes, figures, layout, and colors in their original locations. Clean scan wear and improve clarity, no new text, perspective, gloss or redesign. The output canvas must be 3:4 portrait regardless of the package's original proportions."
+      "prompt": "Restore the attached original full front of Mixed-Up Mother Goose Deluxe. Make the output actual 1080×1440 portrait, a 3:4 canvas. Use the original full frame unchanged in proportion, fit it centrally with minimal matching flat margins. Preserve all original box art, title type and spelling, logos, credits, platform notes, figures, layout, and colors in their original locations. Clean scan wear and improve clarity, no new text, perspective, gloss or redesign. The output canvas must be 3:4 portrait regardless of the package's original proportions.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "0edaeca39ec3eacfc88a299980c7db7c2f838aff2f076e2bccddfc126b987e2b",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 38,
+          "bottom": 79
+        },
+        "inputSha256": "d2e2446ef851056b8aeb1ca88f83be29c3b04efdd8b9a9ede4724fd7102db86e"
+      }
     },
     {
       "target": "openquest",
@@ -16725,7 +17085,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1014
       },
       "deliveryOptimized": true,
       "master": {
@@ -16734,9 +17094,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "af116a208c5f803c066e8f730026c19db8ef012c57edbe2f2b2bc1aaee51979b",
+        "sha256": "900fe6ca97990a5b469d45fd864c50739a758ab87e3e7d2a30a81a70d4cb4685",
         "width": 900,
-        "height": 1200,
+        "height": 1014,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -16749,7 +17109,22 @@
           "sha256": "2f6f7ea2e86d7a4fecf531335be9b769093d525204d5327468dc887f66258e00"
         }
       ],
-      "prompt": "Restore the attached original front packaging scan of Pajama Sam 3: You Are What You Eat from Your Head to Your Feet. Output actual 1080×1440, a tall 3:4 portrait, using subtle flat margins when needed to keep the original front full size within the canvas and unstretched. Preserve its exact original title spelling, font, figures, art, print colors, all authentic publisher logos and visible edition labels in their original positions. Improve print clarity and remove damage. Keep the original package layout intact. No new text, art, border effects, perspective, glare or shadows. Do not return a square canvas."
+      "prompt": "Restore the attached original front packaging scan of Pajama Sam 3: You Are What You Eat from Your Head to Your Feet. Output actual 1080×1440, a tall 3:4 portrait, using subtle flat margins when needed to keep the original front full size within the canvas and unstretched. Preserve its exact original title spelling, font, figures, art, print colors, all authentic publisher logos and visible edition labels in their original positions. Improve print clarity and remove damage. Keep the original package layout intact. No new text, art, border effects, perspective, glare or shadows. Do not return a square canvas.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "af116a208c5f803c066e8f730026c19db8ef012c57edbe2f2b2bc1aaee51979b",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 93,
+          "bottom": 93
+        },
+        "inputSha256": "56817a11d9809512ed5c16339c3a09d6d87be2c46d1b58fc56c3514f8d082fc6"
+      }
     },
     {
       "target": "pjgames",
@@ -17320,7 +17695,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 888
       },
       "deliveryOptimized": true,
       "master": {
@@ -17329,9 +17704,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "e3019820ec2a37c2b9b13e4b3fb99f4c2a49c3a1d8311bfe2e730da04a6d1e6f",
+        "sha256": "f8c70c0813a4eea52586224df4a21679f5869bef1047184af268dd8a7f79ab0d",
         "width": 900,
-        "height": 1200,
+        "height": 888,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -17344,7 +17719,22 @@
           "sha256": "a5d01407a626e45d6676a7acccac5da75c6045dede5e50cb8669ac6cace7958e"
         }
       ],
-      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Remove the transparent jewel case plastic, gloss and hinge. Reproduce only the printed original front insert, retaining its entire title, artwork, Playtoons and Sierra marks, with restrained plain margins. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows."
+      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Remove the transparent jewel case plastic, gloss and hinge. Reproduce only the printed original front insert, retaining its entire title, artwork, Playtoons and Sierra marks, with restrained plain margins. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "e3019820ec2a37c2b9b13e4b3fb99f4c2a49c3a1d8311bfe2e730da04a6d1e6f",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 156,
+          "bottom": 156
+        },
+        "inputSha256": "1647af69b5e01334f9b2f34272d7a782dfd654301e8b9fdfb40cf6de2559d2de"
+      }
     },
     {
       "target": "playtoons4",
@@ -17355,7 +17745,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 852
       },
       "deliveryOptimized": true,
       "master": {
@@ -17364,9 +17754,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "b52581b122b551ce6448357c69a21e5586e542490c54ab4e5e52c25794230029",
+        "sha256": "6c109e123b0a8fc80c1f2c20309e7500db4ec1fe1b8d146cfc91758f219f6926",
         "width": 900,
-        "height": 1200,
+        "height": 852,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -17379,7 +17769,22 @@
           "sha256": "5ff40266c32219b16421028342d978520eaafdd5f389928d0f3846d551b66550"
         }
       ],
-      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Keep the original complete square French front insert and exact LE PRINCE MANDARINE typography, Playtoons number 4, artwork and COKTEL footer. Fit it to a tall 3:4 portrait with flat blue margins above and below. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows."
+      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Keep the original complete square French front insert and exact LE PRINCE MANDARINE typography, Playtoons number 4, artwork and COKTEL footer. Fit it to a tall 3:4 portrait with flat blue margins above and below. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "b52581b122b551ce6448357c69a21e5586e542490c54ab4e5e52c25794230029",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 185,
+          "bottom": 163
+        },
+        "inputSha256": "3852d6f6f866c2d4f0d34e099b4536f9bc77a0c0d3aa844a508d0748651534cb"
+      }
     },
     {
       "target": "bambou",
@@ -17390,7 +17795,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 1072
       },
       "deliveryOptimized": true,
       "master": {
@@ -17399,9 +17804,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "1fc9efd7322619ab87052c5104d0867ef8dce04656131b5abedc2a15ccc83be1",
+        "sha256": "ff3ad10103020e4740d29c1a6fbc5947cd2729a5ee6844e8c80eae8ed1292114",
         "width": 900,
-        "height": 1200,
+        "height": 1072,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -17414,7 +17819,22 @@
           "sha256": "e554bd2890d8ce4ccac3dfddd8d9040116b45487f89a2c4788f72411cd96132b"
         }
       ],
-      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Correct only the bottom publisher and platform marks to match the original scan. The bottom black strip reads COKTEL and the tilted gold label reads CD-ROM PC/MAC. Preserve the original top marks, artwork, title and layout. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows."
+      "prompt": "Revise the first attached restoration using the second attached original package scan as the authority. Correct only the bottom publisher and platform marks to match the original scan. The bottom black strip reads COKTEL and the tilted gold label reads CD-ROM PC/MAC. Preserve the original top marks, artwork, title and layout. Deliver actual 1080×1440 tall 3:4 portrait. Preserve original art and title and avoid new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "1fc9efd7322619ab87052c5104d0867ef8dce04656131b5abedc2a15ccc83be1",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 63,
+          "bottom": 65
+        },
+        "inputSha256": "2868aa79dc82c3796473396dd191eec0cba289a9d3d8f8150ea62b035f127ad9"
+      }
     },
     {
       "target": "activity",
@@ -17775,7 +18195,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 952
       },
       "deliveryOptimized": true,
       "master": {
@@ -17784,9 +18204,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "c4516b9cd99a2f00330a03a2ba2b395b606feaae8a5c638b773bac1649f30a24",
+        "sha256": "8d1997f12123b9066bbcf55b6e466624512d91fa42070a5d03880d84509dbc1c",
         "width": 900,
-        "height": 1200,
+        "height": 952,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -17799,7 +18219,22 @@
           "sha256": "8283563b0a2074f95169d27afebea47c19ff8f3d41b7f84575face2602914448"
         }
       ],
-      "prompt": "Restore the complete original retail package front of Putt-Putt’s Fun Pack on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows."
+      "prompt": "Restore the complete original retail package front of Putt-Putt’s Fun Pack on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "c4516b9cd99a2f00330a03a2ba2b395b606feaae8a5c638b773bac1649f30a24",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 124,
+          "bottom": 124
+        },
+        "inputSha256": "08261147fd892e7b4d751789b3964fdeb324656e2c2c15f8e116782323bb8aa8"
+      }
     },
     {
       "target": "funpack",
@@ -18125,7 +18560,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 900
       },
       "deliveryOptimized": true,
       "master": {
@@ -18134,9 +18569,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "3fa1f57b3b3c587efe7716a8471125533f6eafaf9756eee66a5c3b1760f29720",
+        "sha256": "0b21f3d748d1f4a0e7114bdf9b22689310ec7c61229038236a2ef45f4b444626",
         "width": 900,
-        "height": 1200,
+        "height": 900,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -18149,7 +18584,22 @@
           "sha256": "d110e98f72e08c033af9e71c9aacae8cdc4be5a4ef3125af8f2f9e94c3b262be"
         }
       ],
-      "prompt": "Restore the complete original retail package front of SPY Fox in Cheese Chase on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows."
+      "prompt": "Restore the complete original retail package front of SPY Fox in Cheese Chase on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "3fa1f57b3b3c587efe7716a8471125533f6eafaf9756eee66a5c3b1760f29720",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 149,
+          "bottom": 151
+        },
+        "inputSha256": "24aae1a61d3f020e290f07d9701b5607dd6d240c225c16c9861d5ece8390df8f"
+      }
     },
     {
       "target": "chase",
@@ -19175,7 +19625,7 @@
       "stage": "ready",
       "targetSize": {
         "width": 900,
-        "height": 1200
+        "height": 924
       },
       "deliveryOptimized": true,
       "master": {
@@ -19184,9 +19634,9 @@
         "height": 1448
       },
       "output": {
-        "sha256": "db4cdf180afb212c57f92757908f3bb6b9519f2d46719432b10e2587a6be9054",
+        "sha256": "713b7a00cfe73f7fadfe05602a8edef9d9139db121497b7dac62ea219ae8be4b",
         "width": 900,
-        "height": 1200,
+        "height": 924,
         "format": "webp",
         "quality": 80,
         "effort": 6
@@ -19199,7 +19649,22 @@
           "sha256": "eb0803146cbcc5a17658adf951bd396083abc9b6747e3947bccd2bca128ac061"
         }
       ],
-      "prompt": "Restore the complete original retail package front of The New Kid on the Block on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows."
+      "prompt": "Restore the complete original retail package front of The New Kid on the Block on an actual tall 1080×1440 portrait canvas (3:4). Keep the complete original printed cover, exactly preserve artwork, title spelling and type, branding, characters, edition notes, layout and colors. Improve line and print clarity and remove scan wear and physical case or glare. Preserve all front content at original proportions and add only restrained flat margins as needed to fill the tall canvas. Do not crop the printed front, stretch it, or add artwork, text, a mockup, new labels or shadows.",
+      "croppedFrom": {
+        "output": {
+          "sha256": "db4cdf180afb212c57f92757908f3bb6b9519f2d46719432b10e2587a6be9054",
+          "width": 900,
+          "height": 1200,
+          "format": "webp",
+          "quality": 80,
+          "effort": 6
+        },
+        "removedRows": {
+          "top": 135,
+          "bottom": 141
+        },
+        "inputSha256": "3459fdd82f976f84337c007878aaf5f23415cdcaa97e63a458ff1edd08fe542c"
+      }
     },
     {
       "target": "newkid",

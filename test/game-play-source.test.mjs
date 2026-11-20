@@ -244,7 +244,6 @@ async function remotePlayer(pathname, identifiedGame, search = "") {
         }, useEffect: (effect) => effects.push(effect),
       };
       if (name === "next/navigation") return { useRouter: () => ({ replace: (href) => redirects.push(href) }) };
-      if (name === "lucide-react") return { LogOut: "span" };
       if (name === "./remote-game-archive.mjs") return { prepareRemoteGameArchive: async () => {
         preparations++;
         return { game: identifiedGame, loadArchive };
