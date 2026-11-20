@@ -118,8 +118,10 @@ test("first-paint import instructions follow the selected copy's availability", 
 
 test("unknown or stale remembered editions never expose the catalog's Continue state", t => {
   const f = fixture(t);
-  f.values.set("scummweb.version:sky:sky:full", "source:floppy");
-  for (const cache of [null, { ...descriptor(), version: "source:floppy", runtimeVersion: "old-runtime" }]) {
+  const version = "source:floppy";
+  f.values.set("scummweb.version:sky:sky:full", version);
+  for (const cache of [null, { ...descriptor(), version, runtimeVersion: "old-runtime" },
+    { ...descriptor(), version, schema: 1 }]) {
     f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify(cache));
     prepareInitialActions(f.container, () => assert.fail("must not inspect the wrong copy's saves"));
     assert.equal(f.container.dataset.prepared, undefined);

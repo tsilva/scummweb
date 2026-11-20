@@ -9,9 +9,10 @@
 ## Playing and importing games
 
 Choose a game from the library or Recently Played, then select **Play**.
-For games with multiple copies, the version selector remembers your available
-choice. Otherwise it favors the latest known revision, with the included copy
-or browser language used to break ties. Demos have separate cards. **Game not
+The version selector lists copies by known graphics quality, then favors disc
+editions and newer revisions. It defaults to the highest-ranked playable copy,
+with the included copy and browser language used to break ties. It remembers
+your choice while that copy is available. Demos have separate cards. **Game not
 included** means you need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 

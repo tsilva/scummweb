@@ -6,7 +6,7 @@ import { ArchivePlayer, RemoteArchivePlayer } from "./archive-play-frame";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import { checkGameSource, readGameSources } from "./game-sources.mjs";
 import { getMatchingGameSources, getSourceGamePresentation, prepareGameSourcePlayer } from "./game-play-source.mjs";
-import { chooseGameVersion, getGameFamilyKey, readChosenVersion } from "./game-versions.mjs";
+import { chooseGameVersion, getGameFamilyKey, getVersionMetadata, readChosenVersion } from "./game-versions.mjs";
 import { getSelectedGamePresentation, openSelectedGameArchive } from "./local-game-archive.mjs";
 import { getRecognizedGames } from "./recognized-games.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
@@ -48,11 +48,16 @@ export default function GamePlayFrame({ game, catalog, artwork, officialUrl, chi
       if (sources.length) await loadArtworkStorage().catch(() => {});
       if (controller.signal.aborted) return;
       const recognizedGames = sources.length ? getRecognizedGames(catalog) : catalog;
-      const versions = await Promise.all(sources.map(async (source) => ({
-        key: `source:${source.id}`, source, status: await checkGameSource(source),
-        game: getSourceGamePresentation(source, catalog, recognizedGames),
-      })));
-      if (!game.importRequired) versions.unshift({ key: `catalog:${game.target}`, game });
+      const versions = await Promise.all(sources.map(async (source) => {
+        const presentation = getSourceGamePresentation(source, catalog, recognizedGames);
+        return {
+          key: `source:${source.id}`, source, status: await checkGameSource(source),
+          game: { ...presentation, ...getVersionMetadata(presentation, source.name, source.archiveFiles) },
+        };
+      }));
+      if (!game.importRequired) {
+        versions.unshift({ key: `catalog:${game.target}`, game: { ...game, ...getVersionMetadata(game) } });
+      }
       const version = chooseGameVersion(versions, remembered);
       if (controller.signal.aborted) return;
       if (!version?.source) return select(game.importRequired ? { missing: true } : { bundled: true });

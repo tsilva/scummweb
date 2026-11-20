@@ -6,6 +6,7 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import { chooseGameVersion, formatVersionLabel, getVersionMetadata, getVersionSaveNamespace } from "../app/game-versions.mjs";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
+import bundled from "../scummvm-shell/games.json" with { type: "json" };
 
 const presentationUrl = new URL("../app/game-presentation.js", import.meta.url);
 await swc.loadBindings();
@@ -35,11 +36,12 @@ test("platform editions share one recognized game card with distinct launch sour
   const editions = [imported("atari", "Cruise for a Corpse (Atari ST).zip"), imported("dos", "Cruise for a Corpse (VGA DOS).zip")];
   const groups = libraryItems([], editions);
   assert.equal(groups.length, 1);
-  assert.equal(groups[0].versions.length, 2);
-  assert.match(groups[0].versions[0].label, /Atari ST/);
-  assert.equal(groups[0].versions[1].label, "DOS");
-  assert.equal(groups[0].versions[0].action, editions[0].action);
-  assert.equal(groups[0].versions[1].source.id, "dos");
+  const { versions } = groups[0];
+  assert.deepEqual(versions.map(({ label }) => label), ["DOS", "Atari ST"]);
+  assert.equal(versions[0].action, editions[1].action);
+  assert.equal(versions[1].source.id, "atari");
+  assert.equal(chooseGameVersion(versions, null), versions[0]);
+  assert.equal(chooseGameVersion(versions, versions[1].key), versions[1]);
 });
 
 test("catalog and localized imported titles use engine identity rather than title spelling", () => {
@@ -50,8 +52,7 @@ test("catalog and localized imported titles use engine identity rather than titl
   const groups = libraryItems([catalog], [local]);
   assert.equal(groups.length, 1);
   assert.equal(groups[0].dialogId, "game-drascula");
-  assert.equal(groups[0].versions[0].game.language, "English");
-  assert.equal(groups[0].versions[1].game.language, "Multilingual");
+  assert.deepEqual(groups[0].versions.map(({ game }) => game.language), ["Multilingual", "English"]);
 });
 
 test("demos and unrelated or unidentified titles remain separate", () => {
@@ -75,19 +76,19 @@ test("version labels retain real metadata and distinguish identical copies", () 
 });
 
 test("Beneath a Steel Sky labels show the bundled and imported CD revisions", () => {
-  const catalog = getGamePresentation({ target: "sky", engineId: "sky", gameId: "sky",
-    title: "Beneath a Steel Sky (v0.0372 CD/DOS)", platform: "pc", extra: "v0.0372 CD" });
+  const catalog = getGamePresentation(bundled.games.find(({ target }) => target === "sky"));
   const local = imported("older-cd", "Beneath a Steel Sky (CD VGA).zip");
   local.archiveFiles = [["BASS/SKY.DNR", 40796, 1], ["BASS/SKY.DSK", 72429382, 2]];
   const [group] = libraryItems([catalog], [local]);
   assert.deepEqual(group.versions.map(({ label }) => label), ["DOS · CD · v0.0372", "DOS · CD · v0.0368"]);
+  assert.equal(chooseGameVersion(group.versions, null), group.versions[0]);
   assert.equal(group.versions[1].source.id, "older-cd");
 });
 
 test("Sky revision metadata follows inspected files even when renamed or mislabeled", () => {
   const game = { engineId: "sky", gameId: "sky" };
   for (const dataSize of [72395713, 73123264]) {
-    assert.deepEqual(getVersionMetadata(game, "My copy (CD VGA v0.0368).zip", [
+    assert.deepEqual(getVersionMetadata(game, "My copy (CD EGA v0.0368).zip", [
       ["BASS\\SKY.DNR", 40780, 1], ["BASS\\SKY.DSK", dataSize, 2],
     ]), { language: undefined, platform: "DOS", media: "CD", graphics: "VGA", revision: "v0.0372" });
   }
@@ -126,7 +127,7 @@ test("all version fields use language, platform, media, graphics, revision order
     imported("vga", "Cruise for a Corpse (VGA English CD DOS v1.03).zip"),
   ])[0].versions;
   assert.deepEqual(versions.map(({ label }) => label), [
-    "English · DOS · CD · EGA · v1.02", "English · DOS · CD · VGA · v1.03",
+    "English · DOS · CD · VGA · v1.03", "English · DOS · CD · EGA · v1.02",
   ]);
   for (const version of versions) {
     assert.equal(version.game.badge, version.label);
@@ -140,8 +141,8 @@ test("graphics are omitted unless different known modes exist on the same platfo
   assert.deepEqual(labelFor(["English DOS CD VGA"]), ["English · DOS · CD"]);
   assert.deepEqual(labelFor(["English DOS CD VGA", "German DOS CD VGA"]), ["English · DOS · CD", "German · DOS · CD"]);
   assert.deepEqual(labelFor(["DOS VGA", "DOS"]), ["DOS · Copy 1", "DOS · Copy 2"]);
-  assert.deepEqual(labelFor(["Amiga EGA", "DOS VGA"]), ["Amiga", "DOS"]);
-  assert.deepEqual(labelFor(["DOS EGA", "DOS VGA", "Amiga VGA"]), ["DOS · EGA", "DOS · VGA", "Amiga"]);
+  assert.deepEqual(labelFor(["Amiga EGA", "DOS VGA"]), ["DOS", "Amiga"]);
+  assert.deepEqual(labelFor(["DOS EGA", "DOS VGA", "Amiga VGA"]), ["DOS · VGA", "Amiga", "DOS · EGA"]);
 });
 
 test("unknown fields are hidden and structured or legacy metadata is normalized", () => {
@@ -167,7 +168,6 @@ test("duplicate copies use short suffixes and keep source identities and actions
 });
 
 test("the full bundled catalog and recognized aliases share the label formatter", async () => {
-  const bundled = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   const artwork = JSON.parse(await readFile(new URL("../app/retro-game-artwork.json", import.meta.url), "utf8"));
   const groups = libraryItems(bundled.games.map((game) => getGamePresentation(game)), []);
   assert.equal(groups.length, bundled.games.length);
@@ -215,6 +215,19 @@ test("defaults use the newest known revision unless an available choice was reme
     { key: "nine", game: { revision: "v1.9" } },
     { key: "ten", game: { revision: "v1.10" } },
   ], null).key, "ten");
+});
+
+test("edition quality outranks revision and language while defaults fall back to a playable copy", () => {
+  const [group] = libraryItems([], [
+    imported("ega", "Cruise for a Corpse (DOS CD English EGA v2).zip"),
+    imported("floppy", "Cruise for a Corpse (DOS Floppy English VGA v2).zip"),
+    imported("cd", "Cruise for a Corpse (DOS CD German VGA v1).zip"),
+    imported("missing", "Cruise for a Corpse (DOS CD English SVGA v2).zip", "missing"),
+  ]);
+  const { versions } = group;
+  assert.deepEqual(versions.map(({ source }) => source.id), ["missing", "cd", "floppy", "ega"]);
+  assert.equal(chooseGameVersion(versions.toReversed(), null, "English").source.id, "cd");
+  assert.equal(chooseGameVersion(versions, "source:missing", "English").source.id, "cd");
 });
 
 test("save namespaces are stable, safe path components and isolate different source IDs", async () => {
