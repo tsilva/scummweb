@@ -1796,6 +1796,21 @@
         "Make a save from an imported DOS CD v1.02 ZIP. Relaunch from the same archive, verify the existing caption is discoverable, create a second non-overwriting slot, and load both from gameplay."
       ],
       "retire_when": "The hosted player receives the correct Gob save listing after detection without a second native scan."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzz-agos-personal-nightmare-puzzle-pack-saves.patch",
+      "status": "active",
+      "sha256": "f9e4c96e167462ec98d058e9fecf1cd1368c3cac60da5349a43b71cbe61d86ed",
+      "purpose": "Expose Personal Nightmare and the save-capable Simon the Sorcerer Puzzle Pack games in the hosted player menu.",
+      "invariants": [
+        "Personal Nightmare uses the native numbered files and eight-byte captions. Resume through the parser’s LOAD command so the game redraws its scene.",
+        "Demon in my Pocket and Swampy Adventures each use a single captionless native file. Jumble and NoPatience do not offer saved progress.",
+        "Preserve native save commands and the scoped AgentSCUMM save behavior."
+      ],
+      "verification": [
+        "Save and load through the ScummWEB menu in Personal Nightmare, Demon in my Pocket and Swampy Adventures. Verify progress is restored and slots survive a relaunch."
+      ],
+      "retire_when": "Upstream exposes compatible runtime save APIs for the Personal Nightmare parser and both save-capable Puzzle Pack games."
     }
   ]
 }
