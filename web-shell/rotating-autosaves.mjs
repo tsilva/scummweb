@@ -59,6 +59,12 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
     && !params.has("agentSaveScope") && !params.has("saveQuery");
   const matches = (data, identity) => ["engineId", "gameId", "target", "extra"].every(key => data[key] === identity[key]);
   const read = name => FS.readFile(`${savePath}/${name}`, { encoding: "utf8" });
+  function available() {
+    const identity = scope.__scummwebSaveStatus;
+    if (!enabled || !identity?.supported) return [];
+    return readAutosaveRing(read, data => matches(data, identity), new Set(identity.pending))
+      .filter(({ record }) => record);
+  }
   let overlay;
   let attemptedStartup = false;
   let lastSavedAt = 0;
@@ -73,6 +79,12 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
     delete scope.__scummwebHasIntroCheckpoint;
   }
   return {
+    list() {
+      return available().map(({ name, record }) => ({
+        checkpoint: name, slot: record.slot, modifiedAt: record.savedAt, writable: false,
+      }));
+    },
+    find(name) { return available().find(entry => entry.name === name)?.record; },
     due() {
       if (scope.__scummwebReadyState?.state === "ready") clearOverlay();
       return enabled && scope.__scummwebSaveStatus?.supported === true

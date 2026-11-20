@@ -199,6 +199,7 @@ function installAgentControls(scope, saveScope) {
 function installPlayerControls(scope, requestMenu) {
   const clamp = (value, min, max, fallback) =>
     Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+  const byRecency = (a, b) => b.modifiedAt - a.modifiedAt || a.slot - b.slot;
   let volume = 100;
   let speed = 1;
   let menuOpen = false;
@@ -231,11 +232,16 @@ function installPlayerControls(scope, requestMenu) {
   }
 
   scope.scummwebPlayerControls = Object.freeze({
-    read: () => ({
-      volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
-      ...subtitleState(),
-      saves: saves.filter(({ slot }) => slot <= maxSlot),
-    }),
+    read({ includeAutosaves = false } = {}) {
+      const entries = includeAutosaves
+        ? saves.concat(scope.__scummwebAutosaves?.list() ?? []).sort(byRecency)
+        : saves;
+      return {
+        volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
+        ...subtitleState(),
+        saves: entries.filter(({ slot }) => slot <= maxSlot),
+      };
+    },
     setSettings(settings) {
       volume = clamp(settings.volume, 0, 100, volume);
       speed = clamp(settings.speed, 0.5, 2, speed);
@@ -256,14 +262,16 @@ function installPlayerControls(scope, requestMenu) {
           reason: !canSave ? "saving-unsupported" : "runtime-unavailable" };
       }
       const isNew = diagnostic || operation === "save" && requestedSlot === null;
-      const slot = diagnostic ? (reservedSlot === 1 ? 2 : 1) : isNew ? nextSlot() : requestedSlot;
+      const autosave = operation === "load" && typeof requestedSlot === "string"
+        ? scope.__scummwebAutosaves?.find(requestedSlot) : undefined;
+      const slot = autosave?.slot ?? (diagnostic ? (reservedSlot === 1 ? 2 : 1) : isNew ? nextSlot() : requestedSlot);
       const entry = saves.find((save) => save.slot === slot);
       if (diagnostic) {
         if (slot > maxSlot) return { status: "unavailable", files: [], reason: "no-manual-slot" };
       } else if (operation === "save") {
         if (!canSave || !Number.isInteger(slot) || slot < 1 || slot > maxSlot || slot === reservedSlot ||
             (!isNew && !entry?.writable)) return { error: "This save slot is unavailable." };
-      } else if (operation !== "load" || !canLoad || !entry || slot > maxSlot) {
+      } else if (operation !== "load" || !canLoad || (!entry && !autosave) || slot > maxSlot) {
         return { error: "This save is unavailable." };
       }
       return new Promise((resolve) => {
@@ -273,7 +281,7 @@ function installPlayerControls(scope, requestMenu) {
           // A late acknowledgment belongs to this request, never to a retry.
           if (!pending.dispatched) pending = undefined;
         }, 5000);
-        pending = { operation, slot, isNew, entry, timer, resolve, dispatched: false, written: new Set() };
+        pending = { operation, slot, isNew, entry, autosave, timer, resolve, dispatched: false, written: new Set() };
       });
     },
   });
@@ -289,7 +297,7 @@ function installPlayerControls(scope, requestMenu) {
   scope.__scummwebPlayerDelay = (millis) => Math.ceil(millis / speed);
 
   scope.__scummwebPublishPlayerSaves = (entries, usedSlots) => {
-    saves = entries.toSorted((a, b) => b.modifiedAt - a.modifiedAt || a.slot - b.slot);
+    saves = entries.toSorted(byRecency);
     occupied = new Set(usedSlots);
   };
   scope.__scummwebPlayerIsNewSave = () => pending?.isNew;
@@ -320,6 +328,13 @@ function installPlayerControls(scope, requestMenu) {
         pending = undefined;
         return menuOpen ? -1 : 0;
       }
+      if (pending.autosave && (!canLoad || pending.slot > max ||
+          !scope.__scummwebDiagnosticSaves?.beginRestore(pending.autosave.files))) {
+        scope.clearTimeout(pending.timer);
+        pending.resolve({ error: "This autosave could not be opened." });
+        pending = undefined;
+        return menuOpen ? -1 : 0;
+      }
       pending.dispatched = true;
       const { operation, slot } = pending;
       if (operation === "save" || operation === "report") return slot;
@@ -333,7 +348,7 @@ function installPlayerControls(scope, requestMenu) {
     boundary(max, reserved, Boolean(save), Boolean(load));
   scope.__scummwebAgentSaveResult = (error) => {
     if (!pending?.dispatched) return;
-    const { operation, slot, timer, resolve, written } = pending;
+    const { operation, slot, timer, resolve, written, autosave } = pending;
     pending = undefined;
     scope.clearTimeout(timer);
     if (operation === "autosave") {
@@ -345,6 +360,7 @@ function installPlayerControls(scope, requestMenu) {
       resolve({ ...scope.__scummwebDiagnosticSaves.finish(error), slot });
       return;
     }
+    if (autosave) scope.__scummwebDiagnosticSaves.finishRestore();
     if (!error && operation === "save" && !saves.some((save) => save.slot === slot && written.has(save.name))) {
       error = "ScummVM could not confirm that the save was stored.";
     }
@@ -381,7 +397,7 @@ function installPlayerControls(scope, requestMenu) {
   }
 }
 
-// Diagnostic saves live only in MEMFS, never in BrowserFS or the Continue index.
+// Report captures and in-game checkpoint restores use an isolated MEMFS save directory.
 function installDiagnosticSaves(scope, FS, Module) {
   const directory = "/tmp/scummweb-bug-report";
   const validName = (name) => typeof name === "string" && /^[^/\\\x00-\x1f]{1,180}$/.test(name)
@@ -398,6 +414,15 @@ function installDiagnosticSaves(scope, FS, Module) {
     FS.rmdir(directory);
   }
 
+  function reset() {
+    active = false;
+    try { cleanup(); } catch { /* A failed temporary tree is never persisted or indexed. */ }
+    writers.clear();
+    completed.clear();
+    // Restore the native manager's filename cache before reusing the temporary directory.
+    try { Module._scummweb_refresh_saves?.(); } catch { /* The isolated operation is complete. */ }
+  }
+
   const capture = {
     get active() { return active; },
     supported: () => Module._scummweb_diagnostic_saves_supported?.() === 1,
@@ -410,6 +435,20 @@ function installDiagnosticSaves(scope, FS, Module) {
       active = true;
       return true;
     },
+    beginRestore(files) {
+      if (!capture.begin()) return false;
+      try {
+        for (const { name, contents } of files) {
+          const bytes = Uint8Array.from(atob(contents), char => char.charCodeAt(0));
+          FS.writeFile(`${directory}/${name}`, bytes);
+        }
+        return true;
+      } catch {
+        reset();
+        return false;
+      }
+    },
+    finishRestore: reset,
     beginWrite(name) {
       if (!validName(name) || writers.has(name) || completed.size + writers.size >= 16) {
         failed = true;
@@ -443,16 +482,7 @@ function installDiagnosticSaves(scope, FS, Module) {
           result = { status: "captured", files };
         }
       } catch { result.reason = "save-read-failed"; }
-      finally {
-        active = false;
-        try { cleanup(); } catch { /* A failed temporary tree is never persisted or indexed. */ }
-        writers.clear();
-        completed.clear();
-        // The native manager caches filenames by directory, even after MEMFS
-        // removes them. Return its cache to the real savepath before another
-        // capture recreates this directory and reuses the same isolated slot.
-        try { Module._scummweb_refresh_saves?.(); } catch { /* Keep the captured bytes usable. */ }
-      }
+      finally { reset(); }
       return result;
     },
   };
@@ -520,6 +550,12 @@ function installRotatingAutosaves(scope, FS, savePath, params) {
     && !params.has("agentSaveScope") && !params.has("saveQuery");
   const matches = (data, identity) => ["engineId", "gameId", "target", "extra"].every(key => data[key] === identity[key]);
   const read = name => FS.readFile(`${savePath}/${name}`, { encoding: "utf8" });
+  function available() {
+    const identity = scope.__scummwebSaveStatus;
+    if (!enabled || !identity?.supported) return [];
+    return readAutosaveRing(read, data => matches(data, identity), new Set(identity.pending))
+      .filter(({ record }) => record);
+  }
   let overlay;
   let attemptedStartup = false;
   let lastSavedAt = 0;
@@ -534,6 +570,12 @@ function installRotatingAutosaves(scope, FS, savePath, params) {
     delete scope.__scummwebHasIntroCheckpoint;
   }
   return {
+    list() {
+      return available().map(({ name, record }) => ({
+        checkpoint: name, slot: record.slot, modifiedAt: record.savedAt, writable: false,
+      }));
+    },
+    find(name) { return available().find(entry => entry.name === name)?.record; },
     due() {
       if (scope.__scummwebReadyState?.state === "ready") clearOverlay();
       return enabled && scope.__scummwebSaveStatus?.supported === true
