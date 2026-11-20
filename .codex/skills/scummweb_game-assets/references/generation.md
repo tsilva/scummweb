@@ -180,8 +180,9 @@ names use two publication passes, with the same dedicated
    visual inspection and complete coverage of the WebP width set. Keep WebP if
    those gates fail. Do not force AVIF or rerun encoders during normal builds.
 3. Plan/publish/activate the optimized delivery map, switch the intended logical
-   presentation mapping, verify direct R2 loads in Brave and run relevant checks.
-   Retire only verified inputs under the existing guarded retirement procedure.
+   presentation mapping, and run the [responsive cover check](../SKILL.md#responsive-cover-check)
+   before the build. Verify direct R2 loads in Brave and retire inputs through
+   the guarded retirement procedure.
 
 Source publication alone is not completion of delivery optimization. If a
 credential route blocks publication, finish local reviewable work, retain
