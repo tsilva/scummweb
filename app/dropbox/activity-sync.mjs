@@ -1,6 +1,7 @@
 import { activityCacheKey, activityDevice, activityUpdatedEvent, collectLocalActivity, mergeActivity, readActivityCache,
   validateActivity } from "../game-player/activity.mjs";
 import { limitedBlob } from "./client.mjs";
+import { readLocalActivity } from "../game-player/activity-storage.mjs";
 
 const path = "/play-activity-v1.json";
 const maxBytes = 512 * 1024;
@@ -59,7 +60,9 @@ export async function syncPlayActivity({ client, scope, account, sources, check,
   for (let attempt = 0; attempt < 4; attempt++) {
     const remote = await client.read(signal);
     check();
-    const local = collectLocalActivity(scope, device, sources);
+    const records = await readLocalActivity(scope);
+    check();
+    const local = collectLocalActivity(records, device, sources);
     const merged = mergeActivity(...[remote.data, cached, local].filter(Boolean));
     const changed = remote.data ? JSON.stringify(remote.data) !== JSON.stringify(merged)
       : merged.play.length || merged.progress.length;

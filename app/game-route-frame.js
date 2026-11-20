@@ -164,7 +164,6 @@ export default function GameRouteFrame({
   skipIntro: intro = null,
   loadArchive: loadPersonalArchive,
   catalogArchiveUrl,
-  archiveLoadingText = "Loading game…",
 }) {
   const loadCatalogArchive = useCallback((signal, onProgress) => readCatalogGameArchive(catalogArchiveUrl, {
     ...catalogArchiveLimits[target], signal, onProgress,
@@ -186,7 +185,6 @@ export default function GameRouteFrame({
   const [archivePrepared, setArchivePrepared] = useState(false);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
-  const [archiveCached, setArchiveCached] = useState(false);
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(catalogLaunch ? game?.slug : null));
   const [frameSrc, setFrameSrc] = useState(null);
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
@@ -228,7 +226,6 @@ export default function GameRouteFrame({
   const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
   const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;
   const bootState = useBootState({
-    displayTitle: game?.displayTitle || title,
     frameRef,
     frameSrc,
     readySignal: currentReadySignal,
@@ -236,8 +233,10 @@ export default function GameRouteFrame({
     skipIntroConsumed,
   });
   const immersiveMode = useImmersiveMode({ shellRef });
+  const stopPlayHistory = useRef(null);
   const navigateHome = useCallback(async (href) => {
     const flushSaves = frameRef.current?.contentWindow?.__scummwebFlushSaveStorage;
+    const flushPlayHistory = stopPlayHistory.current?.();
     // Remove every overlay control before fullscreen teardown or navigation can wait.
     flushSync(() => setIsExiting(true));
     fullscreenExitExpected.current = true;
@@ -247,6 +246,7 @@ export default function GameRouteFrame({
       try { await flushSaves(); }
       catch { /* The previous committed copy remains available after a failed write. */ }
     }
+    if (flushPlayHistory) await flushPlayHistory;
     // Release this frame's save locks before revealing the launcher again.
     flushSync(() => setFrameSrc(null));
     const destination = withDropboxPreview(getSafeHref(href));
@@ -647,7 +647,6 @@ export default function GameRouteFrame({
     setNativeIntroFrameHref(null);
     setCompatibilityWarnings([]);
     setArchiveProgress(null);
-    setArchiveCached(false);
     setArchivePrepared(false);
     archiveFiles.current = null;
     archiveReceiver.current = null;
@@ -704,10 +703,9 @@ export default function GameRouteFrame({
           // handoff below supports either side becoming ready first.
           window.performance?.mark?.("scummweb:runtime-requested");
           setFrameSrc(launchSrc);
-          const files = await loadArchive(controller.signal, (_progress, { cached = false, loaded, total } = {}) => {
+          const files = await loadArchive(controller.signal, (_progress, details) => {
             if (!controller.signal.aborted) {
-              setArchiveProgress(Number.isFinite(loaded) ? { loaded, total } : null);
-              setArchiveCached(cached);
+              setArchiveProgress(details ?? null);
             }
           });
           if (controller.signal.aborted) return;
@@ -756,7 +754,9 @@ export default function GameRouteFrame({
     !waitingForLandscape && !gameMenuOpen && !remoteToolbarOpen && !isExiting;
   useEffect(() => {
     if (!canRecordPlayHistory || new URL(window.location.href).searchParams.has("agentSaveScope")) return;
-    return observePlayHistory(window, progressVersion);
+    const stop = observePlayHistory(window, progressVersion);
+    stopPlayHistory.current = stop;
+    return () => { stop?.(); };
   }, [canRecordPlayHistory, progressVersion]);
 
   useEffect(() => {
@@ -1035,9 +1035,9 @@ export default function GameRouteFrame({
         )}
       </div>}
       <GameBootOverlay
-        archiveBytes={loadArchive && !archivePrepared && !archiveCached ? archiveProgress?.loaded : undefined}
-        bootStatusText={archiveError || (loadArchive && !archivePrepared
-          ? archiveCached ? "Opening cached game…" : archiveProgress === null ? archiveLoadingText : gameLoadingStatus(archiveProgress)
+        archiveBytes={loadArchive && !archivePrepared ? archiveProgress?.loaded : undefined}
+        bootStatusText={archiveError || (loadArchive && !archivePrepared && !bootState.hasBootFailed
+          ? gameLoadingStatus(archiveProgress ?? undefined)
           : bootState.bootStatusText)}
         game={game}
         hasBootFailed={hasBootFailed}

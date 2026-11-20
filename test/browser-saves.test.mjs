@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { cancelBrowserSaveQueries, getCachedBrowserSave, getCachedBrowserSaveContents, getLatestBrowserSave, readBrowserSaveFiles, subscribeBrowserSaves } from "../app/browser-saves.mjs";
 import { saveIndexKey, saveRevision } from "../web-shell/continue-saves.mjs";
 import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
 import { readCachedSave } from "../app/browser-save-cache.mjs";
 import { getVersionSaveNamespace } from "../app/game-versions.mjs";
+import { readQueenSaveSnapshot } from "../lib/game-progress/queen-save.mjs";
 
 function makeBrowserStorage(files, namespaces = {}) {
   const values = new Map();
@@ -95,6 +97,19 @@ test("the library chooses the newest intact manual save or autosave by its own s
     assert.equal(readCachedSave(game, storage)?.slot, 1);
     assert.equal(readCachedSave(game, storage, "", { preview: true, autosavesOnly: true })?.slot, 2);
   }
+});
+
+test("Queen progress can read the native save inside the selected autosave", async (t) => {
+  const game = { target: "queen", engineId: "queen", gameId: "queen" };
+  const bytes = await readFile(new URL("../scummvm-shell/launcher/skip-intro/queen/queen.s00", import.meta.url));
+  const autosave = encodeAutosave({ ...game, slot: 2, savedAt: 200, files: [{ name: "queen.s02", data: bytes }] });
+  const storage = makeBrowserStorage([[".scummweb-autosave.0", autosave, 200]]);
+  useStorage(t, storage);
+  await indexSaves(game, []);
+
+  const save = readCachedSave(game, storage, "", { preview: true, includeContents: true });
+  assert.equal(save?.slot, 2);
+  assert.equal((await readQueenSaveSnapshot(save.contents))?.room_id, 70);
 });
 
 test("Continue is isolated to the imported version, including an unknown ZIP title", async (t) => {

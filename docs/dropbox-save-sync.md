@@ -175,6 +175,11 @@ Desktop ScummVM does not automatically sync with ScummWEB.
 
 ### Recently Played across devices
 
+ScummWEB records playtime, last-played dates and verified story progress in the
+browser's IndexedDB, including when Dropbox is disabled. Existing records are
+copied from browser local storage on first use, using the existing browser
+identity so previously synced playtime is counted once.
+
 With Dropbox connected and the URL flag enabled on each device, ScummWEB also
 syncs recorded playtime, last-played dates and verified story progress. Existing
 browser records contribute on the next sync. Older cards with no time or date

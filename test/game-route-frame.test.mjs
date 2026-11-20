@@ -12,7 +12,7 @@ import * as gameMenu from "../app/game-player/game-menu.mjs";
 import * as mobileControls from "../app/game-player/mobile-controls.mjs";
 import * as voiceCommands from "../app/game-player/voice-command.mjs";
 import * as controllerDevice from "../app/controller-device.mjs";
-import { gameLoadingStatus } from "../app/game-loading-status.mjs";
+import { GAME_LOADING_STATUS, gameLoadingStatus } from "../app/game-loading-status.mjs";
 
 const componentUrl = new URL("../app/game-route-frame.js", import.meta.url);
 const nativeRequire = createRequire(componentUrl);
@@ -121,7 +121,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   agentSaveScope, storyMaps = {},
   skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
   realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
-  downloadDetails = { loaded: 12_400_000, total: 85_200_000 } } = {}) {
+  downloadDetails = { downloading: true, loaded: 12_400_000, total: 85_200_000 } } = {}) {
   const archive = Promise.withResolvers();
   const hooks = [];
   const messages = new Set();
@@ -241,6 +241,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name.endsWith("/game-progress/index.json")) return { games: storyMaps };
       if (name === "next/navigation") return { useRouter: () => ({ replace: href => exits.push(href) }) };
       if (name === "./game-loading-status.mjs") return { gameLoadingStatus };
+      if (name === "../game-loading-status.mjs") return { GAME_LOADING_STATUS };
       if (name === "./game-bucket.mjs") return { readCatalogGameArchive: (_url, options) => {
         archiveOptions.push(options);
         const { onProgress } = options;
@@ -252,7 +253,8 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name.endsWith("/GameBootOverlay")) return Overlay;
       if (name.endsWith("/useBootState")) {
         if (!realBoot) return { useBootState: () => ({
-          hasBootCompleted: bootCompleted, hasBootFailed: false, showSkipIntroButton: Boolean(skipIntro),
+          bootStatusText: GAME_LOADING_STATUS, hasBootCompleted: bootCompleted, hasBootFailed: false,
+          showSkipIntroButton: Boolean(skipIntro),
         }) };
         runInNewContext(bootCode, { module: bootModule, exports: bootModule.exports, require, window });
         return bootModule.exports;
@@ -806,7 +808,7 @@ for (const runtimeFirst of [true, false]) {
     const player = pendingArchivePlayer();
     player.render();
     assert.ok(player.children.some(({ type }) => type === "iframe"), "runtime starts before the ZIP finishes");
-    assert.equal(player.overlay.bootStatusText, "Loading game (12.4 / 85.2 MB)…");
+    assert.equal(player.overlay.bootStatusText, "Downloading game… 12.4 of 85.2 MB");
     assert.equal([...player.timers.values()].some(({ delay }) => delay === 120_000), false, "slow downloads do not trip the runtime timeout");
     player.ready("https://untrusted.test");
     player.ready("https://example.test", {});
@@ -816,6 +818,7 @@ for (const runtimeFirst of [true, false]) {
     player.archive.resolve(files);
     await new Promise(setImmediate);
     player.render();
+    assert.equal(player.overlay.bootStatusText, "Loading game…");
     if (!runtimeFirst) { assert.equal(player.deliveries.length, 0); player.ready(); }
     assert.equal(player.deliveries.length, 1);
     assert.equal(player.deliveries[0].receiver, player.frame.contentWindow);
@@ -829,9 +832,11 @@ for (const runtimeFirst of [true, false]) {
 }
 
 for (const [downloadDetails, label] of [
-  [{ loaded: 12_400_000, total: null }, "Loading game (12.4 MB)…"],
-  [{ loaded: 0, total: 85_200_000 }, "Loading game (0.0 / 85.2 MB)…"],
-  [{ cached: true }, "Opening cached game…"],
+  [{ downloading: true, loaded: 12_000_000, total: null }, "Downloading game… 12 MB"],
+  [{ downloading: true, loaded: 0, total: 85_000_000 }, "Downloading game… 0 of 85 MB"],
+  [{ downloading: true, loaded: 0, total: null }, "Downloading game…"],
+  [{ cached: true }, "Loading game…"],
+  [{ loaded: 12_000_000, total: 85_000_000 }, "Loading game…"],
   [{}, "Loading game…"],
 ]) {
   test(`archive loading status: ${label}`, () => {

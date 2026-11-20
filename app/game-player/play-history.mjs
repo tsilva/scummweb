@@ -1,36 +1,25 @@
-export const playHistoryPrefix = "scummweb.play-history.v1:";
-export const playHistoryUpdatedEvent = "scummweb:play-history-updated";
-
-export function readPlayHistory(scope, version) {
-  try {
-    const entry = JSON.parse(scope.localStorage.getItem(playHistoryPrefix + version));
-    if (Number.isSafeInteger(entry?.playedMs) && entry.playedMs >= 0 &&
-        Number.isSafeInteger(entry.lastPlayedAt) && entry.lastPlayedAt > 0 && entry.lastPlayedAt <= 8.64e15) return entry;
-  } catch { /* Playback works without browser storage. */ }
-  return null;
-}
+import { addPlayedTime } from "./activity-storage.mjs";
 
 // Start only after the player is ready. The caller stops this observer while
 // a menu, failed boot, rotation prompt or exit prevents gameplay.
 export function observePlayHistory(scope, version) {
   if (!version) return;
   let visibleSince = null;
+  let pendingTime = 0;
   let pageActive = true;
   let stopped = false;
+  let lastWrite;
 
   function checkpoint() {
     if (visibleSince === null) return;
     const now = scope.performance.now();
-    const elapsed = Math.max(0, Math.round(now - visibleSince));
+    const elapsed = pendingTime + Math.max(0, Math.round(now - visibleSince));
+    pendingTime = 0;
     visibleSince = now;
-    try {
-      const previous = readPlayHistory(scope, version);
-      scope.localStorage.setItem(playHistoryPrefix + version, JSON.stringify({
-        playedMs: Math.min(Number.MAX_SAFE_INTEGER, (previous?.playedMs ?? 0) + elapsed),
-        lastPlayedAt: Date.now(),
-      }));
-      scope.dispatchEvent(new Event(playHistoryUpdatedEvent));
-    } catch { /* Play history is optional. */ }
+    lastWrite = addPlayedTime(scope, version, elapsed, Date.now()).catch(() => {
+      // Reuse the uncommitted time at the next checkpoint if storage recovers.
+      pendingTime += elapsed;
+    });
   }
 
   function pause() {
@@ -55,13 +44,14 @@ export function observePlayHistory(scope, version) {
   const timer = scope.setInterval(checkpoint, 15_000);
   syncVisibility();
   return () => {
-    if (stopped) return;
+    if (stopped) return lastWrite;
     stopped = true;
     pause();
     scope.clearInterval(timer);
     scope.document.removeEventListener("visibilitychange", syncVisibility);
     scope.removeEventListener("pagehide", hide);
     scope.removeEventListener("pageshow", show);
+    return lastWrite;
   };
 }
 

@@ -10,7 +10,8 @@ import GameSelectionLink from "./home-shell/game-selection-link";
 import { chosenGameVersionUpdatedEvent, readPreferredGameVersion, rememberGameVersion } from "./game-versions.mjs";
 import LaunchButton from "./launch-button";
 import SourceLaunchActions from "./home-shell/source-launch-actions";
-import { formatLastPlayed, formatPlayedTime, playHistoryUpdatedEvent } from "./game-player/play-history.mjs";
+import { formatLastPlayed, formatPlayedTime } from "./game-player/play-history.mjs";
+import { localActivitySignalKey, localActivityUpdatedEvent, readLocalActivity } from "./game-player/activity-storage.mjs";
 import { activityDevice, activityUpdatedEvent, indexActivity, mergeRecentActivity, readActivityCache, versionActivity } from "./game-player/activity.mjs";
 import { connectionKey } from "./dropbox/client.mjs";
 import { getCachedAutosaveProgress, getCachedBrowserSaveContents } from "./browser-saves.mjs";
@@ -24,17 +25,13 @@ function progressRevision(version) {
   return getStoryProgressRevision(storyProgressIndex, slug, !version.source && !importRequired);
 }
 
-function RecentStoryProgress({ version, revision, percent }) {
-  const checkpoint = useBrowserSave(version.game, Boolean(revision), getCachedAutosaveProgress);
+function AutosaveStoryProgress({ game, revision, fallback }) {
+  const checkpoint = useBrowserSave(game, true, getCachedAutosaveProgress);
   const saved = checkpoint && JSON.parse(checkpoint);
-  if (!revision) return null;
-  if (version.key === "catalog:queen" && !version.game.importRequired) {
-    return <QueenSaveProgress game={version.game} revision={revision} fallback={percent} />;
-  }
-  if (saved?.slug === version.game.slug && saved.revision === revision) {
+  if (saved?.slug === game.slug && saved.revision === revision) {
     return <StoryProgressBar percent={saved.percent} saved />;
   }
-  return <StoryProgressBar percent={percent} />;
+  return <StoryProgressBar percent={fallback} />;
 }
 
 function QueenSaveProgress({ game, revision, fallback }) {
@@ -61,22 +58,39 @@ function StoryProgressBar({ percent, saved }) {
   </span>;
 }
 
-function RecentGameCard({ group, now, synced }) {
+function RecentGameCard({ group, now, localActivity, synced }) {
   const artwork = useArtworkDelivery();
+  const cardRef = useRef(null);
+  const [visible, setVisible] = useState(false);
   const { key, versions, recentVersionKey } = group;
   const version = versions.find((version) => version.key === recentVersionKey)
     || readPreferredGameVersion(versions, key);
   const { game } = version;
   const revision = progressRevision(version);
-  const { history, percent } = versionActivity(window, version, synced, revision);
+  const { history, percent } = versionActivity(localActivity, version, synced, revision);
+  const SaveProgress = version.key === "catalog:queen" && !game.importRequired
+    ? QueenSaveProgress : AutosaveStoryProgress;
+
+  useEffect(() => {
+    if (typeof IntersectionObserver !== "function") return;
+    // The default root accounts for both the page viewport and the rail's overflow clipping.
+    const observer = new IntersectionObserver((entries) => setVisible(entries.at(-1).isIntersecting));
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const onLaunch = () => rememberGameVersion(key, version.key);
-  return <article className={`recent-game-card ${game.tone}`} data-game-target={game.target} aria-label={game.displayTitle}>
+  return <article ref={cardRef} className={`recent-game-card ${game.tone}`} data-game-target={game.target} aria-label={game.displayTitle}>
     <div className="recent-game-details">
       {game.posterImage ? <DecorativeImage className="recent-game-cover"
         {...getPosterImageProps(game.posterImage, false, 12, artwork)} sizes="96px" /> : <span className="recent-game-cover" />}
       <div className="recent-game-summary">
         <GameSelectionLink game={game} onClick={onLaunch} className="recent-game-title"><h3>{game.displayTitle}</h3></GameSelectionLink>
-        <div className="recent-game-progress"><RecentStoryProgress version={version} revision={revision} percent={percent} /></div>
+        <div className="recent-game-progress">
+          {revision && (visible
+            ? <SaveProgress game={game} revision={revision} fallback={percent} />
+            : <StoryProgressBar percent={percent} />)}
+        </div>
         <dl className="recent-game-stats">
           <div><dt>Played</dt><dd>{formatPlayedTime(history?.playedMs)}</dd></div>
           <div><dt>Last played</dt><dd><time dateTime={history ? new Date(history.lastPlayedAt).toISOString() : undefined}
@@ -104,37 +118,51 @@ function readSyncedActivity() {
 export default function RecentGamesRail({ groups }) {
   const [recentTargets, setRecentTargets] = useState([]);
   const [now, setNow] = useState(null);
+  const [localActivity, setLocalActivity] = useState(() => new Map());
   const [synced, setSynced] = useState(null);
   const railRef = useRef(null);
   const [scrollable, setScrollable] = useState({ previous: false, next: false });
 
   useEffect(() => {
+    let readVersion = 0;
+    const updateLocal = () => {
+      const version = ++readVersion;
+      void readLocalActivity(window).then((records) => {
+        if (version === readVersion) setLocalActivity(records);
+      }).catch(() => { /* The card can still show synced activity. */ });
+    };
     const update = () => { setRecentTargets(getRecentGameTargets()); setNow(Date.now()); };
     const updateSynced = () => { setSynced(readSyncedActivity()); update(); };
-    updateSynced();
-    const timer = window.setInterval(update, 60_000);
-    window.addEventListener("focus", update);
-    window.addEventListener("pageshow", updateSynced);
-    window.addEventListener("storage", updateSynced);
+    const refresh = () => { updateSynced(); updateLocal(); };
+    const storageChanged = (event) => {
+      if (event.key === localActivitySignalKey || event.key === null) updateLocal();
+      updateSynced();
+    };
+    refresh();
+    const timer = window.setInterval(refresh, 60_000);
+    window.addEventListener("focus", refresh);
+    window.addEventListener("pageshow", refresh);
+    window.addEventListener("storage", storageChanged);
     window.addEventListener(activityUpdatedEvent, updateSynced);
     window.addEventListener("scummweb:dropbox-connection", updateSynced);
     window.addEventListener(recentGamesUpdatedEvent, update);
     window.addEventListener(chosenGameVersionUpdatedEvent, update);
-    window.addEventListener(playHistoryUpdatedEvent, update);
+    window.addEventListener(localActivityUpdatedEvent, updateLocal);
     return () => {
+      readVersion++;
       window.clearInterval(timer);
-      window.removeEventListener("focus", update);
-      window.removeEventListener("pageshow", updateSynced);
-      window.removeEventListener("storage", updateSynced);
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("pageshow", refresh);
+      window.removeEventListener("storage", storageChanged);
       window.removeEventListener(activityUpdatedEvent, updateSynced);
       window.removeEventListener("scummweb:dropbox-connection", updateSynced);
       window.removeEventListener(recentGamesUpdatedEvent, update);
       window.removeEventListener(chosenGameVersionUpdatedEvent, update);
-      window.removeEventListener(playHistoryUpdatedEvent, update);
+      window.removeEventListener(localActivityUpdatedEvent, updateLocal);
     };
   }, []);
 
-  const targets = synced ? mergeRecentActivity(window, groups, recentTargets, synced, progressRevision) : recentTargets;
+  const targets = synced ? mergeRecentActivity(localActivity, groups, recentTargets, synced, progressRevision) : recentTargets;
   const recentGames = getRecentlyPlayedGames(groups, targets);
 
   useEffect(() => {
@@ -155,7 +183,7 @@ export default function RecentGamesRail({ groups }) {
       observer.disconnect();
       rail.removeEventListener("scroll", update);
     };
-  }, [groups, recentTargets, synced]);
+  }, [groups, recentTargets, synced, localActivity]);
 
   function scrollGames(direction) {
     const rail = railRef.current;
@@ -184,7 +212,7 @@ export default function RecentGamesRail({ groups }) {
         </div>}
       </div>
       <div className="landscape-rail recent-games-rail" id="recently-played-rail" ref={railRef}>
-        {recentGames.map((group) => <RecentGameCard key={group.key} group={group} now={now} synced={synced} />)}
+        {recentGames.map((group) => <RecentGameCard key={group.key} group={group} now={now} localActivity={localActivity} synced={synced} />)}
       </div>
     </section>
   );

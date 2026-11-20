@@ -1,4 +1,5 @@
 import { LoaderCircle, TriangleAlert } from "lucide-react";
+import { GAME_LOADING_STATUS } from "../game-loading-status.mjs";
 import GameHeroScene from "./GameHeroScene";
 
 export default function GameBootOverlay({
@@ -26,7 +27,7 @@ export default function GameBootOverlay({
             <StatusIcon aria-hidden="true" className="game-hero-status-icon" size={28} strokeWidth={2} />
             <div>
               {hasBootFailed ? <p className="game-hero-status-label">Launch failed</p> : null}
-              <p className="game-hero-status-text" data-launch-status="true">{bootStatusText || "Loading game…"}</p>
+              <p className="game-hero-status-text" data-launch-status="true">{bootStatusText || GAME_LOADING_STATUS}</p>
             </div>
           </div>
         </div>

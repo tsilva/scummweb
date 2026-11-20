@@ -90,7 +90,7 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
   const tooLarge = `This ZIP exceeds the ${archiveLimit / (1024 * 1024)} MiB download limit.`;
   const total = Number(response.headers.get("content-length"));
   const hasTotal = Number.isFinite(total) && total > 0;
-  onProgress?.(hasTotal ? 0 : null, { loaded: 0, total: hasTotal ? total : null });
+  onProgress?.(hasTotal ? 0 : null, { downloading: true, loaded: 0, total: hasTotal ? total : null });
   let size = 0;
   const limitedBody = response.body.pipeThrough(new TransformStream({
     transform(chunk, controller) {
@@ -100,7 +100,7 @@ async function downloadGameArchive(zipUrl, { signal, onEntries, onProgress, arch
         return;
       }
       onProgress?.(hasTotal ? Math.min(99, Math.floor(size / total * 100)) : null,
-        { loaded: size, total: hasTotal ? total : null });
+        { downloading: true, loaded: size, total: hasTotal ? total : null });
       controller.enqueue(chunk);
     },
   }));

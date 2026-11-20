@@ -517,6 +517,7 @@ test("the loading screen reuses the hero's responsive artwork and requests synch
   });
   const GameBootOverlay = await loadComponent("../app/game-player/GameBootOverlay.js", {
     "./GameHeroScene": Scene,
+    "../game-loading-status.mjs": { GAME_LOADING_STATUS: "Loading game…" },
     "../home-shell/artwork-delivery": { useArtworkDelivery: () => artwork },
     "../home-shell/decorative-image": DecorativeImage,
     "../home-shell/hero-images.mjs": { getHeroImageProps },

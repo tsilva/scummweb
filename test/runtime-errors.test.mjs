@@ -8,10 +8,13 @@ const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((
 const earlyErrors = scripts.find((script) => script.includes("var reportScummvmBootError"));
 const initializer = scripts.find((script) => script.includes("var Module={preRun:"));
 const localErrors = scripts.find((script) => script.includes("function reportRuntimeError(error)"));
+const scummwebLoadingStatus = html.match(/ id=status>([^<]+)</)[1];
 
 function shell({ local = false, inline = false } = {}) {
   const classes = new Set();
-  const status = { style: {}, innerHTML: "", classList: { add: (name) => classes.add(name) } };
+  const status = { style: {}, textContent: scummwebLoadingStatus, classList: {
+    add: (name) => classes.add(name), contains: (name) => classes.has(name),
+  } };
   const listeners = {};
   const localStatuses = [];
   const reports = [];
@@ -22,7 +25,7 @@ function shell({ local = false, inline = false } = {}) {
     console: { log() {}, error() {} },
     setupFilesystem() {},
     document: { baseURI: href, getElementById: () => ({ value: "", addEventListener() {} }) },
-    statusElement: status, progressElement: {},
+    statusElement: status, progressElement: {}, scummwebLoadingStatus,
     isLocalGame: local, localGameStatus: "running",
     reportLocalGameStatus: (value) => localStatuses.push(value),
     addEventListener: (name, callback) => { (listeners[name] ||= []).push(callback); },
@@ -44,11 +47,13 @@ for (const local of [false, true]) {
     assert.equal(session.context.onerror(error.message, "scummvm.js", 1, 1, error), true);
     session.dispatch("error", { error });
     assert.equal(session.classes.has("error"), false);
-    assert.doesNotMatch(session.status.innerHTML, /Exception thrown/);
+    assert.equal(session.status.textContent, "Loading game…");
     assert.deepEqual(session.localStatuses, []);
     assert.deepEqual(session.reports, []);
-    session.context.Module.setStatus("Still usable");
-    assert.match(session.status.innerHTML, /Still usable/);
+    session.context.Module.setStatus("Running...");
+    assert.equal(session.status.textContent, "Loading game…");
+    session.context.Module.setStatus("");
+    assert.equal(session.status.style.display, "none");
   });
 }
 
@@ -58,7 +63,7 @@ test("failed exits and ordinary exceptions retain the error banner", () => {
     session.context.onerror("Uncaught error", "scummvm.js", 1, 1, error);
     session.dispatch("error", { error });
     assert.equal(session.classes.has("error"), true);
-    assert.match(session.status.innerHTML, /Exception thrown/);
+    assert.match(session.status.textContent, /Exception thrown/);
     assert.deepEqual(session.localStatuses, ["error"]);
   }
 });

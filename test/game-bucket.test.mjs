@@ -125,15 +125,15 @@ test("ZIP downloads report streamed byte counts and handle unknown totals", asyn
     assert.equal(files[0].path, "sky.dnr");
     assert.deepEqual(progress, contentLength === String(bytes.length)
       ? [
-        [0, { loaded: 0, total: bytes.length }],
-        [Math.floor(midpoint / bytes.length * 100), { loaded: midpoint, total: bytes.length }],
-        [99, { loaded: bytes.length, total: bytes.length }],
+        [0, { downloading: true, loaded: 0, total: bytes.length }],
+        [Math.floor(midpoint / bytes.length * 100), { downloading: true, loaded: midpoint, total: bytes.length }],
+        [99, { downloading: true, loaded: bytes.length, total: bytes.length }],
         [100, { loaded: bytes.length, total: bytes.length }],
       ]
       : [
-        [null, { loaded: 0, total: null }],
-        [null, { loaded: midpoint, total: null }],
-        [null, { loaded: bytes.length, total: null }],
+        [null, { downloading: true, loaded: 0, total: null }],
+        [null, { downloading: true, loaded: midpoint, total: null }],
+        [null, { downloading: true, loaded: bytes.length, total: null }],
         [100, { loaded: bytes.length, total: bytes.length }],
       ]);
     fetch.mock.restore();

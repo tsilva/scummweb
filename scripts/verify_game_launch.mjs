@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
+import { GAME_LOADING_STATUS } from "../app/game-loading-status.mjs";
 import { normalizeSkipIntroConfig } from "../app/skip-intro-config.mjs";
 
 const [url, screenshotPath] = process.argv.slice(2);
@@ -20,7 +21,7 @@ const executablePath = chromeCandidates.find((candidate) => fs.existsSync(candid
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const expectedPwaThemeColor = "#1a4d1a";
 const expectedLaunchPhaseSequence = ["pending", "runtime-ready", "launch-detected", "awaiting-frame", "ready"];
-const initialBootOverlayText = "Loading ScummVM...";
+const downloadOverlayText = /^Downloading game…(?: \d[\d,.]*(?: of \d[\d,.]*)? MB)?$/u;
 const lurePopupProbePoint = { x: 106, y: 519 };
 const lurePopupSelectPoint = { x: 168, y: 436 };
 
@@ -119,42 +120,15 @@ async function readLaunchArtifacts(page, frame) {
   return { overlayHistory, readyStateHistory };
 }
 
-function verifyLaunchProgressHistory({
-  assertOverlayTextHistory = true,
-  game,
-  overlayHistory,
-  readyStateHistory,
-}) {
+function verifyLaunchProgressHistory({ game, overlayHistory, readyStateHistory }) {
   const observedStates = readyStateHistory
     .filter((entry) => entry?.target === game.target)
     .map((entry) => entry.state);
-  const observedTexts = overlayHistory.map((entry) => entry?.text).filter(Boolean);
-  const runtimeReadyText = `ScummVM loaded. Starting ${game.displayTitle}...`;
-  const launchDetectedText = `${game.displayTitle} engine started. Preparing the scene...`;
-  const awaitingFrameText = "Almost there. Waiting for the first frame...";
-  const expectedTexts = [
-    ...(observedTexts.includes(initialBootOverlayText) ? [initialBootOverlayText] : []),
-    ...(observedTexts.includes(runtimeReadyText) ? [runtimeReadyText] : []),
-    ...(observedTexts.includes(launchDetectedText) ? [launchDetectedText] : []),
-    awaitingFrameText,
-  ];
-  const firstNonInitialTextIndex = observedTexts.findIndex((entry) => entry !== initialBootOverlayText);
-  const loadingRegressionIndex =
-    firstNonInitialTextIndex === -1
-      ? -1
-      : observedTexts.indexOf(initialBootOverlayText, firstNonInitialTextIndex);
-
   assertOrderedEntries(observedStates, expectedLaunchPhaseSequence, `${game.target} ready-state history`);
-  if (assertOverlayTextHistory) {
-    if (expectedTexts.length > 0) {
-      assertOrderedEntries(observedTexts, expectedTexts, `${game.target} overlay text history`);
-    }
-  }
-
-  if (assertOverlayTextHistory && loadingRegressionIndex !== -1) {
-    throw new Error(
-      `Launch overlay for ${game.target} regressed to ${JSON.stringify(initialBootOverlayText)} after advancing. Saw: ${JSON.stringify(observedTexts)}`
-    );
+  const unexpected = overlayHistory.find(({ state, text }) => state === "visible" &&
+    text !== GAME_LOADING_STATUS && !downloadOverlayText.test(text));
+  if (unexpected) {
+    throw new Error(`Unexpected loading message for ${game.target}. Saw: ${JSON.stringify(unexpected.text)}`);
   }
 }
 
@@ -179,7 +153,7 @@ function verifyPwaManifestOnDisk() {
   }
 }
 
-async function waitForGameStartup(page, frame, game, { assertOverlayTextHistory = true } = {}) {
+async function waitForGameStartup(page, frame, game) {
   const fatalOutputPatterns = [
     /Game data path does not exist/i,
     /Couldn't identify game/i,
@@ -207,7 +181,7 @@ async function waitForGameStartup(page, frame, game, { assertOverlayTextHistory 
 
     if (readyState?.target === game.target && readyState?.state === "ready") {
       const launchArtifacts = await readLaunchArtifacts(page, frame);
-      verifyLaunchProgressHistory({ assertOverlayTextHistory, game, ...launchArtifacts });
+      verifyLaunchProgressHistory({ game, ...launchArtifacts });
       return readyState;
     }
 
@@ -462,16 +436,16 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
   await resetLaunchOverlayHistoryCapture(page);
   await skipIntroButton.click();
   await page.waitForFunction(
-    () => {
+    (loadingText) => {
       const overlay = document.querySelector('[data-launch-overlay="true"]');
       const statusText = document.querySelector('[data-launch-status="true"]')?.textContent?.trim() || "";
 
       return (
         overlay?.getAttribute("data-launch-overlay-state") === "visible" &&
-        statusText === "Skipping intro..."
+        statusText === loadingText
       );
     },
-    null,
+    GAME_LOADING_STATUS,
     {
       timeout: 5000,
     }
@@ -486,7 +460,7 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
       return decodeURIComponent(launch.hash) === `#-b ${bootParam} ${target}`
         && !launch.searchParams.has("skipIntroTarget");
     }, { target: game.target, bootParam: game.skipIntro.bootParam });
-    await waitForGameStartup(page, frame, game, { assertOverlayTextHistory: false });
+    await waitForGameStartup(page, frame, game);
     await verifyLaunchOverlayAfterStartup(page, game);
     await skipIntroButton.waitFor({ state: "hidden", timeout: 5000 });
     if (normalizeUrl(page.url()) !== normalizeUrl(routeUrl)) {
@@ -504,7 +478,7 @@ async function verifySkipIntroButton(page, frame, game, routeUrl) {
   }
 
   await verifyCursorGrabHintHiddenDuringBoot(page, game);
-  await waitForGameStartup(page, frame, game, { assertOverlayTextHistory: false });
+  await waitForGameStartup(page, frame, game);
   await verifyLaunchOverlayAfterStartup(page, game);
 
   await page.waitForFunction(() => {

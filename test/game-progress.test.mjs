@@ -7,7 +7,9 @@ import { pathToFileURL } from 'node:url';
 import { deflateSync, gzipSync, gunzipSync } from 'node:zlib';
 import { generateGameProgress } from '../scripts/generate-game-progress.mjs';
 import { readQueenSaveSnapshot } from '../lib/game-progress/queen-save.mjs';
-import { getStoryProgressRevision, observeStoryProgress, readStoryProgress } from '../app/game-player/story-progress.mjs';
+import { getStoryProgressRevision, observeStoryProgress } from '../app/game-player/story-progress.mjs';
+import { readLocalActivity } from '../app/game-player/activity-storage.mjs';
+import { indexedDbFixture, memoryStorage } from './helpers/dropbox-fixtures.mjs';
 
 const directory = await mkdtemp(path.join(tmpdir(), 'scummweb-game-progress-'));
 after(() => rm(directory, { recursive: true, force: true }));
@@ -36,37 +38,40 @@ test('home story progress retains a verified milestone per copy and revision', a
   const identity = { engine_id: 'scumm', game_id: 'maniac', index_md5: 'e781230da44a44e2f0770edb2b3b3633' };
   const snapshot = { schema_version: 1, room_id: 30, room_ready: true, sample_time_ms: 1,
     banks: { scumm_vars: Array(163).fill(0), running_scripts: Array(64).fill(0) } };
-  const stored = new Map();
   const events = new Map();
   let tick;
   const scope = {
-    localStorage: { getItem: key => stored.get(key) ?? null,
-      setItem: (key, value) => stored.set(key, value), removeItem: key => stored.delete(key) },
+    localStorage: memoryStorage(),
+    indexedDB: indexedDbFixture(),
+    dispatchEvent() {},
     setInterval(callback) { tick = callback; return 1; },
     clearInterval() { tick = undefined; },
     addEventListener: (type, callback) => events.set(type, callback),
     removeEventListener: type => events.delete(type),
   };
   const frame = { contentWindow: { scummwebTelemetry: { read: () => ({ identity, snapshot }) } } };
-  const progress = (copy = version, mapRevision = revision) => readStoryProgress(scope, copy, slug, mapRevision);
+  const progress = async (copy = version, mapRevision = revision) => {
+    const story = (await readLocalActivity(scope)).get(copy)?.story;
+    return story?.slug === slug && story.revision === mapRevision ? story.percent : null;
+  };
   const stop = observeStoryProgress(scope, frame, { version, slug, revision }, async (...args) => createTracker(...args));
   await Promise.resolve();
   const labPercent = Math.round(100 / trackerFor(slug).report().total);
-  assert.equal(progress(), labPercent);
-  assert.equal(progress('source:other-copy'), null);
-  assert.equal(progress(version, 'old-revision'), null);
+  assert.equal(await progress(), labPercent);
+  assert.equal(await progress('source:other-copy'), null);
+  assert.equal(await progress(version, 'old-revision'), null);
   snapshot.room_id = 2;
   snapshot.sample_time_ms++;
   tick();
-  assert.equal(progress(), labPercent, 'The library retains the best measured progress after leaving the room');
+  assert.equal(await progress(), labPercent, 'The library retains the best measured progress after leaving the room');
   snapshot.banks.running_scripts[63] = 1;
   snapshot.sample_time_ms++;
   events.get('pagehide')();
-  assert.equal(progress(), 100);
+  assert.equal(await progress(), 100);
   identity.index_md5 = 'f'.repeat(32);
   snapshot.sample_time_ms++;
   tick();
-  assert.equal(progress(), null, 'a reconnected copy with another edition clears stale progress');
+  assert.equal(await progress(), null, 'a reconnected copy with another edition clears stale progress');
   stop();
   assert.equal(tick, undefined);
   assert.equal(events.size, 0);
