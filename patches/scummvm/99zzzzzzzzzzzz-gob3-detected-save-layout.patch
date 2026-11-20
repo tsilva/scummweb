@@ -1,0 +1,70 @@
+diff --git a/engines/gob/gob.h b/engines/gob/gob.h
+--- a/engines/gob/gob.h
++++ b/engines/gob/gob.h
+@@ -266,6 +266,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	Common::String getSaveStateName(int slot) const override;
++	bool matchesGob3CheckpointTarget(const char *target) const;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -73,13 +73,9 @@
+ };
+ 
+ #ifdef __EMSCRIPTEN__
+-static bool isGob3CheckpointTarget(const Common::String &target) {
+-	if (!ConfMan.hasGameDomain(target) || ConfMan.get("gameid", target) != "gob3")
+-		return false;
+-
+-	const Common::String edition = ConfMan.get("extra", target);
+-	return edition == "Interactive Demo 3 (v0.02)" ||
+-		(edition == "CD v1.02" && Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformDOS);
++static bool isGob3CheckpointEdition(const Common::String &edition, Common::Platform platform) {
++	return platform == Common::kPlatformDOS &&
++		(edition == "Interactive Demo 3 (v0.02)" || edition == "CD v1.02");
+ }
+ #endif
+ 
+@@ -96,6 +92,7 @@
+ 			Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount) - 1;
+ 	}
+ 	SaveStateList listSaves(const char *target) const override;
++	bool isGob3CheckpointTarget(const Common::String &target) const;
+ #endif
+ 
+ 	Common::Error createInstance(OSystem *syst, Engine **engine, const Gob::GOBGameDescription *desc) const override;
+@@ -114,6 +111,17 @@
+ }
+ 
+ #ifdef __EMSCRIPTEN__
++bool GobMetaEngine::isGob3CheckpointTarget(const Common::String &target) const {
++	// Auto-detected imports can have an active target without the edition
++	// fields of a configured launcher target.
++	if (g_engine && g_engine->getMetaEngine() == this &&
++			static_cast<const Gob::GobEngine *>(g_engine)->matchesGob3CheckpointTarget(target.c_str()))
++		return true;
++
++	return ConfMan.hasGameDomain(target) && ConfMan.get("gameid", target) == "gob3" &&
++		isGob3CheckpointEdition(ConfMan.get("extra", target), Common::parsePlatform(ConfMan.get("platform", target)));
++}
++
+ SaveStateList GobMetaEngine::listSaves(const char *target) const {
+ 	SaveStateList saves;
+ 	if (!target || !hasFeature(kSupportsListSaves))
+@@ -131,6 +139,12 @@
+ 	return saves;
+ }
+ 
++bool Gob::GobEngine::matchesGob3CheckpointTarget(const char *target) const {
++	return _targetName == target && getGameType() == kGameTypeGob3 &&
++		((_extra && isGob3CheckpointEdition(_extra, getPlatform())) ||
++		(_game && _game->hasAgentCheckpointScript()));
++}
++
+ Common::String Gob::GobEngine::getSaveStateName(int slot) const {
+ 	return getMetaEngine()->getSavegameFile(slot, _targetName.c_str());
+ }
