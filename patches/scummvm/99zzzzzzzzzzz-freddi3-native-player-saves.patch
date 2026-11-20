@@ -1,0 +1,284 @@
+diff --git a/engines/scumm/scumm.h b/engines/scumm/scumm.h
+--- a/engines/scumm/scumm.h
++++ b/engines/scumm/scumm.h
+@@ -615,11 +615,26 @@
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++#ifdef __EMSCRIPTEN__
++	Common::String getSaveStateName(int slot) const override;
++	static constexpr int kFreddi3LastSlot = 12;
++	static constexpr int kFreddi3CatalogEntrySize = 50;
++	static constexpr int kFreddi3CatalogSize = (kFreddi3LastSlot + 1) * kFreddi3CatalogEntrySize;
++	static Common::String freddi3SaveFilename(const char *target, int slot);
++	static bool readFreddi3SaveCatalog(const char *target, byte *catalog);
++#else
+ 	Common::String getSaveStateName(int slot) const override { return makeSavegameName(slot, false); }
++#endif
+ 
+ 	void pauseEngineIntern(bool pause) override;
+ 
+ protected:
++#ifdef __EMSCRIPTEN__
++	bool supportsFreddi3PlayerSaves() const;
++	bool canUseFreddi3PlayerSlot() const;
++	void setFreddi3SaveSlot(int slot);
++	void writeFreddi3SaveCaption(int slot, const Common::String &caption);
++#endif
+ 	virtual void setupScumm(const Common::Path &macResourceFile);
+ 	virtual void resetScumm();
+ 
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -19,6 +19,9 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ #include "common/config-manager.h"
+ #include "common/memstream.h"
+ #include "common/savefile.h"
+@@ -80,6 +83,75 @@
+ 
+ #pragma mark -
+ 
++#ifdef __EMSCRIPTEN__
++static char freddi3SlotSuffix(int slot) {
++	return slot < 10 ? '0' + slot : 'a' + slot - 10;
++}
++
++Common::String ScummEngine::freddi3SaveFilename(const char *target, int slot) {
++	const char suffix = freddi3SlotSuffix(slot);
++	const Common::String filename = Common::String::format("%s-freddi3.sg%c", target, suffix);
++	// HE's name-based loader already accepts this older ScummVM convention.
++	const Common::String legacy = Common::String::format("%s.sg%c", target, suffix);
++	Common::SaveFileManager *saves = g_system->getSavefileManager();
++	return saves->exists(legacy) && !saves->exists(filename) ? legacy : filename;
++}
++
++bool ScummEngine::readFreddi3SaveCatalog(const char *target, byte *catalog) {
++	Common::ScopedPtr<Common::InSaveFile> file(g_system->getSavefileManager()->openForLoading(freddi3SaveFilename(target, 0)));
++	return file && file->size() == kFreddi3CatalogSize &&
++		file->read(catalog, kFreddi3CatalogSize) == kFreddi3CatalogSize;
++}
++
++bool ScummEngine::supportsFreddi3PlayerSaves() const {
++	// English Windows CD data. The demo has no native save scripts, and
++	// later Humongous releases do not necessarily share this slot catalog.
++	static const byte cdIndexMD5[] = {0x83, 0x68, 0xf5, 0x52, 0xb1, 0xe3, 0xeb, 0xa5,
++		0x59, 0xf8, 0xd5, 0x59, 0xbc, 0xc4, 0xca, 0xdb};
++	return _game.id == GID_FREDDI3 && _game.heversion == 90 &&
++		memcmp(_gameMD5, cdIndexMD5, sizeof(cdIndexMD5)) == 0 && scummwebIsPlayerControl();
++}
++
++bool ScummEngine::canUseFreddi3PlayerSlot() const {
++	// Room 46 is the game's own save/load interface.
++	return _agentControlBoundary && _roomResource && _currentRoom != 46 &&
++		_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++		vm.cutScenePtr[0] == 0 && !_saveLoadFlag;
++}
++
++Common::String ScummEngine::getSaveStateName(int slot) const {
++	if (supportsFreddi3PlayerSaves() && slot >= 1 && slot <= kFreddi3LastSlot)
++		return freddi3SaveFilename(_targetName.c_str(), slot);
++	return makeSavegameName(slot, false);
++}
++
++void ScummEngine::setFreddi3SaveSlot(int slot) {
++	// This is the same name-based operation used by the original HE scripts.
++	_saveLoadFileName = Common::String::format("freddi3.sg%c", freddi3SlotSuffix(slot));
++	_saveLoadSlot = 255;
++	_saveTemporaryState = true;
++}
++
++void ScummEngine::writeFreddi3SaveCaption(int slot, const Common::String &caption) {
++	byte catalog[kFreddi3CatalogSize] = {};
++	const Common::String existing = freddi3SaveFilename(_targetName.c_str(), 0);
++	if (_saveFileMan->exists(existing) && !readFreddi3SaveCatalog(_targetName.c_str(), catalog))
++		return;
++
++	byte *row = catalog + slot * kFreddi3CatalogEntrySize;
++	// The original menu uses picture 721 when a slot has no room picture.
++	WRITE_BE_UINT16(row, 721);
++	Common::strlcpy(reinterpret_cast<char *>(row + 2), caption.c_str(), kFreddi3CatalogEntrySize - 2);
++
++	const Common::String filename = _targetName + "-freddi3.sg0";
++	Common::ScopedPtr<Common::OutSaveFile> out(_saveFileMan->openForSaving(filename, false));
++	if (out) {
++		out->write(catalog, sizeof(catalog));
++		out->finalize();
++	}
++}
++#endif
++
+ Common::Error ScummEngine::loadGameState(int slot) {
+ #ifdef ENABLE_SCUMM_7_8
+ 	if (_game.id == GID_REBEL1) {
+@@ -95,6 +167,17 @@
+ 	}
+ #endif
+ 
++#ifdef __EMSCRIPTEN__
++	if (supportsFreddi3PlayerSaves()) {
++		if (slot < 1 || slot > kFreddi3LastSlot || !canUseFreddi3PlayerSlot())
++			return Common::kReadingFailed;
++		requestLoad(slot);
++		setFreddi3SaveSlot(slot);
++		_agentSaveLoadSucceeded = false;
++		scummLoop_handleSaveLoad();
++		return _agentSaveLoadSucceeded ? Common::kNoError : Common::kReadingFailed;
++	}
++#endif
+ 	requestLoad(slot);
+ #ifdef __EMSCRIPTEN__
+ 	if (_agentControlBoundary) {
+@@ -132,6 +215,10 @@
+ 	// Except the earliest HE Games (3DO and initial DOS version of
+ 	// puttputt), which didn't offer scripted load/save screens.
+ 	if (_game.heversion >= 62) {
++#ifdef __EMSCRIPTEN__
++		if (supportsFreddi3PlayerSaves())
++			return canUseFreddi3PlayerSlot();
++#endif
+ 		if (msg)
+ 			*msg = _("This game does not support loading from the menu. Use in-game interface");
+ 
+@@ -188,6 +275,20 @@
+ 		return Common::kNoError;
+ #endif
+ 
++#ifdef __EMSCRIPTEN__
++	if (supportsFreddi3PlayerSaves()) {
++		if (isAutosave || slot < 1 || slot > kFreddi3LastSlot || !canUseFreddi3PlayerSlot())
++			return Common::kWritingFailed;
++		requestSave(slot, desc);
++		setFreddi3SaveSlot(slot);
++		_agentSaveLoadSucceeded = false;
++		scummLoop_handleSaveLoad();
++		if (!_agentSaveLoadSucceeded)
++			return Common::kWritingFailed;
++		writeFreddi3SaveCaption(slot, desc);
++		return Common::kNoError;
++	}
++#endif
+ 	requestSave(slot, desc);
+ #ifdef __EMSCRIPTEN__
+ 	if (_agentControlBoundary) {
+@@ -234,6 +335,10 @@
+ 	// Except the earliest HE Games (3DO and initial DOS version of
+ 	// puttputt), which didn't offer scripted load/save screens.
+ 	if (_game.heversion >= 62) {
++#ifdef __EMSCRIPTEN__
++		if (supportsFreddi3PlayerSaves())
++			return canUseFreddi3PlayerSlot();
++#endif
+ 		if (msg)
+ 			*msg = _("This game does not support saving from the menu. Use in-game interface");
+ 
+diff --git a/engines/scumm/metaengine.h b/engines/scumm/metaengine.h
+--- a/engines/scumm/metaengine.h
++++ b/engines/scumm/metaengine.h
+@@ -33,6 +33,9 @@
+ 	                             const DetectedGame &gameDescriptor, const void *metaEngineDescriptor) override;
+ 
+ 	SaveStateList listSaves(const char *target) const override;
++#ifdef __EMSCRIPTEN__
++	Common::String getSavegameFile(int slot, const char *target = nullptr) const override;
++#endif
+ 	int getMaximumSaveSlot() const override;
+ 	bool removeSaveState(const char *target, int slot) const override;
+ 	SaveStateDescriptor querySaveMetaInfos(const char *target, int slot) const override;
+diff --git a/engines/scumm/metaengine.cpp b/engines/scumm/metaengine.cpp
+--- a/engines/scumm/metaengine.cpp
++++ b/engines/scumm/metaengine.cpp
+@@ -569,7 +569,26 @@
+ 	return Common::kNoError;
+ }
+ 
+-int ScummMetaEngine::getMaximumSaveSlot() const { return 99; }
++#ifdef __EMSCRIPTEN__
++static bool isFreddi3SaveTarget(const char *target) {
++	return target && ConfMan.hasGameDomain(target) && ConfMan.get("gameid", target) == "freddi3" &&
++		ConfMan.get("extra", target).empty();
++}
++
++Common::String ScummMetaEngine::getSavegameFile(int slot, const char *target) const {
++	if (isFreddi3SaveTarget(target) && slot >= 1 && slot <= ScummEngine::kFreddi3LastSlot)
++		return ScummEngine::freddi3SaveFilename(target, slot);
++	return MetaEngine::getSavegameFile(slot, target);
++}
++#endif
++
++int ScummMetaEngine::getMaximumSaveSlot() const {
++#ifdef __EMSCRIPTEN__
++	if (isFreddi3SaveTarget(ConfMan.getActiveDomainName().c_str()))
++		return ScummEngine::kFreddi3LastSlot;
++#endif
++	return 99;
++}
+ 
+ namespace Scumm {
+ bool getSavegameName(Common::InSaveFile *in, Common::String &desc, int heversion);
+@@ -577,6 +596,31 @@
+ 
+ SaveStateList ScummMetaEngine::listSaves(const char *target) const {
+ 	Common::SaveFileManager *saveFileMan = g_system->getSavefileManager();
++#ifdef __EMSCRIPTEN__
++	if (isFreddi3SaveTarget(target)) {
++		SaveStateList saves;
++		byte catalog[ScummEngine::kFreddi3CatalogSize] = {};
++		const bool haveCatalog = ScummEngine::readFreddi3SaveCatalog(target, catalog);
++		for (int slot = 1; slot <= ScummEngine::kFreddi3LastSlot; ++slot) {
++			const Common::String filename = getSavegameFile(slot, target);
++			Common::ScopedPtr<Common::InSaveFile> file(saveFileMan->openForLoading(filename));
++			if (!file)
++				continue;
++			Common::String description;
++			const bool valid = Scumm::getSavegameName(file.get(), description, 90);
++			if (valid && haveCatalog) {
++				const char *caption = reinterpret_cast<const char *>(catalog + slot * ScummEngine::kFreddi3CatalogEntrySize + 2);
++				const Common::String nativeCaption(caption, ScummEngine::kFreddi3CatalogEntrySize - 2);
++				if (caption[0])
++					description = nativeCaption.c_str();
++			}
++			SaveStateDescriptor saved(this, slot, description.empty() ? Common::String::format("Save %d", slot) : description);
++			saved.setLocked(!valid);
++			saves.push_back(saved);
++		}
++		return saves;
++	}
++#endif
+ 	Common::StringArray filenames;
+ 	Common::String saveDesc;
+ 	Common::String pattern = target;
+@@ -610,6 +654,15 @@
+ }
+ 
+ SaveStateDescriptor ScummMetaEngine::querySaveMetaInfos(const char *target, int slot) const {
++#ifdef __EMSCRIPTEN__
++	if (isFreddi3SaveTarget(target)) {
++		for (const auto &save : listSaves(target)) {
++			if (save.getSaveSlot() == slot && !save.getLocked())
++				return save;
++		}
++		return SaveStateDescriptor();
++	}
++#endif
+ 	Common::String saveDesc;
+ 	Graphics::Surface *thumbnail = nullptr;
+ 	SaveStateMetaInfos infos;
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -225,6 +225,8 @@
+ 	if (engineId == "agi" && (gameId == "mickey" || gameId == "winnie" || gameId == "troll"))
+ 		supported = false;
+ 	if (engineId == "mohawk" && gameId != "myst" && gameId != "riven")
++		supported = false;
++	if (engineId == "scumm" && gameId == "freddi3")
+ 		supported = false;
+ 	Common::String extra = ConfMan.get("extra");
+ 	extra.toLowercase();

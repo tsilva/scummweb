@@ -1,0 +1,60 @@
+diff --git a/engines/agos/metaengine.cpp b/engines/agos/metaengine.cpp
+--- a/engines/agos/metaengine.cpp
++++ b/engines/agos/metaengine.cpp
+@@ -146,6 +146,24 @@
+ 			return name;
+ 		}
+ 	}
++
++	// The hosted startup scan runs before the engine is constructed.
++	if (target && ConfMan.hasGameDomain(target)) {
++		Common::String prefix = ConfMan.get("gameid", target);
++		const Common::Platform platform = Common::parsePlatform(ConfMan.get("platform", target));
++		if (platform == Common::kPlatformDOS && (prefix == "waxworks" || prefix == "elvira2")) {
++			prefix += "-pc";
++		} else if (prefix == "simon1") {
++			Common::String edition = ConfMan.get("extra", target);
++			edition.toLowercase();
++			if (edition.contains("demo"))
++				prefix += "-demo";
++		}
++		if (prefix == "feeble" || prefix == "simon1" || prefix == "simon1-demo" || prefix == "simon2" ||
++				prefix == "elvira1" || prefix == "elvira2" || prefix == "elvira2-pc" ||
++				prefix == "waxworks" || prefix == "waxworks-pc")
++			return MetaEngine::getSavegameFile(slot, prefix.c_str());
++	}
+ 	return MetaEngine::getSavegameFile(slot, target);
+ }
+ #endif
+@@ -168,17 +186,24 @@
+ 			if (in) {
+ 				saveDesc = file;
+ #ifdef __EMSCRIPTEN__
++				uint captionSize = 0;
+ 				if (g_engine && g_engine->getMetaEngine() == this &&
+ 						ConfMan.getActiveDomainName() == target) {
+ 					const auto gameType = static_cast<const AGOS::AGOSEngine *>(g_engine)->getGameType();
+-					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_FF) {
+-						const uint captionSize = gameType == AGOS::GType_FF ? 100
+-							: gameType >= AGOS::GType_SIMON1 ? 18 : 8;
+-						char caption[101] = {};
+-						if (in->read(caption, captionSize) == captionSize && caption[0])
+-							saveDesc = caption;
+-					}
++					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_FF)
++						captionSize = gameType == AGOS::GType_FF ? 100 : gameType >= AGOS::GType_SIMON1 ? 18 : 8;
++				} else if (target && ConfMan.hasGameDomain(target)) {
++					const Common::String gameId = ConfMan.get("gameid", target);
++					if (gameId == "feeble")
++						captionSize = 100;
++					else if (gameId == "simon1" || gameId == "simon2")
++						captionSize = 18;
++					else if (gameId == "elvira1" || gameId == "elvira2" || gameId == "waxworks")
++						captionSize = 8;
+ 				}
++				char caption[101] = {};
++				if (captionSize && in->read(caption, captionSize) == captionSize && caption[0])
++					saveDesc = caption;
+ #endif
+ 				saveList.push_back(SaveStateDescriptor(this, slotNum, saveDesc));
+ 				delete in;

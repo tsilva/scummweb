@@ -1,0 +1,113 @@
+diff --git a/engines/made/made.h b/engines/made/made.h
+--- a/engines/made/made.h
++++ b/engines/made/made.h
+@@ -81,6 +81,9 @@
+ #ifdef __EMSCRIPTEN__
+ 	// Enable runtime checkpoints after recognizing the CD script layout.
+ 	int16 _agentRestoreScript = 0;
++	int16 _rtzSaveMenuRoom = 0;
++	int16 _rtzLoadMenuRoom = 0;
++	int16 _rtzMenuReturnProperty = 0;
+ 	bool _agentControlBoundary = false;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
+ 	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
+diff --git a/engines/made/made.cpp b/engines/made/made.cpp
+--- a/engines/made/made.cpp
++++ b/engines/made/made.cpp
+@@ -294,7 +294,10 @@
+ static constexpr int16 kRtzRoom = 7;
+ 
+ bool MadeEngine::canSaveGameStateCurrently(Common::U32String *msg) {
+-	return _agentRestoreScript && _agentControlBoundary && _dat->getVar(kRtzRoom) > 0;
++	if (!_agentRestoreScript || !_agentControlBoundary)
++		return false;
++	const int16 room = _dat->getVar(kRtzRoom);
++	return room > 0 && room != _rtzSaveMenuRoom && room != _rtzLoadMenuRoom;
+ }
+ 
+ bool MadeEngine::canLoadGameStateCurrently(Common::U32String *msg) {
+@@ -306,8 +309,20 @@
+ 		return Common::kWritingFailed;
+ 
+ 	const Common::String filename = getSavegameFilename(slot);
+-	return _dat->savegame(filename.c_str(), desc.c_str(), kRtzSaveVersion) == 0
+-		? Common::kNoError : Common::kWritingFailed;
++	const int16 room = _dat->getVar(kRtzRoom);
++	int16 previousReturnRoom = 0;
++	if (_rtzSaveMenuRoom) {
++		// F3 uses the F2 dialog's return room when it restores a slot.
++		previousReturnRoom = _dat->getObjectProperty(_rtzSaveMenuRoom, _rtzMenuReturnProperty);
++		_dat->setObjectProperty(_rtzSaveMenuRoom, _rtzMenuReturnProperty, room);
++		_dat->setVar(kRtzRoom, _rtzSaveMenuRoom);
++	}
++	const int16 result = _dat->savegame(filename.c_str(), desc.c_str(), kRtzSaveVersion);
++	if (_rtzSaveMenuRoom) {
++		_dat->setVar(kRtzRoom, room);
++		_dat->setObjectProperty(_rtzSaveMenuRoom, _rtzMenuReturnProperty, previousReturnRoom);
++	}
++	return result == 0 ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+ Common::Error MadeEngine::loadGameState(int slot) {
+@@ -321,6 +336,10 @@
+ 	// Use the same room-entry script as the original restore menu. Its
+ 	// interpreter has a separate stack from the suspended event poll.
+ 	int16 room = _dat->getVar(kRtzRoom);
++	// F2 writes the database while its save room is open. The script
++	// records the preceding game room in that dialog's return property.
++	if (_rtzSaveMenuRoom && room == _rtzSaveMenuRoom)
++		room = _dat->getObjectProperty(room, _rtzMenuReturnProperty);
+ 	ScriptInterpreter restore(this);
+ 	restore.runScript(_agentRestoreScript, 1, &room);
+ 	_eventNum = _eventKey = 0;
+@@ -548,16 +567,40 @@
+ 	_eventNum = _eventKey = _eventMouseX = _eventMouseY = 0;
+ 
+ #ifdef __EMSCRIPTEN__
+-	// This CD edition invokes the room-entry function after its native load.
+-	// Match the entry signature before calling it through the host.
+-	if (getGameID() == GID_RTZ && getVersion() == 3 && _dat->getMainCodeObjectIndex() == 0x01cb) {
+-		static constexpr int16 kRoomEntry = 0x01c3;
+-		static const byte kEntrySignature[] = {44, 1, 6, 40, 0, 23, 85, 0};
+-		if (_dat->getObjectCount() >= kRoomEntry) {
+-			Object *entry = _dat->getObject(kRoomEntry);
+-			if (entry && entry->getClass() == 0x7fff && entry->getSize() >= sizeof(kEntrySignature) &&
+-					memcmp(entry->getData(), kEntrySignature, sizeof(kEntrySignature)) == 0)
+-				_agentRestoreScript = kRoomEntry;
++	// The CD scripts call a room-entry function with the saved room (variable
++	// 7). The English full CD and interactive CD demo move that function to
++	// different object IDs but use the same native save format.
++	if (getGameID() == GID_RTZ && getVersion() == 3) {
++		const int16 main = _dat->getMainCodeObjectIndex();
++		if (main == 0x01cb || main == 0x01c9 || main == 0x01c3) {
++			const int16 roomEntry = main - 8;
++			static const byte entrySignature[] = {44, 1, 6, 40, 0, 23, 85, 0};
++			if (_dat->getObjectCount() >= uint(main)) {
++				Object *entry = _dat->getObject(roomEntry);
++				if (entry && entry->getClass() == 0x7fff && entry->getSize() >= sizeof(entrySignature) &&
++						memcmp(entry->getData(), entrySignature, sizeof(entrySignature)) == 0) {
++					_agentRestoreScript = roomEntry;
++					// The F2/F3 handlers store the active room on the menu
++					// object before entering it. Match those assignments.
++					Object *program = _dat->getObject(main);
++					const uint offset = main == 0x01cb ? 700 : 611;
++					const int16 saveRoom = main == 0x01c3 ? 455 : (main == 0x01c9 ? 461 : 469);
++					const byte returnProperty = main == 0x01cb ? 23 : 25;
++					byte setReturnRoom[] = {19, byte(saveRoom), 1, 6, 19, returnProperty, 0, 6, 20, 7, 0, 22};
++					constexpr uint loadOffset = 129;
++					if (program && program->getClass() == 0x7fff && program->getSize() >= offset + loadOffset + sizeof(setReturnRoom) &&
++							memcmp(program->getData() + offset, setReturnRoom, sizeof(setReturnRoom)) == 0) {
++						++setReturnRoom[1];
++						if (memcmp(program->getData() + offset + loadOffset, setReturnRoom, sizeof(setReturnRoom)) == 0) {
++							_rtzSaveMenuRoom = saveRoom;
++							_rtzLoadMenuRoom = saveRoom + 1;
++							_rtzMenuReturnProperty = returnProperty;
++						}
++					}
++					if (!_rtzSaveMenuRoom && main != 0x01cb)
++						_agentRestoreScript = 0;
++				}
++			}
+ 		}
+ 	}
+ #endif

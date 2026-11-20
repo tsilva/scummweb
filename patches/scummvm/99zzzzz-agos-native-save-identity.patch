@@ -1,0 +1,68 @@
+diff --git a/engines/agos/metaengine.cpp b/engines/agos/metaengine.cpp
+--- a/engines/agos/metaengine.cpp
++++ b/engines/agos/metaengine.cpp
+@@ -51,6 +51,9 @@
+ 
+ 	SaveStateList listSaves(const char *target) const override;
+ 	int getMaximumSaveSlot() const override;
++#ifdef __EMSCRIPTEN__
++	Common::String getSavegameFile(int slot, const char *target = nullptr) const override;
++#endif
+ 
+ 	Common::KeymapArray initKeymaps(const char *target) const override;
+ 
+@@ -121,12 +124,31 @@
+ 	return Common::kNoError;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++Common::String AgosMetaEngine::getSavegameFile(int slot, const char *target) const {
++	// AGOS writes the edition's fixed filename even when autodetection gave
++	// the imported copy a different target name. Ask the running engine so
++	// the drawer and the native game use exactly the same slot filenames.
++	if (g_engine && g_engine->getMetaEngine() == this &&
++			(!target || ConfMan.getActiveDomainName() == target)) {
++		const bool pattern = slot == kSavegameFilePattern;
++		Common::String name = g_engine->getSaveStateName(pattern ? 0 : slot);
++		if (!pattern)
++			return name;
++		if (name.hasSuffix(".000")) {
++			name.replace(name.size() - 3, 3, "###");
++			return name;
++		}
++	}
++	return MetaEngine::getSavegameFile(slot, target);
++}
++#endif
++
+ SaveStateList AgosMetaEngine::listSaves(const char *target) const {
+ 	Common::SaveFileManager *saveFileMan = g_system->getSavefileManager();
+ 	Common::StringArray filenames;
+ 	Common::String saveDesc;
+-	Common::String pattern = target;
+-	pattern += ".###";
++	const Common::String pattern = getSavegameFilePattern(target);
+ 
+ 	filenames = saveFileMan->listSavefiles(pattern);
+ 
+@@ -138,7 +160,19 @@
+ 		if (slotNum >= 0 && slotNum <= 999) {
+ 			Common::InSaveFile *in = saveFileMan->openForLoading(file);
+ 			if (in) {
+-				saveDesc = file.c_str();
++				saveDesc = file;
++#ifdef __EMSCRIPTEN__
++				if (g_engine && g_engine->getMetaEngine() == this &&
++						ConfMan.getActiveDomainName() == target) {
++					const auto gameType = static_cast<const AGOS::AGOSEngine *>(g_engine)->getGameType();
++					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_SIMON2) {
++						const uint captionSize = gameType >= AGOS::GType_SIMON1 ? 18 : 8;
++						char caption[19] = {};
++						if (in->read(caption, captionSize) == captionSize && caption[0])
++							saveDesc = caption;
++					}
++				}
++#endif
+ 				saveList.push_back(SaveStateDescriptor(this, slotNum, saveDesc));
+ 				delete in;
+ 			}

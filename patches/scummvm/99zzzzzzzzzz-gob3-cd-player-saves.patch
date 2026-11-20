@@ -1,0 +1,235 @@
+diff --git a/engines/gob/game.h b/engines/gob/game.h
+--- a/engines/gob/game.h
++++ b/engines/gob/game.h
+@@ -44,7 +44,8 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ constexpr uint32 kWoodruffSaveVarBytes = 7106 * 4;
+-constexpr uint32 kGob3DemoSaveVarBytes = 7916 * 4;
++constexpr uint32 kGob3SaveVarBytes = 7916 * 4;
++struct Gob3SaveLayout;
+ #endif
+ 
+ enum FuncCallType {
+@@ -218,7 +219,8 @@
+ 	Common::String getFunctionName(const Common::String &tot, uint16 offset);
+ 
+ #ifdef __EMSCRIPTEN__
+-	bool isGob3DemoCheckpointInput() const;
++	bool isGob3CheckpointInput() const;
++	const Gob3SaveLayout *getGob3SaveLayout() const;
+ 	bool hasAgentCheckpointScript() const;
+ 	bool canAgentCheckpoint() const;
+ 	bool saveAgentCheckpoint(int slot, const Common::String &desc);
+diff --git a/engines/gob/game.cpp b/engines/gob/game.cpp
+--- a/engines/gob/game.cpp
++++ b/engines/gob/game.cpp
+@@ -1100,22 +1100,65 @@
+ static constexpr uint kWoodruffSelectedSlot = 3462;
+ static constexpr uint kWoodruffLeavingScene = 3466;
+ 
+-// Interactive Demo 3 uses MENU.TOT to write a native slot and queue a reload
+-// through the ship script's normal cleanup and the menu's scene restart.
+-static constexpr int kGob3SaveCallback = 3673;
+-static constexpr int kGob3LoadCallback = 3631;
++// MENU.TOT writes the original checkpoint and requests the normal room
++// cleanup and restart. The demo and CD share the save format, with different
++// callbacks and variable offsets in their respective scripts.
++struct Gob3SaveLayout {
++	uint32 menuScriptSize;
++	int saveCallback;
++	int loadCallback;
++	uint selectedSlot;
++	uint leavingScene;
++	uint busyAnimation;
++	byte loadSignature[16];
++};
++
++static const Gob3SaveLayout kGob3DemoLayout = {
++	25520, 3673, 3631, 3706, 3710, 4124,
++	{1, 3, 29, 0, 144, 18, 126, 14, 21, 1, 99, 144, 23, 16, 0, 20}
++};
++static const Gob3SaveLayout kGob3CdLayout = {
++	28535, 3081, 3046, 3666, 3670, 4072,
++	{1, 3, 29, 0, 144, 18, 86, 14, 21, 1, 99, 144, 23, 16, 0, 20}
++};
+ static constexpr uint kGob3SaveFile = 248;
+ static constexpr uint kGob3SaveLabel = 356;
+ static constexpr uint kGob3DialogChoice = 64;
+ static constexpr uint kGob3SaveIndex = 2368;
+-static constexpr uint kGob3SelectedSlot = 3706;
+-static constexpr uint kGob3LeavingScene = 3710;
+-
+-bool Game::isGob3DemoCheckpointInput() const {
+-	static const byte shipInputSignature[] = {2, 69, 1, 8, 0, 1, 0, 0, 2, 216, 1, 199, 0, 1, 0, 1};
+-	return _vm->getGameType() == kGameTypeGob3 && _vm->isCurrentTot("emap1000.tot") &&
+-		_script->getSize() == 22536 && _script->pos() == 17575 &&
+-		memcmp(_script->getData(17575), shipInputSignature, sizeof(shipInputSignature)) == 0;
++const Gob3SaveLayout *Game::getGob3SaveLayout() const {
++	if (_vm->getGameType() != kGameTypeGob3 || _vm->getPlatform() != Common::kPlatformDOS ||
++			_curEnvironment < 1 || !_curTotFile.hasPrefixIgnoreCase("emap") ||
++			!_environments.getTotFile(_curEnvironment - 1).equalsIgnoreCase("menu.tot"))
++		return nullptr;
++
++	const Script *menu = _environments.getScript(_curEnvironment - 1);
++	if (!menu || menu->getVariablesCount() * 4 != kGob3SaveVarBytes)
++		return nullptr;
++
++	static const byte saveSignature[] = {1, 1, 51, 0, 128, 23, 16, 0, 36, 21, 1, 99, 1, 4, 38, 0};
++	for (const auto *layout : {&kGob3DemoLayout, &kGob3CdLayout}) {
++		if (menu->getSize() == layout->menuScriptSize &&
++				memcmp(menu->getData(layout->saveCallback), saveSignature, sizeof(saveSignature)) == 0 &&
++				memcmp(menu->getData(layout->loadCallback), layout->loadSignature, sizeof(layout->loadSignature)) == 0)
++			return layout;
++	}
++	return nullptr;
++}
++
++bool Game::isGob3CheckpointInput() const {
++	const Gob3SaveLayout *layout = getGob3SaveLayout();
++	if (!layout)
++		return false;
++	if (layout == &kGob3DemoLayout && (!_vm->isCurrentTot("emap1000.tot") ||
++			_script->getSize() != 22536 || _script->pos() != 17575))
++		return false;
++
++	// The two original scene hotspots provide the normal play input and
++	// open the native save menu. Miscellaneous dialog/input loops differ.
++	static const byte inputSignature[] = {2, 69, 1, 8, 0, 1, 0, 0, 2, 216, 1, 199, 0, 1, 0, 1};
++	const int32 pos = _script->pos();
++	return pos >= 0 && _script->getData(pos + sizeof(inputSignature) - 1) &&
++		memcmp(_script->getData(pos), inputSignature, sizeof(inputSignature)) == 0;
+ }
+ 
+ bool Game::hasAgentCheckpointScript() const {
+@@ -1127,15 +1170,8 @@
+ 	if (!menu)
+ 		return false;
+ 
+-	// The engine's isDemo() identifies autoplay formats, not interactive demos.
+-	if (_vm->getGameType() == kGameTypeGob3 && _vm->getPlatform() == Common::kPlatformDOS &&
+-			_vm->isCurrentTot("emap1000.tot")) {
+-		static const byte saveSignature[] = {1, 1, 51, 0, 128, 23, 16, 0, 36, 21, 1, 99, 1, 4, 38, 0};
+-		static const byte loadSignature[] = {1, 3, 29, 0, 144, 18, 126, 14, 21, 1, 99, 144, 23, 16, 0, 20};
+-		return menu->getSize() == 25520 && menu->getVariablesCount() * 4 == kGob3DemoSaveVarBytes &&
+-			memcmp(menu->getData(kGob3SaveCallback), saveSignature, sizeof(saveSignature)) == 0 &&
+-			memcmp(menu->getData(kGob3LoadCallback), loadSignature, sizeof(loadSignature)) == 0;
+-	}
++	if (_vm->getGameType() == kGameTypeGob3)
++		return getGob3SaveLayout() != nullptr;
+ 
+ 	if (_vm->getGameType() != kGameTypeWoodruff || menu->getVariablesCount() * 4 != kWoodruffSaveVarBytes)
+ 		return false;
+@@ -1155,9 +1191,9 @@
+ 		return false;
+ 
+ 	if (_vm->getGameType() == kGameTypeGob3) {
+-		// The ship script only opens its management menu when interaction is idle.
+-		return vars->getSize() == kGob3DemoSaveVarBytes && _captureCount == 0 &&
+-			!vars->readOff8(kGob3LeavingScene) && !vars->readOff32(240) && !vars->readOff32(4124) &&
++		const Gob3SaveLayout *layout = getGob3SaveLayout();
++		return layout && vars->getSize() == kGob3SaveVarBytes && _captureCount == 0 &&
++			!vars->readOff8(layout->leavingScene) && !vars->readOff32(240) && !vars->readOff32(layout->busyAnimation) &&
+ 			vars->readOff32(72) == 0xffffffff && vars->readOff32(76) == 0xffffffff &&
+ 			vars->readOff32(80) == 0xffffffff && vars->readOff32(84) == 0xffffffff;
+ 	}
+@@ -1170,18 +1206,18 @@
+ 		return false;
+ 
+ 	Variables *vars = _vm->_inter->_variables;
+-	if (_vm->getGameType() == kGameTypeGob3) {
++	if (const Gob3SaveLayout *layout = getGob3SaveLayout()) {
+ 		if (!_vm->_saveLoad->load("CAT.INF", kGob3SaveIndex, SaveLoad_v3::kIndexSize, SaveLoad_v3::kPropsSize))
+ 			return false;
+ 
+ 		const uint32 choice = vars->readOff32(kGob3DialogChoice);
+ 		vars->writeOffString(kGob3SaveFile, "CAT.INF");
+ 		vars->writeOffString(kGob3SaveLabel, desc.substr(0, 29).c_str());
+-		vars->writeOff16(kGob3SelectedSlot, slot);
++		vars->writeOff16(layout->selectedSlot, slot);
+ 		vars->writeOff32(kGob3DialogChoice, 1);
+ 		_agentSaving = true;
+ 		_agentSaveFailed = false;
+-		switchTotSub(0, kGob3SaveCallback);
++		switchTotSub(0, layout->saveCallback);
+ 		_agentSaving = false;
+ 		vars->writeOff32(kGob3DialogChoice, choice);
+ 		return !_agentSaveFailed;
+@@ -1201,9 +1237,9 @@
+ 	if (!canAgentCheckpoint())
+ 		return false;
+ 
+-	if (_vm->getGameType() == kGameTypeGob3) {
+-		_vm->_inter->_variables->writeOff16(kGob3SelectedSlot, slot);
+-		switchTotSub(0, kGob3LoadCallback);
++	if (const Gob3SaveLayout *layout = getGob3SaveLayout()) {
++		_vm->_inter->_variables->writeOff16(layout->selectedSlot, slot);
++		switchTotSub(0, layout->loadCallback);
+ 		return true;
+ 	}
+ 
+diff --git a/engines/gob/hotspots.cpp b/engines/gob/hotspots.cpp
+--- a/engines/gob/hotspots.cpp
++++ b/engines/gob/hotspots.cpp
+@@ -1652,7 +1652,7 @@
+ 
+ void Hotspots::evaluate() {
+ #ifdef __EMSCRIPTEN__
+-	const bool gob3Input = _vm->_game->isGob3DemoCheckpointInput();
++	const bool gob3Input = _vm->_game->isGob3CheckpointInput();
+ #else
+ 	const bool gob3Input = false;
+ #endif
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -73,9 +73,13 @@
+ };
+ 
+ #ifdef __EMSCRIPTEN__
+-static bool isGob3DemoTarget(const Common::String &target) {
+-	return ConfMan.hasGameDomain(target) && ConfMan.get("gameid", target) == "gob3" &&
+-		ConfMan.get("extra", target) == "Interactive Demo 3 (v0.02)";
++static bool isGob3CheckpointTarget(const Common::String &target) {
++	if (!ConfMan.hasGameDomain(target) || ConfMan.get("gameid", target) != "gob3")
++		return false;
++
++	const Common::String edition = ConfMan.get("extra", target);
++	return edition == "Interactive Demo 3 (v0.02)" ||
++		(edition == "CD v1.02" && Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformDOS);
+ }
+ #endif
+ 
+@@ -88,7 +92,7 @@
+ 	bool hasFeature(MetaEngineFeature f) const override;
+ #ifdef __EMSCRIPTEN__
+ 	int getMaximumSaveSlot() const override {
+-		return (isGob3DemoTarget(ConfMan.getActiveDomainName()) ?
++		return (isGob3CheckpointTarget(ConfMan.getActiveDomainName()) ?
+ 			Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount) - 1;
+ 	}
+ 	SaveStateList listSaves(const char *target) const override;
+@@ -115,12 +119,12 @@
+ 	if (!target || !hasFeature(kSupportsListSaves))
+ 		return saves;
+ 
+-	const bool gob3 = isGob3DemoTarget(target);
++	const bool gob3 = isGob3CheckpointTarget(target);
+ 	const int slotCount = gob3 ? Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount;
+ 	const int nameLength = gob3 ? Gob::SaveLoad_v3::kSlotNameLength : Gob::SaveLoad_v4::kSlotNameLength;
+ 	for (int slot = 0; slot < slotCount; ++slot) {
+ 		Gob::SavePartInfo info(nameLength, gob3 ? Gob::kGameTypeGob3 : Gob::kGameTypeWoodruff, 0,
+-			Gob::kEndiannessLE, gob3 ? Gob::kGob3DemoSaveVarBytes : Gob::kWoodruffSaveVarBytes);
++			Gob::kEndiannessLE, gob3 ? Gob::kGob3SaveVarBytes : Gob::kWoodruffSaveVarBytes);
+ 		if (Gob::SaveReader::getInfo(getSavegameFile(slot, target), info))
+ 			saves.push_back(SaveStateDescriptor(this, slot, info.getDesc()));
+ 	}
+@@ -151,7 +155,7 @@
+ 		return Common::kReadingFailed;
+ 
+ 	const bool gob3 = getGameType() == kGameTypeGob3;
+-	const uint32 varSize = gob3 ? kGob3DemoSaveVarBytes : kWoodruffSaveVarBytes;
++	const uint32 varSize = gob3 ? kGob3SaveVarBytes : kWoodruffSaveVarBytes;
+ 	SaveReader reader(3, slot, getSaveStateName(slot));
+ 	SavePartInfo info(gob3 ? SaveLoad_v3::kSlotNameLength : SaveLoad_v4::kSlotNameLength,
+ 			getGameType(), 0, getEndianness(), varSize);

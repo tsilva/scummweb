@@ -1,0 +1,148 @@
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -2133,6 +2133,13 @@
+ public:
+ 	AGOSEngine_Feeble(OSystem *system, const AGOSGameDescription *gd);
+ 	~AGOSEngine_Feeble() override;
++#ifdef __EMSCRIPTEN__
++	static constexpr int kLastOracleSaveSlot = 99;
++	bool supportsOraclePlayerSaves() const;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
+ 
+ 	void setupGame() override;
+ 	void setupOpcodes() override;
+diff --git a/engines/agos/metaengine.cpp b/engines/agos/metaengine.cpp
+--- a/engines/agos/metaengine.cpp
++++ b/engines/agos/metaengine.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ #include <emscripten/emscripten.h>
++#include "engines/scummweb-player.h"
+ #endif
+ #include "common/config-manager.h"
+ #include "common/savefile.h"
+@@ -70,6 +71,11 @@
+ bool AGOS::AGOSEngine::hasFeature(EngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+ 	if (f == kSupportsLoadingDuringRuntime || f == kSupportsSavingDuringRuntime) {
++#ifdef ENABLE_AGOS2
++		if (getGameType() == GType_FF)
++			return scummwebIsPlayerControl() &&
++				static_cast<const AGOSEngine_Feeble *>(this)->supportsOraclePlayerSaves();
++#endif
+ 		const bool quickSaves = getGameType() >= GType_ELVIRA1 && getGameType() <= GType_SIMON2;
+ 		return quickSaves && !(getFeatures() & GF_DEMO) &&
+ 			EM_ASM_INT({ return Boolean(globalThis.__scummwebAgentFrameBoundary); });
+@@ -165,9 +171,10 @@
+ 				if (g_engine && g_engine->getMetaEngine() == this &&
+ 						ConfMan.getActiveDomainName() == target) {
+ 					const auto gameType = static_cast<const AGOS::AGOSEngine *>(g_engine)->getGameType();
+-					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_SIMON2) {
+-						const uint captionSize = gameType >= AGOS::GType_SIMON1 ? 18 : 8;
+-						char caption[19] = {};
++					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_FF) {
++						const uint captionSize = gameType == AGOS::GType_FF ? 100
++							: gameType >= AGOS::GType_SIMON1 ? 18 : 8;
++						char caption[101] = {};
+ 						if (in->read(caption, captionSize) == captionSize && caption[0])
+ 							saveDesc = caption;
+ 					}
+@@ -184,7 +191,13 @@
+ 	return saveList;
+ }
+ 
+-int AgosMetaEngine::getMaximumSaveSlot() const { return 999; }
++int AgosMetaEngine::getMaximumSaveSlot() const {
++#if defined(__EMSCRIPTEN__) && defined(ENABLE_AGOS2)
++	if (ConfMan.get("gameid") == "feeble")
++		return AGOS::AGOSEngine_Feeble::kLastOracleSaveSlot;
++#endif
++	return 999;
++}
+ 
+ Common::KeymapArray AgosMetaEngine::initKeymaps(const char *target) const {
+ 	using namespace Common;
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -110,6 +110,75 @@
+ Common::String AGOSEngine::genSaveName(int slot) const {
+ 	return Common::String::format("pn.%.3d", slot);
+ }
++
++#if defined(__EMSCRIPTEN__) && defined(ENABLE_AGOS2)
++namespace {
++constexpr int kOpenOracle = 60;
++constexpr int kCloseOracle = 63;
++constexpr int kOracleOpen = 99;
++
++template<size_t N>
++bool hasOracleRoutine(const Subroutine *sub, uint16 id, const byte (&prefix)[N]) {
++	for (; sub; sub = sub->next) {
++		if (sub->id == id && sub->first) {
++			const byte *code = reinterpret_cast<const byte *>(sub) + sub->first + SUBROUTINE_LINE_SMALL_SIZE;
++			return memcmp(code, prefix, N) == 0;
++		}
++	}
++	return false;
++}
++}
++
++bool AGOSEngine_Feeble::supportsOraclePlayerSaves() const {
++	if (getFeatures() & GF_DEMO || getPlatform() != Common::kPlatformAmiga ||
++			getLanguage() != Common::EN_ANY)
++		return false;
++
++	// The original ORACLE prepares a snapshot and rebuilds the room after
++	// reading it. Only use the known callbacks in this detected release.
++	static const byte openOracle[] = {0x9c, 0x0b, 0x63, 0x75, 0x93, 0x00, 0x17};
++	static const byte closeOracle[] = {0x9c, 0x47, 0x45, 0xff};
++	return hasOracleRoutine(_subroutineListOrg, kOpenOracle, openOracle) &&
++		hasOracleRoutine(_subroutineListOrg, kCloseOracle, closeOracle);
++}
++
++bool AGOSEngine_Feeble::canSaveGameStateCurrently(Common::U32String *msg) {
++	return hasFeature(kSupportsSavingDuringRuntime) && AGOSEngine::canSaveGameStateCurrently(msg) &&
++		!_clockStopped && !_interactiveVideo && !_scrollCount && readVariable(99) &&
++		!getBitFlag(9) && !getBitFlag(11) && !getBitFlag(71) &&
++		!getBitFlag(77) && !getBitFlag(78) && !getBitFlag(kOracleOpen);
++}
++
++Common::Error AGOSEngine_Feeble::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (isAutosave || slot < 1 || slot > kLastOracleSaveSlot || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	startSubroutine(getSubroutineByID(kOpenOracle));
++	if (!getBitFlag(kOracleOpen) || shouldQuit())
++		return Common::kWritingFailed;
++
++	char caption[100] = {};
++	Common::strlcpy(caption, desc.c_str(), sizeof(caption));
++	bool saved = saveGame(slot, caption);
++	startSubroutine(getSubroutineByID(kCloseOracle));
++	return saved ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error AGOSEngine_Feeble::loadGameState(int slot) {
++	if (slot < 0 || slot > kLastOracleSaveSlot || !canLoadGameStateCurrently())
++		return Common::kReadingFailed;
++
++	startSubroutine(getSubroutineByID(kOpenOracle));
++	if (!getBitFlag(kOracleOpen) || shouldQuit())
++		return Common::kReadingFailed;
++
++	const bool loaded = loadGame(genSaveName(slot));
++	if (loaded)
++		off_checkCD();
++	startSubroutine(getSubroutineByID(kCloseOracle));
++	return loaded ? Common::kNoError : Common::kReadingFailed;
++}
++#endif
+ 
+ #ifdef ENABLE_AGOS2
+ void AGOSEngine_Feeble::quickLoadOrSave() {

@@ -329,6 +329,19 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   but use the ordinary per-edition save path. Preserve the scoped protocol,
   pause behavior and captions for agent launches. List occupied slots even
   when their files are protected or hidden from the picker.
+- AGOS can use a save prefix independent of the launch target. Use the
+  active engine’s filename routine when available, with a matching pre-launch
+  filename and caption layout for the initial list. The Feeble Files requires
+  the original ORACLE setup before serialization and its redraw after restore.
+- Gob’s executable script size excludes the appended text and resource tables.
+  Verify the loaded script size and callback bytes when matching a save layout.
+  Humongous titles may use named slots and a separate caption catalog. Check
+  the exact game data before enabling slot operations, and verify restores
+  through both the hosted controls and the original game menu.
+- Return to Zork’s F2 save stores the save room as its current room, with the
+  playable room on a property of the save-room object. Match the F2 and F3
+  handlers to locate that property. Preserve this structure in drawer saves so
+  the original loader and the hosted room-entry callback can use the same slot.
 - Keep the hosted speed multiplier on the Emscripten engine clock and delays.
   Preserve the real audio sample rate. Apply hosted volume after SDL3 sample
   validation so mute cannot hide invalid-sample detection.
