@@ -95,7 +95,6 @@
   color: #101810;
 }
 .game-menu-drawer .game-menu-primary:hover:not(:disabled) { background: #a0e39b; }
-.game-menu-drawer .game-menu-new { justify-content: flex-start; }
 
 .game-menu-sliders {
   display: grid;
@@ -185,7 +184,7 @@
   color: var(--accent-strong);
   pointer-events: none;
 }
-.game-menu-load-status span {
+.game-menu-save-status, .game-menu-load-status span {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -199,7 +198,7 @@
   background: #191919;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .game-menu-load-status svg { animation: game-menu-spin 1s linear infinite; }
+  .game-menu-saving-spinner, .game-menu-load-status svg { animation: game-menu-spin 1s linear infinite; }
 }
 @keyframes game-menu-spin { to { transform: rotate(1turn); } }
 

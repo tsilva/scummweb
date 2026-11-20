@@ -1,4 +1,4 @@
-import { ArrowLeft, Bug, ChevronRight, FolderOpen, LoaderCircle, Plus, Save, X } from "lucide-react";
+import { ArrowLeft, Bug, Check, ChevronRight, FolderOpen, LoaderCircle, Save, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import GameBugReport from "./GameBugReport";
 
@@ -44,6 +44,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
   const [page, setPage] = useState(initialPage === "load" ? "load" : "menu");
   const [settings, setSettings] = useState(defaultSettings);
   const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
   const [overwrite, setOverwrite] = useState(null);
 
@@ -68,9 +69,16 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     focus?.focus({ preventScroll: true });
   }, [page, overwrite, busy]);
 
+  useEffect(() => {
+    if (!saved) return;
+    const timer = setTimeout(() => setSaved(false), 1500);
+    return () => clearTimeout(timer);
+  }, [saved]);
+
   function go(next) {
     setSettings(controller.current?.read() ?? defaultSettings);
     setError(null);
+    setSaved(false);
     setOverwrite(null);
     setPage(next);
   }
@@ -84,6 +92,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     const player = controller.current;
     if (!player || busy) return;
     setBusy(true);
+    setSaved(false);
     setError(null);
     try {
       const result = await player.run(operation, slot);
@@ -91,7 +100,11 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
       setSettings(player.read());
       if (result.error) setError(result.error);
       else if (operation === "load") dialogRef.current?.close();
-      else setOverwrite(null);
+      else {
+        setOverwrite(null);
+        setPage("menu");
+        setSaved(true);
+      }
     } catch {
       if (player === controller.current) setError("The game could not complete the request.");
     } finally {
@@ -99,11 +112,17 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
     }
   }
 
+  function saveGame() {
+    if (settings.canSave && Number.isInteger(settings.nextSlot)) void run("save", null);
+    else go("save");
+  }
+
   const heading = { menu: "Game Menu", save: "Save Game", load: "Load Game", report: "Report a bug" }[page];
   const supported = page === "save" ? settings.canSave : settings.canLoad;
   const slots = page === "save"
     ? settings.saves.filter((save) => save.writable && save.slot > 0)
     : settings.saves;
+  const SaveIcon = busy ? LoaderCircle : saved ? Check : Save;
 
   return (
     <dialog
@@ -151,30 +170,33 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
       {page === "menu" ? (
         <>
           <div className="game-menu-actions">
-            <button className="game-menu-outlined" data-menu-focus onClick={() => go("save")} type="button">
-              <Save aria-hidden="true" size={22} /><span>Save Game</span><ChevronRight aria-hidden="true" size={19} />
+            <button aria-busy={busy} className="game-menu-outlined" data-menu-focus disabled={busy} onClick={saveGame} type="button">
+              <SaveIcon aria-hidden="true" className={busy ? "game-menu-saving-spinner" : undefined} size={22} />
+              <span>{busy ? "Saving…" : saved ? "Saved" : "Save Game"}</span>
             </button>
-            <button className="game-menu-outlined" onClick={() => go("load")} type="button">
+            <span className="game-menu-save-status" role="status">{busy ? "Saving game" : saved ? "Game saved" : ""}</span>
+            {error && <p className="game-menu-note" role="alert">{error}</p>}
+            <button className="game-menu-outlined" disabled={busy} onClick={() => go("load")} type="button">
               <FolderOpen aria-hidden="true" size={22} /><span>Load Game</span><ChevronRight aria-hidden="true" size={19} />
             </button>
           </div>
           <div className="game-menu-sliders">
             <MenuSlider label="Sound Volume" value={settings.volume} min={0} max={100} step={1}
-              text={`${settings.volume}%`} onChange={(value) => update("volume", value)} disabled={!controller.current} />
+              text={`${settings.volume}%`} onChange={(value) => update("volume", value)} disabled={busy || !controller.current} />
             <MenuSlider label="Game Speed" value={settings.speed} min={0.5} max={2} step={0.1}
-              text={`${settings.speed}×`} onChange={(value) => update("speed", value)} disabled={!controller.current} />
+              text={`${settings.speed}×`} onChange={(value) => update("speed", value)} disabled={busy || !controller.current} />
             {settings.canToggleSubtitles && (
               <label className="game-menu-toggle">
                 <span>Subtitles</span>
-                <input type="checkbox" role="switch" checked={settings.subtitles}
+                <input type="checkbox" role="switch" checked={settings.subtitles} disabled={busy}
                   onChange={(event) => update("subtitles", event.currentTarget.checked)} />
               </label>
             )}
           </div>
           <div className="game-menu-session-actions">
-            <button className="game-menu-primary" onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
-            <button className="game-menu-outlined" onClick={onExit} type="button">Quit Game</button>
-            <button className="game-menu-outlined game-menu-report" onClick={() => go("report")} type="button">
+            <button className="game-menu-primary" disabled={busy} onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
+            <button className="game-menu-outlined" disabled={busy} onClick={onExit} type="button">Quit Game</button>
+            <button className="game-menu-outlined game-menu-report" disabled={busy} onClick={() => go("report")} type="button">
               <Bug aria-hidden="true" size={22} /><span>Report a bug</span><ChevronRight aria-hidden="true" size={19} />
             </button>
           </div>
@@ -203,18 +225,13 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
             </>
           ) : (
             <>
-              {page === "save" && (
-                <button className="game-menu-primary game-menu-new" data-menu-focus disabled={busy || settings.nextSlot === null}
-                  onClick={() => void run("save", null)} type="button">
-                  <Plus aria-hidden="true" size={23} /> New Save
-                </button>
-              )}
+              {page === "save" && <p className="game-menu-note">All manual save slots are in use.</p>}
               {slots.length ? (
                 <ul className="game-menu-slots">
                   {slots.map((save, index) => (
                     <li key={save.slot}>
                       <button
-                        data-menu-focus={page === "load" && index === 0 ? "" : undefined}
+                        data-menu-focus={index === 0 ? "" : undefined}
                         disabled={busy}
                         onClick={() => page === "save" ? setOverwrite(save) : void run("load", save.slot)}
                         type="button"
@@ -228,7 +245,7 @@ export default function GameMenuDrawer({ frameRef, initialPage = "menu", onClose
                     </li>
                   ))}
                 </ul>
-              ) : <p className="game-menu-note">No saved games yet.</p>}
+              ) : <p className="game-menu-note">{page === "save" ? "No saves can be overwritten here." : "No saved games yet."}</p>}
             </>
           )}
           {busy && page === "save" && <p className="game-menu-note" role="status">Saving…</p>}
