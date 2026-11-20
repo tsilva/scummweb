@@ -1016,11 +1016,14 @@ export default function GameRouteFrame({
     </div>
   ) : keyboardAction;
   const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
+  const bootStatusText = archiveError || (loadArchive && !archivePrepared && !bootState.hasBootFailed
+    ? gameLoadingStatus(archiveProgress ?? undefined)
+    : bootState.bootStatusText);
 
   return (
     <div
       className="game-route-shell"
-      data-mobile-orientation={immersiveMode.isTouchMobile ? "landscape" : undefined}
+      data-mobile-orientation={immersiveMode.isTouchMobile && !isExiting ? "landscape" : undefined}
       onKeyDownCapture={(event) => {
         if (gameMenuOpen && event.key === "Escape" && event.repeat) event.preventDefault();
       }}
@@ -1035,13 +1038,11 @@ export default function GameRouteFrame({
         )}
       </div>}
       <GameBootOverlay
-        archiveBytes={loadArchive && !archivePrepared ? archiveProgress?.loaded : undefined}
-        bootStatusText={archiveError || (loadArchive && !archivePrepared && !bootState.hasBootFailed
-          ? gameLoadingStatus(archiveProgress ?? undefined)
-          : bootState.bootStatusText)}
+        archiveBytes={!isExiting && loadArchive && !archivePrepared ? archiveProgress?.loaded : undefined}
+        bootStatusText={isExiting ? "Exiting game…" : bootStatusText}
         game={game}
-        hasBootFailed={hasBootFailed}
-        showBootOverlay={showBootOverlay}
+        hasBootFailed={!isExiting && hasBootFailed}
+        showBootOverlay={isExiting || showBootOverlay}
         showBundledTags={catalogLaunch}
         title={title}
       />
