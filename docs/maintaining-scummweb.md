@@ -135,9 +135,10 @@ each axis to preserve symmetric spacing around cutouts.
   changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
   immediately removes the toolbar and touch controls while navigation completes.
-- **Save Game** and **Load Game** use the selected edition's native slots.
-  **New Save** takes an unused manual slot. Overwriting asks for confirmation
-  and keeps the existing caption. Games can deny saving or loading during
+- **Save Game** writes to the next unused manual slot for the selected edition
+  and shows its status in the button. When all slots are in use, the player can
+  choose a manual save to overwrite after confirmation. **Load Game** opens the
+  saved-game list. Games can deny saving or loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
 - **Report a bug** is the last game-menu action. Describe the problem and send
