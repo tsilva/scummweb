@@ -218,6 +218,8 @@ button.nav-icon-link {
 
 .hero-carousel-rotation {
   position: relative;
+  /* Align the visible ring with Settings while keeping the larger hit area. */
+  margin-inline-end: -0.25rem;
 }
 
 .hero-carousel-ring {
