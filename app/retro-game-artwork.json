@@ -5468,7 +5468,7 @@
     "aliases": [
       "Fun Seeker's Guide to Eastern Madera County (CD, DOS)"
     ],
-    "posterImage": "/launcher/retro-sci-funseeker-poster.webp",
+    "posterImage": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
     "screenshots": [
       "/launcher/retro-sci-funseeker-shot.webp",
       "/launcher/retro-sci-funseeker-shot-play-2.webp",
@@ -5476,8 +5476,9 @@
     ],
     "sources": {
       "poster": {
-        "kind": "title-screen-poster",
-        "url": "https://thumbnails.libretro.com/ScummVM/Named_Titles/Fun%20Seeker's%20Guide%20to%20Eastern%20Madera%20County.png"
+        "kind": "hero-illustration-crop",
+        "asset": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
+        "credit": "ScummWEB talking-bear promotional illustration. Source references are recorded in the hero credit."
       },
       "screenshots": [
         {
@@ -5524,7 +5525,8 @@
     "category": "Comedy",
     "heroImage": "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp",
     "heroImagePosition": "80% 38%",
-    "heroImageMobilePosition": "100% top"
+    "heroImageMobilePosition": "100% top",
+    "posterImagePosition": "right center"
   },
   "sci:gk1": {
     "title": "Gabriel Knight: Sins of the Fathers",
@@ -12044,7 +12046,7 @@
     "aliases": [
       "Freddi Fish 4 The Case of the Hogfish Rustlers of Briny Gulch (CD DOS)"
     ],
-    "posterImage": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
+    "posterImage": "/launcher/freddi-fish-4-publisher-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-freddi4-shot-1.webp",
       "/launcher/retro-scumm-freddi4-shot-2.webp",
@@ -12052,18 +12054,16 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Freddi%20Fish%204_%20The%20Case%20of%20the%20Hogfish%20Rustlers%20of%20Briny%20Gulch.png",
-            "kind": "box-scan",
-            "credit": "Humongous Entertainment and Infogrames original retail case-front scan, hosted by Libretro.",
-            "sha256": "a98fedf50975247777ba251a66a31e73f878cf7b98e4d5f24700d1626eb532ec"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "credit": "Humongous Entertainment and Nightdive Studios official Steam library portrait",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294550/library_600x900_2x.jpg",
+        "sha256": "a0032f98920ebfb89d15a8c9b57175057d9b68f584036601a70c9fda1794a302",
+        "crop": {
+          "left": 0,
+          "top": 0,
+          "width": 600,
+          "height": 800
+        }
       },
       "screenshots": [
         {
@@ -15177,7 +15177,7 @@
     "aliases": [
       "Pajama Sam 2 - Thunder and Lightning Aren't so Frightening (CD Windows)"
     ],
-    "posterImage": "/launcher/pajama-sam-2-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/pajama-sam-2-publisher-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-pajama2-shot-1.webp",
       "/launcher/retro-scumm-pajama2-shot-2.webp",
@@ -15185,18 +15185,16 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Pajama%20Sam%202_%20Thunder%20and%20Lightning%20Aren't%20so%20Frightening.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "2ee2dfededd61384d7f9a3b1cc106cfb5bb64b24ae6567c1a9345d83aad47bbb"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "credit": "Humongous Entertainment and Nightdive Studios official Steam library portrait",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292780/library_600x900_2x.jpg",
+        "sha256": "9003369010fb6d8595174aa55d129962820d6e37c9140d8472b01c7f68045d0a",
+        "crop": {
+          "left": 0,
+          "top": 68,
+          "width": 600,
+          "height": 800
+        }
       },
       "screenshots": [
         {
@@ -16480,7 +16478,7 @@
     "aliases": [
       "Putt-Putt Saves the Zoo (CD Windows)"
     ],
-    "posterImage": "/launcher/putt-putt-saves-the-zoo-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/putt-putt-saves-the-zoo-publisher-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-puttzoo-shot-1.webp",
       "/launcher/retro-scumm-puttzoo-shot-2.webp",
@@ -16488,18 +16486,16 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Saves%20the%20Zoo.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "72b6fb6f4cdf0141690817e0df16daff1613aa77b76f359eb473a64e298a4916"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "credit": "Humongous Entertainment and Nightdive Studios official Steam library portrait",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294660/library_600x900_2x.jpg",
+        "sha256": "6091a3b55dc2b995fa515b5ff0eadace4a2c99ddf6d2b4b166bc5aae67dd55fe",
+        "crop": {
+          "left": 15,
+          "top": 90,
+          "width": 570,
+          "height": 760
+        }
       },
       "screenshots": [
         {
@@ -16557,7 +16553,7 @@
     "aliases": [
       "Putt-Putt Travels Through Time (CD DOS)"
     ],
-    "posterImage": "/launcher/putt-putt-travels-through-time-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/putt-putt-travels-through-time-publisher-portrait-cover.webp",
     "screenshots": [
       "/launcher/retro-scumm-putttime-shot-1.webp",
       "/launcher/retro-scumm-putttime-shot-2.webp",
@@ -16565,18 +16561,16 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Putt-Putt%20Travels%20Through%20Time.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "286ddb8216b924601973678f5953aef2a8d9f8367451d78bcd8701771298115a"
-          }
-        ]
+        "kind": "official-promotional-art",
+        "credit": "Humongous Entertainment and Nightdive Studios official Steam library portrait",
+        "url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294670/library_600x900_2x.jpg",
+        "sha256": "8c94654b7ab5a639fed4cc55c94d524a679608d6cc653323daff22590126956a",
+        "crop": {
+          "left": 0,
+          "top": 72,
+          "width": 600,
+          "height": 800
+        }
       },
       "screenshots": [
         {

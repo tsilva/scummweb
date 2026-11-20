@@ -24,6 +24,16 @@ test("remote, blob and unknown artwork keep their direct source without a proxy"
   }
 });
 
+test("illustrated posters size responsive candidates for the selected card crop", () => {
+  const src = "/launcher/funseeker-scummweb-generated-2026-11-06-r1-hero.webp";
+  const props = getPosterImageProps(src, true, 8, undefined, "right center");
+
+  assert.deepEqual(props.style, { "--artwork-fit": "cover", "--artwork-position": "right center" });
+  assert.match(props.sizes, /\/ 1 \* 2\.312/);
+  assert.ok(props.placeholder);
+  assert.match(getPosterImageProps(src, true).sizes, /\/ 1 \* 1\.04/);
+});
+
 test("every generated poster is smaller than its original, with truthful width descriptors", async () => {
   for (const [src, image] of Object.entries(renditions)) {
     const source = await readArtworkFile(fileURLToPath(new URL("../", import.meta.url)), src);

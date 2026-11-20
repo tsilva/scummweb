@@ -3,13 +3,13 @@ import GameSelectionLink from "./game-selection-link";
 import { getPosterImageProps } from "./poster-images.mjs";
 import { useArtworkDelivery } from "./artwork-delivery";
 
-export function GamePoster({ title, image, editionLabel, singleColumn = false, count = 8 }) {
+export function GamePoster({ title, image, imagePosition, editionLabel, singleColumn = false, count = 8 }) {
   const artwork = useArtworkDelivery();
   return (
     <>
       <span className="poster-media">
         {image ? (
-          <DecorativeImage className="poster-media-image" {...getPosterImageProps(image, singleColumn, count, artwork)} />
+          <DecorativeImage className="poster-media-image" {...getPosterImageProps(image, singleColumn, count, artwork, imagePosition)} />
         ) : (
           <span className="bucket-poster-placeholder" aria-hidden="true">☠</span>
         )}
@@ -28,7 +28,8 @@ export default function LibraryCards({ games, children }) {
       {games.map((game) => (
         <div className="poster-entry" key={game.target}>
           <GameSelectionLink game={game} className={`poster-card ${game.tone}`} data-game-target={game.target}>
-            <GamePoster title={game.displayTitle} image={game.posterImage} editionLabel={game.editionLabel} singleColumn={games.length === 1} count={games.length + (children ? 1 : 0)} />
+            <GamePoster title={game.displayTitle} image={game.posterImage} imagePosition={game.posterImagePosition}
+              editionLabel={game.editionLabel} singleColumn={games.length === 1} count={games.length + (children ? 1 : 0)} />
           </GameSelectionLink>
         </div>
       ))}
