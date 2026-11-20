@@ -1,5 +1,9 @@
 const zorkStories = new Set(["zork1", "zork2", "zork3"]);
 
+export function hasDungeonWalkControls({ engineId, gameId } = {}) {
+  return engineId === "kyra" && gameId === "lol";
+}
+
 export function getMobileControlMode({ engineId, gameId } = {}) {
   if (engineId === "grim" && gameId === "grim") return "grim";
   if (engineId === "grim" && gameId === "monkey4") return "monkey4";

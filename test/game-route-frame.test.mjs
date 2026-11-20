@@ -1144,6 +1144,37 @@ test("Castle Master uses a movement gamepad only during ready landscape mobile p
   assert.equal(mobileControls.getMobileControlMode({ engineId: "freescape", gameId: "driller" }), "mouse");
 });
 
+test("Lands of Lore switches between Walk and Cursor in ready landscape mobile play", () => {
+  for (const target of ["lol", "lol-demo", "custom-import"]) {
+    const game = { engineId: "kyra", gameId: "lol", target };
+    const player = readyPlayer(game, { mobile: true });
+    assert.equal(player.cursorPad.showTouchCursorPad, true);
+    assert.equal(player.cursorPad.showTouchWalk, false);
+    assert.equal(player.controls.showTouchClickButtons, true);
+
+    player.cursorPad.onSelectMode("walk");
+    player.render();
+    assert.equal(player.cursorPad.showTouchCursorPad, false);
+    assert.equal(player.cursorPad.showTouchWalk, true);
+    assert.equal(player.controls.showTouchClickButtons, false);
+
+    player.cursorPad.onSelectMode("cursor");
+    player.render();
+    assert.equal(player.cursorPad.showTouchCursorPad, true);
+    assert.equal(player.controls.showTouchClickButtons, true);
+
+    for (const options of [{}, { mobile: true, ready: false }, { mobile: true, failed: true },
+      { mobile: true, landscape: false }]) {
+      assert.equal(readyPlayer(game, options).cursorPad.onSelectMode, undefined);
+    }
+  }
+  for (const gameId of ["eob", "eob2", "kyra1"]) {
+    const player = readyPlayer({ engineId: "kyra", gameId, target: gameId }, { mobile: true });
+    assert.equal(player.cursorPad.onSelectMode, undefined);
+    assert.equal(player.cursorPad.showTouchCursorPad, true);
+  }
+});
+
 // The unchanged official Phantasmagoria demo exceeds ordinary remote ZIP limits.
 test("Phantasmagoria's reviewed package limits are confined to its demo target", () => {
   const demo = pendingArchivePlayer({ game: { target: "phantasmagoria-demo", slug: "phantasmagoria-demo", engineId: "sci" } });

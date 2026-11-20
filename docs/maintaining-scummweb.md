@@ -183,10 +183,13 @@ hidden. They return to their normal visibility when the action disappears.
 - Tap the game to position the cursor. Double-tap or press **L** to left-click.
   Use **R** for right-click. Drag the cursor pad while holding either button
   to drag in the game. You can also hold and drag directly on the canvas.
-- Touch pads share a circular disc and thumb cap. The pointer symbol marks
+- Touch pads share a circular base. The pointer symbol marks
   cursor control: moving your finger moves the cursor; holding still does not.
   Lifting resets the cap without repositioning the game cursor. Arrows mark
   movement controls, which retain each game's directional behavior.
+- In Lands of Lore, tap the four-way arrow above the pad to switch from
+  Cursor to Walk. Tap a sector to step forward or back, sidestep, or turn.
+  Tap the pointer icon to return to Cursor and show the **L** and **R** buttons.
 - In Grim Fandango and Escape from Monkey Island, the stick walks or turns. The lightning button opens
   Use/Talk, Examine, Pick up/Put away, and Inventory. When dialogue choices are
   available, the right-hand actions become a single checkmark to confirm the
