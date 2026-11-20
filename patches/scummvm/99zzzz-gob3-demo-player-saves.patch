@@ -1,0 +1,319 @@
+diff --git a/engines/gob/game.cpp b/engines/gob/game.cpp
+--- a/engines/gob/game.cpp
++++ b/engines/gob/game.cpp
+@@ -43,6 +43,9 @@
+ #include "gob/scenery.h"
+ #include "gob/videoplayer.h"
+ #include "gob/sound/sound.h"
++#ifdef __EMSCRIPTEN__
++#include "gob/save/saveload.h"
++#endif
+ 
+ namespace Gob {
+ 
+@@ -869,13 +872,17 @@
+ }
+ 
+ int16 Game::checkKeys(int16 *pMouseX, int16 *pMouseY,
+-		MouseButtons *pButtons, char handleMouse) {
++		MouseButtons *pButtons, char handleMouse, bool gob3Input) {
+ 
+ #ifdef __EMSCRIPTEN__
+-	if (!_agentControlBoundary && hasAgentCheckpointScript()) {
++	const bool gob3 = _vm->getGameType() == kGameTypeGob3;
++	if (!_agentControlBoundary && (!gob3 || gob3Input) && hasAgentCheckpointScript()) {
+ 		_agentControlBoundary = true;
+ 		scummweb_agent_game_loop();
+ 		_agentControlBoundary = false;
++	} else if (gob3 && _captureCount > 0 && _vm->isCurrentTot("menu.tot")) {
++		// Keep the overlay responsive during original modal dialogs.
++		scummweb_agent_game_loop();
+ 	}
+ #endif
+ 	if (_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4)
+@@ -1093,14 +1100,44 @@
+ static constexpr uint kWoodruffSelectedSlot = 3462;
+ static constexpr uint kWoodruffLeavingScene = 3466;
+ 
++// Interactive Demo 3 uses MENU.TOT to write a native slot and queue a reload
++// through the ship script's normal cleanup and the menu's scene restart.
++static constexpr int kGob3SaveCallback = 3673;
++static constexpr int kGob3LoadCallback = 3631;
++static constexpr uint kGob3SaveFile = 248;
++static constexpr uint kGob3SaveLabel = 356;
++static constexpr uint kGob3DialogChoice = 64;
++static constexpr uint kGob3SaveIndex = 2368;
++static constexpr uint kGob3SelectedSlot = 3706;
++static constexpr uint kGob3LeavingScene = 3710;
++
++bool Game::isGob3DemoCheckpointInput() const {
++	static const byte shipInputSignature[] = {2, 69, 1, 8, 0, 1, 0, 0, 2, 216, 1, 199, 0, 1, 0, 1};
++	return _vm->getGameType() == kGameTypeGob3 && _vm->isCurrentTot("emap1000.tot") &&
++		_script->getSize() == 22536 && _script->pos() == 17575 &&
++		memcmp(_script->getData(17575), shipInputSignature, sizeof(shipInputSignature)) == 0;
++}
++
+ bool Game::hasAgentCheckpointScript() const {
+-	if (_vm->getGameType() != kGameTypeWoodruff || _curEnvironment < 1 ||
+-			!_curTotFile.hasPrefixIgnoreCase("emap") ||
++	if (_curEnvironment < 1 || !_curTotFile.hasPrefixIgnoreCase("emap") ||
+ 			!_environments.getTotFile(_curEnvironment - 1).equalsIgnoreCase("menu.tot"))
+ 		return false;
+ 
+ 	const Script *menu = _environments.getScript(_curEnvironment - 1);
+-	if (!menu || menu->getVariablesCount() * 4 != kWoodruffSaveVarBytes)
++	if (!menu)
++		return false;
++
++	// The engine's isDemo() identifies autoplay formats, not interactive demos.
++	if (_vm->getGameType() == kGameTypeGob3 && _vm->getPlatform() == Common::kPlatformDOS &&
++			_vm->isCurrentTot("emap1000.tot")) {
++		static const byte saveSignature[] = {1, 1, 51, 0, 128, 23, 16, 0, 36, 21, 1, 99, 1, 4, 38, 0};
++		static const byte loadSignature[] = {1, 3, 29, 0, 144, 18, 126, 14, 21, 1, 99, 144, 23, 16, 0, 20};
++		return menu->getSize() == 25520 && menu->getVariablesCount() * 4 == kGob3DemoSaveVarBytes &&
++			memcmp(menu->getData(kGob3SaveCallback), saveSignature, sizeof(saveSignature)) == 0 &&
++			memcmp(menu->getData(kGob3LoadCallback), loadSignature, sizeof(loadSignature)) == 0;
++	}
++
++	if (_vm->getGameType() != kGameTypeWoodruff || menu->getVariablesCount() * 4 != kWoodruffSaveVarBytes)
+ 		return false;
+ 
+ 	static const byte saveSignature[] = {0x01, 0x04, 0x26, 0x00, 0x90, 0x1c, 0x1d, 0x02};
+@@ -1114,8 +1151,18 @@
+ 
+ bool Game::canAgentCheckpoint() const {
+ 	const Variables *vars = _vm->_inter->_variables;
+-	return _agentControlBoundary && vars && vars->getSize() == kWoodruffSaveVarBytes &&
+-		!vars->readOff8(kWoodruffLeavingScene) && !_vm->_inter->_terminate;
++	if (!_agentControlBoundary || !vars || _vm->_inter->_terminate)
++		return false;
++
++	if (_vm->getGameType() == kGameTypeGob3) {
++		// The ship script only opens its management menu when interaction is idle.
++		return vars->getSize() == kGob3DemoSaveVarBytes && _captureCount == 0 &&
++			!vars->readOff8(kGob3LeavingScene) && !vars->readOff32(240) && !vars->readOff32(4124) &&
++			vars->readOff32(72) == 0xffffffff && vars->readOff32(76) == 0xffffffff &&
++			vars->readOff32(80) == 0xffffffff && vars->readOff32(84) == 0xffffffff;
++	}
++
++	return vars->getSize() == kWoodruffSaveVarBytes && !vars->readOff8(kWoodruffLeavingScene);
+ }
+ 
+ bool Game::saveAgentCheckpoint(int slot, const Common::String &desc) {
+@@ -1123,6 +1170,23 @@
+ 		return false;
+ 
+ 	Variables *vars = _vm->_inter->_variables;
++	if (_vm->getGameType() == kGameTypeGob3) {
++		if (!_vm->_saveLoad->load("CAT.INF", kGob3SaveIndex, SaveLoad_v3::kIndexSize, SaveLoad_v3::kPropsSize))
++			return false;
++
++		const uint32 choice = vars->readOff32(kGob3DialogChoice);
++		vars->writeOffString(kGob3SaveFile, "CAT.INF");
++		vars->writeOffString(kGob3SaveLabel, desc.substr(0, 29).c_str());
++		vars->writeOff16(kGob3SelectedSlot, slot);
++		vars->writeOff32(kGob3DialogChoice, 1);
++		_agentSaving = true;
++		_agentSaveFailed = false;
++		switchTotSub(0, kGob3SaveCallback);
++		_agentSaving = false;
++		vars->writeOff32(kGob3DialogChoice, choice);
++		return !_agentSaveFailed;
++	}
++
+ 	vars->writeOffString(kWoodruffFileName, "SAVE\\CAT.INF");
+ 	vars->writeOffString(kWoodruffSaveLabel, desc.substr(0, 29).c_str());
+ 	vars->writeOff16(kWoodruffSelectedSlot, slot);
+@@ -1136,6 +1200,12 @@
+ bool Game::loadAgentCheckpoint(int slot) {
+ 	if (!canAgentCheckpoint())
+ 		return false;
++
++	if (_vm->getGameType() == kGameTypeGob3) {
++		_vm->_inter->_variables->writeOff16(kGob3SelectedSlot, slot);
++		switchTotSub(0, kGob3LoadCallback);
++		return true;
++	}
+ 
+ 	_vm->_inter->_variables->writeOff16(kWoodruffSelectedSlot, slot);
+ 	switchTotSub(0, kWoodruffLoadCallback);
+diff --git a/engines/gob/hotspots.cpp b/engines/gob/hotspots.cpp
+--- a/engines/gob/hotspots.cpp
++++ b/engines/gob/hotspots.cpp
+@@ -776,7 +776,7 @@
+ 	return true;
+ }
+ 
+-uint16 Hotspots::check(uint8 handleMouse, int16 delay, uint16 &id, uint16 &index) {
++uint16 Hotspots::check(uint8 handleMouse, int16 delay, uint16 &id, uint16 &index, bool gob3Input) {
+ 	if (delay >= -1) {
+ 		_currentKey   = 0;
+ 		_currentId    = 0;
+@@ -839,7 +839,7 @@
+ 
+ 		// Update keyboard and mouse state
+ 		key = _vm->_game->checkKeys(&_vm->_global->_inter_mouseX,
+-				&_vm->_global->_inter_mouseY, &_vm->_game->_mouseButtons, handleMouse);
++				&_vm->_global->_inter_mouseY, &_vm->_game->_mouseButtons, handleMouse, gob3Input);
+ 
+ 		if (!handleMouse && (_vm->_game->_mouseButtons != kMouseButtonsNone)) {
+ 			// We don't want any mouse input but got one => Wait till it went away
+@@ -1651,6 +1651,11 @@
+ }
+ 
+ void Hotspots::evaluate() {
++#ifdef __EMSCRIPTEN__
++	const bool gob3Input = _vm->_game->isGob3DemoCheckpointInput();
++#else
++	const bool gob3Input = false;
++#endif
+ 	InputDesc inputs[20];
+ 	uint16 ids[kHotspotCount];
+ 
+@@ -1739,7 +1744,7 @@
+ 			}
+ 		} else
+ 			// Normal move or click check
+-			key = check(_vm->_game->_handleMouse, -duration, id, index);
++			key = check(_vm->_game->_handleMouse, -duration, id, index, gob3Input);
+ 
+ 		key = convertSpecialKey(key);
+ 
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -72,6 +72,13 @@
+ 	AD_EXTRA_GUI_OPTIONS_TERMINATOR
+ };
+ 
++#ifdef __EMSCRIPTEN__
++static bool isGob3DemoTarget(const Common::String &target) {
++	return ConfMan.hasGameDomain(target) && ConfMan.get("gameid", target) == "gob3" &&
++		ConfMan.get("extra", target) == "Interactive Demo 3 (v0.02)";
++}
++#endif
++
+ class GobMetaEngine : public AdvancedMetaEngine<Gob::GOBGameDescription> {
+ public:
+ 	const char *getName() const override {
+@@ -80,7 +87,10 @@
+ 
+ 	bool hasFeature(MetaEngineFeature f) const override;
+ #ifdef __EMSCRIPTEN__
+-	int getMaximumSaveSlot() const override { return Gob::SaveLoad_v4::kSlotCount - 1; }
++	int getMaximumSaveSlot() const override {
++		return (isGob3DemoTarget(ConfMan.getActiveDomainName()) ?
++			Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount) - 1;
++	}
+ 	SaveStateList listSaves(const char *target) const override;
+ #endif
+ 
+@@ -105,9 +115,12 @@
+ 	if (!target || !hasFeature(kSupportsListSaves))
+ 		return saves;
+ 
+-	for (int slot = 0; slot <= getMaximumSaveSlot(); ++slot) {
+-		Gob::SavePartInfo info(Gob::SaveLoad_v4::kSlotNameLength, Gob::kGameTypeWoodruff, 0,
+-			Gob::kEndiannessLE, Gob::kWoodruffSaveVarBytes);
++	const bool gob3 = isGob3DemoTarget(target);
++	const int slotCount = gob3 ? Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount;
++	const int nameLength = gob3 ? Gob::SaveLoad_v3::kSlotNameLength : Gob::SaveLoad_v4::kSlotNameLength;
++	for (int slot = 0; slot < slotCount; ++slot) {
++		Gob::SavePartInfo info(nameLength, gob3 ? Gob::kGameTypeGob3 : Gob::kGameTypeWoodruff, 0,
++			Gob::kEndiannessLE, gob3 ? Gob::kGob3DemoSaveVarBytes : Gob::kWoodruffSaveVarBytes);
+ 		if (Gob::SaveReader::getInfo(getSavegameFile(slot, target), info))
+ 			saves.push_back(SaveStateDescriptor(this, slot, info.getDesc()));
+ 	}
+@@ -127,20 +140,29 @@
+ }
+ 
+ Common::Error Gob::GobEngine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
+-	if (slot < 0 || slot >= int(SaveLoad_v4::kSlotCount) || !canSaveGameStateCurrently())
++	if (slot < 0 || slot > getMetaEngine()->getMaximumSaveSlot() || !canSaveGameStateCurrently())
+ 		return Common::kWritingFailed;
+ 
+ 	return _game->saveAgentCheckpoint(slot, desc) ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+ Common::Error Gob::GobEngine::loadGameState(int slot) {
+-	if (slot < 0 || slot >= int(SaveLoad_v4::kSlotCount) || !canLoadGameStateCurrently())
++	if (slot < 0 || slot > getMetaEngine()->getMaximumSaveSlot() || !canLoadGameStateCurrently())
+ 		return Common::kReadingFailed;
+ 
++	const bool gob3 = getGameType() == kGameTypeGob3;
++	const uint32 varSize = gob3 ? kGob3DemoSaveVarBytes : kWoodruffSaveVarBytes;
+ 	SaveReader reader(3, slot, getSaveStateName(slot));
+-	SavePartInfo info(SaveLoad_v4::kSlotNameLength, getGameType(), 0, getEndianness(), kWoodruffSaveVarBytes);
++	SavePartInfo info(gob3 ? SaveLoad_v3::kSlotNameLength : SaveLoad_v4::kSlotNameLength,
++			getGameType(), 0, getEndianness(), varSize);
+ 	if (!reader.load() || !reader.readPart(0, &info))
+ 		return Common::kReadingFailed;
++
++	if (gob3) {
++		SavePartVars vars(this, varSize);
++		if (!reader.readPart(1, &vars))
++			return Common::kReadingFailed;
++	}
+ 
+ 	return _game->loadAgentCheckpoint(slot) ? Common::kNoError : Common::kReadingFailed;
+ }
+diff --git a/engines/gob/save/saveload_v3.cpp b/engines/gob/save/saveload_v3.cpp
+--- a/engines/gob/save/saveload_v3.cpp
++++ b/engines/gob/save/saveload_v3.cpp
+@@ -272,7 +272,15 @@
+ 	if (!createWriter(slot))
+ 		return false;
+ 
+-	return _writer->writePart(2, screenshot);
++	if (!_writer->writePart(2, screenshot))
++		return false;
++
++	// A subsequent restore of an overwritten slot must reread the file.
++	if (_reader && _reader->getSlot() == (uint32)slot) {
++		delete _reader;
++		_reader = nullptr;
++	}
++	return true;
+ }
+ 
+ bool SaveLoad_v3::GameHandler::loadScreenshot(int slot,
+diff --git a/engines/gob/game.h b/engines/gob/game.h
+--- a/engines/gob/game.h
++++ b/engines/gob/game.h
+@@ -44,6 +44,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ constexpr uint32 kWoodruffSaveVarBytes = 7106 * 4;
++constexpr uint32 kGob3DemoSaveVarBytes = 7916 * 4;
+ #endif
+ 
+ enum FuncCallType {
+@@ -204,7 +205,7 @@
+ 	void evaluateScroll();
+ 
+ 	int16 checkKeys(int16 *pMousex = 0, int16 *pMouseY = 0,
+-			MouseButtons *pButtons = 0, char handleMouse = 0);
++			MouseButtons *pButtons = 0, char handleMouse = 0, bool gob3Input = false);
+ 	void start();
+ 
+ 	void totSub(int8 flags, const Common::String &totFile);
+@@ -217,6 +218,7 @@
+ 	Common::String getFunctionName(const Common::String &tot, uint16 offset);
+ 
+ #ifdef __EMSCRIPTEN__
++	bool isGob3DemoCheckpointInput() const;
+ 	bool hasAgentCheckpointScript() const;
+ 	bool canAgentCheckpoint() const;
+ 	bool saveAgentCheckpoint(int slot, const Common::String &desc);
+diff --git a/engines/gob/hotspots.h b/engines/gob/hotspots.h
+--- a/engines/gob/hotspots.h
++++ b/engines/gob/hotspots.h
+@@ -93,7 +93,7 @@
+ 	void pop();
+ 
+ 	/** Check the current hotspot. */
+-	uint16 check(uint8 handleMouse, int16 delay, uint16 &id, uint16 &index);
++	uint16 check(uint8 handleMouse, int16 delay, uint16 &id, uint16 &index, bool gob3Input = false);
+ 	/** Check the current hotspot. */
+ 	uint16 check(uint8 handleMouse, int16 delay);
+ 
