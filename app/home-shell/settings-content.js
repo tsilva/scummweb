@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownUp, Check, ChevronDown, Download, Info, LoaderCircle, Save, Upload } from "lucide-react";
+import { ArrowDownUp, Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
@@ -10,24 +10,25 @@ import { openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
-export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy }) {
+export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy, loadingIndicator }) {
   const picker = useRef(null);
   const pendingImport = useRef(null);
   const reviewHeading = useRef(null);
+  const initialReadStarted = useRef(false);
   const [section, setSection] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
-  const [data, setData] = useState({ sets: [], stored: [], destinations: [], revision: "" });
+  const [data, setData] = useState(null);
   const [review, setReview] = useState(null);
-  const [exportState, setExportState] = useState("idle");
+  const [exported, setExported] = useState(false);
   const [importGame, setImportGame] = useState("");
   const [needsImportGame, setNeedsImportGame] = useState(false);
 
   useEffect(() => {
-    if (exportState !== "downloaded") return;
-    const timer = setTimeout(() => setExportState("idle"), 1800);
+    if (!exported) return;
+    const timer = setTimeout(() => setExported(false), 1800);
     return () => clearTimeout(timer);
-  }, [exportState]);
+  }, [exported]);
 
   useEffect(() => {
     if (review) reviewHeading.current?.focus();
@@ -59,8 +60,13 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   }
 
   useEffect(() => {
-    void run(refresh);
-    // Load only when Settings opens, not while the library boots.
+    if (initialReadStarted.current) return;
+    initialReadStarted.current = true;
+    void refresh().catch((failure) => {
+      setError(failure?.message || "Could not load saved games.");
+      setData({ sets: [], stored: [], destinations: [], revision: "" });
+    });
+    // Load once per Settings opening, including when effects replay in development.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -83,10 +89,8 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
   }
 
   async function download() {
-    if (working.current || exportState !== "idle") return;
+    if (exported) return;
     await run(async () => {
-      setExportState("exporting");
-      let downloaded = false;
       let href;
       try {
         const [{ withSaveLock }, { exportScummvmSaves }] = await Promise.all([
@@ -100,18 +104,13 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         const link = document.createElement("a");
         link.href = href;
         link.download = `scummweb-saves-${new Date().toISOString().slice(0, 10)}.zip`;
-        setExportState("downloading");
-        // Let the browser paint the handoff state before starting its download.
-        await new Promise((resolve) => setTimeout(resolve, 400));
         document.body.appendChild(link);
         try { link.click(); }
         finally { link.remove(); }
-        downloaded = true;
-        setExportState("downloaded");
+        setExported(true);
       } finally {
         // Give the browser time to resolve the download before releasing its URL.
         if (href) setTimeout(() => URL.revokeObjectURL(href), 1000);
-        if (!downloaded) setExportState("idle");
       }
     });
   }
@@ -187,9 +186,9 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     });
   }
 
+  if (!data) return loadingIndicator;
+
   const savedCount = data.sets.reduce((total, set) => total + set.files.length, 0);
-  const transferring = busy || exportState !== "idle";
-  const exportLabel = { idle: "Export saves", exporting: "Exporting", downloading: "Downloading", downloaded: "Downloaded" }[exportState];
   const unmatchedCount = review?.rows.filter((row) => !row.destinationKey).length ?? 0;
   const replacingProgress = review?.rows.some((row) => row.choice === "imported" && data.sets.some((set) =>
     set.destination.key === row.destinationKey && set.hash !== row.set.hash));
@@ -198,7 +197,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     {error && <p className="settings-error" role="alert">{error}</p>}
     <p className="settings-status" role="status">{notice}</p>
     <button type="button" className={`settings-section-heading ${section === "saves" ? "is-active" : ""}`}
-      aria-expanded={section === "saves"} aria-controls="settings-saves" disabled={busy}
+      aria-expanded={section === "saves"} aria-controls="settings-saves"
       onClick={() => setSection(section === "saves" ? "" : "saves")}>
       <Save size={24} /><span>Saved games</span><ChevronDown size={20} />
     </button>
@@ -208,13 +207,11 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
           <div><h3>Transfer saves</h3><p>Transfer saves to or from your ScummVM apps.</p></div>
           <div className="settings-transfer-actions">
-            <button type="button" className="secondary-button settings-wide" disabled={transferring || (!savedCount && !data.stored.length)} onClick={download}>
-              {exportState === "idle" ? <Download size={20} aria-hidden="true" />
-                : exportState === "downloaded" ? <Check size={20} aria-hidden="true" />
-                  : <LoaderCircle size={20} className="settings-export-spinner" aria-hidden="true" />}
-              <span aria-live="polite" aria-atomic="true">{exportLabel}</span>
+            <button type="button" className="secondary-button settings-wide" disabled={busy || exported || (!savedCount && !data.stored.length)} onClick={download}>
+              {exported ? <Check size={20} aria-hidden="true" /> : <Download size={20} aria-hidden="true" />}
+              <span aria-live="polite" aria-atomic="true">{exported ? "Downloaded" : "Export saves"}</span>
             </button>
-            <button type="button" className="launch-button settings-wide" disabled={transferring} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
+            <button type="button" className="launch-button settings-wide" disabled={busy} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
           </div>
           {needsImportGame && <label className="settings-save-choice">Game for imported saves
             <select value={importGame} disabled={busy} onChange={chooseImportGame}>
@@ -230,7 +227,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
           if (!row.destinationKey) return null;
           const active = data.sets.find((set) => set.destination.key === row.destinationKey);
           const identical = active?.hash === row.set.hash;
-          return <fieldset key={index} className="settings-review-game" disabled={busy}><legend>{row.set.destination.title}</legend>
+          return <fieldset key={index} className="settings-review-game"><legend>{row.set.destination.title}</legend>
             {identical ? <p className="settings-active"><Check size={17} />Identical saves — nothing to change.</p>
               : <p>{formatSaveCount(row.set.files.length)} · {row.choice === "stored" ? "Keep as a backup" : "Ready to import"}</p>}
           </fieldset>;
@@ -245,7 +242,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
       </div>}
     </section>
     <button type="button" className={`settings-section-heading ${section === "about" ? "is-active" : ""}`}
-      aria-expanded={section === "about"} aria-controls="settings-about" disabled={busy} onClick={() => setSection(section === "about" ? "" : "about")}>
+      aria-expanded={section === "about"} aria-controls="settings-about" onClick={() => setSection(section === "about" ? "" : "about")}>
       <Info size={24} /><span>About</span><ChevronDown size={20} />
     </button>
     <section id="settings-about" hidden={section !== "about"}>

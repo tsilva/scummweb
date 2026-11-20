@@ -164,14 +164,15 @@ test("syncing before the first named game has no placeholder row", async () => {
   assert.equal(nodes(tree).some(({ props }) => props?.className === "dropbox-progress"), false);
 });
 
-async function settingsFixture({ needsGame = false, markMerged = false, browserGlobals = {} } = {}) {
+async function settingsFixture({ needsGame = false, markMerged = false, readSources, browserGlobals = {} } = {}) {
   const destination = { key: "catalog:sky", title: "Beneath a Steel Sky", family: "sky" };
   const active = { destination, hash: "current", files: [{}] };
   const copies = ["older", "oldest"].map((hash, index) => ({ destination, hash, files: [{}], id: hash, preservedAt: 1700000000000 - index * 1000 }));
   const data = { sets: [active], stored: copies, destinations: [destination], revision: "current-revision" };
   let cursor = 0, refCursor = 0, writes = 0;
   const refs = [];
-  const state = ["saves", "", "", data, null, "idle", "", false];
+  const state = ["saves", "", "", readSources ? null : data, null, false, "", false];
+  const effects = [];
   const imported = { destination, hash: "imported", files: [{ path: "custom.001" }] };
   const imports = [];
   const calls = [], merges = [];
@@ -180,8 +181,8 @@ async function settingsFixture({ needsGame = false, markMerged = false, browserG
     getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision, hasRoot: true }), readStoredSets: async () => copies,
     withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
   const View = await component("../app/home-shell/settings-content.js", {
-    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "LoaderCircle", "Save", "Upload"].map(name => [name, () => null])),
-    "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: async () => [] },
+    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
+    "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: readSources || (async () => []) },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
@@ -191,13 +192,34 @@ async function settingsFixture({ needsGame = false, markMerged = false, browserG
       return [imported];
     } },
     window: Object.assign(new EventTarget(), { localStorage: {} }),
-  }, { useEffect() {}, useRef() { return refs[refCursor++] ||= { current: null }; }, useState(initial) {
+  }, { useEffect(effect, deps) { if (!deps.length) effects.push(effect); }, useRef() { return refs[refCursor++] ||= { current: null }; }, useState(initial) {
     const index = cursor++; if (!(index in state)) state[index] = initial;
     return [state[index], value => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
   } }, browserGlobals);
-  const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false, setBusy() {} };
-  return { calls, copies, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
+  const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false,
+    setBusy(busy) { props.busy = busy; }, loadingIndicator: "settings spinner" };
+  return { calls, copies, effects, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
+
+test("Settings keeps the spinner until the initial save read settles", async () => {
+  for (const fail of [false, true]) {
+    const sources = Promise.withResolvers();
+    let reads = 0;
+    const fixture = await settingsFixture({ readSources: () => { reads++; return sources.promise; } });
+    assert.equal(fixture.render(), "settings spinner");
+    fixture.effects[0]();
+    fixture.effects[0]();
+    assert.equal(reads, 1);
+    assert.equal(fixture.render(), "settings spinner");
+    if (fail) sources.reject(new Error("Could not read saves."));
+    else sources.resolve([]);
+    await new Promise(setImmediate);
+    const tree = fixture.render();
+    assert.equal(button(tree, "Saved games").props.disabled, undefined);
+    assert.equal(button(tree, "About").props.disabled, undefined);
+    if (fail) assert.match(text(tree), /Could not read saves/);
+  }
+});
 
 test("export hands the ZIP to the browser without adding a second download link", async () => {
   const revoked = [];
@@ -207,9 +229,15 @@ test("export hands the ZIP to the browser without adding a second download link"
     document: { body: { appendChild: (element) => assert.equal(element, link) },
       createElement: (tag) => { assert.equal(tag, "a"); return link; } },
     URL: { createObjectURL: () => "blob:export", revokeObjectURL: (url) => revoked.push(url) },
-    setTimeout: (callback, delay) => { if (delay === 400) callback(); else timers.push(callback); },
+    setTimeout: (callback) => timers.push(callback),
   } });
-  await button(fixture.render(), "Export saves").props.onClick();
+  const download = button(fixture.render(), "Export saves").props.onClick();
+  const transferring = fixture.render();
+  assert.equal(button(transferring, "Saved games").props.disabled, undefined);
+  assert.equal(button(transferring, "About").props.disabled, undefined);
+  assert.equal(button(transferring, "Export saves").props.disabled, true);
+  assert.doesNotMatch(text(transferring), /Exporting|Downloading|Working/);
+  await download;
   assert.ok(link.clicked && link.removed);
   assert.match(link.download, /^scummweb-saves-\d{4}-\d{2}-\d{2}\.zip$/);
   const exported = fixture.render();

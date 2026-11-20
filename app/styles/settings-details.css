@@ -17,9 +17,6 @@
 .settings-content .secondary-button:hover:not(:disabled) { border-color: var(--accent-strong); color: var(--accent-strong); }
 .settings-content .launch-button:hover:not(:disabled) { background: #a0e39b; }
 .settings-content .settings-action-block > .settings-status { grid-column: 1 / -1; margin-bottom: 0; }
-.settings-export-spinner { animation: settings-export-spin 1s linear infinite; }
-@keyframes settings-export-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .settings-export-spinner { animation: none; } }
 .settings-review-game { min-width: 0; margin: 1.75rem 0; padding: 1rem 0 0; border: 0; border-top: 1px solid #555; }
 .settings-review-game legend { max-width: 100%; overflow-wrap: anywhere; padding: 0 .6rem 0 0; font-size: .95rem; font-weight: 700; }
 .settings-content .settings-reassurance { color: var(--ink); font-size: .85rem; font-weight: 600; }
