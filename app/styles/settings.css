@@ -32,10 +32,12 @@
 .settings-content {
   --settings-padding-left: max(1.25rem, env(safe-area-inset-left));
   --settings-padding-right: max(1.25rem, env(safe-area-inset-right));
+  --settings-close-size: 2.75rem;
+  --settings-default-close-center-right: calc(var(--settings-padding-right) + var(--settings-close-size) / 2);
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-top: calc(var(--settings-close-center-top, 2.375rem) - var(--settings-close-size) / 2);
 }
 .settings-body {
   display: flex;
@@ -52,7 +54,19 @@
 .settings-header-loader { margin-inline: auto .5rem; }
 .settings-heading { display: flex; flex: none; align-items: center; justify-content: space-between; margin-inline: var(--settings-padding-left) var(--settings-padding-right); padding-bottom: 1rem; border-bottom: 1px solid #363636; }
 .settings-heading h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 1.35rem; letter-spacing: -.04em; }
-.settings-close { display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+.settings-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--settings-close-size);
+  height: var(--settings-close-size);
+  margin-right: calc(var(--settings-close-center-right, var(--settings-default-close-center-right)) - var(--settings-default-close-center-right));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
 .settings-content p { margin: 0; color: #c5c5c5; font-size: .875rem; line-height: 1.65; }
 .settings-content button:is(:disabled, [aria-disabled="true"]) { opacity: .45; cursor: not-allowed; }
 .settings-content button:focus-visible, .settings-trigger:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 4px; }

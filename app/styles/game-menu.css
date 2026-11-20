@@ -1,5 +1,6 @@
 .game-menu-drawer {
   --game-menu-width: min(25rem, 100vw);
+  --game-menu-disabled-opacity: .5;
   position: fixed;
   inset: 0 0 0 auto;
   box-sizing: border-box;
@@ -23,7 +24,7 @@
 
 .game-menu-drawer::backdrop { background: transparent; }
 .game-menu-drawer button { font: inherit; cursor: pointer; }
-.game-menu-drawer button:disabled, .game-menu-drawer input:disabled { opacity: .5; cursor: default; }
+.game-menu-drawer button:disabled, .game-menu-drawer input:disabled { opacity: var(--game-menu-disabled-opacity); cursor: default; }
 .game-menu-drawer :is(button, input):focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }
 .game-menu-drawer svg { flex: none; }
 
@@ -173,7 +174,8 @@
 .game-menu-slots small, .game-menu-note { color: #c5c5c5; }
 .game-menu-slots small { margin-top: .25rem; }
 .game-menu-note { margin: .5rem 0; }
-.game-menu-save-unavailable { margin: 0; color: #c5c5c5; font-size: .875rem; }
+.game-menu-save-action { display: grid; gap: .25rem; }
+.game-menu-save-unavailable { margin: 0; font-size: .75rem; opacity: var(--game-menu-disabled-opacity); }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
 
 .game-menu-backups-toggle {

@@ -170,22 +170,24 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
       {page === "menu" ? (
         <>
           <div className="game-menu-actions">
-            <button
-              aria-busy={busy}
-              aria-describedby={saveBlockedHere ? "game-menu-save-unavailable" : undefined}
-              className="game-menu-outlined"
-              data-menu-focus
-              disabled={busy || saved || saveBlockedHere || saveAvailabilityPending}
-              onClick={saveGame}
-              type="button"
-            >
-              <SaveIcon aria-hidden="true" className={busy ? "game-menu-saving-spinner" : undefined} size={22} />
-              <span>{busy ? "Saving…" : saved ? "Saved" : "Save Game"}</span>
-            </button>
-            <span className="game-menu-save-status" role="status">{busy ? "Saving game" : saved ? "Game saved" : ""}</span>
-            {saveBlockedHere && (
-              <p className="game-menu-save-unavailable" id="game-menu-save-unavailable">You can’t save in this location.</p>
-            )}
+            <div className="game-menu-save-action">
+              <button
+                aria-busy={busy}
+                aria-describedby={saveBlockedHere ? "game-menu-save-unavailable" : undefined}
+                className="game-menu-outlined"
+                data-menu-focus
+                disabled={busy || saved || saveBlockedHere || saveAvailabilityPending}
+                onClick={saveGame}
+                type="button"
+              >
+                <SaveIcon aria-hidden="true" className={busy ? "game-menu-saving-spinner" : undefined} size={22} />
+                <span>{busy ? "Saving…" : saved ? "Saved" : "Save Game"}</span>
+              </button>
+              <span className="game-menu-save-status" role="status">{busy ? "Saving game" : saved ? "Game saved" : ""}</span>
+              {saveBlockedHere && (
+                <p className="game-menu-save-unavailable" id="game-menu-save-unavailable">You can’t save in this location.</p>
+              )}
+            </div>
             {error && <p className="game-menu-note" role="alert">{error}</p>}
             <button className="game-menu-outlined" disabled={busy} onClick={() => go("load")} type="button">
               <FolderOpen aria-hidden="true" size={22} /><span>Load Game</span><ChevronRight aria-hidden="true" size={19} />
