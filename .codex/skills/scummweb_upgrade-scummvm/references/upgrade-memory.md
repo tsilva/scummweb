@@ -291,6 +291,12 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   until its native acknowledgement. Require the native capability export before
   dispatch so mixed shell/engine versions cannot write a diagnostic player save.
   Never implement this by writing and deleting a normal library slot.
+- Enumerate saved backups through the native metaengine against a temporary
+  copy of the full save set. Invalidate the native filename cache whenever
+  the isolated directory is reused, intercept scan callbacks before they
+  can publish active metadata, and return to the normal save directory
+  after native load acknowledgment. Keep companion files paired with each
+  backup and do not renumber native slots.
 
 - SCUMM's original menu imports voice mode during setup only when the active
   target contains both `subtitles` and `speech_mute`. A lone subtitle default

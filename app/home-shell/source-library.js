@@ -383,6 +383,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         return;
       }
       game = { ...game, recentGameId: `source:${source.id}`, activityVersion: sourceActivityVersion(source),
+        saveFingerprint: source.fingerprint,
         saveVersionId: legacySaves ? undefined : source.id,
         saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
       if (source.url) {

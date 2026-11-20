@@ -24,12 +24,7 @@
 .settings-review-game legend { max-width: 100%; overflow-wrap: anywhere; padding: 0 .6rem 0 0; font-size: .95rem; font-weight: 700; }
 .settings-content .settings-reassurance { color: var(--ink); font-size: .85rem; font-weight: 600; }
 .settings-review-actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; margin: 1.5rem 0 2rem; }
-.settings-review-actions button, .settings-restore > button { min-height: 2.8rem; padding: .7rem 1rem; font: inherit; font-size: .88rem; cursor: pointer; }
-.settings-restore-toggle { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; margin: .4rem 0; padding: .65rem 0; border: 0; background: transparent; color: var(--ink-muted); font: inherit; font-size: .8125rem; cursor: pointer; }
-.settings-restore-toggle:hover { color: var(--ink); }
-.settings-restore-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-.settings-restore { padding-bottom: 1rem; }
-.settings-restore > button, .settings-content .settings-restore > p { margin-top: .75rem; }
+.settings-review-actions button { min-height: 2.8rem; padding: .7rem 1rem; font: inherit; font-size: .88rem; cursor: pointer; }
 .settings-active { display: flex; align-items: center; gap: .4rem; color: var(--accent-strong) !important; font-size: .85rem; }
 #settings-about a { display: inline-block; margin-top: 1rem; color: var(--accent-strong); }
 

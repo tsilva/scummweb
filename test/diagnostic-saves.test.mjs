@@ -127,6 +127,66 @@ test("older runtime and unsupported saving never dispatch a normal player save",
   assert.equal(directories.has("/tmp/scummweb-bug-report"), false);
 });
 
+test("backed-up slots use the native list and load their original companion files in isolation", async () => {
+  const { scope, controls, files, directories, storage, FS } = fixture();
+  const directory = "/tmp/scummweb-bug-report";
+  const before = [...files];
+  const indexBefore = [...storage];
+  assert.equal(controls.read().canLoadBackups, false, "older runtime has no backup picker");
+  scope.__scummwebPublishPlayerSaves(controls.read().saves, new Set([1]));
+  scope.Module._scummweb_list_isolated_saves = (list) => {
+    assert.equal(scope.__scummwebDiagnosticSaves.active, true);
+    if (!list) return;
+    assert.equal(files.get(`${directory}/game.001`)[0], 3);
+    scope.__scummwebBeginSaveScan("scumm", "monkey", "game", true);
+    scope.__scummwebRecordOccupiedSave(2);
+    scope.__scummwebAddSave(1, "game.001", "Earlier save", true);
+    scope.__scummwebAddSave(2, "game.002", "Missing save", true);
+    scope.__scummwebEndSaveScan();
+  };
+  const backup = [
+    { path: "game.001", data: new Uint8Array([3, 4]), modifiedAt: 100 },
+    { path: "index/companion", data: new Uint8Array([5, 6]), modifiedAt: 100 },
+  ];
+  assert.equal(controls.read().canLoadBackups, true);
+  assert.deepEqual(controls.listBackup(backup), [
+    { slot: 1, name: "game.001", description: "Earlier save", modifiedAt: 100 },
+  ]);
+  assert.equal(controls.read().saves[0].description, "Player save");
+  assert.deepEqual([...files], before);
+  assert.deepEqual([...storage], indexBefore);
+
+  const boundary = () => scope.__scummwebAgentFrameBoundary(false, 2, 0, true, true);
+  for (const error of ["Native load failed", null]) {
+    const result = controls.run("load", { slot: 1, files: backup });
+    assert.equal(boundary(), 3);
+    assert.deepEqual([...files.get(`${directory}/index/companion`)], [5, 6]);
+    scope.__scummwebAgentSaveResult(error);
+    assert.deepEqual(await result, error ? { error } : { slot: 1 });
+    assert.equal(directories.has(directory), false);
+    assert.equal(directories.has(directory + "/index"), false);
+    assert.deepEqual([...files], before);
+    assert.deepEqual([...storage], indexBefore);
+  }
+  assert.equal(controls.read().nextSlot, 2);
+  const nextSave = controls.run("save", null);
+  assert.equal(boundary(), 2, "ordinary saving resumes in the next free slot");
+  assert.equal(scope.__scummwebDiagnosticSaves.active, false);
+  scope.__scummwebAgentSaveResult("Test ends before native write");
+  assert.deepEqual(await nextSave, { error: "Test ends before native write" });
+
+  const write = FS.writeFile;
+  FS.writeFile = (path, bytes) => {
+    write(path, bytes);
+    if (path.endsWith("/index/companion")) throw new Error("Partial write");
+  };
+  assert.equal(controls.listBackup(backup), null);
+  assert.equal(directories.has(directory), false);
+  assert.deepEqual([...files], before);
+  FS.writeFile = write;
+  assert.equal(controls.listBackup(backup)[0].slot, 1, "failed staging leaves the temporary path reusable");
+});
+
 test("consecutive reports reset the native filename cache even without resuming gameplay", async () => {
   const { scope, controls, files, FS, storage } = fixture();
   const before = [...storage];

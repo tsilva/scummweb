@@ -16,12 +16,23 @@ diff --git a/backends/saves/default/default-saves.cpp b/backends/saves/default/d
 diff --git a/base/main.cpp b/base/main.cpp
 --- a/base/main.cpp
 +++ b/base/main.cpp
-@@ -272,7 +272,14 @@
+@@ -272,7 +272,25 @@
  	return EM_ASM_INT({ return globalThis.__scummwebEndSaveScan ? globalThis.__scummwebEndSaveScan() : -1; });
  }
  
 +extern "C" EMSCRIPTEN_KEEPALIVE int scummweb_diagnostic_saves_supported() {
 +	return 1;
++}
++
++extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_list_isolated_saves(bool list) {
++	if (!scummwebMetaEngine || !EM_ASM_INT({ return !!globalThis.__scummwebDiagnosticSaves?.active; }))
++		return;
++
++	// Each backup reuses the temporary path with a different set of files.
++	Common::StringArray lockedFiles;
++	g_system->getSavefileManager()->updateSavefilesList(lockedFiles);
++	if (list)
++		scummwebReportSaves(*scummwebMetaEngine, scummwebEngineId, scummwebGameId, scummwebTarget);
 +}
 +
  extern "C" EMSCRIPTEN_KEEPALIVE void scummweb_refresh_saves() {

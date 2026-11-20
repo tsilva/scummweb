@@ -107,7 +107,8 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
             FS.writeFile(`/tmp/scummweb-intro/${file.name}`, bytes);
             overlay.add(file.name);
           }
-          scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) && !scope.__scummwebScanningSaves;
+          scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) &&
+            !scope.__scummwebScanningSaves && !scope.__scummwebDiagnosticSaves?.active;
           scope.__scummwebStartupAutosave = name;
           due = 0;
           return record.slot;

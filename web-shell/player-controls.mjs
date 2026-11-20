@@ -40,6 +40,7 @@ export function installPlayerControls(scope, requestMenu) {
         : saves;
       return {
         volume, speed, canSave, canLoad, dialogueActive, nextSlot: nextSlot(),
+        canLoadBackups: canLoad && scope.__scummwebDiagnosticSaves?.backupSupported() === true,
         ...subtitleState(),
         saves: entries.filter(({ slot }) => slot <= maxSlot),
       };
@@ -56,6 +57,10 @@ export function installPlayerControls(scope, requestMenu) {
       menuOpen = open;
       applyVolume();
     },
+    listBackup(files) {
+      if (!menuOpen || pending || !canLoad || scope.__scummwebSaveWriteInProgress?.()) return null;
+      return scope.__scummwebDiagnosticSaves?.listBackup(files) ?? null;
+    },
     run(operation, requestedSlot) {
       if (!menuOpen || pending) return { error: "Another save or load is still in progress." };
       const diagnostic = operation === "report";
@@ -66,14 +71,18 @@ export function installPlayerControls(scope, requestMenu) {
       const isNew = diagnostic || operation === "save" && requestedSlot === null;
       const autosave = operation === "load" && typeof requestedSlot === "string"
         ? scope.__scummwebAutosaves?.find(requestedSlot) : undefined;
-      const slot = autosave?.slot ?? (diagnostic ? (reservedSlot === 1 ? 2 : 1) : isNew ? nextSlot() : requestedSlot);
+      const backup = operation === "load" && Array.isArray(requestedSlot?.files)
+        && scope.__scummwebDiagnosticSaves?.backupSupported() ? requestedSlot : undefined;
+      const isolated = autosave || backup;
+      const slot = isolated?.slot ?? (diagnostic ? (reservedSlot === 1 ? 2 : 1) : isNew ? nextSlot() : requestedSlot);
       const entry = saves.find((save) => save.slot === slot);
       if (diagnostic) {
         if (slot > maxSlot) return { status: "unavailable", files: [], reason: "no-manual-slot" };
       } else if (operation === "save") {
         if (!canSave || !Number.isInteger(slot) || slot < 1 || slot > maxSlot || slot === reservedSlot ||
             (!isNew && !entry?.writable)) return { error: "This save slot is unavailable." };
-      } else if (operation !== "load" || !canLoad || (!entry && !autosave) || slot > maxSlot) {
+      } else if (operation !== "load" || !canLoad || (!entry && !isolated)
+          || !Number.isInteger(slot) || slot < 0 || slot > maxSlot) {
         return { error: "This save is unavailable." };
       }
       return new Promise((resolve) => {
@@ -83,7 +92,7 @@ export function installPlayerControls(scope, requestMenu) {
           // A late acknowledgment belongs to this request, never to a retry.
           if (!pending.dispatched) pending = undefined;
         }, 5000);
-        pending = { operation, slot, isNew, entry, autosave, timer, resolve, dispatched: false, written: new Set() };
+        pending = { operation, slot, isNew, entry, isolated, timer, resolve, dispatched: false, written: new Set() };
       });
     },
   });
@@ -130,10 +139,10 @@ export function installPlayerControls(scope, requestMenu) {
         pending = undefined;
         return menuOpen ? -1 : 0;
       }
-      if (pending.autosave && (!canLoad || pending.slot > max ||
-          !scope.__scummwebDiagnosticSaves?.beginRestore(pending.autosave.files))) {
+      if (pending.isolated && (!canLoad || pending.slot > max || scope.__scummwebSaveWriteInProgress?.() ||
+          !scope.__scummwebDiagnosticSaves?.beginRestore(pending.isolated.files))) {
         scope.clearTimeout(pending.timer);
-        pending.resolve({ error: "This autosave could not be opened." });
+        pending.resolve({ error: "This saved game could not be opened." });
         pending = undefined;
         return menuOpen ? -1 : 0;
       }
@@ -150,7 +159,7 @@ export function installPlayerControls(scope, requestMenu) {
     boundary(max, reserved, Boolean(save), Boolean(load));
   scope.__scummwebAgentSaveResult = (error) => {
     if (!pending?.dispatched) return;
-    const { operation, slot, timer, resolve, written, autosave } = pending;
+    const { operation, slot, timer, resolve, written, isolated } = pending;
     pending = undefined;
     scope.clearTimeout(timer);
     if (operation === "autosave") {
@@ -162,7 +171,7 @@ export function installPlayerControls(scope, requestMenu) {
       resolve({ ...scope.__scummwebDiagnosticSaves.finish(error), slot });
       return;
     }
-    if (autosave) scope.__scummwebDiagnosticSaves.finishRestore();
+    if (isolated) scope.__scummwebDiagnosticSaves.finishRestore();
     if (!error && operation === "save" && !saves.some((save) => save.slot === slot && written.has(save.name))) {
       error = "ScummVM could not confirm that the save was stored.";
     }

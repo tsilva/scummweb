@@ -39,7 +39,7 @@ absent from a native save list; an unlisted file is not proof of disposability.
 3. Review and confirm import without conflict radios. Distinct compatible slots
    combine; incoming overlapping slots take precedence. A changed companion/index
    selects the complete incoming copy. Verify prior current progress remains in
-   **Restore a backup** and games absent from the import stay unchanged.
+   **Load Game → Backed-up saves** and games absent from the import stay unchanged.
 4. For a review race, complete a legitimate compatible save or let authorized
    sync finish while review remains open. Confirmation must recompute from the
    original incoming files and freshest current set under the save lock, retaining
@@ -51,10 +51,11 @@ absent from a native save list; an unlisted file is not proof of disposability.
    container changed. Deliberately importing older incoming files can replace
    overlapping slots; prior presence in cloud history does not cancel that intent.
 
-Optional recovery opens its own review; confirming **Restore this copy** must
-preserve previous current progress. Ordinary sync never requires this action.
-Cloud snapshot ZIPs remain acceptable manual recovery inputs, but exports use
-native folders. The audit helper accepts both without a temporary conversion.
+Open an older slot under **Load Game → Backed-up saves** and verify the
+resulting game state. Compare the active slots and companion files
+byte for byte before and after loading. Use **Save Game** and confirm the new
+slot appears in the active list. Cloud snapshot ZIPs remain acceptable manual
+recovery inputs. The audit helper accepts both native exports and cloud ZIPs.
 
 ## Automatic reconciliation fixtures
 

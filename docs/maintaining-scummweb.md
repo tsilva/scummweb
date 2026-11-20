@@ -138,7 +138,9 @@ each axis to preserve symmetric spacing around cutouts.
 - **Save Game** writes to the next unused manual slot for the selected edition
   and shows its status in the button. When all slots are in use, the player can
   choose a manual save to overwrite after confirmation. **Load Game** opens the
-  saved-game list. Games can deny saving or loading during
+  saved-game list. Expand **Backed-up saves** to load a slot from an earlier
+  copy for the current edition. Loading preserves active save files and
+  **Save Game** records new progress. Games can deny saving or loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
 - **Report a bug** is the last game-menu action. Describe the problem and send
@@ -250,7 +252,7 @@ Dropbox app key and callback before enabling it. Game archive storage is unchang
 
 Close every game tab, then open **Settings → Saved games → Transfer saves → Export saves**.
 The ZIP includes active and preserved saves. Saves live in the current browser
-profile and clearing site data removes them. Backup and restore require Web
+profile and clearing site data removes them. Import and export require Web
 Locks for site-wide coordination.
 
 When save storage is busy, the game's launch button shows **Updating…** and
@@ -268,10 +270,9 @@ recovery before activation. Identical contents are skipped.
 Exports contain ordinary ScummVM save files with unchanged bytes, grouped by
 game edition and current/recovery copy. Extract the chosen copy into desktop
 ScummVM's save folder. Exported collections preserve edition identities in their
-folder names for reimport. Unavailable editions remain recoverable until their
-matching game is added. The recovery view groups earlier copies by game;
-**Restore this copy…** reviews and activates the selected complete copy, retaining
-the previous progress. All copies remain in exports.
+folder names for reimport. Add the matching edition to use its backups in
+**Load Game**. **Export saves** also includes copies that ScummWEB cannot match
+to an installed edition or list through its in-game menu.
 
 Dropbox uses a single app-owned `saves` folder of checksum-named archives.
 Automatic reconciliation requires no conflict choices and retains the original
