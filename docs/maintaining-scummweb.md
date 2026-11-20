@@ -222,7 +222,9 @@ updated about every two minutes and at the first safe moment after loading.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. Saved story progress uses checkpoint data where a
 compatible story map is available. Outside the preview, **Continue** uses the
-latest eligible native save. **Start from beginning** keeps your saves.
+latest eligible native save. In the game hero, the version picker appears beside
+**Play** or **Continue** when several versions are available. For a single
+version, **Start from beginning** appears beside **Continue** and keeps your saves.
 Games without compatible save and startup-load support use their in-game menu.
 
 The browser-local index supplies launch actions from checked save files.

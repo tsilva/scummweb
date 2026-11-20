@@ -7,7 +7,8 @@ import useSaveLaunchBlock from "../use-save-launch-block";
 import LaunchPending from "../launch-pending";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
 
-export default function SourceLaunchActions({ version, onLaunch, helpId = "game-file-access-help", showAccessHelp = true, browseHref, primaryOnly = false }) {
+export default function SourceLaunchActions({ version, onLaunch, showAccessHelp = true,
+  helpId = showAccessHelp ? "game-file-access-help" : undefined, browseHref, primaryOnly = false }) {
   const launchFeedback = useLaunchFeedback({ showBundledTags: false });
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
@@ -35,7 +36,7 @@ export default function SourceLaunchActions({ version, onLaunch, helpId = "game-
       then allow access in the browser prompt. Your game files stay on your device.
     </p>}
     {updating ? <LaunchPending /> : <button type="button" className="launch-button" disabled={version.action.disabled}
-      aria-describedby={needsAccess && (showAccessHelp || !primaryOnly) ? helpId : undefined}
+      aria-describedby={needsAccess ? helpId : undefined}
       onClick={() => { void launch(canContinue ? version.action.onContinue : version.action.onClick); }}>
       {version.locate ? version.locateLabel : needsAccess ? "Allow file access" : canContinue ? "Continue" : "Play"}
     </button>}

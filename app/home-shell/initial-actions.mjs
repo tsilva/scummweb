@@ -46,12 +46,18 @@ export function prepareInitialActions(container, readSave) {
     const hash = window.location.hash || "";
     if (hash.startsWith("#slide=") && decodeURIComponent(hash.slice(7)) !== state.group) return;
     const remembered = storage.getItem(`scummweb.version:${state.group}`);
+    let cached;
+    try { cached = JSON.parse(storage.getItem(`scummweb.hero-actions.v1:${state.group}`)); } catch {}
+    const cacheMatches = cached?.schema === state.schema && cached.group === state.group
+      && cached.runtimeVersion === state.runtimeVersion;
     if (remembered && remembered !== state.version) {
-      const cached = JSON.parse(storage.getItem(`scummweb.hero-actions.v1:${state.group}`));
-      if (cached?.schema !== state.schema || cached.group !== state.group
-        || (cached.version !== remembered && cached.preference !== remembered)
-        || cached.runtimeVersion !== state.runtimeVersion) return;
+      if (!cacheMatches || (cached.version !== remembered && cached.preference !== remembered)) return;
       state = cached;
+    } else if (cacheMatches && cached.version === state.version && Array.isArray(cached.versions)
+      && cached.versions.length > state.versions.length
+      && state.versions.every(({ key }) => cached.versions.some((version) => version?.key === key))) {
+      // The catalog copy can stay selected while imported versions restore.
+      state.versions = cached.versions;
     }
     if (typeof state.playHref !== "string" || !state.playHref.startsWith("/")
       || new URL(state.playHref, window.location.origin).origin !== window.location.origin) return;
@@ -71,27 +77,38 @@ export function prepareInitialActions(container, readSave) {
     primary.textContent = state.unavailable ? "Game not included" : state.locate ? "Locate ZIP or ISO"
       : state.access ? "Allow file access" : save ? "Continue" : "Play";
     if (!state.unavailable && !state.source) primary.href = href + (save ? "#continue" : "");
-    else if (state.source) { primary.setAttribute("role", "button"); primary.setAttribute("aria-disabled", "true"); }
+    else if (state.source) {
+      primary.removeAttribute("href");
+      primary.setAttribute("role", "button");
+      primary.setAttribute("aria-disabled", "true");
+    }
     else { primary.setAttribute("aria-disabled", "true"); primary.classList.add("game-unavailable"); }
+    const hasMultipleVersions = Array.isArray(state.versions) && state.versions.length > 1;
     let restart = container.querySelector(".start-fresh-button");
-    if (!restart) {
-      restart = document.createElement("a");
-      restart.className = "secondary-button start-fresh-button";
-      restart.textContent = "Start from beginning";
-      primary.after(restart);
-    }
-    restart.href = href;
-    restart.hidden = !save;
-    if (state.source) { restart.removeAttribute("href"); restart.setAttribute("aria-disabled", "true"); }
     let browse = container.querySelector(".browse-games-button");
-    if (!browse) {
-      browse = document.createElement("a");
-      browse.className = "secondary-button browse-games-button";
-      browse.textContent = "Browse Games";
-      primary.after(browse);
+    if (hasMultipleVersions) {
+      restart?.remove();
+      browse?.remove();
+      restart = null;
+    } else {
+      if (!restart) {
+        restart = document.createElement("a");
+        restart.className = "secondary-button start-fresh-button";
+        restart.textContent = "Start from beginning";
+        primary.after(restart);
+      }
+      restart.href = href;
+      restart.hidden = !save;
+      if (state.source) { restart.removeAttribute("href"); restart.setAttribute("aria-disabled", "true"); }
+      if (!browse) {
+        browse = document.createElement("a");
+        browse.className = "secondary-button browse-games-button";
+        browse.textContent = "Browse Games";
+        primary.after(browse);
+      }
+      browse.href = "#library";
+      browse.hidden = Boolean(save);
     }
-    browse.href = "#library";
-    browse.hidden = Boolean(save);
     const importHelp = container.querySelector(".hero-import-help");
     if (importHelp) importHelp.hidden = !state.unavailable;
     const license = container.querySelector(".hero-license");
@@ -107,7 +124,7 @@ export function prepareInitialActions(container, readSave) {
       }
     }
     const chooser = container.querySelector(".hero-version-control");
-    if (Array.isArray(state.versions) && state.versions.length > 1) {
+    if (hasMultipleVersions) {
       chooser.removeAttribute("data-reserved");
       chooser.removeAttribute("aria-hidden");
       chooser.innerHTML = '<label class="library-select"><span class="hero-version-value" aria-hidden="true"></span><select aria-label="Game version" disabled></select><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></label>';
@@ -135,6 +152,7 @@ export function prepareInitialActions(container, readSave) {
         primary.classList.toggle("launch-button-pending", updating);
         primary.textContent = updating ? "Updating…" : label;
         for (const [link, availableHref] of [[primary, primaryHref], [restart, href]]) {
+          if (!link) continue;
           if (updating) {
             link.removeAttribute("href");
             link.setAttribute("aria-disabled", "true");
