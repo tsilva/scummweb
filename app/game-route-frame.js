@@ -24,7 +24,7 @@ import { getStoryProgressRevision, observeStoryProgress } from "./game-player/st
 import { observePlayHistory } from "./game-player/play-history.mjs";
 import storyProgressIndex from "../public/game-progress/index.json";
 import { dispatchGameCommand, dispatchHugoCommand, dispatchSyntheticKeypressSequence } from "./game-player/keyboard";
-import { getMobileControlMode, hasDungeonWalkControls } from "./game-player/mobile-controls.mjs";
+import { getDungeonWalkLayout, getMobileControlMode } from "./game-player/mobile-controls.mjs";
 import { getGameMenuShortcut } from "./game-player/game-menu.mjs";
 import { observeRemotePlayerInput } from "./game-player/game-mouse.mjs";
 import { enterImmersiveMode, isGameFullscreen, isTouchMobileClient } from "./game-player/immersive-mode.mjs";
@@ -273,8 +273,8 @@ export default function GameRouteFrame({
   const showCommandForm = showCommandInput && commandOpen;
   const showHugoStick = mobileControlsReady && !showCommandForm && mobileControlMode === "hugo";
   const showTouchGamepad = mobileControlsReady && ["grim", "monkey4", "castle"].includes(mobileControlMode);
-  const showTouchModeSwitch = mobileControlsReady && hasDungeonWalkControls(activeGame);
-  const showTouchWalk = showTouchModeSwitch && dungeonTouchMode === "walk";
+  const dungeonWalkLayout = mobileControlsReady ? getDungeonWalkLayout(activeGame) : null;
+  const showTouchWalk = Boolean(dungeonWalkLayout) && dungeonTouchMode === "walk";
   const showTouchMouse = mobileControlsReady && mobileControlMode === "mouse" && !showTouchWalk;
   const touchCursorPad = useTouchCursorPad({
     enabled: showTouchMouse,
@@ -1086,9 +1086,10 @@ export default function GameRouteFrame({
         onPointerDown={touchCursorPad.handlePointerDown}
         onPointerMove={touchCursorPad.handlePointerMove}
         onPointerUp={touchCursorPad.handlePointerUp}
-        onSelectMode={showTouchModeSwitch ? setDungeonTouchMode : undefined}
+        onSelectMode={dungeonWalkLayout ? setDungeonTouchMode : undefined}
         showTouchCursorPad={showTouchMouse}
         showTouchWalk={showTouchWalk}
+        walkLayout={dungeonWalkLayout}
       />}
       {showHugoStick ? (
         <div className="game-route-touch-gamepad" key={`hugo:${frameSrc}`}>

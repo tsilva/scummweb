@@ -492,6 +492,31 @@
   clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 78.87% 100%);
 }
 
+.game-route-stick-base.game-route-dungeon-walk-pad[data-layout="four-way"] {
+  background-image: linear-gradient(45deg, var(--walk-divider)),
+    linear-gradient(135deg, var(--walk-divider));
+}
+
+.game-route-dungeon-walk-pad[data-layout="four-way"] [data-position="top"] {
+  clip-path: polygon(0 0, 100% 0, 50% 50%);
+}
+
+.game-route-dungeon-walk-pad[data-layout="four-way"] [data-position="bottom"] {
+  clip-path: polygon(50% 50%, 100% 100%, 0 100%);
+}
+
+.game-route-dungeon-walk-direction[data-position="left"] {
+  --icon-x: 18%;
+  --icon-y: 50%;
+  clip-path: polygon(0 0, 50% 50%, 0 100%);
+}
+
+.game-route-dungeon-walk-direction[data-position="right"] {
+  --icon-x: 82%;
+  --icon-y: 50%;
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+}
+
 .game-route-skip-intro-button {
   min-width: 8rem;
   min-height: 2.75rem;
