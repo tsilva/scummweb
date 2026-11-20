@@ -40192,6 +40192,242 @@
       "contentType": "image/webp",
       "width": 320,
       "height": 427
+    },
+    "/launcher/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/37f44a3fa6a3ca35f45c932d2f10b0942ef22e3abd4f99a9559edc5e70c547a1/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp",
+      "sha256": "37f44a3fa6a3ca35f45c932d2f10b0942ef22e3abd4f99a9559edc5e70c547a1",
+      "bytes": 113924,
+      "contentType": "image/webp",
+      "width": 810,
+      "height": 1080,
+      "placeholder": "UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoJAAwAAsBIJbACdADdKXYJWNAA/rWsazrG0jEQIlwl+3sPTED8HZGIFgGC4phocVPUJLR6/4X/xcfrTj/TQq/02uty9BUjO8YSIQpwAAA="
+    },
+    "/launcher/backyard-football-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/77281a1d930e70dd4e4ac668854391f740603127b84d1a84b6d0c1d3cb34a072/backyard-football-2026-11-20-portrait-cover.webp",
+      "sha256": "77281a1d930e70dd4e4ac668854391f740603127b84d1a84b6d0c1d3cb34a072",
+      "bytes": 60366,
+      "contentType": "image/webp",
+      "width": 600,
+      "height": 800,
+      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoJAAwAAsBIJZgCdAEOeHm2FQAA/tq39qtaCKepW91q2coTI7DsFOr8ugD7S2gW+kkD4eAvmhjG0/HB5AIN1clOvrSRudQ50dYAAA=="
+    },
+    "/launcher/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/a2a7826bef8d2512e6bd0a4a6f3abf532b4ae96e3377b5b3fb11ebfb58da89e2/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp",
+      "sha256": "a2a7826bef8d2512e6bd0a4a6f3abf532b4ae96e3377b5b3fb11ebfb58da89e2",
+      "bytes": 58008,
+      "contentType": "image/webp",
+      "width": 648,
+      "height": 864,
+      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAABwAgCdASoJAAwAAsBIJbACdDA6CKYK07CAFSgAAP62uQ/4q5coa0dgxbkgLRjFqGiajdD0esPsB8oD27RJ9ClNyHGyTjf68KMhuSEpjFcnei7+Lh6vnbLUbQ1QFJ3ooP4chi+5aZqGAA=="
+    },
+    "/launcher/blues-abc-time-activities-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/e7b6bf06367e10bfaf1a8ac25439ad7256af21afeb72383c8a62b37ee699cb69/blues-abc-time-activities-2026-11-20-portrait-cover.webp",
+      "sha256": "e7b6bf06367e10bfaf1a8ac25439ad7256af21afeb72383c8a62b37ee699cb69",
+      "bytes": 58638,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAABwAgCdASoJAAwAAsBIJbACdLoAEI4VqtnCmKOwAP7qTaHILX33L1j0K6Zre9ZIdz8LfUBnjibNdYJsVnRHBH6JRpJZrfT2+n6BGftlmh39zkdtR1PjL90mXlD4xLp+xBCAAA=="
+    },
+    "/launcher/blues-birthday-adventure-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/6efd1bf0e0f28d2c05d0df8d808e698921f7d87c320d6274ed72f61175e92e2c/blues-birthday-adventure-2026-11-20-portrait-cover.webp",
+      "sha256": "6efd1bf0e0f28d2c05d0df8d808e698921f7d87c320d6274ed72f61175e92e2c",
+      "bytes": 38370,
+      "contentType": "image/webp",
+      "width": 399,
+      "height": 532,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAADQAQCdASoJAAwAAsBIJbACdADZohF5YAD9eMqkUkVnhtXZzxGeks2FwObXohZJtnZMUQ8MCCdJA8jnxaVt8m3STHZngm9U3fq5plcmujQGQ+sEjywDE8n7vFy6sgkJ9144AA=="
+    },
+    "/launcher/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/eb3783d5a31b321247b1e8f19369ea775419a0d11553ec9039df4ba5a7e7145c/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp",
+      "sha256": "eb3783d5a31b321247b1e8f19369ea775419a0d11553ec9039df4ba5a7e7145c",
+      "bytes": 50152,
+      "contentType": "image/webp",
+      "width": 627,
+      "height": 836,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoJAAwAAsBIJbACdLoAAnb8BAAA4DYGkV8WMOw/HywoPjQasMOrqApPZYa8yAChRl/8d4n7Hpc8O1SLIt96OOSP6+P/xhHp6P3pAyHM6eHod/8cUGp51WlRl4AAAA=="
+    },
+    "/launcher/just-grandma-and-me-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/88ecbed3dd5791d174f59af68b4561407c4b9d2f67ee549d4e8e0026ebc8816c/just-grandma-and-me-2026-11-20-portrait-cover.webp",
+      "sha256": "88ecbed3dd5791d174f59af68b4561407c4b9d2f67ee549d4e8e0026ebc8816c",
+      "bytes": 50414,
+      "contentType": "image/webp",
+      "width": 540,
+      "height": 720,
+      "placeholder": "UklGRmYAAABXRUJQVlA4IFoAAABQAgCdASoJAAwAAsBIJbACdLoB+AADFg4pECAA/soB1QYkT3GkeaLiDZLsZeBCFqfNhm9Cx5cQ/84zjX3IbgE44tMIj0YCGDaMafL9S2SszZ7qFBL+evAAAAA="
+    },
+    "/launcher/myst-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/8150ecc4629511e318e809fb690f3d433d584e1d6811487c2b36e45e7ec1df77/myst-2026-11-20-portrait-cover.webp",
+      "sha256": "8150ecc4629511e318e809fb690f3d433d584e1d6811487c2b36e45e7ec1df77",
+      "bytes": 83372,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 1200,
+      "placeholder": "UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoJAAwAAsBIJQBYdsWWtrYMHv8gAP7I23k+nW8A/RP2GtDC7zI6yAEq8ZfqYR7mYY3cPpzcb4Uw7KH0ea82VOtoz+U03yMpTwbNMYAA"
+    },
+    "/launcher/pajama-sam-3-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/8a6712ad82abdfc3b03e878cefd1c7c55f0464256f30bba7f3a8adbdfa21762f/pajama-sam-3-2026-11-20-portrait-cover.webp",
+      "sha256": "8a6712ad82abdfc3b03e878cefd1c7c55f0464256f30bba7f3a8adbdfa21762f",
+      "bytes": 91174,
+      "contentType": "image/webp",
+      "width": 618,
+      "height": 824,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAABQAgCdASoJAAwAAsBIJbACdH8GJ/gY9MySpwAA/mWT3V5lDGsg+mYZ5txshGVh/ZiXZvfkDcEPdbWVf88v1yjNwnnFqS/6RUzRrfFODc1Zdruy3vKddYZq5gSK3XH+EEgAAA=="
+    },
+    "/launcher/responsive/arthurs-teacher-trouble-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/e9a7ef0584e2031192453924ae965056abadf29495ae611497148d38fa027d00/arthurs-teacher-trouble-2026-11-20-portrait-cover-320.webp",
+      "sha256": "e9a7ef0584e2031192453924ae965056abadf29495ae611497148d38fa027d00",
+      "bytes": 32748,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/arthurs-teacher-trouble-2026-11-20-portrait-cover-640.webp": {
+      "key": "artwork/88ee0666b344817f1c05355212eafa9c298a758652539346dc1d353162fcb276/arthurs-teacher-trouble-2026-11-20-portrait-cover-640.webp",
+      "sha256": "88ee0666b344817f1c05355212eafa9c298a758652539346dc1d353162fcb276",
+      "bytes": 77854,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/backyard-football-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/d0e971e25375027e6d9205f161c2b2fddd14af7b0ff0503fc3bd95b925d9abf2/backyard-football-2026-11-20-portrait-cover-320.webp",
+      "sha256": "d0e971e25375027e6d9205f161c2b2fddd14af7b0ff0503fc3bd95b925d9abf2",
+      "bytes": 23154,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/big-thinkers-1st-grade-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/b687892dc6ab7ab745b7589b169ed9b52a3a236460754795bd4e8ec8c67512bc/big-thinkers-1st-grade-2026-11-20-portrait-cover-320.webp",
+      "sha256": "b687892dc6ab7ab745b7589b169ed9b52a3a236460754795bd4e8ec8c67512bc",
+      "bytes": 22020,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/big-thinkers-1st-grade-2026-11-20-portrait-cover-640.webp": {
+      "key": "artwork/2f83e39331f00c14b72e11c917a29e3fd5f39a5e0f49b28b34f96f15d58ef840/big-thinkers-1st-grade-2026-11-20-portrait-cover-640.webp",
+      "sha256": "2f83e39331f00c14b72e11c917a29e3fd5f39a5e0f49b28b34f96f15d58ef840",
+      "bytes": 49160,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/blues-abc-time-activities-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/878df48b4eac64a9f62774edf8840c4afbab183cfda5332b17a7cc960226e0a7/blues-abc-time-activities-2026-11-20-portrait-cover-320.webp",
+      "sha256": "878df48b4eac64a9f62774edf8840c4afbab183cfda5332b17a7cc960226e0a7",
+      "bytes": 16574,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/blues-abc-time-activities-2026-11-20-portrait-cover-640.webp": {
+      "key": "artwork/f045a355e1271f70aa2c7b17fcc94da304e0c8211da40194f6b925f2ad6f56f7/blues-abc-time-activities-2026-11-20-portrait-cover-640.webp",
+      "sha256": "f045a355e1271f70aa2c7b17fcc94da304e0c8211da40194f6b925f2ad6f56f7",
+      "bytes": 36706,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/blues-birthday-adventure-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/9a210f6331d4f1d44e0ea3abda0318dc1fb583222e58f872bff3c40477de814c/blues-birthday-adventure-2026-11-20-portrait-cover-320.webp",
+      "sha256": "9a210f6331d4f1d44e0ea3abda0318dc1fb583222e58f872bff3c40477de814c",
+      "bytes": 21396,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/fatty-bears-birthday-surprise-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/3e9e2f34a8e177a24c96f5c2c6f8195a10e7e55777972dfffe7b504026094d74/fatty-bears-birthday-surprise-2026-11-20-portrait-cover-320.webp",
+      "sha256": "3e9e2f34a8e177a24c96f5c2c6f8195a10e7e55777972dfffe7b504026094d74",
+      "bytes": 20176,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/just-grandma-and-me-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/2d0ac6314e9c9996a45e7a0e6a9b2eb85ae33f4004509e7bd908f5d9eefefc7d/just-grandma-and-me-2026-11-20-portrait-cover-320.webp",
+      "sha256": "2d0ac6314e9c9996a45e7a0e6a9b2eb85ae33f4004509e7bd908f5d9eefefc7d",
+      "bytes": 25124,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/myst-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/1ebe8b4181c048d8fa07b624ca6c813707ec12ff732d250fc169388be08f1dd7/myst-2026-11-20-portrait-cover-320.webp",
+      "sha256": "1ebe8b4181c048d8fa07b624ca6c813707ec12ff732d250fc169388be08f1dd7",
+      "bytes": 16408,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/myst-2026-11-20-portrait-cover-640.webp": {
+      "key": "artwork/c6f6a80f24c650dbce24f70ea0d8f4e47addac46b3e8a669bb18cc4d7d912e45/myst-2026-11-20-portrait-cover-640.webp",
+      "sha256": "c6f6a80f24c650dbce24f70ea0d8f4e47addac46b3e8a669bb18cc4d7d912e45",
+      "bytes": 42490,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 853
+    },
+    "/launcher/responsive/pajama-sam-3-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/bad06bdf6a512d039ad0b0cfac1e16d8f847bb09ed9864672628440ad8d405d4/pajama-sam-3-2026-11-20-portrait-cover-320.webp",
+      "sha256": "bad06bdf6a512d039ad0b0cfac1e16d8f847bb09ed9864672628440ad8d405d4",
+      "bytes": 33984,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/spy-fox-in-dry-cereal-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/1db992cf8bdac89641a3d4917b91daa39d422af6f8ea97fb2d67fba598571cf8/spy-fox-in-dry-cereal-2026-11-20-portrait-cover-320.webp",
+      "sha256": "1db992cf8bdac89641a3d4917b91daa39d422af6f8ea97fb2d67fba598571cf8",
+      "bytes": 21600,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/the-new-kid-on-the-block-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/d3253b3f59e27b47118ad0a94a5650e21cf6bf8f73320d6a1375b6e7fc816121/the-new-kid-on-the-block-2026-11-20-portrait-cover-320.webp",
+      "sha256": "d3253b3f59e27b47118ad0a94a5650e21cf6bf8f73320d6a1375b6e7fc816121",
+      "bytes": 18078,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/responsive/tony-tough-2026-11-20-portrait-cover-320.webp": {
+      "key": "artwork/3725b106ddcf3ee9fa1453401696418b4abccbd55bd0494a7e34efd516c95be8/tony-tough-2026-11-20-portrait-cover-320.webp",
+      "sha256": "3725b106ddcf3ee9fa1453401696418b4abccbd55bd0494a7e34efd516c95be8",
+      "bytes": 19892,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 427
+    },
+    "/launcher/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/460856a2d767f36a3f65cffb2b0fa29d194129c7e2beab5d7980f96185b9ea70/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp",
+      "sha256": "460856a2d767f36a3f65cffb2b0fa29d194129c7e2beab5d7980f96185b9ea70",
+      "bytes": 51656,
+      "contentType": "image/webp",
+      "width": 624,
+      "height": 832,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoJAAwAAsBIJbACdAYt9a1MS29FAADMdZTRwogs09dCihkN3VAqUneE7XpelbDqB1AU8dl/g7B3ugJecH20zGR6XsqleqpZ3DMF4C0kYqqMNgQxAmn+E9I8XAAAAA=="
+    },
+    "/launcher/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/25e86eb4ec65ca772266ac98d82ba10265f352f1f86e5c7da1f790a256dde4df/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp",
+      "sha256": "25e86eb4ec65ca772266ac98d82ba10265f352f1f86e5c7da1f790a256dde4df",
+      "bytes": 42472,
+      "contentType": "image/webp",
+      "width": 528,
+      "height": 704,
+      "placeholder": "UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoJAAwAAsBIJZgCdAELKd1UQAD+wEo/R/5ep3Z5Z6oAq54+djCHwTftwVpw6HegG/Uxf0CIkEjbZo4ZE+2ppSa/eAAAAA=="
+    },
+    "/launcher/tony-tough-2026-11-20-portrait-cover.webp": {
+      "key": "artwork/08d0961031824ea3a759755b5bbaea00d70627e77f0b88a63f30a2689f802f45/tony-tough-2026-11-20-portrait-cover.webp",
+      "sha256": "08d0961031824ea3a759755b5bbaea00d70627e77f0b88a63f30a2689f802f45",
+      "bytes": 46360,
+      "contentType": "image/webp",
+      "width": 555,
+      "height": 740,
+      "placeholder": "UklGRloAAABXRUJQVlA4IE4AAAAwAgCdASoJAAwAAsBIJYwCdIExGZU6kqMnAAD+6iw632mjGy8NyCvzogUKOpTwiICPy46NZ4n3yBzqn1KgAD4qjt+xYC/+w/nnjRGgAAA="
     }
   },
   "images": {
@@ -54606,6 +54842,130 @@
         "/launcher/responsive/mage-initiation-shot-3-320.webp",
         "/launcher/responsive/mage-initiation-shot-3-480.webp",
         "/launcher/mage-initiation-shot-3.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/blues-birthday-adventure-2026-11-20-portrait-cover.webp": {
+      "width": 399,
+      "height": 532,
+      "fallback": "/launcher/blues-birthday-adventure-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/blues-birthday-adventure-2026-11-20-portrait-cover-320.webp",
+        "/launcher/blues-birthday-adventure-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp": {
+      "width": 648,
+      "height": 864,
+      "fallback": "/launcher/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/big-thinkers-1st-grade-2026-11-20-portrait-cover-320.webp",
+        "/launcher/responsive/big-thinkers-1st-grade-2026-11-20-portrait-cover-640.webp",
+        "/launcher/big-thinkers-1st-grade-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp": {
+      "width": 528,
+      "height": 704,
+      "fallback": "/launcher/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/the-new-kid-on-the-block-2026-11-20-portrait-cover-320.webp",
+        "/launcher/the-new-kid-on-the-block-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp": {
+      "width": 627,
+      "height": 836,
+      "fallback": "/launcher/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/fatty-bears-birthday-surprise-2026-11-20-portrait-cover-320.webp",
+        "/launcher/fatty-bears-birthday-surprise-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/blues-abc-time-activities-2026-11-20-portrait-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/blues-abc-time-activities-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/blues-abc-time-activities-2026-11-20-portrait-cover-320.webp",
+        "/launcher/responsive/blues-abc-time-activities-2026-11-20-portrait-cover-640.webp",
+        "/launcher/blues-abc-time-activities-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/pajama-sam-3-2026-11-20-portrait-cover.webp": {
+      "width": 618,
+      "height": 824,
+      "fallback": "/launcher/pajama-sam-3-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/pajama-sam-3-2026-11-20-portrait-cover-320.webp",
+        "/launcher/pajama-sam-3-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/just-grandma-and-me-2026-11-20-portrait-cover.webp": {
+      "width": 540,
+      "height": 720,
+      "fallback": "/launcher/just-grandma-and-me-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/just-grandma-and-me-2026-11-20-portrait-cover-320.webp",
+        "/launcher/just-grandma-and-me-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp": {
+      "width": 810,
+      "height": 1080,
+      "fallback": "/launcher/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/arthurs-teacher-trouble-2026-11-20-portrait-cover-320.webp",
+        "/launcher/responsive/arthurs-teacher-trouble-2026-11-20-portrait-cover-640.webp",
+        "/launcher/arthurs-teacher-trouble-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/myst-2026-11-20-portrait-cover.webp": {
+      "width": 900,
+      "height": 1200,
+      "fallback": "/launcher/myst-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/myst-2026-11-20-portrait-cover-320.webp",
+        "/launcher/responsive/myst-2026-11-20-portrait-cover-640.webp",
+        "/launcher/myst-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/backyard-football-2026-11-20-portrait-cover.webp": {
+      "width": 600,
+      "height": 800,
+      "fallback": "/launcher/backyard-football-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/backyard-football-2026-11-20-portrait-cover-320.webp",
+        "/launcher/backyard-football-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp": {
+      "width": 624,
+      "height": 832,
+      "fallback": "/launcher/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/spy-fox-in-dry-cereal-2026-11-20-portrait-cover-320.webp",
+        "/launcher/spy-fox-in-dry-cereal-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/tony-tough-2026-11-20-portrait-cover.webp": {
+      "width": 555,
+      "height": 740,
+      "fallback": "/launcher/tony-tough-2026-11-20-portrait-cover.webp",
+      "webp": [
+        "/launcher/responsive/tony-tough-2026-11-20-portrait-cover-320.webp",
+        "/launcher/tony-tough-2026-11-20-portrait-cover.webp"
       ],
       "avif": []
     }
