@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { LoaderCircle, Settings, X } from "lucide-react";
 
 function SettingsSpinner({ className, size, children }) {
@@ -19,14 +19,28 @@ export default function SettingsPanel(props) {
   const [SettingsContent, setSettingsContent] = useState(null);
   const [loadFailed, setLoadFailed] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!open) return;
     const panel = dialog.current;
+    const button = trigger.current;
+    const actions = button.parentElement;
+
+    function alignCloseButton() {
+      const { left, width } = button.getBoundingClientRect();
+      const { top, height } = actions.getBoundingClientRect();
+      // offsetLeft and offsetWidth use the drawer's resting position during its slide.
+      panel.style.setProperty("--settings-close-center-right", `${panel.offsetLeft + panel.offsetWidth - left - width / 2}px`);
+      panel.style.setProperty("--settings-close-center-top", `${top + height / 2}px`);
+    }
+
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     panel.showModal();
+    alignCloseButton();
+    window.addEventListener("resize", alignCloseButton);
     panel.querySelector(".settings-close")?.focus({ preventScroll: true });
     return () => {
+      window.removeEventListener("resize", alignCloseButton);
       panel.close();
       document.body.style.overflow = overflow;
       trigger.current?.focus({ preventScroll: true });
