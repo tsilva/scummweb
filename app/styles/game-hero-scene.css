@@ -2,6 +2,11 @@ html:has(.game-route-boot-overlay.is-visible) {
   scrollbar-gutter: stable;
 }
 
+.game-hero-scene,
+.dashboard-nav-home {
+  --hero-controls-inset: max(1rem, env(safe-area-inset-right));
+}
+
 .game-hero-scene {
   --scene-gutter: clamp(1.25rem, 3.5vw, 4rem);
   --scene-accent: #f6e08a;
@@ -214,7 +219,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   gap: 1rem;
   min-height: 4.25rem;
   padding-inline: max(var(--toolbar-gutter), env(safe-area-inset-left))
-    max(1rem, env(safe-area-inset-right));
+    var(--hero-controls-inset);
   background: transparent;
   backdrop-filter: none;
   pointer-events: none;
