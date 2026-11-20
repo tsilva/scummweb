@@ -4,9 +4,9 @@ const revisionPattern = /^[a-f0-9]{9,}$/;
 const retryAfter = new Map();
 const retryMessage = "Dropbox is limiting save requests. Sync will retry automatically.";
 
-// Reads use the active native session. Dropbox returns the exact revision and
-// byte count for the response, independently of the most recent folder listing.
-export async function downloadDropboxSave({ name, revision, size, accountId, token, signal, onProgress, onRevision, progress }) {
+// The native listing can round file sizes. Verify the revision against the
+// listing and the byte count against Dropbox's download response.
+export async function downloadDropboxSave({ name, revision, accountId, token, signal, onProgress, onRevision, progress }) {
   if (!/^[a-f0-9]{64}\.zip$/.test(name)) throw new DropboxError("Invalid cloud snapshot name.", "integrity");
   if (Date.now() < (retryAfter.get(accountId) ?? 0)) throw new DropboxError(retryMessage);
   const transfer = new AbortController();
@@ -43,7 +43,7 @@ export async function downloadDropboxSave({ name, revision, size, accountId, tok
       await response.body?.cancel();
       throw new DropboxError("Dropbox returned invalid save metadata.");
     }
-    if (revision && (metadata.rev !== revision || size !== undefined && metadata.size !== size)) {
+    if (revision && metadata.rev !== revision) {
       await response.body?.cancel();
       throw new DropboxError("Cloud saves changed during sync. Checking them again shortly.", "changed");
     }

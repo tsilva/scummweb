@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { connectionKey, sessionKey } from "../app/dropbox/client.mjs";
+import { connectionKey, maxBackupBytes, sessionKey } from "../app/dropbox/client.mjs";
 import { createNativeCloudClient } from "../app/cloud/native-client.mjs";
 import { activityCacheKey } from "../app/game-player/activity.mjs";
 import { saveGameSources } from "../app/game-sources.mjs";
@@ -57,6 +57,41 @@ test("the native bridge lists more than 10,000 archived saves without downloadin
     assert.equal(names.length, 10001);
     assert.deepEqual(names, [...server.files.keys()]);
     assert.equal(server.uploads, 0);
+  } finally { transport.close(); }
+});
+
+test("Dropbox verifies downloaded bytes when the native listing rounds their size", async (t) => {
+  const { server } = await setup(t, null);
+  const name = `${"a".repeat(64)}.zip`;
+  const body = new Blob([new Uint8Array(1_474_402)]);
+  const listed = body.slice();
+  Object.defineProperty(listed, "size", { value: 1_474_400 });
+  server.files.set(name, listed);
+  const revision = "123456789";
+  server.revision = () => revision;
+  await syncStore.put({ id: "native/dropbox/" + account, config: "[cloud]\nstorage_Dropbox_access_token=synthetic\n" });
+  let responseRevision = revision;
+  let responseBody = body;
+  let responseSize = body.size;
+  globalThis.fetch = async () => new Response(responseBody, {
+    headers: { "Dropbox-API-Result": JSON.stringify({ name, rev: responseRevision, size: responseSize }) },
+  });
+
+  const transport = await createNativeCloudClient({ accountId: account });
+  try {
+    await transport.list();
+    assert.equal(transport.size(name), 1_474_400);
+    assert.equal((await transport.download(name)).size, body.size);
+
+    responseRevision = "abcdef012";
+    await assert.rejects(transport.download(name), { kind: "changed" });
+
+    responseRevision = revision;
+    responseBody = body.slice(0, body.size - 1);
+    await assert.rejects(transport.download(name), /incomplete save download/);
+
+    responseSize = maxBackupBytes + 1;
+    await assert.rejects(transport.download(name), /invalid save metadata/);
   } finally { transport.close(); }
 });
 

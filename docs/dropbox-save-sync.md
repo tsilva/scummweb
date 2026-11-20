@@ -273,7 +273,9 @@ using **Saved games**. Each save archive retains the 64 MiB limit. ScummWEB
 keeps the entire Dropbox history and caches verified snapshot metadata by
 Dropbox revision. A new browser can verify up to four small listed snapshots
 at once. Later checks reuse verified metadata and download save bytes when
-needed for a restore or merge. Fresh listings detect new, changed and missing
+needed for a restore or merge. Dropbox's download response provides the exact
+byte count for validation and size limits. The native listing can round sizes,
+so they only guide download scheduling. Fresh listings detect new, changed and missing
 snapshots. One refresh covers a batch of independent uploads before
 reconciliation, and a final fresh check fences the completed pass. Conflicting
 histories are verified and reconciled before local activation. New cloud

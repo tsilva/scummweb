@@ -124,14 +124,10 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
     revision: (name) => entries.get(name)?.revision,
     size: (name) => entries.get(name)?.size,
     async download(name, { onProgress, onRevision } = {}) {
-      const size = entries.get(name)?.size;
-      if (size !== undefined && (!Number.isSafeInteger(size) || size < 0 || size > maxBackupBytes)) {
-        throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
-      }
       const token = provider === "dropbox" && accessToken();
       if (token) {
         try {
-          return await downloadDropboxSave({ name, revision: entries.get(name)?.revision, size, token, accountId,
+          return await downloadDropboxSave({ name, revision: entries.get(name)?.revision, token, accountId,
             signal, onProgress, onRevision, progress });
         } catch (error) {
           if (error.kind === "expired" && refreshAfter !== 0) {
@@ -141,6 +137,10 @@ export async function createNativeCloudClient({ provider = "dropbox", accountId,
           }
           throw error;
         }
+      }
+      const size = entries.get(name)?.size;
+      if (size !== undefined && (!Number.isSafeInteger(size) || size < 0 || size > maxBackupBytes)) {
+        throw new DropboxError("A cloud snapshot exceeds the save limit.", "integrity");
       }
       const result = await request("download", { name, size }, onProgress);
       if (!(result.bytes instanceof Uint8Array) || result.bytes.length > maxBackupBytes) throw new DropboxError("Invalid cloud snapshot.", "integrity");
