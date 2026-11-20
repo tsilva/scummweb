@@ -267,6 +267,12 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - Return to Zork and Woodruff delegate restoration to their original scripts.
   Match the callback bytes before offering runtime checkpoints. Check the
   rendered scene and restored native variables after the script returns.
+- Goblins Quest 3 commits a DOS native slot after its thumbnail is written.
+  Run the original save callback through that write, rebuild the native slot
+  index before replacing a name, and invalidate the cached reader after
+  overwriting a slot. Route restore through the original scene exit and
+  restart. Match the bytecode length used by the interpreter. Test both
+  directions between the original menu and player menu.
 
 - Late SCI uses numbered maps. Preserve the full legacy `resource.map` digest
   and hash the ordered map manifest for numbered volumes. Include only maps

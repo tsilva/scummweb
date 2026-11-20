@@ -4916,7 +4916,7 @@
       "status": "startup-verified",
       "gameId": "gob:gob3",
       "edition": "Official English DOS interactive demo 3 v0.02 (gob3-dos-demo-en.zip)",
-      "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. This demo does not offer saving through the game menu."
+      "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. Save and Load in the ScummWEB Game Menu use the original save slots on the ship."
     },
     {
       "title": "Gabriel Knight: Sins of the Fathers (Demo)",

@@ -1658,6 +1658,22 @@
         "Rebuild the full native runtime and validate the complete patch series, bundle provenance and intro/player regression suite."
       ],
       "retire_when": "Upstream provides equivalent edition-scoped native intro controls and first-choice boundaries for both games."
+    },
+    {
+      "path": "patches/scummvm/99zzzz-gob3-demo-player-saves.patch",
+      "status": "active",
+      "sha256": "52c3ead3b016c1a9132df0605cd2e8c6695aff44743f1b08e6f350c75c870beb",
+      "purpose": "Expose Goblins Quest 3 English DOS Interactive Demo 3 v0.02 saves and restores to the ScummWEB player.",
+      "invariants": [
+        "Match the original ship input and menu callbacks before accepting a request. Use the native slot catalog, scene snapshot, thumbnail and deferred scene reload.",
+        "Read existing native slots, reserve slot zero from new overlay saves, preserve neighboring saves, and invalidate a cached reader when its slot is overwritten.",
+        "Keep Woodruff persistence and unsupported Gob releases on their existing routes."
+      ],
+      "verification": [
+        "In Brave, create a named native save and use the overlay to load it after reload. Save a changed ship position from the overlay and load it from both menus.",
+        "Check the title, original modal and moving character reject overlay saves. Confirm the rebuilt Gob plugin and patch ledger validate."
+      ],
+      "retire_when": "ScummVM provides equivalent demo-scoped runtime save and load support for existing Goblins 3 slots."
     }
   ]
 }

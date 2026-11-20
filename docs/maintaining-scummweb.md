@@ -350,8 +350,9 @@ intro action and retains its original character controls; saving through the
 ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
 demo starts at its original clickable title and uses British English (`gb`) for
 exact engine detection; it also has no saving through the ScummWEB game menu.
-Goblins Quest 3’s English interactive demo likewise starts from a clickable title
-and enters its ship scene directly, with no intro checkpoint or menu saving.
+Goblins Quest 3’s English DOS interactive demo starts from its original clickable
+title. Once the ship accepts input, the ScummWEB Game Menu can save and load the
+game’s original slots.
 
 Gabriel Knight’s Day One demo retains its original Intro/Play menu. Choose Play
 to enter the bookshop; native saves and restore are supported.

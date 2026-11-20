@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-20T12:28:09.151027Z",
+  "generated_at_utc": "2026-11-20T17:06:44.202838Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,9 +8,9 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "ea1f63a6ab2b7ed5fc1bd43d5a059afc67319b7fc2282a2871f7dc80c739d427",
+    "archive_sha256": "3618a74a223b3099ccb62402b7e16dffc11cda54955f3ec17f51701c64bcb50b",
     "runtime_sha256": {
-      "scummvm.wasm": "ff459ff5511b20f382f05bd06123338d65ef3ed175119bf8de74c9188d778c89",
+      "scummvm.wasm": "c186bd9827ebe192dd9e7a5baa7abcbccc0b726f01b91c44449bddc037162122",
       "scummvm.js": "f6fd21f98c48dd25c4a44154b34e70ab40fecb95ab9e09d3585b3361cb6e6899",
       "data/plugins/libaccess.so": "1f094a7e9d6b686c3dd58f900ab8b348b995c008a994c1d285952a7d7d49b182",
       "data/plugins/libadl.so": "82b18d9b3a8c589fbbd74a3a62ca31e34ff83142d5d6c79cb331ecdbe317c803",
@@ -29,7 +29,7 @@
       "data/plugins/libfreescape.so": "5188f09bb8cce3c5c4ef2246486007d915bb766416be0ecf90c71cddbf9e6600",
       "data/plugins/libglk.so": "43e5d20d41ec33618bfef5c51b8f4d64e259f3a8cc3dd5fd875b2e764c8d7c35",
       "data/plugins/libgnap.so": "20ab39251131b98b0fc0a0e9e54c27a6c7302a734f523e3561a57bcf3b97be61",
-      "data/plugins/libgob.so": "53f4860cb43007123ce7f3e7fb0b3843e827e45bce59776630494d1c4f78a790",
+      "data/plugins/libgob.so": "f2164fb7f2f326c5880197349a142e65ccc108752b8e1d3a7c3f76f6bc652187",
       "data/plugins/libgot.so": "2ccee756f5afe32a5bec0c4ce3ac010bc193bd54ee2582de3fdb305f22bd4243",
       "data/plugins/libgrim.so": "2b3713906a76e4c8896a38ca23a58ebc848593edb7db5eadbb19c64b7e11b908",
       "data/plugins/libgroovie.so": "ea25d11de88140387c57d7c108bc38add8038e33b0145ac18c418106dea15c7b",
