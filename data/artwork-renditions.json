@@ -94,9 +94,10 @@
   },
   "/launcher/retro-agi-bc-poster.webp": {
     "width": 540,
-    "height": 720,
+    "height": 690,
     "widths": [
-      320
+      320,
+      480
     ]
   },
   "/launcher/retro-agi-goldrush-poster.webp": {
@@ -549,9 +550,10 @@
   },
   "/launcher/retro-plumbers-plumbers-poster.webp": {
     "width": 540,
-    "height": 720,
+    "height": 441,
     "widths": [
-      320
+      320,
+      480
     ]
   },
   "/launcher/retro-saga-ihnm-poster.webp": {
@@ -1489,7 +1491,7 @@
   },
   "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 924,
     "widths": [
       320,
       480,
@@ -1534,7 +1536,7 @@
   },
   "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1004,
     "widths": [
       320,
       480,
@@ -1552,7 +1554,7 @@
   },
   "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 863,
     "widths": [
       320,
       480,
@@ -1732,7 +1734,7 @@
   },
   "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 926,
     "widths": [
       320,
       480,
@@ -2002,7 +2004,7 @@
   },
   "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 900,
     "widths": [
       320,
       480,
@@ -2119,7 +2121,7 @@
   },
   "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1038,
     "widths": [
       320,
       480,
@@ -2443,7 +2445,7 @@
   },
   "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 896,
     "widths": [
       320,
       480,
@@ -2518,9 +2520,10 @@
   },
   "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1123,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2582,9 +2585,10 @@
   },
   "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 888,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2614,17 +2618,19 @@
   },
   "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 950,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1112,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2638,9 +2644,10 @@
   },
   "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 897,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2678,17 +2685,19 @@
   },
   "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 932,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1014,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2702,17 +2711,19 @@
   },
   "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 887,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1127,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2758,9 +2769,10 @@
   },
   "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1008,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2774,25 +2786,28 @@
   },
   "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 998,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1033,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1008,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2846,9 +2861,10 @@
   },
   "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1031,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2878,17 +2894,19 @@
   },
   "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 976,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1038,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2902,9 +2920,10 @@
   },
   "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1083,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2926,9 +2945,10 @@
   },
   "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1014,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2958,17 +2978,19 @@
   },
   "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 1072,
     "widths": [
       320,
+      480,
       640
     ]
   },
   "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 888,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -2990,9 +3012,10 @@
   },
   "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 852,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -3070,9 +3093,10 @@
   },
   "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 952,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -3110,9 +3134,10 @@
   },
   "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 900,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -3174,9 +3199,10 @@
   },
   "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp": {
     "width": 900,
-    "height": 1200,
+    "height": 924,
     "widths": [
       320,
+      480,
       640
     ]
   },

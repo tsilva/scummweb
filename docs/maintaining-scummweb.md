@@ -132,9 +132,9 @@ each axis to preserve symmetric spacing around cutouts.
   Game Speed starts at 1.0× and ranges from 0.5× to 2× in 0.1× steps.
   Subtitles start enabled with speech each launch.
   Games with optional subtitles show a **Subtitles** switch;
-  changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
-  **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
-  immediately removes the toolbar and touch controls while navigation completes.
+  changes apply to the running game for the current session. **Resume Game**
+  returns focus to the game. **Exit game** in the menu or toolbar immediately
+  hides the controls and returns to the game page or library.
 - **Save Game** writes to the next unused manual slot for the selected edition.
   After a successful save, the button stays disabled and reads **Saved** until
   the player closes the menu. When all slots are in use, the player can
@@ -936,6 +936,8 @@ illustrated compositions. The game mappings retain source credits and
 `heroImageMobilePosition` can adjust the narrow-screen crop.
 Demos and full versions share the same hero and box art; keep demo labels and
 edition-specific gameplay captures separate from those shared images.
+Card covers and their loading previews align to the top of the card and retain
+the proportions of the box front. Trim added padding at the artwork boundary.
 Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
 The hero slideshow uses the catalogue's Featured order, including imported games
 and demos, regardless of the catalogue's current sort or genre filter.

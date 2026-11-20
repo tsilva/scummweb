@@ -1300,11 +1300,13 @@ button.nav-icon-link {
 
 .poster-media-image {
   --artwork-fit: contain;
+  --artwork-position: center top;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: var(--artwork-fit);
+  object-position: var(--artwork-position);
   filter: grayscale(1) brightness(0.94) contrast(1.02) saturate(0.82);
   transition:
     filter 320ms ease,

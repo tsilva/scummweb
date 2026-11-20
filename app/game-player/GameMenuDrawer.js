@@ -2,6 +2,7 @@ import { ArrowLeft, Bug, Check, ChevronRight, FolderOpen, LoaderCircle, Save, X 
 import { useEffect, useRef, useState } from "react";
 import GameBackupSaves from "./GameBackupSaves";
 import GameBugReport from "./GameBugReport";
+import { GAME_EXIT_LABEL } from "./GameExitButton";
 
 const defaultSettings = { volume: 100, speed: 1, subtitles: true, canToggleSubtitles: false, saves: [] };
 const formatDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -208,7 +209,7 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
           </div>
           <div className="game-menu-session-actions">
             <button className="game-menu-primary" disabled={busy} onClick={() => dialogRef.current.close()} type="button">Resume Game</button>
-            <button className="game-menu-outlined" disabled={busy} onClick={onExit} type="button">Quit Game</button>
+            <button className="game-menu-outlined" disabled={busy} onClick={onExit} type="button">{GAME_EXIT_LABEL}</button>
             <button className="game-menu-outlined game-menu-report" disabled={busy} onClick={() => go("report")} type="button">
               <Bug aria-hidden="true" size={22} /><span>Report a bug</span><ChevronRight aria-hidden="true" size={19} />
             </button>

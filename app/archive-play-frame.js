@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
 import { prepareRemoteGameArchive } from "./remote-game-archive.mjs";
 import { GAME_LOADING_STATUS, gameLoadingStatus } from "./game-loading-status.mjs";
 import GameRouteFrame from "./game-route-frame";
 import GameBootOverlay from "./game-player/GameBootOverlay";
+import GameExitButton from "./game-player/GameExitButton";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { buildZipGamePlayerUrl } from "./home-shell/zip-game-player";
 import { buildGameExitHref } from "./home-shell/hero-selection.mjs";
@@ -72,9 +72,7 @@ export function RemoteArchivePlayer({ zip, catalog = noRecognizedGames }) {
     <div className="game-route-shell">
       <div className="game-route-controls">
         <div className="game-route-control-group is-left">
-          <a className="game-route-control-button is-exit" href="/" aria-label="Exit game" title="Exit game">
-            <LogOut aria-hidden="true" size={17} strokeWidth={2} />
-          </a>
+          <GameExitButton href="/" />
         </div>
       </div>
       <GameBootOverlay

@@ -42,7 +42,7 @@ const SCUMMWEB_FRAME_MESSAGE_SOURCE = "scummweb";
 const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
-const ARCHIVE_BOOT_TIMEOUT_MESSAGE = "ScummVM took too long to start. Exit the player and try again.";
+const ARCHIVE_BOOT_TIMEOUT_MESSAGE = "ScummVM took too long to start. Select Exit game and try again.";
 const BOOT_ERROR_MESSAGES = new Map([
   ["script-load", "Could not load a player script"],
   ["script-error", "Player JavaScript error"],
@@ -435,7 +435,7 @@ export default function GameRouteFrame({
         setArchiveFrameDocument(shell.replace("<head>", `<head><base href="${baseHref}">`));
         setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
       } catch {
-        if (needsRetry()) setArchiveError("Could not load ScummVM. Exit the player and try again.");
+        if (needsRetry()) setArchiveError("Could not load ScummVM. Select Exit game and try again.");
       }
     }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
 
@@ -480,7 +480,7 @@ export default function GameRouteFrame({
       } catch {
         archiveFiles.current = null;
         stopArchiveBootTimer();
-        setArchiveError("Could not prepare this version. Exit the player and try again.");
+        setArchiveError("Could not prepare this version. Select Exit game and try again.");
       }
     }
 

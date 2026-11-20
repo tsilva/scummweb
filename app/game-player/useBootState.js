@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { GAME_LOADING_STATUS } from "../game-loading-status.mjs";
 
 const GAME_MENU_REVEAL_DELAY_MS = 2500;
-const BOOT_ERROR_STATUS = "Could not start this game. Exit the player and try again.";
+const BOOT_ERROR_STATUS = "Could not start this game. Select Exit game and try again.";
 const BOOT_PHASE_PRIORITY = {
   idle: -1,
   pending: 0,

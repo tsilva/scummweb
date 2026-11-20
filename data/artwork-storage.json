@@ -657,12 +657,12 @@
       "height": 427
     },
     "/launcher/responsive/retro-agi-bc-poster-320.webp": {
-      "key": "artwork/fd5f939609550d6ed67398295bf963940bd05629b1d14bd641252d59ee1ef3fe/retro-agi-bc-poster-320.webp",
-      "sha256": "fd5f939609550d6ed67398295bf963940bd05629b1d14bd641252d59ee1ef3fe",
-      "bytes": 23594,
+      "key": "artwork/a8f7b6f257534837d595f98872ff1f1007a3beac74d4d5999fd2c5cb577e984c/retro-agi-bc-poster-320.webp",
+      "sha256": "a8f7b6f257534837d595f98872ff1f1007a3beac74d4d5999fd2c5cb577e984c",
+      "bytes": 25284,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 409
     },
     "/launcher/responsive/retro-agi-goldrush-poster-320.webp": {
       "key": "artwork/e1069333d9d287b12b7109fb2907870bb84b76520f56b6c8449d6e4bfc96866d/retro-agi-goldrush-poster-320.webp",
@@ -1177,12 +1177,12 @@
       "height": 427
     },
     "/launcher/responsive/retro-plumbers-plumbers-poster-320.webp": {
-      "key": "artwork/9c9cd4827ddb2347a929597610277457b00765f971e6b04d0e7758b775b7f247/retro-plumbers-plumbers-poster-320.webp",
-      "sha256": "9c9cd4827ddb2347a929597610277457b00765f971e6b04d0e7758b775b7f247",
-      "bytes": 13032,
+      "key": "artwork/2b7facad17b637b23dd85afd11f47fc56b6bfe284c3cfbaa0872ff042fd7c1ec/retro-plumbers-plumbers-poster-320.webp",
+      "sha256": "2b7facad17b637b23dd85afd11f47fc56b6bfe284c3cfbaa0872ff042fd7c1ec",
+      "bytes": 14068,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 261
     },
     "/launcher/responsive/retro-saga-ihnm-poster-320.webp": {
       "key": "artwork/1713b96216e1cd629b300473f0cfde983ce3778fa465b4c26fb028cfe8aa2e1e/retro-saga-ihnm-poster-320.webp",
@@ -1893,13 +1893,13 @@
       "placeholder": "UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoMAAkAAsBIJQBYdhuksfHDYAD++JXwlDl0E5k36d4L3zPc/Eozp1RFuXaJN+V5+jQBAcbtfUmtcKblKlhZwg6Y19JBaAAA"
     },
     "/launcher/retro-agi-bc-poster.webp": {
-      "key": "artwork/936786f30b392498291edb2456c01d8205318943ddbcc960c26ea9c3110f250e/retro-agi-bc-poster.webp",
-      "sha256": "936786f30b392498291edb2456c01d8205318943ddbcc960c26ea9c3110f250e",
-      "bytes": 73702,
+      "key": "artwork/8a26fced11aa8ef16b68ab0a319dcdd5491a2125331fa63b23eab9dac9b6a943/retro-agi-bc-poster.webp",
+      "sha256": "8a26fced11aa8ef16b68ab0a319dcdd5491a2125331fa63b23eab9dac9b6a943",
+      "bytes": 52550,
       "contentType": "image/webp",
       "width": 540,
-      "height": 720,
-      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAADQAQCdASoJAAwAAsBIJbACdAEU6gBg8AD+67w7YpATcnO/VmhMsYCCjLoS4k95EquLbePbkV0iRf+u13J5FACUwEaSteBrFQsvQhOs6ug7uQdCiuCIzgAA"
+      "height": 690,
+      "placeholder": "UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoJAAwAAsBIJbACdAELS78MyQAA/u5qwUJas0firORuHX60ABs2Jt5Tz2Sr5JkuR+zl/zY5P3jmggFGYTJnZ9mkSpOa+5+8tWQoVIC/QFjpDGwAAAA="
     },
     "/launcher/retro-agi-bc-shot-2.webp": {
       "key": "artwork/f4fd37766a9f02d4d5753fafe04546d85f5c59e71aeb1b1c8e785a16529d1c38/retro-agi-bc-shot-2.webp",
@@ -4215,13 +4215,13 @@
       "placeholder": "UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoMAAkAAsBIJZwAAu0eBHUYmAAA/vX5K8aF9zMW5Bvq9lAiHVacyF6TemMI9dQT/3CxjpeGaDU1jrjKXoF6IAUAAAA="
     },
     "/launcher/retro-plumbers-plumbers-poster.webp": {
-      "key": "artwork/d02aeceb335b461e27e2b4d2a3063d1f4aa403f1322beaaf2013dd1f1ec7d712/retro-plumbers-plumbers-poster.webp",
-      "sha256": "d02aeceb335b461e27e2b4d2a3063d1f4aa403f1322beaaf2013dd1f1ec7d712",
-      "bytes": 36590,
+      "key": "artwork/da937f39aa396eab513bbf77929fd44a601c2db89f8ac6c9b5f40b080d70a207/retro-plumbers-plumbers-poster.webp",
+      "sha256": "da937f39aa396eab513bbf77929fd44a601c2db89f8ac6c9b5f40b080d70a207",
+      "bytes": 26038,
       "contentType": "image/webp",
       "width": 540,
-      "height": 720,
-      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoJAAwAAsBIJYwCdAD0phDiBzxAAP717rytZfcaDYKdwEtqsd+uNmAJnenUNN+r7cRtKXxdfBJKZuveXdEgTYjHRFp1IP1zCGkAAA=="
+      "height": 441,
+      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoMAAoAAsBIJQBOgBtIGh/gAAD+7vMNO/vLsMa13nSAU2Ujvs6S01b3gs3JujXB/eEYKLe2yDCrB8bvbJUlltKq5PRgqTLd4tFCAA=="
     },
     "/launcher/retro-plumbers-plumbers-shot-2.webp": {
       "key": "artwork/4d39b3718a40c7c959e39d31b2c9ef12bbcd37cdef43106c53cc26a6a39763f6/retro-plumbers-plumbers-shot-2.webp",
@@ -7673,12 +7673,12 @@
       "height": 720
     },
     "/launcher/optimized/retro-plumbers-plumbers-poster.avif": {
-      "key": "artwork/afa8c86cd8294850a236814f34a93ffb1813b2ee6634a989c7ca8eaa3bed5a92/retro-plumbers-plumbers-poster.avif",
-      "sha256": "afa8c86cd8294850a236814f34a93ffb1813b2ee6634a989c7ca8eaa3bed5a92",
-      "bytes": 32342,
+      "key": "artwork/afeac9d339862d08423224ed951c40fa21eeffeb3500a12e886049fb3af5f28d/retro-plumbers-plumbers-poster.avif",
+      "sha256": "afeac9d339862d08423224ed951c40fa21eeffeb3500a12e886049fb3af5f28d",
+      "bytes": 22434,
       "contentType": "image/avif",
       "width": 540,
-      "height": 720
+      "height": 441
     },
     "/launcher/optimized/retro-sci-castlebrain-poster.avif": {
       "key": "artwork/c983f9d7d9d935ecc1cd5f0574af3e54603b6b2551e82a6c2b9c793690d28ed8/retro-sci-castlebrain-poster.avif",
@@ -8641,12 +8641,12 @@
       "height": 240
     },
     "/launcher/responsive/retro-agi-bc-poster-480.webp": {
-      "key": "artwork/36e010578d1b353d1046bc889af8e39ab23c460777f5f9ac797171ff69432e74/retro-agi-bc-poster-480.webp",
-      "sha256": "36e010578d1b353d1046bc889af8e39ab23c460777f5f9ac797171ff69432e74",
-      "bytes": 39892,
+      "key": "artwork/e66288a73d2d4503d134eb7a377db1d3fc2a059fc91f044332b9b2d2f686840c/retro-agi-bc-poster-480.webp",
+      "sha256": "e66288a73d2d4503d134eb7a377db1d3fc2a059fc91f044332b9b2d2f686840c",
+      "bytes": 44076,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 613
     },
     "/launcher/responsive/retro-agi-bc-shot-2-320.webp": {
       "key": "artwork/d7f537ce458e6da2eb4f6e7042f9d975c249277babf22401f7f9380d74100b80/retro-agi-bc-shot-2-320.webp",
@@ -11233,28 +11233,28 @@
       "height": 240
     },
     "/launcher/responsive/retro-plumbers-plumbers-poster-320.avif": {
-      "key": "artwork/5d68b244124ae2b672e3c355a55b603648131546617e7410e5eb3a61c6e2706f/retro-plumbers-plumbers-poster-320.avif",
-      "sha256": "5d68b244124ae2b672e3c355a55b603648131546617e7410e5eb3a61c6e2706f",
-      "bytes": 11090,
+      "key": "artwork/3ea4bf375a46aa4a2d77d1aaff5f3fe4231122f2a09de2dec4bdd3b5ab527b9f/retro-plumbers-plumbers-poster-320.avif",
+      "sha256": "3ea4bf375a46aa4a2d77d1aaff5f3fe4231122f2a09de2dec4bdd3b5ab527b9f",
+      "bytes": 11686,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 261
     },
     "/launcher/responsive/retro-plumbers-plumbers-poster-480.avif": {
-      "key": "artwork/bed6fbe7f184f87fa4c98f20a661416e1868efe24a9243d3fe39b2800667b668/retro-plumbers-plumbers-poster-480.avif",
-      "sha256": "bed6fbe7f184f87fa4c98f20a661416e1868efe24a9243d3fe39b2800667b668",
-      "bytes": 18438,
+      "key": "artwork/0dad53dcc655e26b6be303371e8a83f198802da4e724679b4e14528e732a1b32/retro-plumbers-plumbers-poster-480.avif",
+      "sha256": "0dad53dcc655e26b6be303371e8a83f198802da4e724679b4e14528e732a1b32",
+      "bytes": 19225,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 392
     },
     "/launcher/responsive/retro-plumbers-plumbers-poster-480.webp": {
-      "key": "artwork/627d24f68e9bb136c1e99bedc91706a50fb489e3299f630232eee0d20025c05c/retro-plumbers-plumbers-poster-480.webp",
-      "sha256": "627d24f68e9bb136c1e99bedc91706a50fb489e3299f630232eee0d20025c05c",
-      "bytes": 21330,
+      "key": "artwork/5e87d4daa49de6316711f36cc10f1d5b3c9ff869f9082ee5457c1a1e191d7ff1/retro-plumbers-plumbers-poster-480.webp",
+      "sha256": "5e87d4daa49de6316711f36cc10f1d5b3c9ff869f9082ee5457c1a1e191d7ff1",
+      "bytes": 23112,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 392
     },
     "/launcher/responsive/retro-plumbers-plumbers-shot-2-320.webp": {
       "key": "artwork/5311cd011979895e52615fb4d5dc6ac72fd3173a716a02d20c323ad2323fa22a/retro-plumbers-plumbers-shot-2-320.webp",
@@ -21857,13 +21857,13 @@
       "placeholder": "UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoJAAwAAsBIJQBOgBs3UwbDAAD+4No4cetuzjoh+XpSETI2FZnGn5aY9GvVMIuhoy5mXz6SPzOVGEOQi7HYj3aQEOIAAA=="
     },
     "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/18efa08a112cd6b752d135dd36199e422db30054b1929c856b3d5a02df821c40/gnap-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "18efa08a112cd6b752d135dd36199e422db30054b1929c856b3d5a02df821c40",
-      "bytes": 76188,
+      "key": "artwork/a7113d96ea92065343fbbad8386249738f44fe8b3725f23964479af89f515b64/gnap-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "a7113d96ea92065343fbbad8386249738f44fe8b3725f23964479af89f515b64",
+      "bytes": 75514,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoJAAwAAsBIJYwC7AEPEJ+uSUHAAP77CM9xR3y370L7x0drHDP/4Qg5PKbhZfWnJ/i4A8aA7DOpHOKlPfYds/sftdxti5Uj+5cOJ/Ba0EATYAAA"
+      "height": 1004,
+      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAAAQAgCdASoLAAwAAsBIJZAC7AEUoYqYWwDAAP76hRjRpJy5tZS9JW/m++2ZwM4+Pv79fEHXkvVJv59DZOM+mpdsg/exFAahfRhg+cR4Bd7dwSPBnMcjrTMuxSxkg0dkTjocHfzNvLmBoAAA"
     },
     "/launcher/gob1-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/f2657b4a3eed66c2eb0b675219d744b78171b6cec5ac111d0e1293f16a1464fb/gob1-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -22145,13 +22145,13 @@
       "placeholder": "UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoJAAwAAsBIJYgCdAD0k3/txoAA/vfIbPU/L8szhdVNpSQI3dgrhYSv+Fywlsu8p7N0q0XANmTlNIkrvza+Dg9FCPNRgcBE3t1SsAAA"
     },
     "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/9f63b367a3b42028df8ab91cb1fc3d2e9272a058cc5be7ce1f7bec0d8f51159c/lit-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "9f63b367a3b42028df8ab91cb1fc3d2e9272a058cc5be7ce1f7bec0d8f51159c",
-      "bytes": 118594,
+      "key": "artwork/885b0d74957a4a314649c7de17d24b6d6d2427694f3de81d43c85067e67fc27a/lit-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "885b0d74957a4a314649c7de17d24b6d6d2427694f3de81d43c85067e67fc27a",
+      "bytes": 120630,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAABQAgCdASoJAAwAAsBIJbACdEf/gep3RxzGjgAA/uZVeKGsUvhuSmVLnuNQTRMMywyOuexnyKsz7XSEFXGSM7NQHokTZfbGO+7j8/So7PPGrif12u+rODT6DwHY7RVOa+gAAA=="
+      "height": 926,
+      "placeholder": "UklGRnoAAABXRUJQVlA4IG4AAAAQAgCdASoMAAwAAsBIJbACdAYtVZxbG1wgAPj1ffLSmrEjzW92+2TzaY1Hv+aiqmnFV4YbSSkwtflU8KEq7RpiZXfrrW76S724I4tRcIHkP839eBlV6Mk201YbV/4IRMgyn0WV30f+f7u5Z+AAAA=="
     },
     "/launcher/littlered-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/0a7f129db898e418d6fbb8d76147ec3d9da1e9d079bde53d9596177f55fe224e/littlered-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -22280,13 +22280,13 @@
       "placeholder": "UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoJAAwAAsBIJbACdADdrMQsTgQA/tJm5E0HH73Rz/1Sk0rnTPmuzkbuaU1ovH0cDjeH4JTDiEZ19PcTeUGz5q1UYtcJsYj9IAA="
     },
     "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/921df510af6d7928743dec49b3c32d2a7c99a5373e7f6b0b1b1f774214b95252/myst-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "921df510af6d7928743dec49b3c32d2a7c99a5373e7f6b0b1b1f774214b95252",
-      "bytes": 135678,
+      "key": "artwork/bd09c83fe4edc29e9abc70a645caccdbb05a6d9adbe816a5364a843215cdba4f/myst-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "bd09c83fe4edc29e9abc70a645caccdbb05a6d9adbe816a5364a843215cdba4f",
+      "bytes": 137384,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRl4AAABXRUJQVlA4IFIAAADQAQCdASoJAAwAAsBIJQBOgCHcVVUQAAD45fiXX8zCUSbn/qUiww6Muy2bb+4PFax3oUx5C5SVDF2+p2FaFn94XFaMEqOuta0sB2KFUA0tKsAA"
+      "height": 1038,
+      "placeholder": "UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoKAAwAAsBIJQBOgMWvyZqpIjdGAAD+1zUZOklfNm0DbkxeBav+BcstYkwRvSchCi2MbraO44SqJw/FmMFkLa4AFg7RDYbQc903ytF5w2SmvO9Qq5xAAAAA"
     },
     "/launcher/nebular-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/6bbc643758597cea8046fee2302ef1b692ffd4e95400d60d7a3af360c3e4e2be/nebular-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -22406,13 +22406,13 @@
       "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoJAAwAAsBIJQBOgB57cYkDXwAA/vGBG1r/nXxQFbdbSUjfCF1tuHiBXWtoPm9sa8gZURNT3wlfPyfowsvVIzjaA+K+R2blssZiIez5m5MmwAAA"
     },
     "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/81dc7908b8b5d7fa79a70b66c64d4204e6ffc518d8abf992a20871390458ca4c/princess-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "81dc7908b8b5d7fa79a70b66c64d4204e6ffc518d8abf992a20871390458ca4c",
-      "bytes": 100468,
+      "key": "artwork/f2d0a8784551bc230b03e3ca89c71210ec2ebd29b6b3993827e7842cb72b0eda/princess-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "f2d0a8784551bc230b03e3ca89c71210ec2ebd29b6b3993827e7842cb72b0eda",
+      "bytes": 100810,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAADQAQCdASoJAAwAAsBIJbACdAEO91UbYAD+5srf6e267NNY/VSroBFp+Tl98wxPAz48UvJSozFYBueoxldfJtRrjSbx4ShuoDsI6/unvSxfjPEgkn+jJwcFNKvrgb1lNfXLUGDIMIcNAAAA"
+      "height": 863,
+      "placeholder": "UklGRpAAAABXRUJQVlA4IIQAAACQAgCdASoMAAwAAsBIJbACdH8D2KwZCcl33+zkQAD+rHUoF0C1SjopgTC0dtWXbIgn3UgbzzRqsMW0W7NCHcBx/vGM55A/O4OerRtqiT7t+ze5rax17IoI929zSO//Pve/7k8H9yjfCmLsquBoPBgfV2Zt2yp1c7zASW1rnuK2oZBMQAA="
     },
     "/launcher/qfg1-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/ab8f1c0ec4a31ab90859cbaede5297e927d68c1c14211c47f46bca16d824334b/qfg1-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -22924,20 +22924,20 @@
       "height": 853
     },
     "/launcher/responsive/gnap-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/0ada9573c9fffa95667fb7a194add841be209cc41334f5040686beacf1d194ae/gnap-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "0ada9573c9fffa95667fb7a194add841be209cc41334f5040686beacf1d194ae",
-      "bytes": 15142,
+      "key": "artwork/e9fe27f0f291d5e8a4cee14c90616a6782cbe337fdd7bc87b5d078b57f2db26c/gnap-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "e9fe27f0f291d5e8a4cee14c90616a6782cbe337fdd7bc87b5d078b57f2db26c",
+      "bytes": 16318,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 357
     },
     "/launcher/responsive/gnap-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/6146aa3c0536a80c201cc2f5f53c5bad7615bca9aadfef4680b490fd34491644/gnap-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "6146aa3c0536a80c201cc2f5f53c5bad7615bca9aadfef4680b490fd34491644",
-      "bytes": 40888,
+      "key": "artwork/5e84c97119ad609c04dd43d969869ad1ec7dad742e3ee036e5416c0a6b2585d0/gnap-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "5e84c97119ad609c04dd43d969869ad1ec7dad742e3ee036e5416c0a6b2585d0",
+      "bytes": 45748,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 714
     },
     "/launcher/responsive/gob1-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/59b73e7644854b51ec2fe19172eee0ef1bdb77360e5aa266e357c937be9eddd9/gob1-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -23436,20 +23436,20 @@
       "height": 853
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/8c5028dd508e85a26d58c1e8d1bf4d96f87e4f7e89e8953b268c797db957bd82/lit-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "8c5028dd508e85a26d58c1e8d1bf4d96f87e4f7e89e8953b268c797db957bd82",
-      "bytes": 19654,
+      "key": "artwork/6df15c3763defc0ca91e5d73e1f616286ba3dfc2bead998f45ffb8ca0aa3dad9/lit-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "6df15c3763defc0ca91e5d73e1f616286ba3dfc2bead998f45ffb8ca0aa3dad9",
+      "bytes": 21860,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 329
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/151fd187d5fdf189298bac949f825be52e1634d42222c41a64acaed05061a21e/lit-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "151fd187d5fdf189298bac949f825be52e1634d42222c41a64acaed05061a21e",
-      "bytes": 54236,
+      "key": "artwork/bb5bf5095523a7759737e0b6501d910021f2f566f9434c06099ba5369eb154d2/lit-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "bb5bf5095523a7759737e0b6501d910021f2f566f9434c06099ba5369eb154d2",
+      "bytes": 66894,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 658
     },
     "/launcher/responsive/littlered-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/8e6400b0c54f048a1ae7a45259a5a7392a464006129755064effac240e71979e/littlered-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -23676,20 +23676,20 @@
       "height": 853
     },
     "/launcher/responsive/myst-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/5ce2fc03e43ef55403fcd5327a6166b143d8460854b7fa55c46f85d7c1c49a56/myst-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "5ce2fc03e43ef55403fcd5327a6166b143d8460854b7fa55c46f85d7c1c49a56",
-      "bytes": 23086,
+      "key": "artwork/c1e5ec043b951cdbab864c7ee6d5c08954bdcf13ea6c386d056984303115578f/myst-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "c1e5ec043b951cdbab864c7ee6d5c08954bdcf13ea6c386d056984303115578f",
+      "bytes": 24350,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 369
     },
     "/launcher/responsive/myst-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/2f485f2db5f2e4b80401180e85a9a61ba3446c592053b3d1770e0336ab4879e2/myst-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "2f485f2db5f2e4b80401180e85a9a61ba3446c592053b3d1770e0336ab4879e2",
-      "bytes": 67158,
+      "key": "artwork/8658cdcce80dd87430708b131a2d0d1a63d796cc04bb4cab9045c0b8ddf784c8/myst-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "8658cdcce80dd87430708b131a2d0d1a63d796cc04bb4cab9045c0b8ddf784c8",
+      "bytes": 78298,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 738
     },
     "/launcher/responsive/nebular-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/ac40606d30aa4604c0cf554ea219adfc719364f5cc737a917984ad375269dc1d/nebular-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -23900,20 +23900,20 @@
       "height": 853
     },
     "/launcher/responsive/princess-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/887f83be4432e3b59b740c92053c80d4482c2c8e87db64f4d986c4b9a8c7510e/princess-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "887f83be4432e3b59b740c92053c80d4482c2c8e87db64f4d986c4b9a8c7510e",
-      "bytes": 20946,
+      "key": "artwork/29f00675242ea2c9761937b023f4eb074995394a706f9bb0cfe43570294939a6/princess-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "29f00675242ea2c9761937b023f4eb074995394a706f9bb0cfe43570294939a6",
+      "bytes": 21954,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 307
     },
     "/launcher/responsive/princess-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/99ac59fca5fe8979d36d846b52af6f53bdba553fcf3f3016c06fe0161c224360/princess-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "99ac59fca5fe8979d36d846b52af6f53bdba553fcf3f3016c06fe0161c224360",
-      "bytes": 54894,
+      "key": "artwork/ebaf83ea7f52b36b29910c3601f5271d0e2eee070beab95ba96c3f6dde091c79/princess-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "ebaf83ea7f52b36b29910c3601f5271d0e2eee070beab95ba96c3f6dde091c79",
+      "bytes": 61492,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 614
     },
     "/launcher/responsive/qfg1-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/2792c3845c9394655f271bab0f03e73acb629fef90823362f5ba0c4b6a0b096d/qfg1-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -24172,20 +24172,20 @@
       "height": 853
     },
     "/launcher/responsive/sleepingcub-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/0a683de74dc6d5c48a316a7b5cd2188a65e3d98c6addda337543390f09a6dc79/sleepingcub-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "0a683de74dc6d5c48a316a7b5cd2188a65e3d98c6addda337543390f09a6dc79",
-      "bytes": 21604,
+      "key": "artwork/cfde4e19b954727c26afcc08ab8490279f4721250ff28b95ae6ed6236db9597d/sleepingcub-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "cfde4e19b954727c26afcc08ab8490279f4721250ff28b95ae6ed6236db9597d",
+      "bytes": 23044,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 329
     },
     "/launcher/responsive/sleepingcub-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/61ee0c8c4873439a3a508e739040a7b7c4f2edc7bb88574f9d0ccbc12e7cd085/sleepingcub-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "61ee0c8c4873439a3a508e739040a7b7c4f2edc7bb88574f9d0ccbc12e7cd085",
-      "bytes": 57164,
+      "key": "artwork/83e4b046c57b5160ae55636f5c715ba04ce89095ff9a6638a34b0ed6762760b2/sleepingcub-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "83e4b046c57b5160ae55636f5c715ba04ce89095ff9a6638a34b0ed6762760b2",
+      "bytes": 63118,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 657
     },
     "/launcher/responsive/sq1-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/98a2becbb143b8d6586b6713b7f72bdf26765d6f26440e16ef34619354de932d/sq1-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -24380,20 +24380,20 @@
       "height": 853
     },
     "/launcher/responsive/thinker1-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/a1da0c0c9904473ee4b869462e41e9cdecf761a772a4d01f0d070a95dc7a00c6/thinker1-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "a1da0c0c9904473ee4b869462e41e9cdecf761a772a4d01f0d070a95dc7a00c6",
-      "bytes": 31572,
+      "key": "artwork/88c0239da27299d081a63c69d3e636c0158d89f5b67a74c86c9cc0aecbabc7b1/thinker1-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "88c0239da27299d081a63c69d3e636c0158d89f5b67a74c86c9cc0aecbabc7b1",
+      "bytes": 34532,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 320
     },
     "/launcher/responsive/thinker1-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/cb6fcab502c724f0113b2a7f25cd374691bc0f6ad5cc5fcd00682a85ad42f476/thinker1-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "cb6fcab502c724f0113b2a7f25cd374691bc0f6ad5cc5fcd00682a85ad42f476",
-      "bytes": 81742,
+      "key": "artwork/aa3a39f4a3e73a8cdeee30fe5810da411aac0e38bc7e8f34ea56b42ba5421e26/thinker1-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "aa3a39f4a3e73a8cdeee30fe5810da411aac0e38bc7e8f34ea56b42ba5421e26",
+      "bytes": 91828,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 640
     },
     "/launcher/responsive/thinkerk-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/578d60df4b30eb5bb9171ea72d86b05bd356b1aa3eb44259b89209a35071625f/thinkerk-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -24556,20 +24556,20 @@
       "height": 853
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-320.webp": {
-      "key": "artwork/8cb340a5f4753279ccbfa60b80fcc63f19644581660ee8ae09ebd9eb94d2c0b7/voyeur-scummweb-generated-2026-11-06-r1-cover-320.webp",
-      "sha256": "8cb340a5f4753279ccbfa60b80fcc63f19644581660ee8ae09ebd9eb94d2c0b7",
-      "bytes": 15852,
+      "key": "artwork/9b25367e84e24512e9e21276375174082edbd406acf4afbed23c5e1771d8335a/voyeur-scummweb-generated-2026-11-06-r1-cover-320.webp",
+      "sha256": "9b25367e84e24512e9e21276375174082edbd406acf4afbed23c5e1771d8335a",
+      "bytes": 16842,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 319
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-640.webp": {
-      "key": "artwork/4cebafe7bba3f6cd6c96cc6c55e4b1345a3a558d34499836840e206c8338bb85/voyeur-scummweb-generated-2026-11-06-r1-cover-640.webp",
-      "sha256": "4cebafe7bba3f6cd6c96cc6c55e4b1345a3a558d34499836840e206c8338bb85",
-      "bytes": 46718,
+      "key": "artwork/0c83d9732855974929dfee9ca1ee50eb929d9b33cfd556401568281de635b0a8/voyeur-scummweb-generated-2026-11-06-r1-cover-640.webp",
+      "sha256": "0c83d9732855974929dfee9ca1ee50eb929d9b33cfd556401568281de635b0a8",
+      "bytes": 55302,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 637
     },
     "/launcher/responsive/waxworks-scummweb-generated-2026-11-06-r1-cover-320.webp": {
       "key": "artwork/00d64e40595128cd2042722dbb48fc2feb932b071e351bc2d57022ac775513ce/waxworks-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -24735,13 +24735,13 @@
       "placeholder": "UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoJAAwAAsBIJbACdAEO4rPIWAAA/viiCdybj9ZSIqYIKwnKHb95OUeWKVKsmtrSuc8iC8tq7M3l/EjbiizqW7jdVhQ8v3/0gUpm2wcJ8/lAAA=="
     },
     "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/064dfeed6a31b5c6d78a47b1918c25a9fcaa756194111877fbd2c4472bd1e717/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "064dfeed6a31b5c6d78a47b1918c25a9fcaa756194111877fbd2c4472bd1e717",
-      "bytes": 102548,
+      "key": "artwork/f0c08bc7687cc1043374087b87023c36a37eecb89cee3507c5282a7ceaf01d97/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "f0c08bc7687cc1043374087b87023c36a37eecb89cee3507c5282a7ceaf01d97",
+      "bytes": 103606,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnwAAABXRUJQVlA4IHAAAAAwAgCdASoJAAwAAsBIJbACdAEfbjcJx3gQAAD+CT9JqixRK9hkxP3PZIsUAPcq6pNdbRf/21/KgNs4P9oK/g99EPbA5g6AKMeAPNj/mf+n315wSr3s9pZ9cyVXIodlSiox2LzRnwG3FH44TFM7rCAA"
+      "height": 924,
+      "placeholder": "UklGRpwAAABXRUJQVlA4IJAAAAAQAwCdASoMAAwAAsBIJbACdH8EwV88r7CnkgEzQTZN5A4A/sHYN5xZoebxYuttIHsjrNkcX0zrfPiY0quxoczxxsDEdygXmj+jjuwFOtkbd/NmIBYbIXO7mF5ScrHsn8oiK62f+bSowv9nKMqryb6J1v/1qhB8IHnNfkoSxUnhohrolcPk8GrM4nXN0mgAAAA="
     },
     "/launcher/sq1-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/eb35a9d532a26fa0d4b1f6179fc09191de371bdcce7200079153164392e6f1b9/sq1-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -24852,13 +24852,13 @@
       "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAACwAQCdASoJAAwAAsBIJYgCdADyaM2QAP7sxAj4gOPc0zfVJjyo51+PrCdY0zauiSffRpL8HNghFIfWDo5iErbM9fWl0JXvay0lmpNmHhuIggDUdxWrQAAA"
     },
     "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/65d5ae270b4fc33fd7025a69ac9498041bdde6b18109b8db00ca4394048f16a0/thinker1-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "65d5ae270b4fc33fd7025a69ac9498041bdde6b18109b8db00ca4394048f16a0",
-      "bytes": 142200,
+      "key": "artwork/d5f5843cbf0be0b8d59477fba733ad9c8929b0fbef100dbeb1170b02431c51f9/thinker1-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "d5f5843cbf0be0b8d59477fba733ad9c8929b0fbef100dbeb1170b02431c51f9",
+      "bytes": 143898,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAABwAgCdASoJAAwAAsBIJbACdFQAA5XQ/8Wt1BUAAP7q8/e02/5fDK5g+6JaIHnlu6R4lcnIeK8n7Z9n3oQwtWui6PUj42htce7UfE79WRuJQzJsnyxM3KMz6t01LKPTqz4K47h2z1VwI9AA"
+      "height": 900,
+      "placeholder": "UklGRpQAAABXRUJQVlA4IIgAAADQAgCdASoMAAwAAsBIJbACdDiAN5VIhstxC9LiVpRYAPy0qE92C2ni/v6qJ+17CyXYvbtOVXxOHVbaXwAcz+St4JOgbjT5LoKySXFfo/vFYrQwZWLiGzDuI1GF/lk8g66UVvu0I23a7765cBAzy/sNJS/iLJLig7lOYET/AbDqgCnoIcBFwAAA"
     },
     "/launcher/thinkerk-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/977154203a572153e4ed9eddbb3fb16c713973be7b16bf75b1c3d4e47a1c3d8c/thinkerk-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -24951,13 +24951,13 @@
       "placeholder": "UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoJAAwAAsBIJbACdAYtzZXEEAD++ViLTqRZB4ceHsmN+43GjH0ym/FC0AS/J9+C1yOOtJKg5ph5PDiGYpQgkWvbteqbRMH99me7VoWAfuQEAA=="
     },
     "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp": {
-      "key": "artwork/90a05dbea84f5490a2f8c4fc7d106d09e696f955e1bfb2c61607f540b9ed945c/voyeur-scummweb-generated-2026-11-06-r1-cover.webp",
-      "sha256": "90a05dbea84f5490a2f8c4fc7d106d09e696f955e1bfb2c61607f540b9ed945c",
-      "bytes": 95690,
+      "key": "artwork/4a1af11803b2e122ac6fc6536feefe13205347a23d7b39ea9eef058517153896/voyeur-scummweb-generated-2026-11-06-r1-cover.webp",
+      "sha256": "4a1af11803b2e122ac6fc6536feefe13205347a23d7b39ea9eef058517153896",
+      "bytes": 97896,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRlYAAABXRUJQVlA4IEoAAACwAQCdASoJAAwAAsBIJZwAAkqsQ4AAAP73yX0hGYEejchyaUUKvpY9iA+2pyMp1sDQRdOoLxoetqmb37dSPKyno4dUy68BvAQAAA=="
+      "height": 896,
+      "placeholder": "UklGRmwAAABXRUJQVlA4IGAAAAAQAgCdASoMAAwAAsBIJYwCdAYuvypeLjPQAP7xtUfKd4saLZzs89eQZS+Uu3876Zr/xpmYiEiZtVj99CGPNCmemIEB11oj/cqSU174zCSoV8PQndSb8nAmqEdy/VcYgAA="
     },
     "/launcher/waxworks-scummweb-generated-2026-11-06-r1-cover.webp": {
       "key": "artwork/a5dfdc13097af6e09e7cb7f23e99e4cdaeb387bd85acaea02d147d2f2770b479/waxworks-scummweb-generated-2026-11-06-r1-cover.webp",
@@ -25044,12 +25044,12 @@
       "height": 1200
     },
     "/launcher/optimized/lit-scummweb-generated-2026-11-06-r1-cover.avif": {
-      "key": "artwork/cfb330e246c650a5b672dc4cb92812b360584b984e6d6bca19439fc65ddb742d/lit-scummweb-generated-2026-11-06-r1-cover.avif",
-      "sha256": "cfb330e246c650a5b672dc4cb92812b360584b984e6d6bca19439fc65ddb742d",
-      "bytes": 94639,
+      "key": "artwork/2390189075367e79ab0f935f096310f68fdede7dbabdfe363e76bf87093b643b/lit-scummweb-generated-2026-11-06-r1-cover.avif",
+      "sha256": "2390189075367e79ab0f935f096310f68fdede7dbabdfe363e76bf87093b643b",
+      "bytes": 100735,
       "contentType": "image/avif",
       "width": 900,
-      "height": 1200
+      "height": 926
     },
     "/launcher/optimized/neverhood-scummweb-generated-2026-11-06-r2-cover.avif": {
       "key": "artwork/8bbc425b096136098f2c35f823070d8b534121470157b8fd348dc8496411dfef/neverhood-scummweb-generated-2026-11-06-r2-cover.avif",
@@ -25140,12 +25140,12 @@
       "height": 1200
     },
     "/launcher/optimized/voyeur-scummweb-generated-2026-11-06-r1-cover.avif": {
-      "key": "artwork/0020da93586589a6f6e8e684e3ae647304f0a1aaf0fef1ce64716299f91fcf1c/voyeur-scummweb-generated-2026-11-06-r1-cover.avif",
-      "sha256": "0020da93586589a6f6e8e684e3ae647304f0a1aaf0fef1ce64716299f91fcf1c",
-      "bytes": 69534,
+      "key": "artwork/678f21795a018de3580e42b15e54c1b2df56a667a125a5dd31815fc361458108/voyeur-scummweb-generated-2026-11-06-r1-cover.avif",
+      "sha256": "678f21795a018de3580e42b15e54c1b2df56a667a125a5dd31815fc361458108",
+      "bytes": 72185,
       "contentType": "image/avif",
       "width": 900,
-      "height": 1200
+      "height": 896
     },
     "/launcher/responsive/amazon-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/2e9166eae16f689c2622cd629cdcc1180852d526e4f320714061cc8722943984/amazon-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -25452,12 +25452,12 @@
       "height": 853
     },
     "/launcher/responsive/gnap-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/c2fb322c48100f1702d05f308889672f76ace26b4c3b5b3a5c28820e36f812fd/gnap-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "c2fb322c48100f1702d05f308889672f76ace26b4c3b5b3a5c28820e36f812fd",
-      "bytes": 27138,
+      "key": "artwork/09d3940808d2a4c6bf6054046092f060cb92c83e58ae1a4f751cc37c4ca415c3/gnap-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "09d3940808d2a4c6bf6054046092f060cb92c83e58ae1a4f751cc37c4ca415c3",
+      "bytes": 30356,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 535
     },
     "/launcher/responsive/gob1-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/ae460a001a780529f1053806853db75169b97ebf9c189d10cdc3e906f382e8f2/gob1-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -25780,36 +25780,36 @@
       "height": 640
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-320.avif": {
-      "key": "artwork/63e2f7ce6ffb586e4e8a3af3ef655ee2d0863ed619d3cbafffb1891e40b3c81b/lit-scummweb-generated-2026-11-06-r1-cover-320.avif",
-      "sha256": "63e2f7ce6ffb586e4e8a3af3ef655ee2d0863ed619d3cbafffb1891e40b3c81b",
-      "bytes": 16001,
+      "key": "artwork/9ec2ffdb2e2e8c6a62be84f8406813bd0b576bdd8d3052ab9de5756543270b97/lit-scummweb-generated-2026-11-06-r1-cover-320.avif",
+      "sha256": "9ec2ffdb2e2e8c6a62be84f8406813bd0b576bdd8d3052ab9de5756543270b97",
+      "bytes": 17414,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 329
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-480.avif": {
-      "key": "artwork/7791e449bf19bef5cc2ce9b77b08f59fe333eb03a95ee1f9717218034b424a43/lit-scummweb-generated-2026-11-06-r1-cover-480.avif",
-      "sha256": "7791e449bf19bef5cc2ce9b77b08f59fe333eb03a95ee1f9717218034b424a43",
-      "bytes": 30150,
+      "key": "artwork/acdde0298893526b8e359acd240943200721ff5558f7d069a0eb53e1959e5c85/lit-scummweb-generated-2026-11-06-r1-cover-480.avif",
+      "sha256": "acdde0298893526b8e359acd240943200721ff5558f7d069a0eb53e1959e5c85",
+      "bytes": 33346,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 494
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/af1f563c41ffbba732aafcc0d5934a3a939dc01999b7a8e02af176bb6901cb5e/lit-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "af1f563c41ffbba732aafcc0d5934a3a939dc01999b7a8e02af176bb6901cb5e",
-      "bytes": 35766,
+      "key": "artwork/61e5363d6f9dd5b001fb97aaea9cd5a6ca258e0ca3079354bc026a3fdf26fbdb/lit-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "61e5363d6f9dd5b001fb97aaea9cd5a6ca258e0ca3079354bc026a3fdf26fbdb",
+      "bytes": 40356,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 494
     },
     "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-640.avif": {
-      "key": "artwork/0a9da00c11c16bc254228cdf1a2c7a9ccda4a8f76785e84df5e6ca46d3da2420/lit-scummweb-generated-2026-11-06-r1-cover-640.avif",
-      "sha256": "0a9da00c11c16bc254228cdf1a2c7a9ccda4a8f76785e84df5e6ca46d3da2420",
-      "bytes": 46862,
+      "key": "artwork/356f354c9ee910b14c9c77ef638938d6dcdc017686c2a465c6b648f41bc0e1ad/lit-scummweb-generated-2026-11-06-r1-cover-640.avif",
+      "sha256": "356f354c9ee910b14c9c77ef638938d6dcdc017686c2a465c6b648f41bc0e1ad",
+      "bytes": 55207,
       "contentType": "image/avif",
       "width": 640,
-      "height": 853
+      "height": 658
     },
     "/launcher/responsive/littlered-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/8a174c64bdf38b076160fd6cdefb25d3a61059ca76363f12edf587fc15b2b1bf/littlered-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -25924,12 +25924,12 @@
       "height": 640
     },
     "/launcher/responsive/myst-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/78b5fb65b98906bbf195e3734aa8cd7389be5d5cf95daec47bd46b92c7294241/myst-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "78b5fb65b98906bbf195e3734aa8cd7389be5d5cf95daec47bd46b92c7294241",
-      "bytes": 43676,
+      "key": "artwork/4852d2e65ad1eadfc81fb9717afaf7ed1400fe5d48905e10f89cc53a187771de/myst-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "4852d2e65ad1eadfc81fb9717afaf7ed1400fe5d48905e10f89cc53a187771de",
+      "bytes": 48302,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 554
     },
     "/launcher/responsive/nebular-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/755b18b75fdf83af4b48cc64f3144a93a96cbf8ffeccf366b8dfd94aba13a7ac/nebular-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -26156,12 +26156,12 @@
       "height": 640
     },
     "/launcher/responsive/princess-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/6210669aa03178a6d6c72835eeb14fdd214af47e353a59191500cabccf9c02dd/princess-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "6210669aa03178a6d6c72835eeb14fdd214af47e353a59191500cabccf9c02dd",
-      "bytes": 37360,
+      "key": "artwork/43a9b61a7e7c79dc26c7d0a6cd30ffadd7df9862130066e28fae1c7fa75d95b2/princess-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "43a9b61a7e7c79dc26c7d0a6cd30ffadd7df9862130066e28fae1c7fa75d95b2",
+      "bytes": 40064,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 460
     },
     "/launcher/responsive/qfg1-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/29645cae4275d6f418307a3142548202c7928da251589c57b57c5124e9f095c5/qfg1-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -26364,12 +26364,12 @@
       "height": 640
     },
     "/launcher/responsive/sleepingcub-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/8826e52c49f2ee639c24224d2386b53be6178c9400bcf9b8c6080bbd35828027/sleepingcub-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "8826e52c49f2ee639c24224d2386b53be6178c9400bcf9b8c6080bbd35828027",
-      "bytes": 38974,
+      "key": "artwork/b4b79e37699940be91eb77018d060122eaed3b647eea2589c6a3e957a2401b4b/sleepingcub-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "b4b79e37699940be91eb77018d060122eaed3b647eea2589c6a3e957a2401b4b",
+      "bytes": 42422,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 493
     },
     "/launcher/responsive/sq1-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/da8a8ea05b0cb110fe84f2e6d8a7e3d909a9f0eb22fc95dc36116047924ad17f/sq1-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -26468,12 +26468,12 @@
       "height": 640
     },
     "/launcher/responsive/thinker1-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/4036f24c36f9de089203bfab1a0534640f1166abf6a74d3a05dd7c2f850a8333/thinker1-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "4036f24c36f9de089203bfab1a0534640f1166abf6a74d3a05dd7c2f850a8333",
-      "bytes": 55900,
+      "key": "artwork/1bd15d99fa878732d12516fffe86cf95831a2136050bd72cff4d1b3224fa5824/thinker1-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "1bd15d99fa878732d12516fffe86cf95831a2136050bd72cff4d1b3224fa5824",
+      "bytes": 61638,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 480
     },
     "/launcher/responsive/thinkerk-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/78fee39f3dc18768260761d7ed3fbc4a5bfb10ecb7f938885d7ea48738d80032/thinkerk-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -26628,36 +26628,36 @@
       "height": 853
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-320.avif": {
-      "key": "artwork/672dce547b19c9d47f30137f375447c208b75e48dcf53ed01ee5f6cdd81393ad/voyeur-scummweb-generated-2026-11-06-r1-cover-320.avif",
-      "sha256": "672dce547b19c9d47f30137f375447c208b75e48dcf53ed01ee5f6cdd81393ad",
-      "bytes": 13116,
+      "key": "artwork/8f9add860d0c5d3c3379a8d19a72aa48c03ba39231ef30e03aa37c624ac7dfdb/voyeur-scummweb-generated-2026-11-06-r1-cover-320.avif",
+      "sha256": "8f9add860d0c5d3c3379a8d19a72aa48c03ba39231ef30e03aa37c624ac7dfdb",
+      "bytes": 13677,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 319
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-480.avif": {
-      "key": "artwork/182232e8495b84b85fe00ccb220b226ee6e0819557fd098bd77246a756ea2f8d/voyeur-scummweb-generated-2026-11-06-r1-cover-480.avif",
-      "sha256": "182232e8495b84b85fe00ccb220b226ee6e0819557fd098bd77246a756ea2f8d",
-      "bytes": 23461,
+      "key": "artwork/01e62ddf49ad7aa01bce5002e6b71c4d5375d3936f54c25b38ff38c86e952da6/voyeur-scummweb-generated-2026-11-06-r1-cover-480.avif",
+      "sha256": "01e62ddf49ad7aa01bce5002e6b71c4d5375d3936f54c25b38ff38c86e952da6",
+      "bytes": 25027,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 478
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-480.webp": {
-      "key": "artwork/a64e11cf823b922ed3cc9a4594d4aae7227ad23e5cea132940725aabfec01b31/voyeur-scummweb-generated-2026-11-06-r1-cover-480.webp",
-      "sha256": "a64e11cf823b922ed3cc9a4594d4aae7227ad23e5cea132940725aabfec01b31",
-      "bytes": 30054,
+      "key": "artwork/eef1c927d1b040681bd515d37a7dcb10116466c8847f888732387f213019fa6e/voyeur-scummweb-generated-2026-11-06-r1-cover-480.webp",
+      "sha256": "eef1c927d1b040681bd515d37a7dcb10116466c8847f888732387f213019fa6e",
+      "bytes": 33300,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 478
     },
     "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-640.avif": {
-      "key": "artwork/6c31f07f9649fa1eca84cfcd3fa5de1ac85342c1c57053b2d9b35ff80c5f9985/voyeur-scummweb-generated-2026-11-06-r1-cover-640.avif",
-      "sha256": "6c31f07f9649fa1eca84cfcd3fa5de1ac85342c1c57053b2d9b35ff80c5f9985",
-      "bytes": 35716,
+      "key": "artwork/ac9f5b9bc6d4fb376a717e515138392cdd2ac55513ed5346ccc169777fbc21ec/voyeur-scummweb-generated-2026-11-06-r1-cover-640.avif",
+      "sha256": "ac9f5b9bc6d4fb376a717e515138392cdd2ac55513ed5346ccc169777fbc21ec",
+      "bytes": 40445,
       "contentType": "image/avif",
       "width": 640,
-      "height": 853
+      "height": 637
     },
     "/launcher/responsive/waxworks-scummweb-generated-2026-11-06-r1-cover-480.webp": {
       "key": "artwork/a3ab98241965ebdaa8bd910f25e15c06f3024aadda89bde28c3d289fe5298c2d/waxworks-scummweb-generated-2026-11-06-r1-cover-480.webp",
@@ -27006,13 +27006,13 @@
       "placeholder": "UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoMAAcAAsBIJQBOgB6P1EE7AAD++UpNQIeHiyVcEZPpgv4/4hxKu48sCCorgFVoDpiuYEK+H/eWAD1p+eX4qeowaOAAAA=="
     },
     "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/9a5cf1b3c06061091236764b6c7551cc0cb10e2694cbb40b04ef504593f49231/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "9a5cf1b3c06061091236764b6c7551cc0cb10e2694cbb40b04ef504593f49231",
-      "bytes": 179690,
+      "key": "artwork/eb2d50ea046399a9cbe8b1fe9cbd96dcf0db10c5b98824ec9b184fe5fcc36d33/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "eb2d50ea046399a9cbe8b1fe9cbd96dcf0db10c5b98824ec9b184fe5fcc36d33",
+      "bytes": 179972,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAADwAQCdASoJAAwAAsBIJZACdAELQopol8AA/vG0W5T0ff06L7q/j0wY+L+2xlylxBDNs2HXQAqVOEluOvpd889Bpy5Uszg1o8ZulJRP+WBajVkI3TIcoOIRYeIHc367Y4Zu1yS+IEHDQAAA"
+      "height": 1123,
+      "placeholder": "UklGRoAAAABXRUJQVlA4IHQAAAAwAgCdASoKAAwAAsBIJZgCdFQAAzwbpzr+QAD+8bC+CdIy5T/taQQjTu+ucMoLAIvatLlBvpDC/cRviOtpLshP/p43MGgxm/H3/XskHGrgHEG/XxUH492Kif8gFHTlDAFDCdZnc+cNEsMbDZviagtXwRtAAA=="
     },
     "/launcher/pajama-sam-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/18a84ed50868169c7720028712bc544278cc4bbde80686fcbe5a225046ae06b7/pajama-sam-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -27033,20 +27033,20 @@
       "placeholder": "UklGRngAAABXRUJQVlA4IGwAAABwAgCdASoJAAwAAsBIJbACdAaZ7mAZsSzZZn+AAP7ru+QHFPHTg+q+vn23Rv8G/7CT82sdyMlUJT8iSp0DwoueTmzNTPNf0+3FWDNSZMQgRlkCL9+P+pBeaZB94VhpWsVjV+tfcCj8TdQrAAA="
     },
     "/launcher/responsive/mortville-manor-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/fbb3800225cc264263903ca34ccd8ee63da04adc5ccad4b4f115b251032195cc/mortville-manor-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "fbb3800225cc264263903ca34ccd8ee63da04adc5ccad4b4f115b251032195cc",
-      "bytes": 29696,
+      "key": "artwork/75224cff93aaa4c84fc1e58713e4380ed9e9bdf472c1d95bee8490a8cea9dfa6/mortville-manor-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "75224cff93aaa4c84fc1e58713e4380ed9e9bdf472c1d95bee8490a8cea9dfa6",
+      "bytes": 30948,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 399
     },
     "/launcher/responsive/mortville-manor-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/c1949da9459e70e9202cf13b0c21a923c5a0d82caa331381494b0bb09324699d/mortville-manor-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "c1949da9459e70e9202cf13b0c21a923c5a0d82caa331381494b0bb09324699d",
-      "bytes": 90122,
+      "key": "artwork/b41f7f141afb43bde9a3f148d1b2128e9eaff19b4c3ea6e41482966a76001cac/mortville-manor-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "b41f7f141afb43bde9a3f148d1b2128e9eaff19b4c3ea6e41482966a76001cac",
+      "bytes": 105926,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 799
     },
     "/launcher/responsive/pajama-sam-scummweb-generated-2026-11-07-r3-cover-320.webp": {
       "key": "artwork/74aee019ffe3666546fd94ad218db8d4bf605738def9c407e0f2f24d3f090207/pajama-sam-scummweb-generated-2026-11-07-r3-cover-320.webp",
@@ -27247,12 +27247,12 @@
       "height": 576
     },
     "/launcher/responsive/mortville-manor-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/d07ce95eae2f41169081a9ed94b6e0d668cadc5b83baedd70e2781b4642d15e9/mortville-manor-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "d07ce95eae2f41169081a9ed94b6e0d668cadc5b83baedd70e2781b4642d15e9",
-      "bytes": 57516,
+      "key": "artwork/c8d509a902ce624e809ee3c6b18dd3ea9aa47b56cc6b1528e79a627d17319ec3/mortville-manor-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "c8d509a902ce624e809ee3c6b18dd3ea9aa47b56cc6b1528e79a627d17319ec3",
+      "bytes": 63534,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 599
     },
     "/launcher/responsive/pajama-sam-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/d04ba56cd2acb35eb39122876e6000e9eb6b092f0b061e7d957e87c5003d7ed2/pajama-sam-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -27518,13 +27518,13 @@
       "placeholder": "UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoMAAcAAsBIJbACdAEXahstft6BAAD+9tLO8osUTKwYuXIFDGZrRozSMNVSiY4sP73sm2dFfN56HVOBS0brLXLQEhHAAAAA"
     },
     "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/c71111f26ffc2e5aed747694cb26831300684148f661bc7895968f1aaf1a3983/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "c71111f26ffc2e5aed747694cb26831300684148f661bc7895968f1aaf1a3983",
-      "bytes": 128494,
+      "key": "artwork/dadaa292eb69cee655cf6d364298d7a17a55ff89ce2961014d26949e3d647cdc/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "dadaa292eb69cee655cf6d364298d7a17a55ff89ce2961014d26949e3d647cdc",
+      "bytes": 129388,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoJAAwAAsBIJaACdH8AGBskPjMEAAD+90NO/HQ1PhKHGyMZp6qc306Cn3ufqPMRbEMfH3ei2C4N6hqx79ToiO8pKqNZvEtZ2WxSo+RlXISuMBG25EpmSQAA"
+      "height": 888,
+      "placeholder": "UklGRooAAABXRUJQVlA4IH4AAABwAgCdASoMAAwAAsBIJbACdH8AgsTL51bxFQkAAP72Wzvw9xSw8f9KK0+KQjTSjVg6cb3AXY+VeZbFeKI9c8cFhfkpWf0xbMW0MQpaeFJt10bz3tdrSmgUSfffW/a9b/KP52bN88/688ucbe+sd/DVS7/fZ9cz6g22QuyxAAA="
     },
     "/launcher/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/6b270d0a545a173ed3b076604107c375f6a15af1a46d2c4bf9eb9424457e6d2a/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -27593,20 +27593,20 @@
       "height": 853
     },
     "/launcher/responsive/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/1cba93401d87b043405a8f058179cc440c672e85da4e701372e08ca4b36fd1d0/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "1cba93401d87b043405a8f058179cc440c672e85da4e701372e08ca4b36fd1d0",
-      "bytes": 26984,
+      "key": "artwork/63c36e3efed7ed9ba2779bd5c5e901b2a93f868fbe302857e816ae52899fb679/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "63c36e3efed7ed9ba2779bd5c5e901b2a93f868fbe302857e816ae52899fb679",
+      "bytes": 28926,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 316
     },
     "/launcher/responsive/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/fe3c2b76fb7b6515ac8796213b4e266eacc91a88f621be2ed3775d13b70fa126/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "fe3c2b76fb7b6515ac8796213b4e266eacc91a88f621be2ed3775d13b70fa126",
-      "bytes": 71876,
+      "key": "artwork/fd5b937d622cb24fd5ee40f8f81366b6e35b3bcdfd865b24bfcd4af0fb44cdfb/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "fd5b937d622cb24fd5ee40f8f81366b6e35b3bcdfd865b24bfcd4af0fb44cdfb",
+      "bytes": 80296,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 631
     },
     "/launcher/responsive/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/b7599a1d97713182ad41b644296e5aaf85566e02024fa733213e128e1b9a079a/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -27809,12 +27809,12 @@
       "height": 576
     },
     "/launcher/responsive/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/c9724ef128e4edbd7844f79d3777c2740194ced53c333a07f2fffce705b861fc/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "c9724ef128e4edbd7844f79d3777c2740194ced53c333a07f2fffce705b861fc",
-      "bytes": 49024,
+      "key": "artwork/89f208b4ce038df2589397e1181c01d71fea69246dfbaba5b42e616e68a3c8c8/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "89f208b4ce038df2589397e1181c01d71fea69246dfbaba5b42e616e68a3c8c8",
+      "bytes": 52954,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 474
     },
     "/launcher/responsive/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover-480.webp": {
       "key": "artwork/b3f1481f8ccec849d4f0168a490876e090dce7d8b0ff4632aa541f99119f6289/freddi-fish-5-scummweb-generated-2026-11-07-r1-cover-480.webp",
@@ -27885,13 +27885,13 @@
       "placeholder": "UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoMAAcAAsBIJZgCdAEX6vAFgs4AAP71izOqNNYsjn2Xgxo0rhqYlLd0xmtwPQUfdiJKpbIWvWz86TgjCIBodq9HL2fVF8GVMG2e5LzQAAA="
     },
     "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/6aad0972830431ae5e43699a73be69c6d19dcc95b86393f1fdc3473b55dafce3/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "6aad0972830431ae5e43699a73be69c6d19dcc95b86393f1fdc3473b55dafce3",
-      "bytes": 178948,
+      "key": "artwork/ce3ad086556854c00c2d3f090dae1ce239e5975bf857e823e85f11da546786cd/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "ce3ad086556854c00c2d3f090dae1ce239e5975bf857e823e85f11da546786cd",
+      "bytes": 182206,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoJAAwAAsBIJZgCdAEO8Q87kAAA/vP8QERmfNo+h70YZSFbBPP878zw0M2kVV4hV6gvY8lBR7+9oAUs8GChra3vkWMJVaOKGYPmhkeP0bxAupDnKwBUn27cXR8AAA=="
+      "height": 950,
+      "placeholder": "UklGRoQAAABXRUJQVlA4IHgAAACQAgCdASoLAAwAAsBIJbACdDBVSIvL1C25/7iGSAD+8oX0i7pYl1IBZBjfQ4M4xsDNytKBS4XXdAMC83mpJ3a170eFMhuH7S4NaLv4rLaVuqE1kuynrK3suSYL/LGdaMpjpgb9Vyl3AdehshghZb+ZWQ23HxAQAAA="
     },
     "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/23b767d0404c0256cab6f97955765b04a3a0e47473cd995602b58d3bb1d75696/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -27903,13 +27903,13 @@
       "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoMAAcAAsBIJaACdH8AGRhGs9GMAAD+8ybPz3Q1+VnDM+pgGnFKya4ktHByYOa7id0UQPwqv+7E07d08Hyqt84G/R+RuyCOMwAAAA=="
     },
     "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/0c8e1b58ac7a1eecd466f3ec4583f2cf168eb9c7b0bdf62a79d3dc15d05b2fea/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "0c8e1b58ac7a1eecd466f3ec4583f2cf168eb9c7b0bdf62a79d3dc15d05b2fea",
-      "bytes": 143964,
+      "key": "artwork/f4224c4c9b536ee48ab8b27cda9fb5d7284d19be1b76dd72976dece6d80bd433/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "f4224c4c9b536ee48ab8b27cda9fb5d7284d19be1b76dd72976dece6d80bd433",
+      "bytes": 144692,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnwAAABXRUJQVlA4IHAAAAAwAgCdASoJAAwAAsBIJbACdH8AE737fOWBSAD+2EEMfZBV6QlbM42CHgEqwHOIZvI+on/NYjW3MwNKt5O6YDSBFnzrd0aYuMSoiyxj0BJXhwu+ymJG6iWTBjlbDbTyvs9MKtOu7uy5jFuVwC2iAAAA"
+      "height": 1112,
+      "placeholder": "UklGRoAAAABXRUJQVlA4IHQAAAAQAgCdASoKAAwAAsBIJbACdAELVURQBiEAAP6bVN9iagTBr59zd3k9fEpp8XDqGmN6HoOYJ9b/8u9Jk21oVz3vAVFPWzCy7F0X5xdASrUuSnJNHibkMzGEjORf7kMo/GN2ZiVwIfnfnufVgYg5d2+4Ub7gAA=="
     },
     "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/5d4cdb6cb85280e5dbba2a8ef34d9d1bdc96dac55cbf9f0d20689b2f41768491/backyard-baseball-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -27953,36 +27953,36 @@
       "height": 853
     },
     "/launcher/responsive/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/af95acb896a2659c5ef7f694b83c3723ee2456db48cfb2ae9dc637afff55d879/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "af95acb896a2659c5ef7f694b83c3723ee2456db48cfb2ae9dc637afff55d879",
-      "bytes": 35006,
+      "key": "artwork/5e1f8fb3747c179172c339546903b85a80cd642f47a0317fd5328f4e2971dc42/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "5e1f8fb3747c179172c339546903b85a80cd642f47a0317fd5328f4e2971dc42",
+      "bytes": 38366,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 338
     },
     "/launcher/responsive/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/7bd41419a355f5a903514693f8dce76468c402ca11ee3bbe4803bb1a7961ba1e/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "7bd41419a355f5a903514693f8dce76468c402ca11ee3bbe4803bb1a7961ba1e",
-      "bytes": 98560,
+      "key": "artwork/00b5ca8096ec238499b4006db66de68bfea383ea8e853a53b6a96f2b29f94d7d/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "00b5ca8096ec238499b4006db66de68bfea383ea8e853a53b6a96f2b29f94d7d",
+      "bytes": 111942,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 676
     },
     "/launcher/responsive/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/517619eac3e49062d57c42489d8852d75f353c012b0be34ee98501dfc401c58d/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "517619eac3e49062d57c42489d8852d75f353c012b0be34ee98501dfc401c58d",
-      "bytes": 31204,
+      "key": "artwork/d41afff1b4758dc7d8a5523b8916b16cfe092887e076c79df8a99d7ea6229d0b/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "d41afff1b4758dc7d8a5523b8916b16cfe092887e076c79df8a99d7ea6229d0b",
+      "bytes": 32962,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 395
     },
     "/launcher/responsive/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/bfc1b3ec4c08a5451b8861ed65eb5635eeb76d8071afd6e44e0651be980e629a/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "bfc1b3ec4c08a5451b8861ed65eb5635eeb76d8071afd6e44e0651be980e629a",
-      "bytes": 79224,
+      "key": "artwork/a54e50fdc8c3bf8329bee08b365c213a8d85b7449cde57da3289b15f641831db/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "a54e50fdc8c3bf8329bee08b365c213a8d85b7449cde57da3289b15f641831db",
+      "bytes": 88626,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 791
     },
     "/launcher/responsive/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/02299dd52e06aa67f4c8c1cdfcea42ca26451ea983f74847ce237b25dcf77314/the-tortoise-and-the-hare-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -28115,12 +28115,12 @@
       "height": 576
     },
     "/launcher/responsive/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/7f8344643076969f3664d45d47c44afe6082897246d968607d1e8eb2c741ddda/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "7f8344643076969f3664d45d47c44afe6082897246d968607d1e8eb2c741ddda",
-      "bytes": 65576,
+      "key": "artwork/660b1aefde5365332d08825bb6c6a9f05ee406ee28b24222e172473e90cbc30d/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "660b1aefde5365332d08825bb6c6a9f05ee406ee28b24222e172473e90cbc30d",
+      "bytes": 72620,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 507
     },
     "/launcher/responsive/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/46c91aef4c131200eeb468a5e5126ac45e3476fcb7b32e37c6b85f06674493ff/arthurs-reading-race-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -28147,12 +28147,12 @@
       "height": 576
     },
     "/launcher/responsive/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/06f63839b26101f8fde5778b8b2cb03ac2ceb26e71d3d1572a18f7ead3ceae4e/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "06f63839b26101f8fde5778b8b2cb03ac2ceb26e71d3d1572a18f7ead3ceae4e",
-      "bytes": 55258,
+      "key": "artwork/e06ee8a2a1a7e36e1fc25f44ba9ae574dcc949124c124e05535b029454f73467/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "e06ee8a2a1a7e36e1fc25f44ba9ae574dcc949124c124e05535b029454f73467",
+      "bytes": 59432,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 593
     },
     "/launcher/responsive/backyard-baseball-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/17debe6c7bb766284045f077286ab51ce86c072cb4cef35c2e27064a131df657/backyard-baseball-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -28211,13 +28211,13 @@
       "height": 576
     },
     "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/024410f9dd3b2c4d33a15327e92badf3fb3d0b759de7bc37b26d05a7cc2e680f/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "024410f9dd3b2c4d33a15327e92badf3fb3d0b759de7bc37b26d05a7cc2e680f",
-      "bytes": 159356,
+      "key": "artwork/6c01c0115d7803efc7bd3d058d0992016b88afb86ed367bdc00771972eb18b11/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "6c01c0115d7803efc7bd3d058d0992016b88afb86ed367bdc00771972eb18b11",
+      "bytes": 164718,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoJAAwAAsBIJQBOhgnP/bBjRFhFqDAA/vCznZXLzRyBsCRF94gh/UyJzxMAmYuSt73cyFi/afmueDzpifucw2mKcSWb8pl66J8bHZKqcIFBj5t82B8uODJmg0IAKzGnTwQMAA=="
+      "height": 897,
+      "placeholder": "UklGRoYAAABXRUJQVlA4IHoAAABQAgCdASoMAAwAAsBIJbACdAYtVuKNS55Ly8AA/uvFvXVHwJumYHm7PqkuqKN7VbqboULoTPcdII/c6TpRtfxC+Zuy4rxZuCOiFPaLFDNt4yvPWLGz7rUPkZXi6zgtdOSY+JGy5Pz8Tx/8FOuYYBIwGrrjsLW628BAAA=="
     },
     "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/dc63540c47114645a09c23a370512f87bb07f6e55499b235aaf473653d49a7ac/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -28301,20 +28301,20 @@
       "placeholder": "UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoMAAcAAsBIJQBOgBulPmam+AD++Ua6vn6t32C/I0iUGewPb8w3nWL+sbgEVnLKyxrAxicHd788e7oAAAA="
     },
     "/launcher/responsive/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/e193f7603f3e6fcec00239eba896a8e63104263e7da00a2e2179dc2727bb76d5/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "e193f7603f3e6fcec00239eba896a8e63104263e7da00a2e2179dc2727bb76d5",
-      "bytes": 25784,
+      "key": "artwork/c648e2d1a4f740c22ceef977b69cbd84d7c7a32c86197632d6e0c8c440a48986/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "c648e2d1a4f740c22ceef977b69cbd84d7c7a32c86197632d6e0c8c440a48986",
+      "bytes": 27928,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 319
     },
     "/launcher/responsive/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/0eec4091226e51f50193be669330b79b429fded7d5d720b486ab1330ca8e5d2b/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "0eec4091226e51f50193be669330b79b429fded7d5d720b486ab1330ca8e5d2b",
-      "bytes": 76506,
+      "key": "artwork/703bfec756af58b204327c411e7e490a68a02a8a59b1928d0ad2af8fd857fde7/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "703bfec756af58b204327c411e7e490a68a02a8a59b1928d0ad2af8fd857fde7",
+      "bytes": 91024,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 638
     },
     "/launcher/responsive/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/e84eb682a8f802c91777abf2272c1cfd0b8c36fe544fe6ad5b9f749d67b0f5bc/backyard-baseball-2003-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -28405,12 +28405,12 @@
       "height": 960
     },
     "/launcher/responsive/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/9fdeb3c530d371a1ccee2c305c93407cb104cd71cf97da7f4f80ce8502975b00/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "9fdeb3c530d371a1ccee2c305c93407cb104cd71cf97da7f4f80ce8502975b00",
-      "bytes": 48918,
+      "key": "artwork/9b3e5201dcf5902acd261902d3d2fce306c3f5c3eff21c8182177189fa3a32ea/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "9b3e5201dcf5902acd261902d3d2fce306c3f5c3eff21c8182177189fa3a32ea",
+      "bytes": 55294,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 478
     },
     "/launcher/responsive/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/b95321fea81bb5e9c74e59c6a57bf5b71496e1893da321391d139bc20fa8bddf/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -28637,13 +28637,13 @@
       "height": 576
     },
     "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/112862561b231b9e09dc799d0dfa17410a90a849d7f74837ccf8b0fc81c2c895/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "112862561b231b9e09dc799d0dfa17410a90a849d7f74837ccf8b0fc81c2c895",
-      "bytes": 70656,
+      "key": "artwork/3c84e26a4e1ded9457c0ce68ef00e16fa9d86eeea62aff7ff91a48bb5f5838c2/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "3c84e26a4e1ded9457c0ce68ef00e16fa9d86eeea62aff7ff91a48bb5f5838c2",
+      "bytes": 70722,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnwAAABXRUJQVlA4IHAAAABwAgCdASoJAAwAAsBIJbACdGuAt/8DHZN7yygAAP7Q8bc0l5fo2QvhIDi3IdNPgyWFlFIF2SDU3NzhTAs50JQxTL7BsfOkYAg//jmxAsQr+9hJk477/dJbKXH/+qS2b/8K4th+hapQtRCQ02s7nsAA"
+      "height": 932,
+      "placeholder": "UklGRpAAAABXRUJQVlA4IIQAAACQAgCdASoMAAwAAsBIJbACdLoAEI9ugCzgHdW/YAD+0HQZTCMPDralh52dOm8dzUAeLdfIu4g/bFOD3kIulwE34DMFzdG7N5eaM6dvSSG6cFN3ncktG86tz/+N6UDfcj01PJDN38Zvlf4PKiobcjwiDZdBY0/8MNxI+3r5yZedp3V3/AA="
     },
     "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/9f08cdeb989f1e3d501ff0f7bee7f1728fc76093090cfa74fec51c7ff933d2bc/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -28655,13 +28655,13 @@
       "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAACQAgCdASoMAAcAAsBIJbACdEyAev+Bpc9m0VTDAAD+9CdO8JvA+75/PRQz51HDPk6n+PJe73UjkzkRBzsVHgXDzY0vVDeAz9gHNzf6Fx5/h2/BUz2v/89Jcf91PE/URVmxo5davqS9gAAA"
     },
     "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/0299613cde62ec4495c0ae1981f354cbd4ce1496da5021edc318c69317cfb334/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "0299613cde62ec4495c0ae1981f354cbd4ce1496da5021edc318c69317cfb334",
-      "bytes": 61432,
+      "key": "artwork/601a7fd135948a3b7d4eefc713b789570e8044873e7da104d47f7ab13fcaf911/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "601a7fd135948a3b7d4eefc713b789570e8044873e7da104d47f7ab13fcaf911",
+      "bytes": 61352,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnIAAABXRUJQVlA4IGYAAABQAgCdASoJAAwAAsBIJbACdLoAEIYThFdC7QAA/vGnuKaqcLLyeR6xa+SDNQcpmy2o+4v6KRUPgC/spYcErFBh9tnVYI0IVyZxHWcGX6VbjP/dBQpPGNjU6r90mXlDS/NFBhVAAAA="
+      "height": 1014,
+      "placeholder": "UklGRoIAAABXRUJQVlA4IHYAAABwAgCdASoLAAwAAsBIJbACdLoAEJkZcIiUnFAAAP7xo6hunMEknvoQ6imwMZPdcis0a0eYOnW2+daRa6ZTCrgUXo/7rQBsJrB9YAM6OnMx5gdMxeK3+2WfHmUf9h00mVzfKL6q0IH4tIJRRpHN5+Yi7m/aIAAA"
     },
     "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/23e1285fa9989faa7c619344d855338d2fcba11b11339ceed7a24d53b672b21f/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -28691,13 +28691,13 @@
       "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoMAAcAAsBIJbACdADhc+TlEgAA/vWQG3erMCamjgjViy5Un432fy1leLf9EgzqQeFbQej9AqA/JVucCCK89SIXidlUMnjypiwAAA=="
     },
     "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/2c08b77b1738ab653c595062e86d0cede8661acff09f5b48f935d20715edccb6/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "2c08b77b1738ab653c595062e86d0cede8661acff09f5b48f935d20715edccb6",
-      "bytes": 72938,
+      "key": "artwork/1cf50047b1d01ec4bc50bba4c2374388bca6c83d7b6e7fceab4e9f05f8265c3d/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "1cf50047b1d01ec4bc50bba4c2374388bca6c83d7b6e7fceab4e9f05f8265c3d",
+      "bytes": 72894,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAABQAgCdASoJAAwAAsBIJbACdDBKwZkNwzeRHHAA/vM5u+xePwWs7ESSrT9zr8FfpUFTWHw65FnnUpnoJ9gRjaVvZcS4qOmkJSv34/hr9p89i6jv/in/iaqbnhynTZfvl8WcT5IcFnevOgAA"
+      "height": 887,
+      "placeholder": "UklGRpIAAABXRUJQVlA4IIYAAACQAgCdASoMAAwAAsBIJbACdDBJSIrJzvy71qNCfAD+7QnY+FvDnO7zCl7O2OY9/FUoU5TMnUZgEIGekCQk7VsE4b2vpjT7oXYMiYXoouhOCJQE8gfH4Y7WxDGkfzbtq0eTef0yYFwz2UCsf+PwA8JrVzvj3p6mPCRt24OZy0GqI72paEAAAA=="
     },
     "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/ee7bb1dd90c81c336c818f156425d61ee1569f59d55f25b6cc9dbfab06b4ede4/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -28709,13 +28709,13 @@
       "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAwAgCdASoMAAcAAsBIJbACdDBOQUcaW+biYAD++E/ORGUahbU6FyulEpxGmsObx0bOva3jRbo2Bv66BGXOBMC1mAZN7xheP5NgHBjbIp99jaguz13PAAAA"
     },
     "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/2101592283586170579898fc17c54814d69264911be06a6542c1f9f0d17113e7/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "2101592283586170579898fc17c54814d69264911be06a6542c1f9f0d17113e7",
-      "bytes": 70804,
+      "key": "artwork/b4dc9cb11d97a267eb6d68a53111182e1efb5c7a092d448ce8fe50709aee8bc5/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "b4dc9cb11d97a267eb6d68a53111182e1efb5c7a092d448ce8fe50709aee8bc5",
+      "bytes": 70534,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoJAAwAAsBIJbACdAELKb0tDgwAAP7pBolpFAqpYFxbQZyr/yZEajbDZOhMkT+MZn44W74HEQJ/vRHjXG6KYphU5HiIh/kmGuH237i0eJWPysyMjz8PTbfr1af9jW7fmPLIAA=="
+      "height": 1127,
+      "placeholder": "UklGRooAAABXRUJQVlA4IH4AAADQAgCdASoKAAwAAsBIJbACdLoAyv8WrTk0g/tPvBVAAP7shVeYUnjblf/pqeme8OD7BjgjHAan6TqNMktjyFffZgNkRkbXtKl8quh+4yb9SpAgmbE8RyP7VQ3ilr4xpE1z1Ce+/TQp+XiTIlWzuu/hJ+/+X/PbN8kHW1l4AAA="
     },
     "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/06d3d64c17a9b992b12f12b882876890bd82626903fe322bc4528c13610bdba6/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -28727,36 +28727,36 @@
       "placeholder": "UklGRmYAAABXRUJQVlA4IFoAAAAwAgCdASoMAAcAAsBIJbACdEyAAeN4LpAwAAD+9C7H5ksuJvWJ1XSg+S/OmodVNRbMczKBWUFifHq5QKEZTwN91/unX/fwRW7N9rtD/UB7n0BWs//4rB/HgAA="
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/caea1f5907379202097627100bafbf9e349425f57019f23f75814bd2370c7be4/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "caea1f5907379202097627100bafbf9e349425f57019f23f75814bd2370c7be4",
-      "bytes": 18312,
+      "key": "artwork/18494fa87a363e34b4bf58ca1a5c40bf6c7c14394934e20abb3f56c5bbd1afa4/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "18494fa87a363e34b4bf58ca1a5c40bf6c7c14394934e20abb3f56c5bbd1afa4",
+      "bytes": 19226,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 331
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/2eba54484a9449eabcbf627e9dd59b3502d2d1b2b435d33ddcc86b6517840644/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "2eba54484a9449eabcbf627e9dd59b3502d2d1b2b435d33ddcc86b6517840644",
-      "bytes": 42772,
+      "key": "artwork/e0bc04bbae620da81e033448c69ec24a5a9f1199fbf09bd6f0078688a62f2dad/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "e0bc04bbae620da81e033448c69ec24a5a9f1199fbf09bd6f0078688a62f2dad",
+      "bytes": 47050,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 663
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/7628035315770a83613e8b70262dbfbb9cc03f045a00749c69ed4cf7c9c39d07/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "7628035315770a83613e8b70262dbfbb9cc03f045a00749c69ed4cf7c9c39d07",
-      "bytes": 16894,
+      "key": "artwork/53ed6f4bfe9fc96c5f6b4fc2ada6d9520d629da9daeb62e290d35ba9f9d02843/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "53ed6f4bfe9fc96c5f6b4fc2ada6d9520d629da9daeb62e290d35ba9f9d02843",
+      "bytes": 17482,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 361
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/3c5a4aa5a80487ce34ffbd9d178d23597b0bea140ffccb8b8bf21463b179f4ff/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "3c5a4aa5a80487ce34ffbd9d178d23597b0bea140ffccb8b8bf21463b179f4ff",
-      "bytes": 37378,
+      "key": "artwork/c091eb699946d66df93e52333c164e71a4b502d28e8e166e44057f1a7a8f093b/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "c091eb699946d66df93e52333c164e71a4b502d28e8e166e44057f1a7a8f093b",
+      "bytes": 41160,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 721
     },
     "/launcher/responsive/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/bc73a2837f85a12b81f27320e7c932c448d1b6721fe4ae60b389173619ebe3c4/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -28775,52 +28775,52 @@
       "height": 853
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/a325e7ed1dc372de2acb4fb9764e4f0a3716df91712c969e99b86b4786c1eb6a/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "a325e7ed1dc372de2acb4fb9764e4f0a3716df91712c969e99b86b4786c1eb6a",
-      "bytes": 17636,
+      "key": "artwork/ef3df856f35865db8177522ae23254f635fc9794a9fd94963ccc4eb928ad1ee8/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "ef3df856f35865db8177522ae23254f635fc9794a9fd94963ccc4eb928ad1ee8",
+      "bytes": 18534,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 315
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/24f01c1c277cd0b571b8c88756b447e506555aab29ddd82f49865776a7f09cc3/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "24f01c1c277cd0b571b8c88756b447e506555aab29ddd82f49865776a7f09cc3",
-      "bytes": 41874,
+      "key": "artwork/b09d55473b1e9aaaa3196afdd12ee475715541f4fe560ac11f2c69d01531ddf8/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "b09d55473b1e9aaaa3196afdd12ee475715541f4fe560ac11f2c69d01531ddf8",
+      "bytes": 46416,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 631
     },
     "/launcher/responsive/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/20f2e887c323b59760b3644b43ed698f15f689637fa6035d832f571f1befba6b/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "20f2e887c323b59760b3644b43ed698f15f689637fa6035d832f571f1befba6b",
-      "bytes": 19254,
+      "key": "artwork/4a923ed39725a74e5af62eecbdc39138142b094cd1251df90e33b361a3f6c643/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "4a923ed39725a74e5af62eecbdc39138142b094cd1251df90e33b361a3f6c643",
+      "bytes": 20128,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 401
     },
     "/launcher/responsive/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/6de20fab8755c832cbd45382a07f6fb3cdd09a53b54728d48fc996ca7edc552d/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "6de20fab8755c832cbd45382a07f6fb3cdd09a53b54728d48fc996ca7edc552d",
-      "bytes": 42642,
+      "key": "artwork/0bdaa794761e6040df6ff8c4db4a505f9fe100bb5d28139f8913df581269af9a/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "0bdaa794761e6040df6ff8c4db4a505f9fe100bb5d28139f8913df581269af9a",
+      "bytes": 46842,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 801
     },
     "/launcher/optimized/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.avif": {
-      "key": "artwork/8139531337b7f49cbbb8d28821f2b5a61071e4c3aa44a69eb913a7f87f148901/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.avif",
-      "sha256": "8139531337b7f49cbbb8d28821f2b5a61071e4c3aa44a69eb913a7f87f148901",
-      "bytes": 52574,
+      "key": "artwork/9edb63e5b52cf6f5e08bf764730a6c75c382145785dd8753a72b545b2d6b3d89/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.avif",
+      "sha256": "9edb63e5b52cf6f5e08bf764730a6c75c382145785dd8753a72b545b2d6b3d89",
+      "bytes": 53871,
       "contentType": "image/avif",
       "width": 900,
-      "height": 1200
+      "height": 932
     },
     "/launcher/optimized/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.avif": {
-      "key": "artwork/ac54f839113198fbe474d27b00171bf2fe0bacf248f303e0c2a1ea7c495fbe67/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.avif",
-      "sha256": "ac54f839113198fbe474d27b00171bf2fe0bacf248f303e0c2a1ea7c495fbe67",
-      "bytes": 46499,
+      "key": "artwork/e75ed4c3f4ec787246966d6c4f7c09554f86e3fed4407040fc6b9fa76ff06aa3/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.avif",
+      "sha256": "e75ed4c3f4ec787246966d6c4f7c09554f86e3fed4407040fc6b9fa76ff06aa3",
+      "bytes": 44690,
       "contentType": "image/avif",
       "width": 900,
-      "height": 1200
+      "height": 1014
     },
     "/launcher/optimized/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover.avif": {
       "key": "artwork/1a7ba99bd0825059cffa9145708f8b1eac4ccca8c121f69d990bde49d8685af5/blues-art-time-activities-scummweb-generated-2026-11-07-r1-cover.avif",
@@ -28831,44 +28831,44 @@
       "height": 1200
     },
     "/launcher/optimized/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.avif": {
-      "key": "artwork/ed3274f9ece86f3cd5d0bdf5ade0532eafc5f7e9c209872ba7a70b62beddeab6/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.avif",
-      "sha256": "ed3274f9ece86f3cd5d0bdf5ade0532eafc5f7e9c209872ba7a70b62beddeab6",
-      "bytes": 55435,
+      "key": "artwork/796d3e7ccb992e11f4fc831b1cf5acb6b48f7fc18ff0e7585e3e03b8ffa3d7a2/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.avif",
+      "sha256": "796d3e7ccb992e11f4fc831b1cf5acb6b48f7fc18ff0e7585e3e03b8ffa3d7a2",
+      "bytes": 59149,
       "contentType": "image/avif",
       "width": 900,
-      "height": 1200
+      "height": 887
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif": {
-      "key": "artwork/1e72cf162f3b7ad79606cbef5232e5d7703967dd3abb7ed89b4eb3d1db8a645e/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif",
-      "sha256": "1e72cf162f3b7ad79606cbef5232e5d7703967dd3abb7ed89b4eb3d1db8a645e",
-      "bytes": 14442,
+      "key": "artwork/052aeafd3bf61fcec0f2ef61512c7a24617873ec52218d2a101c0ca25c323ca6/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif",
+      "sha256": "052aeafd3bf61fcec0f2ef61512c7a24617873ec52218d2a101c0ca25c323ca6",
+      "bytes": 15572,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 331
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif": {
-      "key": "artwork/41b4043db2282afdf0f62de039b010f41a2aa7f8d9575f6433f4d6f16bc6ddc8/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif",
-      "sha256": "41b4043db2282afdf0f62de039b010f41a2aa7f8d9575f6433f4d6f16bc6ddc8",
-      "bytes": 23706,
+      "key": "artwork/30e2bb7de3c5454ae78e3d5c9679c6bc084600e32ce720d857bb570a369dc5f7/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif",
+      "sha256": "30e2bb7de3c5454ae78e3d5c9679c6bc084600e32ce720d857bb570a369dc5f7",
+      "bytes": 25437,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 497
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/2d62c08fc9328cfbc458c36cfd316dbe6210ec02edfd41ac8d39a57b78d0cfc1/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "2d62c08fc9328cfbc458c36cfd316dbe6210ec02edfd41ac8d39a57b78d0cfc1",
-      "bytes": 30652,
+      "key": "artwork/6a503d1735f65d1e7778599cbeb93339288e6adeb224b8ca4b16826f7b6e73ae/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "6a503d1735f65d1e7778599cbeb93339288e6adeb224b8ca4b16826f7b6e73ae",
+      "bytes": 32578,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 497
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif": {
-      "key": "artwork/94117f1df3c8770049bc1129430412c87984329b5db2c3738ed0922f65d3f0c8/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif",
-      "sha256": "94117f1df3c8770049bc1129430412c87984329b5db2c3738ed0922f65d3f0c8",
-      "bytes": 33787,
+      "key": "artwork/7858a83ca23afac4536d48e76fe0ddbed5c5817896a6a33911adec94abf40feb/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif",
+      "sha256": "7858a83ca23afac4536d48e76fe0ddbed5c5817896a6a33911adec94abf40feb",
+      "bytes": 35767,
       "contentType": "image/avif",
       "width": 640,
-      "height": 853
+      "height": 663
     },
     "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/04d00d0cba18f36faf8d92e38fa59bfc42cc5faa8f1fe8f8647c374ed8e155f2/blues-123-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -28895,36 +28895,36 @@
       "height": 576
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif": {
-      "key": "artwork/130f1d2b4756ad308f110e1c45369659f7e1e13b2ab7e4a106d560beee8b4bc9/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif",
-      "sha256": "130f1d2b4756ad308f110e1c45369659f7e1e13b2ab7e4a106d560beee8b4bc9",
-      "bytes": 13164,
+      "key": "artwork/2ad0aba980e2eaa3b2a22f2fec5a6f7f0ca71c5bfbffe87f623ddd8829369fb4/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.avif",
+      "sha256": "2ad0aba980e2eaa3b2a22f2fec5a6f7f0ca71c5bfbffe87f623ddd8829369fb4",
+      "bytes": 14296,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 361
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif": {
-      "key": "artwork/afc044013c8c4b1431ea9db534218e5e0c1598126eb1b2c5058292ee6faa775f/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif",
-      "sha256": "afc044013c8c4b1431ea9db534218e5e0c1598126eb1b2c5058292ee6faa775f",
-      "bytes": 21711,
+      "key": "artwork/5eec300a9b4a9816948addecd8300faa34617aade827393c0693199d82a99ffa/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.avif",
+      "sha256": "5eec300a9b4a9816948addecd8300faa34617aade827393c0693199d82a99ffa",
+      "bytes": 22685,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 541
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/aa527dc2b9546b9dbfd9c082d2e39ede5865bc03bfea03ce9177c0b3c1d243fc/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "aa527dc2b9546b9dbfd9c082d2e39ede5865bc03bfea03ce9177c0b3c1d243fc",
-      "bytes": 27156,
+      "key": "artwork/8da8ce7e24a8ed6cc7fddd1bd8666aa578ad1a9b7f4979e3295160d8b35c4fa5/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "8da8ce7e24a8ed6cc7fddd1bd8666aa578ad1a9b7f4979e3295160d8b35c4fa5",
+      "bytes": 28824,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 541
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif": {
-      "key": "artwork/f024c9bc01105d84ec439ffc4866e5eb254c534ee985cfaa0970b7f3fcdb8c86/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif",
-      "sha256": "f024c9bc01105d84ec439ffc4866e5eb254c534ee985cfaa0970b7f3fcdb8c86",
-      "bytes": 29393,
+      "key": "artwork/1d36c07fcbe503bf497da4419afd312b511322179b202f5aa59ec497c2dfd561/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-640.avif",
+      "sha256": "1d36c07fcbe503bf497da4419afd312b511322179b202f5aa59ec497c2dfd561",
+      "bytes": 30609,
       "contentType": "image/avif",
       "width": 640,
-      "height": 853
+      "height": 721
     },
     "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/51f0bbba6ae49a6960c80dec74899a401b7967d4a3562d894a7520076ae9700e/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -29007,36 +29007,36 @@
       "height": 576
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.avif": {
-      "key": "artwork/04624d8574cc58eba23426e38b9962edf6413b2dd58c40f034126ebc564c451e/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.avif",
-      "sha256": "04624d8574cc58eba23426e38b9962edf6413b2dd58c40f034126ebc564c451e",
-      "bytes": 14977,
+      "key": "artwork/93597439781170622c6cef32e143c902ee0ec7291c52ba347a7d4fb2a55fb04e/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.avif",
+      "sha256": "93597439781170622c6cef32e143c902ee0ec7291c52ba347a7d4fb2a55fb04e",
+      "bytes": 15836,
       "contentType": "image/avif",
       "width": 320,
-      "height": 427
+      "height": 315
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.avif": {
-      "key": "artwork/c3ff27570478f1676542a0edb965adeb25df01fca453f87d50019104a415f0fe/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.avif",
-      "sha256": "c3ff27570478f1676542a0edb965adeb25df01fca453f87d50019104a415f0fe",
-      "bytes": 25576,
+      "key": "artwork/720c2012bcc3c15788028d9835b791ff3e4c5f6405ed20596819188105be9d2e/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.avif",
+      "sha256": "720c2012bcc3c15788028d9835b791ff3e4c5f6405ed20596819188105be9d2e",
+      "bytes": 26162,
       "contentType": "image/avif",
       "width": 480,
-      "height": 640
+      "height": 473
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/1f5c5f1091eb536682d36cf3ac1da74f2a9351d6eccd61614946d57dce967d54/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "1f5c5f1091eb536682d36cf3ac1da74f2a9351d6eccd61614946d57dce967d54",
-      "bytes": 29738,
+      "key": "artwork/e791e83d81c95d80180f0c41d5040c75a2258fea3d2b03f723e0a5b7b4d70736/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "e791e83d81c95d80180f0c41d5040c75a2258fea3d2b03f723e0a5b7b4d70736",
+      "bytes": 31680,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 473
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.avif": {
-      "key": "artwork/67b439647ed78c8e054c9a0b6d63df2fdca68a40d7896d84205a56c5a32a6783/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.avif",
-      "sha256": "67b439647ed78c8e054c9a0b6d63df2fdca68a40d7896d84205a56c5a32a6783",
-      "bytes": 35123,
+      "key": "artwork/0155e1a15fb3644e4b2cbdb91ec7523d8419dd90e6aa6bb9200b34b2b37509bc/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-640.avif",
+      "sha256": "0155e1a15fb3644e4b2cbdb91ec7523d8419dd90e6aa6bb9200b34b2b37509bc",
+      "bytes": 38595,
       "contentType": "image/avif",
       "width": 640,
-      "height": 853
+      "height": 631
     },
     "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/43eef610e29f4c1a93402d8de3f2a2b922b0fac4e7307a5ab509615e73118c46/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -29063,12 +29063,12 @@
       "height": 576
     },
     "/launcher/responsive/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/3cb591a4d9e142b21412c026fcf84b80812488493167488d43d7b6ab642b51f5/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "3cb591a4d9e142b21412c026fcf84b80812488493167488d43d7b6ab642b51f5",
-      "bytes": 30972,
+      "key": "artwork/152c062598f7de5a1adbf9fbef275079d4f354bef964a513ff75384b99ce0061/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "152c062598f7de5a1adbf9fbef275079d4f354bef964a513ff75384b99ce0061",
+      "bytes": 33178,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 601
     },
     "/launcher/responsive/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/5adc19d8c189495b8fe896566ff07b943113d23136e5e4beea646924bc25cb9c/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -29443,13 +29443,13 @@
       "placeholder": "UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoMAAcAAsBIJZgCdADc+O4GwAD++RhTEw6Jeo7jJX/RMC1qSijqKqyDNTVcPqVTHzB3MRyhBEydjCd878PDAAAA"
     },
     "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/e417a91a1b51c3713b43f1bf33c0e785165fd0604923e2e7e317c324db422dd6/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "e417a91a1b51c3713b43f1bf33c0e785165fd0604923e2e7e317c324db422dd6",
-      "bytes": 167560,
+      "key": "artwork/aa05883a87c3b3e68002b8a621b91b22911ddbdc6f04b536f610dfbd5ff161df/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "aa05883a87c3b3e68002b8a621b91b22911ddbdc6f04b536f610dfbd5ff161df",
+      "bytes": 167284,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmwAAABXRUJQVlA4IGAAAADwAQCdASoJAAwAAsBIJbACdADcpNKD8CAA/un/S/wyoNitzg8DH3JUQhW0vs51D6zk0zZLy/9Xj76MxW86YyqBIArgQx5B8wM+aE4T+hz3s27wajwtgg3Y3z1tUnzAAAA="
+      "height": 1008,
+      "placeholder": "UklGRogAAABXRUJQVlA4IHwAAABQAgCdASoLAAwAAsBIJbACdDBSQZBaOivY4twA/uZvcvjyC4297iOswtB02LsYvIS4yZzqHJqQld6J666sPblUPwT4arybGGtqwxqHqwTBKlVRt/MnccH8f5t9Ga9pNu/FIBGtRHtszaeg+a+K4ch8XTO5v1afg2ZRYAAA"
     },
     "/launcher/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/ef1abf75eddd8a8772bc1793386d514024b85fd848793599d77d48c6961133ba/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -29479,13 +29479,13 @@
       "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoMAAcAAsBIJbACdDBKwZ0u4rqOwAD+9DE6P0WlOrfQhReBLqYP+Bci8peN4S4+W/5cReAonQzxoFNsllv+xfZjrtBA//PVOgAAAA=="
     },
     "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/2800e9d58bd343b19123ab6050ed7e75e9af7d04daaf17765f13326d83f22127/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "2800e9d58bd343b19123ab6050ed7e75e9af7d04daaf17765f13326d83f22127",
-      "bytes": 122980,
+      "key": "artwork/5868ba592cfcd50845c6401ef299661f33853700db8dbf2c810c0f71c16d96b0/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "5868ba592cfcd50845c6401ef299661f33853700db8dbf2c810c0f71c16d96b0",
+      "bytes": 122636,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAAAQAgCdASoJAAwAAsBIJbACdDBLQYsPXJzgAPiyzpusUM59atieDDrIQdos0vFiZ3noI3T0AzO6A2H8ABVflv8C2pP3sMe86HqLno01heHHLL/sxkCt3/Wjba5LfZAP83wAAA=="
+      "height": 998,
+      "placeholder": "UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoLAAwAAsBIJbACdAYvXwS/6nJ+VHIAziMIm1yG5cdYw6dsk9NlnOI7e/Lol228qLGK5fnC9wL28wB1aU6+A4jyDVvjG/TtkOWJ0lYkviuW+qv2fYOsGH8SdoY9+cxzqddn/frfLEuWRIAA"
     },
     "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/f8f8f6498325decb0ec301e9e3dedfdb699a948d8e7a905af4f14cbaed91d907/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -29497,29 +29497,29 @@
       "placeholder": "UklGRmoAAABXRUJQVlA4IF4AAABwAgCdASoMAAcAAsBIJbACdLoAEIwZCi8PurrQAP72kv5MtZgKXiiQbZN5D/xGcRAX+VmNjxdsiXyIRNj92gOtbo1Lr5fwe53yJN8Z6//k3/OLTE8+sCw0CJODAAAA"
     },
     "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/18e1f3aa45eebec533ddc280e7f0bb2895aed42abaf4cb7806a9340235afe773/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "18e1f3aa45eebec533ddc280e7f0bb2895aed42abaf4cb7806a9340235afe773",
-      "bytes": 121850,
+      "key": "artwork/087999fd09df1d3e671a11bc6da324f9c5142945c27bafb6c09e77c7618a2918/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "087999fd09df1d3e671a11bc6da324f9c5142945c27bafb6c09e77c7618a2918",
+      "bytes": 121204,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRoAAAABXRUJQVlA4IHQAAACQAgCdASoJAAwAAsBIJbACdEfqi1qsmPeOcG1nAAD+yqbs0zHM5TJFnvy1yAYkrzyLpmRFr/IpJnt8YATcdmASRDcvSlv5dYnFGvcpM+oBinVHd7Kpf/icYin5RzQ/xbIe9v2PkmLGhnN8De+SB0a98SWWAA=="
+      "height": 1033,
+      "placeholder": "UklGRoQAAABXRUJQVlA4IHgAAACwAgCdASoKAAwAAsBIJbACdDBUSIoLKaJk+0Cm5AAA+XwCVgdrbwwlOrkTggRvsF2q6BMHkTEf2XL08dlYnvZu1gdFR+vhJ1NwTQ/Je0RBa2k+xHtY/Rpiw/8Qi77nWuH/SW9u/9h5U3c/U2mleba4PztkAVsAAAA="
     },
     "/launcher/responsive/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/1e91a8e12437331a755f901cf43ee42ca3b1afcb82e4698705e9b6213011e3a4/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "1e91a8e12437331a755f901cf43ee42ca3b1afcb82e4698705e9b6213011e3a4",
-      "bytes": 33714,
+      "key": "artwork/5c2f2d9f5826508927f088891e3674b240a50d05636fbe3fed2a3fa7bbce3255/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "5c2f2d9f5826508927f088891e3674b240a50d05636fbe3fed2a3fa7bbce3255",
+      "bytes": 36180,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 358
     },
     "/launcher/responsive/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/936e1ceaced8912c3c5f88a2f27f15b343e8461c8d4dfd12f1c4441edcede083/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "936e1ceaced8912c3c5f88a2f27f15b343e8461c8d4dfd12f1c4441edcede083",
-      "bytes": 92826,
+      "key": "artwork/6ce5dc6dfc040a9ec722477bdddada75c6fc2f7840539a3f8186b623bb3ab8d3/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "6ce5dc6dfc040a9ec722477bdddada75c6fc2f7840539a3f8186b623bb3ab8d3",
+      "bytes": 104166,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 717
     },
     "/launcher/responsive/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/d6ab48d5588ee0388b2ca643d85a181f78234b828c07f0311d46ea908436e8a1/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -29538,36 +29538,36 @@
       "height": 853
     },
     "/launcher/responsive/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/4bcf55efed159fb63c0dc76601df083592a4898ba4ea1aee7edea5c870a6b532/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "4bcf55efed159fb63c0dc76601df083592a4898ba4ea1aee7edea5c870a6b532",
-      "bytes": 29402,
+      "key": "artwork/b3f632cb95b0eccecabf0f8091798ab67178ab3109a9f3ef5fcb1bbb759001c5/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "b3f632cb95b0eccecabf0f8091798ab67178ab3109a9f3ef5fcb1bbb759001c5",
+      "bytes": 30964,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 355
     },
     "/launcher/responsive/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/8c2cb8cf056c87d500430c9e98a71123b5287bfef3739736fc4699a008cffb6b/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "8c2cb8cf056c87d500430c9e98a71123b5287bfef3739736fc4699a008cffb6b",
-      "bytes": 71692,
+      "key": "artwork/e34ce7db481aa0293290146fbc9907fffdbfb39e941076212e85ce5bdf268e13/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "e34ce7db481aa0293290146fbc9907fffdbfb39e941076212e85ce5bdf268e13",
+      "bytes": 79204,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 710
     },
     "/launcher/responsive/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/0d435cadded0fcf84540e84ee6b2565bc3897bb78faaf73cc1d6239e85ef798f/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "0d435cadded0fcf84540e84ee6b2565bc3897bb78faaf73cc1d6239e85ef798f",
-      "bytes": 29698,
+      "key": "artwork/db4d74f7a33e26e7305624566c294bf145cf8f774ac96a7297024fd3d56adbea/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "db4d74f7a33e26e7305624566c294bf145cf8f774ac96a7297024fd3d56adbea",
+      "bytes": 31674,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 367
     },
     "/launcher/responsive/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/a5b191c285ff4693bf2872c14f2d4cb39af657a00b98faa91087ef6b5ff7c6d8/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "a5b191c285ff4693bf2872c14f2d4cb39af657a00b98faa91087ef6b5ff7c6d8",
-      "bytes": 71820,
+      "key": "artwork/cdf31d912fd6ecac4d232afd83d321ce768c73076bb1471c2a47d6bd58fe4c82/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "cdf31d912fd6ecac4d232afd83d321ce768c73076bb1471c2a47d6bd58fe4c82",
+      "bytes": 79696,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 735
     },
     "/launcher/optimized/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r1-hero.avif": {
       "key": "artwork/7a61d7c25d815fc2a175ecf1071591b4a5655fe0982bf990f7bc371592c929ab/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r1-hero.avif",
@@ -29634,12 +29634,12 @@
       "height": 576
     },
     "/launcher/responsive/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/b8fe9f5f7f3175243e7d9f71d101ee6fc861eb450b41248b4e7c5a0cd368e328/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "b8fe9f5f7f3175243e7d9f71d101ee6fc861eb450b41248b4e7c5a0cd368e328",
-      "bytes": 62122,
+      "key": "artwork/0b2c3dc9193b8ce2ac99fb6207986377fd7ea649a64751a5642d9c1df3ada8e6/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "0b2c3dc9193b8ce2ac99fb6207986377fd7ea649a64751a5642d9c1df3ada8e6",
+      "bytes": 67708,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 538
     },
     "/launcher/responsive/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover-480.webp": {
       "key": "artwork/49db5b183ccaf676eb597415bf121904a22b789f29e82cb52ac1e100b5156eca/fatty-bears-funpack-scummweb-generated-2026-11-07-r1-cover-480.webp",
@@ -29722,12 +29722,12 @@
       "height": 576
     },
     "/launcher/responsive/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/6a99779804b47999a89b6c77d9d0ddcb94d0f81c2c9fee098b21c2c4255baa3e/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "6a99779804b47999a89b6c77d9d0ddcb94d0f81c2c9fee098b21c2c4255baa3e",
-      "bytes": 50078,
+      "key": "artwork/2acd8cb119eb958038c49b5d9eec367a6389c901eb0f7e153bed6a50ada495ea/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "2acd8cb119eb958038c49b5d9eec367a6389c901eb0f7e153bed6a50ada495ea",
+      "bytes": 54512,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 532
     },
     "/launcher/responsive/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/33561a74263bf27d4d5c32dd90a5a71844c7726b8a57b8bb28a508d35f91c3dd/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -29778,12 +29778,12 @@
       "height": 576
     },
     "/launcher/responsive/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/6940c9a43784820d2b7cdd47dba3079f16e829dd794e115d72688e9dc4d9365d/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "6940c9a43784820d2b7cdd47dba3079f16e829dd794e115d72688e9dc4d9365d",
-      "bytes": 50366,
+      "key": "artwork/7cf8c4a5f87a056fd9222d1abb84a08644560032652aea8b7e11875f0ddba97f/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "7cf8c4a5f87a056fd9222d1abb84a08644560032652aea8b7e11875f0ddba97f",
+      "bytes": 54778,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 551
     },
     "/launcher/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/06b54a0cf8bb9647e4f3021d4cd127eaed1b3739e1570baafabc53e8380ef001/green-eggs-and-ham-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -29804,13 +29804,13 @@
       "placeholder": "UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoMAAcAAsBIJbACdAD0uUJXIBgA/vpk5SWQTQo0vC05+sNjfQFSNtLXZBZIXUD8kHLYfda/JWyT+d1Z/LyVI/AA"
     },
     "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/315066db2e53803b3e74c094e84f49e0fa13f73c7b56f85cd37b12507098e494/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "315066db2e53803b3e74c094e84f49e0fa13f73c7b56f85cd37b12507098e494",
-      "bytes": 145002,
+      "key": "artwork/0f9b42c6162eba254914d8d7c0fc4de543e41398eb1a4b20fc6d1eec6d7c9f75/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "0f9b42c6162eba254914d8d7c0fc4de543e41398eb1a4b20fc6d1eec6d7c9f75",
+      "bytes": 146012,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAABwAgCdASoJAAwAAsBIJbACdFQA5/8D0O59GiAAAP7Xn7OgIgYz3Y0b8rLsb1wLOW0cVC0xwl6x/1cSHaoNtiNTGI83/90Xi1T+HVf+R6VWflyC4qbWur9bKannvZ6j/ZFoAA=="
+      "height": 1008,
+      "placeholder": "UklGRnAAAABXRUJQVlA4IGQAAABwAgCdASoLAAwAAsBIJbACdLoAAw0tQ7zf6jAAAP4HVNd9h5sINAcJzptHUQHRvNfOcIokTBxzH3KZMQXTRJ8mcsheTLJf4uv+W3wu4V5WOTMYBM2CqBv7V2z/3BTFv8H1NAAA"
     },
     "/launcher/mission-asteroid-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/83d26de6b80c846135ddb6ae6d2e5fde2a1f1a6d31e94a0cda2a816cbc0c7c70/mission-asteroid-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -29831,20 +29831,20 @@
       "placeholder": "UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoJAAwAAsBIJZQC7AELZSI4sZYgAP75YsfUVuOKyrEZ8ve7AHs3oWrgQo/I+JCzUHvG8Y2DpfyStB7AAAA="
     },
     "/launcher/responsive/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/5472cdf6cd286dcdf05d4b3b06b699d1c7bec7e5852e4dbda7ed30bd81d35ff1/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "5472cdf6cd286dcdf05d4b3b06b699d1c7bec7e5852e4dbda7ed30bd81d35ff1",
-      "bytes": 32648,
+      "key": "artwork/367fdf537c1a9d0dfd6060cfe0ce804cb914d208f51a7d4608cfa5ad6859ea3a/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "367fdf537c1a9d0dfd6060cfe0ce804cb914d208f51a7d4608cfa5ad6859ea3a",
+      "bytes": 35618,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 358
     },
     "/launcher/responsive/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/4f86016e679dfa9cddc43b30fdcac3b24b8421eed6f042eec147a5d2f00633f8/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "4f86016e679dfa9cddc43b30fdcac3b24b8421eed6f042eec147a5d2f00633f8",
-      "bytes": 84720,
+      "key": "artwork/10b35447bbc3bf672cbbe2bb783b3e382289616b3999569df976a7645b169430/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "10b35447bbc3bf672cbbe2bb783b3e382289616b3999569df976a7645b169430",
+      "bytes": 95356,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 717
     },
     "/launcher/responsive/mission-asteroid-scummweb-generated-2026-11-07-r2-cover-320.webp": {
       "key": "artwork/c933d7868f50fe8823b9af42964fe4d6897e5330fa33ef3f03161aa63d72f2c2/mission-asteroid-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -30051,12 +30051,12 @@
       "height": 576
     },
     "/launcher/responsive/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/f1f599b5cd6a9a488167d7be83c00f5a32e105c2c35b3b27eec0f8949a52179b/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "f1f599b5cd6a9a488167d7be83c00f5a32e105c2c35b3b27eec0f8949a52179b",
-      "bytes": 58226,
+      "key": "artwork/346ed58b95c7e7fd8e09b0dcc825735cf4b2f6a797499562895aef6db0b8caae/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "346ed58b95c7e7fd8e09b0dcc825735cf4b2f6a797499562895aef6db0b8caae",
+      "bytes": 64442,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 538
     },
     "/launcher/responsive/mission-asteroid-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/376081a3ca4150e344d667a3103174213a3de46ecab4985c4c1220ba0dbba593/mission-asteroid-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -30233,13 +30233,13 @@
       "placeholder": "UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoMAAcAAsBIJYgCdH8AFcqD+SY2AP73u9GcxgZLZ7anBRW3nzRe7eL/ZH6qSCRF/8AdvY9+DRk7GgaHFolCFuZjf2QFAAAA"
     },
     "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/7c8583cd46c230f8d99cb8478b86f9e2a05ddf11a2b553ed77a7ba798d555254/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "7c8583cd46c230f8d99cb8478b86f9e2a05ddf11a2b553ed77a7ba798d555254",
-      "bytes": 148458,
+      "key": "artwork/0e2af9b63a32190d741ec124bac6cb9543ed987b9e187564ec7e1d5ca9626f68/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "0e2af9b63a32190d741ec124bac6cb9543ed987b9e187564ec7e1d5ca9626f68",
+      "bytes": 149744,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmgAAABXRUJQVlA4IFwAAAAQAgCdASoJAAwAAsBIJbACdAYtB279kI14AP73HzudMG/PX2r6+KlF62PaCsgk56pl5v0/LYu38ao0C0BaD1E8NKRk9CgpZnG7HwflrWW28SCSV8gXj8MU2dAAAA=="
+      "height": 1031,
+      "placeholder": "UklGRngAAABXRUJQVlA4IGwAAABQAgCdASoKAAwAAsBIJbACdEf/geFehzOzxEAA/vOMPHCSW1rgPGdxtXiAF507TAdBv5lWDKj3D+ka/FCFjKxdXC6CLDCnJL9DobkpWKYGjfSCMnKzefv/l7nl+A3g3NNeHz7DJhEb+KuAAAA="
     },
     "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/aa80f43c55367115de8d66f8f8c84334ca234dcf0b4d368e19e7648d22d5cb68/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -30299,20 +30299,20 @@
       "height": 853
     },
     "/launcher/responsive/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/2823e111fc8a5fea382ef5cc630fd353c4ef3ce20a735b0c5017b836a8d40622/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "2823e111fc8a5fea382ef5cc630fd353c4ef3ce20a735b0c5017b836a8d40622",
-      "bytes": 28676,
+      "key": "artwork/147ce22a39db3575bf785926d03006c1d85bed6e9534bcfde1eff81c633d8baf/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "147ce22a39db3575bf785926d03006c1d85bed6e9534bcfde1eff81c633d8baf",
+      "bytes": 29512,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 367
     },
     "/launcher/responsive/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/7db8b3f8bd52737fba95c999ceeb2223550c2ace76cc3223aa88bb3b3911139f/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "7db8b3f8bd52737fba95c999ceeb2223550c2ace76cc3223aa88bb3b3911139f",
-      "bytes": 79114,
+      "key": "artwork/99138fb432305611bfdf853c9be4086aa388b800795f304bc39f48bf664f90a7/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "99138fb432305611bfdf853c9be4086aa388b800795f304bc39f48bf664f90a7",
+      "bytes": 87554,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 733
     },
     "/launcher/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/51785ce2ed5e9df54c35347fb9f6c428e7ee1e27a04ff0ea59517d0992738c2e/the-dark-crystal-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -30492,12 +30492,12 @@
       "height": 576
     },
     "/launcher/responsive/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/373f73e792996e558dd134b595653ccc14192c5e326236fda40d619db68f1b39/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "373f73e792996e558dd134b595653ccc14192c5e326236fda40d619db68f1b39",
-      "bytes": 52396,
+      "key": "artwork/784439b20161bc74e20ccea69490cb24f4329f0adf14becdb3d735e2a752cf97/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "784439b20161bc74e20ccea69490cb24f4329f0adf14becdb3d735e2a752cf97",
+      "bytes": 55896,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 550
     },
     "/launcher/responsive/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/5ac14936184270bace68e75b669f61c2d9b42edfd60e10c2d7991aa5929b6c04/just-grandma-and-me-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -30635,13 +30635,13 @@
       "placeholder": "UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoMAAcAAsBIJbACdADhhe72RogA/ve+laqxsFYjTJwdysPLHVBEVCw7c0RKPupeewLT2QkiQqXWGreU2IAAAA=="
     },
     "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/0993a8975f731c1e9360b2d4dac202a607a19f4c46f0085bf94d5f3034cc1c2d/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "0993a8975f731c1e9360b2d4dac202a607a19f4c46f0085bf94d5f3034cc1c2d",
-      "bytes": 166956,
+      "key": "artwork/1a2f7d72863a1332b6b47265e3832c629227bd8c850a46ce1e8cf4b08d2c8713/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "1a2f7d72863a1332b6b47265e3832c629227bd8c850a46ce1e8cf4b08d2c8713",
+      "bytes": 168656,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnoAAABXRUJQVlA4IG4AAAAwAgCdASoJAAwAAsBIJbACdLoAAwj/rH1CLAD+0g8FTBmcjvZuYXoY2PjHhVxuPx9v+dciRQgjvty+WUkW85yvsnUJi/djzfI8v1fR+0KmaD8m2uZxCfvJyv0++vFn8U9HnaWfNWnu6EMZxMAAAA=="
+      "height": 976,
+      "placeholder": "UklGRnIAAABXRUJQVlA4IGYAAABwAgCdASoLAAwAAsBIJbACdLoAEIuYJHOjKQXYAPwd/PYsNEChph3X9apPsqP5DvBs8H0sEy5fvz5UkmWZZwlLfyK/Vfuz9Qj6WU2KoBpW7fMuo4E+vvrKZql/ACOk/0NiLvX7jAA="
     },
     "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/2caa5abc88a306606420656788c7061636616f5478e04c4ce232d5afc1f803cb/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -30701,20 +30701,20 @@
       "height": 853
     },
     "/launcher/responsive/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/4943af2d3034b4317b7de250f8a51ce29fb8d765e2c1c83bdeabb1116df019e4/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "4943af2d3034b4317b7de250f8a51ce29fb8d765e2c1c83bdeabb1116df019e4",
-      "bytes": 32720,
+      "key": "artwork/661c9bbfb133ee66b2ab3f8fbadbac1e5d0f470aa5ea49f22242245c158c5507/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "661c9bbfb133ee66b2ab3f8fbadbac1e5d0f470aa5ea49f22242245c158c5507",
+      "bytes": 35734,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 347
     },
     "/launcher/responsive/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/1c7b12300b7d8e2bca84c57705f8f9db1219ec621af3f13a547a8accedb24fba/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "1c7b12300b7d8e2bca84c57705f8f9db1219ec621af3f13a547a8accedb24fba",
-      "bytes": 90272,
+      "key": "artwork/2d4af9f09e41f6959c2f7d3d5b97d83df60c54f92ee8a19e3e5dd09a69a33841/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "2d4af9f09e41f6959c2f7d3d5b97d83df60c54f92ee8a19e3e5dd09a69a33841",
+      "bytes": 102118,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 694
     },
     "/launcher/optimized/kings-questions-scummweb-generated-2026-11-07-r1-hero.avif": {
       "key": "artwork/2e000b0dfafd91f2103bb78986c9ae4db1b1daac38383b05b7538fbb8e4da4eb/kings-questions-scummweb-generated-2026-11-07-r1-hero.avif",
@@ -30869,12 +30869,12 @@
       "height": 576
     },
     "/launcher/responsive/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/e5a0c450b03891d78c054f9d7cbc60d412e95400261c7e99f2be6ed9919f779d/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "e5a0c450b03891d78c054f9d7cbc60d412e95400261c7e99f2be6ed9919f779d",
-      "bytes": 61000,
+      "key": "artwork/e1afa55854ad279acb7e6da79ba0d604318543057cee435e8cb6ad8f4ec1c50e/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "e1afa55854ad279acb7e6da79ba0d604318543057cee435e8cb6ad8f4ec1c50e",
+      "bytes": 67228,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 521
     },
     "/launcher/responsive/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/5313abf6da2010623d53a64218a0bbe194d2056ac2a6f7b1a5ec03c1f3c1e914/little-monster-at-school-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -30901,13 +30901,13 @@
       "height": 576
     },
     "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/19f3a033bd4096ff2974e15be09f75144d0bbcad62131d517e4ba997adfbbbe5/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "19f3a033bd4096ff2974e15be09f75144d0bbcad62131d517e4ba997adfbbbe5",
-      "bytes": 167756,
+      "key": "artwork/43634356cd8d9c10f1adddeb33178a913339890528b77f9ccd79692b347f5a2c/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "43634356cd8d9c10f1adddeb33178a913339890528b77f9ccd79692b347f5a2c",
+      "bytes": 167774,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoJAAwAAsBIJbACdAELQhFgAAD+r7qnU6slaL5hWxd+vDJAPnYNM6Nj1/ZNMbDf/8wq8H/+Ghn/YbiFcfRi3ix/scYOmrR3QAA="
+      "height": 1038,
+      "placeholder": "UklGRmgAAABXRUJQVlA4IFwAAADQAQCdASoKAAwAAsBIJbACdADdLo8EGAD+jh3uOfAwL5hFMRe7ZdRBnuRuMfIJwS/YrOT2Ii9gNqtFft/N/8pZHWP2/+qln/guc2ec8f2Bl3PDj7NAKlCe61S8AA=="
     },
     "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/e2a646b1b2494a6d30ed384f262a64d54bbe5eb5390e661d25cc4978c6c1c0c4/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -30937,13 +30937,13 @@
       "placeholder": "UklGRloAAABXRUJQVlA4IE4AAAAwAgCdASoMAAcAAsBIJbACdH8AGTu3JOUFgAD+9u0U/4/1XUitXqC6KwvzvHgLY1X4FR0MWwb4+PLl+TK82fEw/G3m0J4eGFMWI/y3AAA="
     },
     "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/0edaeca39ec3eacfc88a299980c7db7c2f838aff2f076e2bccddfc126b987e2b/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "0edaeca39ec3eacfc88a299980c7db7c2f838aff2f076e2bccddfc126b987e2b",
-      "bytes": 159012,
+      "key": "artwork/ec28c83e170212d6ba7c04d00b58458e4e587bc286e1ae9cf8fd3c18b09501df/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "ec28c83e170212d6ba7c04d00b58458e4e587bc286e1ae9cf8fd3c18b09501df",
+      "bytes": 160076,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoJAAwAAsBIJbACdAYs3vYUd84AAP7Q7LKH+92efcGXmVvaW7f2bFmmZl6DklUXhcqZs5cw3EHeDPTHys5jPIgGd7LX8QkPq/1tocj+mHqLkAAA"
+      "height": 1083,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAAAQAgCdASoKAAwAAsBIJbACdAYplvdUmF4AAP7ASWX9IL9aQ+7XmTvn28uGurayUPuG21MPvye8kH69vTMXUH9EHPcFIHVVQXa3tk83aMd1ha+94A7CUgD/P+J1v4gox+JwAA=="
     },
     "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/0a39b665e96a2171a04ebfb00ad73d894f2311d442228788895acebd9e80ef48/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -30982,20 +30982,20 @@
       "placeholder": "UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoMAAcAAsBIJZACdAEPAoS0NrAA/vnFTo2A4dlh3br37ZIJwsSGohrwBHEdyOwhwQ1HaRDegAA="
     },
     "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/ca8c2bdb077ed6b86b07da515830e5c249a4c3d668bf19fdaaa5eeef6a07a030/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "ca8c2bdb077ed6b86b07da515830e5c249a4c3d668bf19fdaaa5eeef6a07a030",
-      "bytes": 32582,
+      "key": "artwork/c2dcd0bec1a04e8e25211781275bc32ebac7c801754800ccc76d419880062cae/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "c2dcd0bec1a04e8e25211781275bc32ebac7c801754800ccc76d419880062cae",
+      "bytes": 35822,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 369
     },
     "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/631f090c4d30e345596354be7538faf3983a4271b421de0c7493dca32651fa09/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "631f090c4d30e345596354be7538faf3983a4271b421de0c7493dca32651fa09",
-      "bytes": 92760,
+      "key": "artwork/c6916047f117f1792fc33403a531d211495a902450735858bdd857f183b6c6cd/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "c6916047f117f1792fc33403a531d211495a902450735858bdd857f183b6c6cd",
+      "bytes": 105262,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 738
     },
     "/launcher/responsive/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/6b4da6cc45467507cfb1daaed5e40070ccb89559c60b0aa199a4ad5d509ea5d0/mixed-up-fairy-tales-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -31014,20 +31014,20 @@
       "height": 853
     },
     "/launcher/responsive/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/333e69bfd58ce1b16e9753888dedd6e0039a9cfa75d400fcb4cbc2a84ab2ab97/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "333e69bfd58ce1b16e9753888dedd6e0039a9cfa75d400fcb4cbc2a84ab2ab97",
-      "bytes": 29340,
+      "key": "artwork/e116b1ce156323392005ff37504f96cb3420173ae398ef398cdb0c36756519c4/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "e116b1ce156323392005ff37504f96cb3420173ae398ef398cdb0c36756519c4",
+      "bytes": 31064,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 385
     },
     "/launcher/responsive/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/566fe6b3414a530a8d514fc56fef58e911ced3dc60751774e83339415955424a/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "566fe6b3414a530a8d514fc56fef58e911ced3dc60751774e83339415955424a",
-      "bytes": 80498,
+      "key": "artwork/1139c18ce4eaf7ea4a3a34c208937ee3e69f31602c3921806195dcc9ec873658/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "1139c18ce4eaf7ea4a3a34c208937ee3e69f31602c3921806195dcc9ec873658",
+      "bytes": 92636,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 770
     },
     "/launcher/responsive/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/8faec9d2a64e61564cfe2ec762cf77f56d83370581dd5410daccfc745c02af64/mixed-up-mother-goose-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -31054,12 +31054,12 @@
       "height": 960
     },
     "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/cbd0861f8237cb6f571068567baa876906ae5d0bfa15a75afc6e833354e40de2/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "cbd0861f8237cb6f571068567baa876906ae5d0bfa15a75afc6e833354e40de2",
-      "bytes": 61580,
+      "key": "artwork/3b9dee13b24f061853abb654767b82e0106f0ebfe7d008ab6174a2bbd7885659/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "3b9dee13b24f061853abb654767b82e0106f0ebfe7d008ab6174a2bbd7885659",
+      "bytes": 68730,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 554
     },
     "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/6450be746dc313c1445209e5b49dce0cf175edcf397f6efb69f15473a52898ca/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -31118,12 +31118,12 @@
       "height": 576
     },
     "/launcher/responsive/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/e10a97a1c46b3492ed2df87b9e7558ad0a781b804ca51b17ef03807c8bb68554/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "e10a97a1c46b3492ed2df87b9e7558ad0a781b804ca51b17ef03807c8bb68554",
-      "bytes": 53168,
+      "key": "artwork/6683d8152577fd80038e3c18044ac4ec13af2e06f602e6d5dae5f794c02485b9/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "6683d8152577fd80038e3c18044ac4ec13af2e06f602e6d5dae5f794c02485b9",
+      "bytes": 57296,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 578
     },
     "/launcher/responsive/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/65ebda02df0dca3c439d83ade5dea8b6573c91304d7f525aa09f2a7f4e8fbd2d/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -31248,13 +31248,13 @@
       "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAwAgCdASoMAAcAAsBIJbACdH8AGNsI3PF8oAD+94BPvQ+vPHo9+Xs4v5+ZRAmSwjoh1jPQb0UyJghla/JdE9p7t5hC+vHbZiNG/OGu0s885fWF2FEwYAAA"
     },
     "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/af116a208c5f803c066e8f730026c19db8ef012c57edbe2f2b2bc1aaee51979b/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "af116a208c5f803c066e8f730026c19db8ef012c57edbe2f2b2bc1aaee51979b",
-      "bytes": 143052,
+      "key": "artwork/900fe6ca97990a5b469d45fd864c50739a758ab87e3e7d2a30a81a70d4cb4685/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "900fe6ca97990a5b469d45fd864c50739a758ab87e3e7d2a30a81a70d4cb4685",
+      "bytes": 146032,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnIAAABXRUJQVlA4IGYAAABQAgCdASoJAAwAAsBIJQBOiP/xaoPbASnFIoAA/vg2zMFtvTRjz+Fq+2Vlk9iD6/lLn5m5iMrkb8VhIg7Ac3+ujeR9Kw2PkNOHqIsYZgsmhPYkX9aWt2WkF7NAzzUah/kDtnB2YAA="
+      "height": 1014,
+      "placeholder": "UklGRoQAAABXRUJQVlA4IHgAAAAQAgCdASoLAAwAAsBIJbACdADdrs3mGoQwAP74Ge/YfoIatBwvDOdNekqYZKfOeO5iR71rmQsmvu02dPDA27fCeUYJkxlR3/riV0a5UcMXvhFnk6MK1+9Bg3ABFuYfQAwQcqcQO4WnUl+yG1TSAoAQnqY/DanQAAA="
     },
     "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/fbac9e94acbdde09187f95831977d52d4403b398ab2cdc2720db163d2321e78b/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -31336,20 +31336,20 @@
       "height": 853
     },
     "/launcher/responsive/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/99c259b34828150ee4a0bdbced3c397be24b07d1665bf4a4ba09278d7a3f9aed/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "99c259b34828150ee4a0bdbced3c397be24b07d1665bf4a4ba09278d7a3f9aed",
-      "bytes": 31114,
+      "key": "artwork/fca52bb72ca1fd2d065e076beee4c15b3379b3442dd0a72cd5af0e93f8e7726c/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "fca52bb72ca1fd2d065e076beee4c15b3379b3442dd0a72cd5af0e93f8e7726c",
+      "bytes": 33914,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 361
     },
     "/launcher/responsive/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/8b5a591cbb4180174a753515af9225599bcfba5ab0f969c3cd2e419fc26f7434/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "8b5a591cbb4180174a753515af9225599bcfba5ab0f969c3cd2e419fc26f7434",
-      "bytes": 82906,
+      "key": "artwork/8d4ac0a5e05bab0c01c22aca8937ef856e3e157d985c0a9f262e7c45acb46077/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "8d4ac0a5e05bab0c01c22aca8937ef856e3e157d985c0a9f262e7c45acb46077",
+      "bytes": 92728,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 721
     },
     "/launcher/responsive/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/8690e28bbb4c47fc1a975bb745dd75a1b6ab6109923c98d30724802a7fc153df/pajama-sam-games-to-play-on-any-day-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -31448,12 +31448,12 @@
       "height": 576
     },
     "/launcher/responsive/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/271bc7874e2fb0f1e5c6ec85e87c1d255f6bd1deca76a1b4f1f79e3f612b397b/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "271bc7874e2fb0f1e5c6ec85e87c1d255f6bd1deca76a1b4f1f79e3f612b397b",
-      "bytes": 56144,
+      "key": "artwork/013908c58feda3059e1c29ca2b88d4fadc4d49836c5e1387341004f7a509315e/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "013908c58feda3059e1c29ca2b88d4fadc4d49836c5e1387341004f7a509315e",
+      "bytes": 61318,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 541
     },
     "/launcher/responsive/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/c18e9847149b1132f13cd87398db6dcff375142b176236d5cce6fa1877bf6e76/pajama-sam-3-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -31633,13 +31633,13 @@
       "placeholder": "UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoMAAcAAsBIJQBOgB6P9vaUAAD+93rvYhdQn/AUNA6xBzf+xWKbBHhC5ozSbbbTiTP5AAAA"
     },
     "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/1fc9efd7322619ab87052c5104d0867ef8dce04656131b5abedc2a15ccc83be1/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "1fc9efd7322619ab87052c5104d0867ef8dce04656131b5abedc2a15ccc83be1",
-      "bytes": 103114,
+      "key": "artwork/ff3ad10103020e4740d29c1a6fbc5947cd2729a5ee6844e8c80eae8ed1292114/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "ff3ad10103020e4740d29c1a6fbc5947cd2729a5ee6844e8c80eae8ed1292114",
+      "bytes": 101668,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAABQAgCdASoJAAwAAsBIJbACdEf/i1ZN9UR6MsAA/qN33xRBSndHRc5NdTQg9YZZikvHCvta2u5oKxcgyUFhevGr9tQfZUtTmNR3IvKbkjPQHVm/m+Hzpht+V6hwu+lxHIAAAA=="
+      "height": 1072,
+      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoKAAwAAsBIJbACdEf/geG4pXZ3vuAA/uxX7X4TXAGHL3Tj/O2slBCzOFR+R5D/qTrtOVAxVTD3ghQjrWjbPRT9s3v9Et+VqT2/HyuRcz1LX0Bdy6PEuAtsAD6XEs4s0AAAAA=="
     },
     "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/4c306d71ed967c3b34de0ff9fd11a9ac9ced1a7dbd25bce259d37d7e4dcbe4ec/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -31651,13 +31651,13 @@
       "placeholder": "UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoMAAcAAsBIJZACdAD0f8L0AAD++FIv2YW5fiPWidUC2OXNZd53WYL+vDdqnxcxtHEpYCsRdnYMIfmFLpm/AAAA"
     },
     "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/e3019820ec2a37c2b9b13e4b3fb99f4c2a49c3a1d8311bfe2e730da04a6d1e6f/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "e3019820ec2a37c2b9b13e4b3fb99f4c2a49c3a1d8311bfe2e730da04a6d1e6f",
-      "bytes": 106774,
+      "key": "artwork/f8c70c0813a4eea52586224df4a21679f5869bef1047184af268dd8a7f79ab0d/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "f8c70c0813a4eea52586224df4a21679f5869bef1047184af268dd8a7f79ab0d",
+      "bytes": 108534,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnYAAABXRUJQVlA4IGoAAADwAQCdASoJAAwAAsBIJbACdAEPDA/iGTAA/tc/6bpYhOhodHoINvsxhnne9b9KHMfMDQ/WG/m0P4JRkhcbn00bgCRu0zxJYAEPNF9S/ObwufHOuxj3G4raYaFTNGrUh+tCfGB7wKElLAAA"
+      "height": 888,
+      "placeholder": "UklGRoAAAABXRUJQVlA4IHQAAADwAQCdASoMAAwAAsBIJbACdDiAAQb6SAAAzirtUdf7YFzeiWgM2Icb1RFUcpk/aVGC9UvmcUOVlMnB+m3Oib4JCC/m3YysRXrQ6zgoL38uq/Lf1VN+MIAfntGeHivb0G6Q/5gcLIxNInR0YG03+vSr+A5gAA=="
     },
     "/launcher/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/8689215ba7ed9357858ed83717bb1d9e86a5d88a189505df41d1b96cab7c2970/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -31705,45 +31705,45 @@
       "placeholder": "UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoMAAcAAsBIJbACdAD6/fcs3CAA/vF0DAlRSO+84I8d8GZU/AvjJbZmiDJlh95MCJWL77VAGud7NzMP/iwkKjcPMSPEjbRIdAkJBI/pgAA="
     },
     "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp": {
-      "key": "artwork/b52581b122b551ce6448357c69a21e5586e542490c54ab4e5e52c25794230029/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp",
-      "sha256": "b52581b122b551ce6448357c69a21e5586e542490c54ab4e5e52c25794230029",
-      "bytes": 155920,
+      "key": "artwork/6c109e123b0a8fc80c1f2c20309e7500db4ec1fe1b8d146cfc91758f219f6926/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp",
+      "sha256": "6c109e123b0a8fc80c1f2c20309e7500db4ec1fe1b8d146cfc91758f219f6926",
+      "bytes": 164320,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoJAAwAAsBIJbACdLoAAwhyt6gAAP7p90G8ff/1rks+fVa6Vb+3C9om7JwPMCE5UtcGNmvOmWUr60y3yenBTW+tTDRqOD371Yxj1instXdu9Fmi9Qiu2gJ4j8BvwAAA"
+      "height": 852,
+      "placeholder": "UklGRn4AAABXRUJQVlA4IHIAAADwAQCdASoMAAsAAsBIJbACdADc3rh5RwAA/tJp0WVvfbtSZv1Bsy7RKMP6XL8DPdkQn/JBajYCnlZwL3lTAVC+GLlzCBQHa62BgodfXBAN+TgLmW44KyhuyYuFKcx1fpXejzcClvkjKacLB7JYrP4AAAA="
     },
     "/launcher/responsive/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/6faedc5ecfdc6ab03802c4e3412a4e75cfb721be01d679799860829bfc75fada/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "6faedc5ecfdc6ab03802c4e3412a4e75cfb721be01d679799860829bfc75fada",
-      "bytes": 24522,
+      "key": "artwork/57deae0816b9d061ef77fd990350e08c3e2ac47e034f0e8df159dac1ac81eff2/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "57deae0816b9d061ef77fd990350e08c3e2ac47e034f0e8df159dac1ac81eff2",
+      "bytes": 26100,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 381
     },
     "/launcher/responsive/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/853f31fe8b97303cec21e53d998b614af7c50f8347c48d50afe22cb3bc5e276f/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "853f31fe8b97303cec21e53d998b614af7c50f8347c48d50afe22cb3bc5e276f",
-      "bytes": 60088,
+      "key": "artwork/e3f33fa01f41b6d828bb8dd9b3fa268297025bb0432369de014b79b255ac5ec0/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "e3f33fa01f41b6d828bb8dd9b3fa268297025bb0432369de014b79b255ac5ec0",
+      "bytes": 66960,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 762
     },
     "/launcher/responsive/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/9f27ff7bb3f2a533a7bfa2708c037a3b70750b0b3b0b1c20536f3b4286eb556a/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "9f27ff7bb3f2a533a7bfa2708c037a3b70750b0b3b0b1c20536f3b4286eb556a",
-      "bytes": 21014,
+      "key": "artwork/2c8c6717226b5abf4d84e6a2f4ed69ae1023d31795d90315fca95f7b63f5b61f/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "2c8c6717226b5abf4d84e6a2f4ed69ae1023d31795d90315fca95f7b63f5b61f",
+      "bytes": 22504,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 316
     },
     "/launcher/responsive/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/210a3919ff0fec48c947584e3ebd18976a6500baa147fbe748263e7fd9c8e392/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "210a3919ff0fec48c947584e3ebd18976a6500baa147fbe748263e7fd9c8e392",
-      "bytes": 56828,
+      "key": "artwork/bb8dc9475f8e6865d143f4f704667931b840960f42d6b7924f172218c8897ddc/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "bb8dc9475f8e6865d143f4f704667931b840960f42d6b7924f172218c8897ddc",
+      "bytes": 63564,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 631
     },
     "/launcher/responsive/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover-320.webp": {
       "key": "artwork/c1487488b66afdf5b213b9057fae797849ae0ff173d70860e7e98997be09b2e8/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -31778,20 +31778,20 @@
       "height": 853
     },
     "/launcher/responsive/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-320.webp": {
-      "key": "artwork/9d7c593eb358a73910c55586cb1904be140d75727159f6eb143aadda7371ea45/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-320.webp",
-      "sha256": "9d7c593eb358a73910c55586cb1904be140d75727159f6eb143aadda7371ea45",
-      "bytes": 25084,
+      "key": "artwork/116fc89da1b7e3e1f6afd9cc5cef7ab5231aabbb24eaf053ebedb6997d49402c/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-320.webp",
+      "sha256": "116fc89da1b7e3e1f6afd9cc5cef7ab5231aabbb24eaf053ebedb6997d49402c",
+      "bytes": 27132,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 303
     },
     "/launcher/responsive/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-640.webp": {
-      "key": "artwork/14a7b633f4ab38ca8320858155451d590815656de737de7b99e5328e416977c8/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-640.webp",
-      "sha256": "14a7b633f4ab38ca8320858155451d590815656de737de7b99e5328e416977c8",
-      "bytes": 72712,
+      "key": "artwork/599433e557e8773bc22ecace6c85bb6df4ee6aa337b272fe2d275f3fb8ca8203/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-640.webp",
+      "sha256": "599433e557e8773bc22ecace6c85bb6df4ee6aa337b272fe2d275f3fb8ca8203",
+      "bytes": 86524,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 606
     },
     "/launcher/responsive/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/9692fb7c1fde29b094dbcb98f571568a289f47a1ff238c24573dbcf40ad06d68/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -31818,12 +31818,12 @@
       "height": 576
     },
     "/launcher/responsive/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/de2223ad07cef05daced8ceeff5e7dede91b842a123df6fd3562c5dab071ec64/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "de2223ad07cef05daced8ceeff5e7dede91b842a123df6fd3562c5dab071ec64",
-      "bytes": 42070,
+      "key": "artwork/580bbbec5fb9c6dea8782d353a0d016f72fe45adb8cdcacf867a73d93b757993/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "580bbbec5fb9c6dea8782d353a0d016f72fe45adb8cdcacf867a73d93b757993",
+      "bytes": 46096,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 572
     },
     "/launcher/responsive/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/b63df634fdcd4f2ade81ee72b19e84fe603feb1a21925aa571b040ca57d80df2/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -31850,12 +31850,12 @@
       "height": 576
     },
     "/launcher/responsive/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/6c89e621ffb3f86572888a340ee1da268ef138fe6d53b799270b80c05d633c10/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "6c89e621ffb3f86572888a340ee1da268ef138fe6d53b799270b80c05d633c10",
-      "bytes": 38396,
+      "key": "artwork/468006baedb92bad347c2f440083e3d98b724e639c73953b0b0a82d8bb2dd02c/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "468006baedb92bad347c2f440083e3d98b724e639c73953b0b0a82d8bb2dd02c",
+      "bytes": 41258,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 474
     },
     "/launcher/responsive/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover-480.webp": {
       "key": "artwork/2efa8c3a89b01e403c2d78e04684213e94d966d6752c4d0820cbb29d27d15781/playtoons-2-the-case-of-the-counterfeit-collaborator-scummweb-generated-2026-11-07-r1-cover-480.webp",
@@ -31946,12 +31946,12 @@
       "height": 576
     },
     "/launcher/responsive/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-480.webp": {
-      "key": "artwork/cf9eb48aa810b39aa83690ae7d8b3effed2c3db1e0e09447937eef0fc0ae31cb/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-480.webp",
-      "sha256": "cf9eb48aa810b39aa83690ae7d8b3effed2c3db1e0e09447937eef0fc0ae31cb",
-      "bytes": 46846,
+      "key": "artwork/da1ca9606668ae088294e79cd1388e8d68415f610711263684f16aff152df493/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-480.webp",
+      "sha256": "da1ca9606668ae088294e79cd1388e8d68415f610711263684f16aff152df493",
+      "bytes": 51752,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 454
     },
     "/launcher/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/bfc9358f2f3b1043f763e9e32c96acc6052f4a67a63c1fd0ea91b08e0af5ad97/putt-putt-and-fatty-bears-activity-pack-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -32420,13 +32420,13 @@
       "placeholder": "UklGRmwAAABXRUJQVlA4IGAAAADwAQCdASoMAAcAAsBIJbACdAEYGPNVrgAA/vkUd1/v6x7LD9P75XGnG1TPrrUptL82ilrdlAwTrE5OpXUyTdtS0+VP2qv7yqmvJpjNFWlfGU7qWragoCN5L6kUDFmsAAA="
     },
     "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/c4516b9cd99a2f00330a03a2ba2b395b606feaae8a5c638b773bac1649f30a24/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "c4516b9cd99a2f00330a03a2ba2b395b606feaae8a5c638b773bac1649f30a24",
-      "bytes": 118870,
+      "key": "artwork/8d1997f12123b9066bbcf55b6e466624512d91fa42070a5d03880d84509dbc1c/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "8d1997f12123b9066bbcf55b6e466624512d91fa42070a5d03880d84509dbc1c",
+      "bytes": 119676,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRmIAAABXRUJQVlA4IFYAAACQAQCdASoJAAwAAsBIJbACdADZD2AA/nM7J8AAIDZgxeno9aFKtPXTMMvye2VZKgReAO3OxbQYzxaykj+qwX+X4NmsbkN9lTLMfEj/2C/YYfDNwN4AAA=="
+      "height": 952,
+      "placeholder": "UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoLAAwAAsBIJbACdDBKSIYFaPbEFAAA/ieFCxZa5DIE5sqQXaT3q8F8LHmfXi/Rh1hSJBymr8IaPPTyHK4+OvGp/3DQG+5KeInBShHezFg9XtEUU7USkOX2d/+67VDWBsov+c3N/j7oQAAA"
     },
     "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/407f5d5d7d87843884b161498849c5871b7d6e8fd205da49c7c92c75a0ce66a2/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -32502,20 +32502,20 @@
       "height": 853
     },
     "/launcher/responsive/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/1c87b44319182ed7a8261579f1d0a0353a7ac38228a2ca81e3529c7a64a821ba/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "1c87b44319182ed7a8261579f1d0a0353a7ac38228a2ca81e3529c7a64a821ba",
-      "bytes": 25990,
+      "key": "artwork/90faf1b728f267b7302f664f4dd0b238d5d26a2c0c398fc29bdae9021d223cf3/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "90faf1b728f267b7302f664f4dd0b238d5d26a2c0c398fc29bdae9021d223cf3",
+      "bytes": 28040,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 338
     },
     "/launcher/responsive/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/ff3d4b16aefcc3e32ba82895ff9d86203f69c8b96a3bcd839ea9337114160e0b/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "ff3d4b16aefcc3e32ba82895ff9d86203f69c8b96a3bcd839ea9337114160e0b",
-      "bytes": 65932,
+      "key": "artwork/5ba08c5a176fddbde110d793daea30456852523de82a79e0f361e849b11513da/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "5ba08c5a176fddbde110d793daea30456852523de82a79e0f361e849b11513da",
+      "bytes": 74000,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 677
     },
     "/launcher/optimized/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.avif": {
       "key": "artwork/dcedccc7e267cdeb1df2fc65fe28fdb2c4b15bbb370168243ff4aab5b67e7e0d/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero.avif",
@@ -32654,12 +32654,12 @@
       "height": 576
     },
     "/launcher/responsive/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/7b167a0ec79a30719e26c3ffbb3cb52c224d585be78bce9b2bd93e7ec1debe87/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "7b167a0ec79a30719e26c3ffbb3cb52c224d585be78bce9b2bd93e7ec1debe87",
-      "bytes": 45214,
+      "key": "artwork/f252eb8419f446b72a426f7fa031445fe304ec0f6cda5919e042c1c328472ccf/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "f252eb8419f446b72a426f7fa031445fe304ec0f6cda5919e042c1c328472ccf",
+      "bytes": 49424,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 508
     },
     "/launcher/responsive/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/073d173f978b9e735e74418350ccbbcf64a1b937e03f87c6a7ae0293a0ee4556/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -32792,20 +32792,20 @@
       "height": 853
     },
     "/launcher/responsive/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/ed9d6fa9c3065bfe8f089ca7d622048614d3438390f13ec1272590f1659503e1/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "ed9d6fa9c3065bfe8f089ca7d622048614d3438390f13ec1272590f1659503e1",
-      "bytes": 24552,
+      "key": "artwork/dd2a8480d19189107cff0368c53f7b3c5a6b7ee0f117a99e1d99d159f7645c8f/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "dd2a8480d19189107cff0368c53f7b3c5a6b7ee0f117a99e1d99d159f7645c8f",
+      "bytes": 26398,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 320
     },
     "/launcher/responsive/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/f1795b32e3d9689e96defd7b1b517d960987606f2d42ad8bd0f5a413de8c6585/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "f1795b32e3d9689e96defd7b1b517d960987606f2d42ad8bd0f5a413de8c6585",
-      "bytes": 61930,
+      "key": "artwork/65488956d4c53b557484fd66df4573ee7c7a4888c19cdad2fee012af0f2ce643/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "65488956d4c53b557484fd66df4573ee7c7a4888c19cdad2fee012af0f2ce643",
+      "bytes": 68284,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 640
     },
     "/launcher/ruffs-bone-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/df36b14d01b9f0c4e4e0817bd25018f335e28247de7ce1e5e9705c8dc50787de/ruffs-bone-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -32862,13 +32862,13 @@
       "placeholder": "UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoMAAcAAsBIJYgCdH8AFBiLJQNwAP75x9ZP2uK/vhbHbZeMYnsM0cP041DwkpObV+lGqyQBNu0Ro1579SIhkAAA"
     },
     "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/3fa1f57b3b3c587efe7716a8471125533f6eafaf9756eee66a5c3b1760f29720/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "3fa1f57b3b3c587efe7716a8471125533f6eafaf9756eee66a5c3b1760f29720",
-      "bytes": 105032,
+      "key": "artwork/0b21f3d748d1f4a0e7114bdf9b22689310ec7c61229038236a2ef45f4b444626/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "0b21f3d748d1f4a0e7114bdf9b22689310ec7c61229038236a2ef45f4b444626",
+      "bytes": 106304,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoJAAwAAsBIJbACdAYsjvh98hkAAP7tEQlBVDvVELQKO5LXzBYbuRhZqZd0ia7dyAtymAKv6dsKHUTvIx27FxIMdJoRe9s++yJcXcht58V84Lee+HVZebaAUGF/WduCg4AAAA=="
+      "height": 900,
+      "placeholder": "UklGRowAAABXRUJQVlA4IIAAAADwAgCdASoMAAwAAsBIJbACdDiK95aIioyy4kNS1JFptAD+wp0ueqwJwrHywyqUB2Ffgv9i+t1ZRrCDZ3KENZRrx9Aqrk6KgEpwlf+0zgC5m4VJgRZl947GItGmcfO5Pln8s3z++tVhQHcZDWKYWNuDi1/m8SKTdGRO8OUzcQAAAA=="
     },
     "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/85f629df3269da0feb1b103245377fe550b5221f94a97c5d5986490cd0bd3958/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -33048,12 +33048,12 @@
       "height": 576
     },
     "/launcher/responsive/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/1d4a74a3d127dcfd6a1b0e556f4f3b41013abee4353c320565446a84ba4b3efa/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "1d4a74a3d127dcfd6a1b0e556f4f3b41013abee4353c320565446a84ba4b3efa",
-      "bytes": 42710,
+      "key": "artwork/1a4cc983f70e09dfb08695489f9ab839f3aabab5d842d7658f21be46bf670bd6/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "1a4cc983f70e09dfb08695489f9ab839f3aabab5d842d7658f21be46bf670bd6",
+      "bytes": 45948,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 480
     },
     "/launcher/responsive/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero-1280.avif": {
       "key": "artwork/d7cd2ea8ded1833a08caabd9eac958196b72b8112b68ba7bbc130ce560de6625/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-hero-1280.avif",
@@ -33530,20 +33530,20 @@
       "height": 853
     },
     "/launcher/responsive/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-320.webp": {
-      "key": "artwork/ea5637074c4c0d1ea371b3a3f40611728fe9bf2d608d69d95c3973ed5e2ecea8/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-320.webp",
-      "sha256": "ea5637074c4c0d1ea371b3a3f40611728fe9bf2d608d69d95c3973ed5e2ecea8",
-      "bytes": 21952,
+      "key": "artwork/5a01135d47aafe840877cb5d707ff28087b6c0f0beba66be2bff123a63a09988/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-320.webp",
+      "sha256": "5a01135d47aafe840877cb5d707ff28087b6c0f0beba66be2bff123a63a09988",
+      "bytes": 23518,
       "contentType": "image/webp",
       "width": 320,
-      "height": 427
+      "height": 329
     },
     "/launcher/responsive/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-640.webp": {
-      "key": "artwork/94a7e0b13c7d75c967ebcdefbfb62baadc9ed08654a1d383822fb3a606396ec3/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-640.webp",
-      "sha256": "94a7e0b13c7d75c967ebcdefbfb62baadc9ed08654a1d383822fb3a606396ec3",
-      "bytes": 60776,
+      "key": "artwork/c851e5b7bfc23e3cb397746a2299718d707e8776c3a7c60556f64ddc32cf7657/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-640.webp",
+      "sha256": "c851e5b7bfc23e3cb397746a2299718d707e8776c3a7c60556f64ddc32cf7657",
+      "bytes": 69932,
       "contentType": "image/webp",
       "width": 640,
-      "height": 853
+      "height": 657
     },
     "/launcher/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-cover.webp": {
       "key": "artwork/fa28e03fa0e77d76a7dca5702893dcb9af57b07d3498291d0c1beb24022e9c9b/the-berenstain-bears-in-the-dark-scummweb-generated-2026-11-07-r1-cover.webp",
@@ -33591,13 +33591,13 @@
       "placeholder": "UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoMAAcAAsBIJZACdH8AE7GdoNSAAP76ZXzcTVupRhMmnScHDh4MYcaNpgK6p+v1skE9P6p1dsn2oyP95bz/rXMUZXMvajqBmEGzgAaYkmvMQgAA"
     },
     "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp": {
-      "key": "artwork/db4cdf180afb212c57f92757908f3bb6b9519f2d46719432b10e2587a6be9054/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
-      "sha256": "db4cdf180afb212c57f92757908f3bb6b9519f2d46719432b10e2587a6be9054",
-      "bytes": 110010,
+      "key": "artwork/713b7a00cfe73f7fadfe05602a8edef9d9139db121497b7dac62ea219ae8be4b/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
+      "sha256": "713b7a00cfe73f7fadfe05602a8edef9d9139db121497b7dac62ea219ae8be4b",
+      "bytes": 111928,
       "contentType": "image/webp",
       "width": 900,
-      "height": 1200,
-      "placeholder": "UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoJAAwAAsBIJbACdAELXbjCwf9gAP729Cth5HvUdpP2gbycARkf/JKvih7DWyCbse1scZLZnwxaOqMQeLPPcOi+EKN5lMwTrw0AAA=="
+      "height": 924,
+      "placeholder": "UklGRm4AAABXRUJQVlA4IGIAAAAQAgCdASoMAAwAAsBIJbACdAEVz3UKXu8AAP70wJZVwWW+gIoB489jHNXQs/ZL4beSSzl3aulrJ5N1g36p4EDIPCt5TIXjHBrqKEKDdl8d4eiN1AvyBeilqCtpyOZXtWXAAA=="
     },
     "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero.webp": {
       "key": "artwork/04dc6e9bcd90bca4df1ce5245a30f6eb69a757f91ac71b18f4b2a39b46c3df4d/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero.webp",
@@ -33761,12 +33761,12 @@
       "height": 576
     },
     "/launcher/responsive/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-480.webp": {
-      "key": "artwork/b7e7ef2603fb143133182303199fc8a1443b9a0fe76223c261f4185a71867231/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-480.webp",
-      "sha256": "b7e7ef2603fb143133182303199fc8a1443b9a0fe76223c261f4185a71867231",
-      "bytes": 40626,
+      "key": "artwork/ffba19690f467631c63a2ac7af1e490f8b16f86b3bd859ee0f6510660cc44267/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-480.webp",
+      "sha256": "ffba19690f467631c63a2ac7af1e490f8b16f86b3bd859ee0f6510660cc44267",
+      "bytes": 44768,
       "contentType": "image/webp",
       "width": 480,
-      "height": 640
+      "height": 493
     },
     "/launcher/responsive/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero-1280.webp": {
       "key": "artwork/e401a2e064fa4be59b98bb752635cbe9e632322278058ef09977d8e5d905efc3/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-hero-1280.webp",
@@ -40206,7 +40206,7 @@
     },
     "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 950,
       "fallback": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40230,7 +40230,7 @@
     },
     "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1038,
       "fallback": "/launcher/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/arthurs-teacher-trouble-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40344,7 +40344,7 @@
     },
     "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 897,
       "fallback": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40402,7 +40402,7 @@
     },
     "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1112,
       "fallback": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/backyard-baseball-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40515,7 +40515,7 @@
     },
     "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1072,
       "fallback": "/launcher/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/bambou-le-sauveur-de-la-jungle-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -40676,7 +40676,7 @@
     },
     "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 932,
       "fallback": "/launcher/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/blues-123-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40705,7 +40705,7 @@
     },
     "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1014,
       "fallback": "/launcher/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/blues-abc-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40763,7 +40763,7 @@
     },
     "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 887,
       "fallback": "/launcher/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/blues-birthday-adventure-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -40792,7 +40792,7 @@
     },
     "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1127,
       "fallback": "/launcher/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/blues-reading-time-activities-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -41849,7 +41849,7 @@
     },
     "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1008,
       "fallback": "/launcher/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/fatty-bears-birthday-surprise-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -42008,7 +42008,7 @@
     },
     "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 888,
       "fallback": "/launcher/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/freddi-fish-4-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -42061,7 +42061,7 @@
     },
     "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 998,
       "fallback": "/launcher/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/freddi-fish-and-luthers-maze-madness-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -42090,7 +42090,7 @@
     },
     "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1033,
       "fallback": "/launcher/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/freddi-fish-and-luthers-water-worries-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -42302,7 +42302,7 @@
     },
     "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1004,
       "fallback": "/launcher/gnap-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/gnap-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -42570,7 +42570,7 @@
     },
     "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1008,
       "fallback": "/launcher/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/harry-and-the-haunted-house-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -43062,7 +43062,7 @@
     },
     "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1031,
       "fallback": "/launcher/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/just-grandma-and-me-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -43671,7 +43671,7 @@
     },
     "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 926,
       "fallback": "/launcher/lit-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/lit-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -43688,7 +43688,7 @@
     },
     "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 976,
       "fallback": "/launcher/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/little-monster-at-school-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -44275,7 +44275,7 @@
     },
     "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1083,
       "fallback": "/launcher/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/mixed-up-mother-goose-deluxe-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -44498,7 +44498,7 @@
     },
     "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1123,
       "fallback": "/launcher/mortville-manor-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/mortville-manor-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -44534,7 +44534,7 @@
     },
     "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1038,
       "fallback": "/launcher/myst-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/myst-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -44735,7 +44735,7 @@
     },
     "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 1014,
       "fallback": "/launcher/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/pajama-sam-3-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -45041,7 +45041,7 @@
     },
     "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 888,
       "fallback": "/launcher/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/playtoons-1-uncle-archibald-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -45113,7 +45113,7 @@
     },
     "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 852,
       "fallback": "/launcher/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover.webp",
       "webp": [
         "/launcher/responsive/playtoons-4-the-mandarine-prince-scummweb-generated-2026-11-07-r2-cover-320.webp",
@@ -45308,7 +45308,7 @@
     },
     "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 863,
       "fallback": "/launcher/princess-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/princess-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -45546,7 +45546,7 @@
     },
     "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 952,
       "fallback": "/launcher/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/putt-putts-fun-pack-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -45903,7 +45903,7 @@
     },
     "/launcher/retro-agi-bc-poster.webp": {
       "width": 540,
-      "height": 720,
+      "height": 690,
       "fallback": "/launcher/retro-agi-bc-poster.webp",
       "webp": [
         "/launcher/responsive/retro-agi-bc-poster-320.webp",
@@ -48678,7 +48678,7 @@
     },
     "/launcher/retro-plumbers-plumbers-poster.webp": {
       "width": 540,
-      "height": 720,
+      "height": 441,
       "fallback": "/launcher/retro-plumbers-plumbers-poster.webp",
       "webp": [
         "/launcher/responsive/retro-plumbers-plumbers-poster-320.webp",
@@ -52592,7 +52592,7 @@
     },
     "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 924,
       "fallback": "/launcher/sleepingcub-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/sleepingcub-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -52657,7 +52657,7 @@
     },
     "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 900,
       "fallback": "/launcher/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/spy-fox-in-cheese-chase-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -53413,7 +53413,7 @@
     },
     "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 924,
       "fallback": "/launcher/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover.webp",
       "webp": [
         "/launcher/responsive/the-new-kid-on-the-block-scummweb-generated-2026-11-07-r1-cover-320.webp",
@@ -53507,7 +53507,7 @@
     },
     "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 900,
       "fallback": "/launcher/thinker1-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/thinker1-scummweb-generated-2026-11-06-r1-cover-320.webp",
@@ -53835,7 +53835,7 @@
     },
     "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp": {
       "width": 900,
-      "height": 1200,
+      "height": 896,
       "fallback": "/launcher/voyeur-scummweb-generated-2026-11-06-r1-cover.webp",
       "webp": [
         "/launcher/responsive/voyeur-scummweb-generated-2026-11-06-r1-cover-320.webp",
