@@ -1,0 +1,15 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -474,6 +474,11 @@
+ 	scummwebEngineId = game.engineId;
+ 	scummwebGameId = game.gameId;
+ 	scummwebTarget = target;
++	// Goblins Quest 3 imports need the live engine's detected save layout.
++	// The earlier launcher scan runs before that engine exists.
++	if (game.engineId == "gob" && game.gameId == "gob3" &&
++			EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); }))
++		scummweb_refresh_saves();
+ 	EM_ASM({
+ 		if (!globalThis.__scummwebEvaluationEnabled && !globalThis.__scummwebTelemetryQueryEnabled) return;
+ 		globalThis.__scummwebGameTelemetry = null;
