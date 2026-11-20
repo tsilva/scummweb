@@ -9,6 +9,7 @@ html:has(.game-route-boot-overlay.is-visible) {
 
 .game-hero-scene {
   --scene-gutter: clamp(1.25rem, 3.5vw, 4rem);
+  --scene-start-inset: max(var(--scene-gutter), env(safe-area-inset-left));
   --scene-accent: #f6e08a;
   position: relative;
   display: flex;
@@ -56,7 +57,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   position: relative;
   z-index: 1;
   width: 100%;
-  padding: 6.5rem max(var(--scene-gutter), env(safe-area-inset-right)) max(2.25rem, env(safe-area-inset-bottom)) max(var(--scene-gutter), env(safe-area-inset-left));
+  padding: 6.5rem max(var(--scene-gutter), env(safe-area-inset-right)) max(2.25rem, env(safe-area-inset-bottom)) var(--scene-start-inset);
 }
 
 .game-hero-scene .game-hero-copy {
@@ -157,7 +158,8 @@ html:has(.game-route-boot-overlay.is-visible) {
   inset: auto 0 0;
   max-width: none;
   padding-block: 0.5rem;
-  padding-inline: var(--scene-gutter) var(--hero-controls-inset);
+  padding-inline-start: var(--scene-start-inset);
+  padding-inline-end: var(--hero-controls-inset);
   font-size: 0.8rem;
 }
 
