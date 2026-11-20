@@ -1674,6 +1674,102 @@
         "Check the title, original modal and moving character reject overlay saves. Confirm the rebuilt Gob plugin and patch ledger validate."
       ],
       "retire_when": "ScummVM provides equivalent demo-scoped runtime save and load support for existing Goblins 3 slots."
+    },
+    {
+      "path": "patches/scummvm/99zzzzz-agos-native-save-identity.patch",
+      "status": "active",
+      "sha256": "6565b07b33a3321f75e906549c6bfed74ed9ed108fae2ff5e0ae914826ae0296",
+      "purpose": "List AGOS saves in the ScummWEB drawer using the running edition's native filenames and captions.",
+      "invariants": [
+        "Use the active engine's filename only for its own target. Keep native names, slots, and caption lengths unchanged.",
+        "List slots for imports whose detected target name differs from the native filename prefix. Preserve occupied slots and scene availability checks."
+      ],
+      "verification": [
+        "Start Simon II with a target alias. Save from the original controls, reload, and select the native caption in the ScummWEB drawer. Create another save without replacing the first."
+      ],
+      "retire_when": "Upstream AGOS saves can be listed using the active game target while retaining existing fixed-name saves."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzz-agos-player-save-boundary.patch",
+      "status": "active",
+      "sha256": "f582f48979915ba7d464cfb048cce4e4fd8df3aaa681a287bfa4a9b3ec9a5bc7",
+      "purpose": "Service the AGOS player drawer at idle input after the animation callback unlocks.",
+      "invariants": [
+        "Keep the engine's native cutscene, input and animation eligibility checks. Leave AgentSCUMM frame stepping on its existing presentation path."
+      ],
+      "verification": [
+        "Open Save Game in idle Simon gameplay and during transitions. Verify a save and restore between rooms and retain the native busy-scene restrictions."
+      ],
+      "retire_when": "Upstream AGOS reports and services runtime saves from a safe, unlocked update."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzz-feeble-oracle-player-saves.patch",
+      "status": "active",
+      "sha256": "e4e517d296cb16542d5aa9126f2bb512327a84d6d6aeb35d00e9bff899a469ca",
+      "purpose": "Save and restore The Feeble Files from the player using the original ORACLE callbacks.",
+      "invariants": [
+        "Recognize the English Amiga CD edition and its known ORACLE routines before offering player saves.",
+        "Keep the native caption and slot format. Use the original ORACLE preparation and room reconstruction and keep the game's cursor, cutscene, and clock guards."
+      ],
+      "verification": [
+        "Create a native save in the Amiga CD game, reveal the same caption in the player drawer, and restore it. Create a player save, restart and restore it through the native ORACLE."
+      ],
+      "retire_when": "Upstream exposes native-format in-game saves and restores through a safe engine API for The Feeble Files."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzz-agos-startup-save-list.patch",
+      "status": "active",
+      "sha256": "2f39a94d73bc883bb9ffc50ef8431e0390b647e49f9a02b7ae24648c1a0a63df",
+      "purpose": "Recognize fixed-prefix AGOS save files before the game engine has been created.",
+      "invariants": [
+        "Use the target's detected game ID, platform and edition; use the running engine's exact native naming when available. Preserve original captions during the startup scan."
+      ],
+      "verification": [
+        "After page reload, before writing any new save, verify that a native Feeble or Simon slot is present under its launch target alias and remains occupied."
+      ],
+      "retire_when": "Upstream AGOS lists all compatible native slots consistently through startup and runtime scans."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzz-gob3-cd-player-saves.patch",
+      "status": "active",
+      "sha256": "8507bd5bc6092d5a99e18d11ff6bd5f893efc937aa43b91cfdbe681e23c0c8ce",
+      "purpose": "Use the original Goblins Quest 3 DOS CD v1.02 checkpoints from the shared player menu.",
+      "invariants": [
+        "Match both native management callbacks and the normal scene hotspots before allowing persistence.",
+        "Reuse Gob v3 slots, the native save index and thumbnail, and the script-directed cleanup and reload. Preserve the existing demo and Woodruff behavior."
+      ],
+      "verification": [
+        "On the original CD's ship, create an in-game save and restore it from the player. Create a second player save, reload and restore both slots. Check demo compatibility."
+      ],
+      "retire_when": "Upstream Gob provides runtime save and restore for the same original CD and demo slot formats."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzz-freddi3-native-player-saves.patch",
+      "status": "active",
+      "sha256": "40fbf728890e664ace4131075200681b9b7c17c9157442ceebe250d7395dd90c",
+      "purpose": "Use Freddi Fish 3's original named HE save slots and catalog from the ScummWEB drawer for the verified English PC CD.",
+      "invariants": [
+        "Keep the HE restrictions for demos and other editions. Recognize the actual English CD index and require ordinary scene input outside the native management room.",
+        "Reuse the native named-save serialization, legacy filename fallback and caption catalog. Preserve the twelve original slots and do not advertise launcher Continue."
+      ],
+      "verification": [
+        "Create a native save in the full Freddi Fish 3 CD and restore it from the drawer. Create a second drawer save, reload the game, and restore the slot through the original Load menu.",
+        "Verify the official Windows demo does not acquire a full-game save action."
+      ],
+      "retire_when": "Upstream supports this HE title's original named save slots through the regular ScummVM runtime API."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzz-made-rtz-player-saves.patch",
+      "status": "active",
+      "sha256": "14ea9a9266210e5e07000a55db7440304fe9ffc1c328f6925da885cc1c3ac4bf",
+      "purpose": "Enable the existing Return to Zork native save and room-restore bridge for the English DOS CD demo and full CD layout.",
+      "invariants": [
+        "Check the database's main object and matching room-entry bytecode before enabling saves. Preserve native SGAM version 623, filenames, slots, and event boundary. Read and write the native F2 return-room property for saves that can be loaded from either menu."
+      ],
+      "verification": [
+        "For the English DOS interactive v1.2 CD demo, create an original F2 save, select it in the drawer from a changed scene, then restore a new drawer save through the F3 interface after a restart."
+      ],
+      "retire_when": "Upstream MADE exposes the native Return to Zork CD save format and original room reconstruction through its runtime API."
     }
   ]
 }

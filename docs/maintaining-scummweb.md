@@ -358,7 +358,8 @@ demo starts at its original clickable title and uses British English (`gb`) for
 exact engine detection; it also has no saving through the ScummWEB game menu.
 Goblins Quest 3’s English DOS interactive demo starts from its original clickable
 title. Once the ship accepts input, the ScummWEB Game Menu can save and load the
-game’s original slots.
+game’s original slots. The full DOS CD v1.02 release also uses the game’s
+original slots from the ScummWEB Game Menu during normal play.
 
 Gabriel Knight’s Day One demo retains its original Intro/Play menu. Choose Play
 to enter the bookshop; native saves and restore are supported.
@@ -385,6 +386,10 @@ Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged o
 
 Hand of Fate’s English DOS interactive CD demo preserves the complete unchanged official ZIP, with original game fonts, drivers and notices. Native intro skip reaches Zanthia’s laboratory, and walking works. Bucket-backed Save/Load and cached Continue restored the tested save positions. Native guards can reject further save/load requests in the opening room; no checkpoint is seeded.
 
+The Feeble Files’ English Amiga CD edition shares save slots between the
+ScummWEB Game Menu and the original ORACLE. Load from ORACLE on the title
+screen, or from the ScummWEB menu once the playable scene accepts input.
+
 Lands of Lore’s English DOS interactive CD demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original Gladstone dungeon. Turning, personal-import and bucket-backed Save/Load and cached Continue restored the tested direction. Let movement settle before loading; an immediate post-turn request was rejected. No checkpoint is seeded.
 
 Putt-Putt Saves the Zoo’s English Windows HE72 demo keeps its complete unchanged official ZIP, including original executable, W32 runtime and compiled Help. Native intro skip reaches the original raft scene, and selecting the inventory log works. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
@@ -395,11 +400,22 @@ Freddi Fish 2’s English Windows HE80 demo keeps the complete unchanged officia
 
 Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original storeroom; interacting with the vacuum cleaner triggers its character animation. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
 
+Freddi Fish 3’s full English Windows CD edition shares its twelve save slots
+between the ScummWEB Game Menu and the original save and load screens. The
+original picker shows ScummWEB save captions with its generic preview. The
+English Windows mini demo omits the scripts for saving and loading.
+
 Touché’s English DOS demo preserves the complete unchanged official ZIP, including its DATABASE directory and root speech files. The native intro action reaches the original street without a seeded checkpoint. Movement, Save/Load and Continue restore the tested character position.
 
 Tony Tough’s English Windows extracted demo keeps the complete unchanged official ZIP with all music and speech directories. It retains the original New Game menu and native intro action. Movement works in the office; the original demo disables saving and loading, so no Continue checkpoint is seeded.
 
-Return to Zork’s English DOS v1.2 CD demo preserves the complete unchanged official ZIP, including its compressed RED driver archives and original Anthology readme. The original valley, native intro action and sign interactions work. Use the game’s F2 Save and F3 Load menus; saved progress restores after a fresh launch, while ScummWEB’s save drawer and Continue are unavailable for this engine. The upstream demo has no ripped CD audio tracks and displays ScummVM’s CD-audio notice; acknowledge it to proceed. Its checksum-pinned ZIP exceeds the standard 128 MiB download limit, so this catalog target allows 150 MiB while retaining the standard 256 MiB expanded limit.
+Return to Zork’s English DOS CD editions with a recognized save-script layout
+share their slots between the ScummWEB Game Menu and the original F2 and F3
+menus. Load during gameplay after relaunching. The English DOS v1.2 CD demo’s
+unchanged official ZIP includes the compressed RED driver archives and original
+Anthology readme. It omits ripped CD audio tracks, so acknowledge ScummVM’s
+CD-audio notice to proceed. The checksum-pinned ZIP has a 150 MiB download limit
+and the standard 256 MiB expanded limit.
 
 Sherlock Holmes: The Serrated Scalpel’s English DOS interactive demo preserves the complete unchanged official ZIP. It starts with the original Lestrade dialogue and verb interface, without a seeded checkpoint; examination, movement and native save/Continue restoration are verified.
 

@@ -1,0 +1,47 @@
+diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
+--- a/engines/agos/input.cpp
++++ b/engines/agos/input.cpp
+@@ -18,7 +18,11 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#include "engines/scummweb-agent-loop.h"
++#endif
+ #include "common/config-manager.h"
+ #include "common/events.h"
+ #include "common/file.h"
+@@ -224,6 +228,9 @@
+ 					break;
+ 				hitarea_stuff_helper();
+ #ifdef __EMSCRIPTEN__
++				// The video callback still holds its lock when it presents. In
++				// the player, service the drawer after that callback returns.
++				ScummWebAgentLoop playerLoop(scummwebIsPlayerControl());
+ 				_scummWebAgentIdle = true;
+ 				// Initial timed scripts can run after startup subroutine 101.
+ 				if (!ScummWebIntro::startupFinished() && canSaveGameStateCurrently() &&
+diff --git a/engines/agos/event.cpp b/engines/agos/event.cpp
+--- a/engines/agos/event.cpp
++++ b/engines/agos/event.cpp
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "engines/scummweb-telemetry.h"
++#include "engines/scummweb-agent-loop.h"
+ 
+ #include "agos/agos.h"
+ #include "agos/animation.h"
+@@ -494,6 +495,10 @@
+ 			_inCallBack = true;
+ 			timerProc();
+ 			_inCallBack = false;
++#ifdef __EMSCRIPTEN__
++			if (_scummWebAgentIdle)
++				scummweb_agent_game_loop();
++#endif
+ 		}
+ 
+ 		while (_eventMan->pollEvent(event)) {
