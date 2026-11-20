@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { LoaderCircle, Settings, X } from "lucide-react";
 
+function SettingsSpinner({ className, size, children }) {
+  return <span className={`settings-spinner ${className}`} role="status">
+    <LoaderCircle size={size} aria-hidden="true" />
+    <span>{children}</span>
+  </span>;
+}
+
 export default function SettingsPanel(props) {
   const dialog = useRef(null);
   const trigger = useRef(null);
@@ -40,6 +47,8 @@ export default function SettingsPanel(props) {
     if (!working.current) setOpen(false);
   }
 
+  const loadingIndicator = <SettingsSpinner className="settings-loader" size={28}>Loading settings…</SettingsSpinner>;
+
   return <>
     <button ref={trigger} type="button" className="nav-icon-link settings-trigger" aria-label="Settings" title="Settings" aria-haspopup="dialog" aria-expanded={open}
       aria-controls="site-settings" onClick={showSettings}>
@@ -49,18 +58,15 @@ export default function SettingsPanel(props) {
       onCancel={(event) => { event.preventDefault(); close(); }} onClick={(event) => { if (event.target === dialog.current) close(); }}>
       <div className="settings-content">
         <header className="settings-heading"><h2 id="settings-title">Settings</h2>
-          <span className="settings-progress" role="status">{busy ? "Working…" : ""}</span>
+          {busy && <SettingsSpinner className="settings-header-loader" size={20}>Transferring saves…</SettingsSpinner>}
           <button type="button" className="settings-close" aria-label="Close settings" aria-disabled={busy || undefined} onClick={close}><X size={24} /></button>
         </header>
         <div className="settings-body">
           {open && (SettingsContent
-            ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />
+            ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} loadingIndicator={loadingIndicator} />
             : loadFailed
               ? <p className="settings-status" role="alert">Could not load settings. Reload this page to try again.</p>
-              : <div className="settings-loader" role="status">
-                <LoaderCircle size={28} aria-hidden="true" />
-                <span>Loading settings…</span>
-              </div>)}
+              : loadingIndicator)}
         </div>
       </div>
     </dialog>
