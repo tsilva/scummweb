@@ -766,9 +766,11 @@ selected game and cancels the launch.
 The browsing hero and launch screen share `GameHeroScene`: the selected game's
 title, edition metadata, summary, artwork source, crop and viewport geometry
 stay fixed during launch. The homepage also shows the selected game's title.
-The reserved action area changes from Play/Continue to the current loading
-message; it never moves the title or resizes the artwork. The hero toolbar keeps
-the original logo and consistent navigation links on the left, with Settings at
+The reserved action area changes from Play/Continue to **Loading game…**.
+During a network transfer it shows **Downloading game…** with the amount
+received and the total when available. The title and artwork keep their size
+and position. The hero toolbar keeps the original logo and consistent
+navigation links on the left, with Settings at
 the right edge. Loading shows only the same exit control used during play,
 including while the route is being prepared. The spinner and progress accent are
 indeterminate and stop animating with reduced motion enabled. Startup failures

@@ -1,5 +1,4 @@
-import { playHistoryPrefix, readPlayHistory } from "./play-history.mjs";
-import { readStoryProgressRecord, storyProgressPrefix } from "./story-progress.mjs";
+import { copyLocalActivity } from "./activity-storage.mjs";
 
 const deviceKey = "scummweb.activity-device.v1";
 export const activityCacheKey = "scummweb.dropbox-activity.v1";
@@ -20,16 +19,13 @@ function sourceIdentity(source) {
     ? `edition:${source.fingerprint}` : null;
 }
 
-export function preserveSourceActivity(scope, source) {
+export async function preserveSourceActivity(scope, source) {
   if (source.activityVersioned || !sourceIdentity(source)) return;
   const previous = sourceActivityVersion(source);
   const next = sourceActivityVersion({ ...source, activityVersioned: true });
   try {
-    for (const prefix of [playHistoryPrefix, storyProgressPrefix]) {
-      const stored = scope.localStorage.getItem(prefix + previous);
-      if (stored && !scope.localStorage.getItem(prefix + next)) scope.localStorage.setItem(prefix + next, stored);
-    }
-  } catch { /* Reconnecting an archive still works if local storage is unavailable. */ }
+    await copyLocalActivity(scope, previous, next);
+  } catch { /* Reconnecting an archive still works if activity storage is unavailable. */ }
 }
 
 function validIdentity(identity) {
@@ -45,26 +41,17 @@ export function activityDevice(storage, create = false) {
   return id;
 }
 
-export function collectLocalActivity(scope, device, sources) {
+export function collectLocalActivity(records, device, sources) {
   const sourceKeys = new Map(sources.filter(sourceIdentity).map((source) => [sourceActivityVersion(source), source]));
   const play = [], progress = [];
-  for (let index = 0; index < scope.localStorage.length; index++) {
-    const key = scope.localStorage.key(index);
-    const isPlay = key?.startsWith(playHistoryPrefix);
-    if (!isPlay && !key?.startsWith(storyProgressPrefix)) continue;
-    const version = key.slice((isPlay ? playHistoryPrefix : storyProgressPrefix).length);
+  for (const [version, { history, story }] of records) {
     const source = sourceKeys.get(version);
     const storedSource = versionedSource.exec(version);
     const imported = source ?? (storedSource && { id: storedSource[1], fingerprint: storedSource[2] });
     const identity = imported ? sourceIdentity(imported) : catalog.test(version) ? version : null;
     if (!identity) continue;
-    if (isPlay) {
-      const history = readPlayHistory(scope, version);
-      if (history) play.push([identity, imported ? `${device}:${imported.id}` : device, history.playedMs, history.lastPlayedAt]);
-    } else {
-      const story = readStoryProgressRecord(scope, version);
-      if (story && slug.test(story.slug) && hash.test(story.revision)) progress.push([identity, story.slug, story.revision, story.percent]);
-    }
+    if (history) play.push([identity, imported ? `${device}:${imported.id}` : device, history.playedMs, history.lastPlayedAt]);
+    if (story && slug.test(story.slug) && hash.test(story.revision)) progress.push([identity, story.slug, story.revision, story.percent]);
   }
   return { version: 1, play, progress };
 }
@@ -129,12 +116,11 @@ export function indexActivity(data, device) {
   return { histories, local, progress, device };
 }
 
-export function versionActivity(scope, version, synced, revision) {
+export function versionActivity(records, version, synced, revision) {
   const { source, game } = version;
   const key = source ? sourceActivityVersion(source) : version.key;
   const identity = source ? sourceIdentity(source) : version.key;
-  let history = readPlayHistory(scope, key);
-  const story = readStoryProgressRecord(scope, key);
+  let { history = null, story } = records.get(key) ?? {};
   let percent = revision && story?.slug === game.slug && story.revision === revision ? story.percent : null;
   const cloud = synced?.histories.get(identity);
   if (cloud) {
@@ -150,7 +136,7 @@ export function versionActivity(scope, version, synced, revision) {
   return { history, percent };
 }
 
-export function mergeRecentActivity(scope, groups, recentTargets, synced, getRevision) {
+export function mergeRecentActivity(records, groups, recentTargets, synced, getRevision) {
   const dates = new Map(recentTargets.map((target) => [target, 0]));
   for (const { versions } of groups) {
     for (const version of versions) {
@@ -159,7 +145,7 @@ export function mergeRecentActivity(scope, groups, recentTargets, synced, getRev
       const revision = getRevision(version);
       const hasSyncedProgress = synced.progress.has(`${identity}/${version.game.slug}/${revision}`);
       if (!dates.has(target) && !synced.histories.has(identity) && !hasSyncedProgress) continue;
-      const { history } = versionActivity(scope, version, synced, revision);
+      const { history } = versionActivity(records, version, synced, revision);
       dates.set(target, history?.lastPlayedAt ?? 0);
     }
   }

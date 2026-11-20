@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { readRemoteGameArchive } from "../../../game-bucket.mjs";
 import { readGameSources } from "../../../game-sources.mjs";
+import { GAME_LOADING_STATUS } from "../../../game-loading-status.mjs";
 import { selectGameArchive } from "../../../local-game-archive.mjs";
 
 export default function BucketPlayFrame({ game, officialUrl, catalog }) {
@@ -23,7 +24,7 @@ export default function BucketPlayFrame({ game, officialUrl, catalog }) {
     }).catch(() => { if (active) setError("Could not load saved games from this browser."); });
     return () => { active = false; };
   }, [game, catalog, officialUrl, router]);
-  return <p className="page-shell" role="status">{error || `Opening ${game.displayTitle}…`}
+  return <p className="page-shell" role="status">{error || GAME_LOADING_STATUS}
     {error && <> <a href={game.href}>Return to game</a></>}
   </p>;
 }

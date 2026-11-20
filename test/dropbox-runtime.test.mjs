@@ -29,6 +29,7 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const sessions = memoryStorage(), idb = indexedDbFixture(), server = fakeNativeStorage();
   const locks = { busy: false, async request(name, options, run) { if (typeof options === "function") run = options; return run(this.editionBusy === name || this.busy && name === "scummweb-saves" && !(this.busy === "shared" && options.mode === "shared") ? null : { name }); } };
   const browser = nativeCloudBrowser(server, storage);
+  browser.window.indexedDB = idb;
   browser.location.search = "?dropbox=true";
   const globals = { window: browser.window, document: browser.document, location: browser.location, localStorage: storage, sessionStorage: sessions, indexedDB: idb, navigator: { locks },
     IDBKeyRange: { bound: (lower, upper) => ({ lower, upper }) },

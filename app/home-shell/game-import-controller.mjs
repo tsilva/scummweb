@@ -11,7 +11,7 @@ export async function importLibraryRoots(selectionRoots, replacing, { catalog, e
     if (!sourcePresentation?.artwork) setSourcePresentation(await loadSourcePresentation());
     const source = { ...existing, ...localGame(game.handle, game, existing?.id) };
     if (existing && existing.fingerprint !== source.fingerprint) {
-      preserveSourceActivity(globalThis, existing);
+      await preserveSourceActivity(globalThis, existing);
       source.activityVersioned = true;
     }
     // A fallback picker must replace a stale saved handle with its fresh in-memory files.

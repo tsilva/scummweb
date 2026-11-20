@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { prepareRemoteGameArchive } from "./remote-game-archive.mjs";
-import { gameLoadingStatus } from "./game-loading-status.mjs";
+import { GAME_LOADING_STATUS, gameLoadingStatus } from "./game-loading-status.mjs";
 import GameRouteFrame from "./game-route-frame";
 import GameBootOverlay from "./game-player/GameBootOverlay";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
@@ -17,10 +17,9 @@ import { loadArtworkStorage } from "../lib/artwork-storage.mjs";
 
 const noRecognizedGames = [];
 
-export function ArchivePlayer({ game, loadArchive, remote = false }) {
+export function ArchivePlayer({ game, loadArchive }) {
   return (
     <GameRouteFrame
-      archiveLoadingText={remote ? "Loading game…" : "Opening game files…"}
       game={game}
       target={game?.target}
       loadArchive={loadArchive}
@@ -33,7 +32,7 @@ export function ArchivePlayer({ game, loadArchive, remote = false }) {
 export function RemoteArchivePlayer({ zip, catalog = noRecognizedGames }) {
   const router = useRouter();
   const [archive, setArchive] = useState(null);
-  const [status, setStatus] = useState("Identifying game…");
+  const [status, setStatus] = useState(GAME_LOADING_STATUS);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -43,7 +42,6 @@ export function RemoteArchivePlayer({ zip, catalog = noRecognizedGames }) {
       controller.signal.throwIfAborted();
       return prepareRemoteGameArchive(zip, {
         signal: controller.signal,
-        onDownloading: () => setStatus("Loading game…"),
         onProgress: (_progress, details) => {
           if (!controller.signal.aborted) {
             setStatus(gameLoadingStatus(details));
@@ -69,7 +67,7 @@ export function RemoteArchivePlayer({ zip, catalog = noRecognizedGames }) {
     return () => controller.abort();
   }, [zip, catalog, router]);
 
-  if (archive) return <ArchivePlayer {...archive} remote />;
+  if (archive) return <ArchivePlayer {...archive} />;
   return (
     <div className="game-route-shell">
       <div className="game-route-controls">

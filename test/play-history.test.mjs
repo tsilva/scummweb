@@ -1,83 +1,106 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { formatLastPlayed, formatPlayedTime, observePlayHistory, playHistoryUpdatedEvent, readPlayHistory } from "../app/game-player/play-history.mjs";
+import { formatLastPlayed, formatPlayedTime, observePlayHistory } from "../app/game-player/play-history.mjs";
+import { addPlayedTime, localActivityUpdatedEvent, readLocalActivity } from "../app/game-player/activity-storage.mjs";
+import { indexedDbFixture, memoryStorage } from "./helpers/dropbox-fixtures.mjs";
 
-function browser() {
+function browser(indexedDB = indexedDbFixture(), localStorage = memoryStorage()) {
   let time = 0;
   let timer;
-  const storage = new Map();
   const scope = Object.assign(new EventTarget(), {
     document: Object.assign(new EventTarget(), { visibilityState: "visible" }),
     performance: { now: () => time },
-    localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
+    indexedDB, localStorage,
     setInterval(callback) { timer = callback; return 1; },
     clearInterval() { timer = undefined; },
   });
-  return { scope, storage, advance(ms) { time += ms; }, tick() { timer?.(); },
+  return { scope, advance(ms) { time += ms; }, tick() { timer?.(); },
     visibility(value) { scope.document.visibilityState = value; scope.document.dispatchEvent(new Event("visibilitychange")); } };
 }
 
-test("play history counts foreground intervals and flushes the final partial interval", () => {
+async function readPlayHistory(scope, version) {
+  return (await readLocalActivity(scope)).get(version)?.history ?? null;
+}
+
+test("play history counts foreground intervals and flushes the final partial interval", async () => {
   const b = browser();
   let updates = 0;
-  b.scope.addEventListener(playHistoryUpdatedEvent, () => updates++);
+  b.scope.addEventListener(localActivityUpdatedEvent, () => updates++);
   const stop = observePlayHistory(b.scope, "catalog:sky");
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").playedMs, 0);
+  assert.equal((await readPlayHistory(b.scope, "catalog:sky")).playedMs, 0);
   b.advance(20_000); b.tick();
   b.advance(5000); b.visibility("hidden");
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").playedMs, 25_000);
-  const lastPlayed = readPlayHistory(b.scope, "catalog:sky").lastPlayedAt;
+  const history = await readPlayHistory(b.scope, "catalog:sky");
+  assert.equal(history.playedMs, 25_000);
   b.advance(300_000); b.tick();
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").lastPlayedAt, lastPlayed);
-  b.visibility("visible"); b.advance(30_000); stop(); stop();
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").playedMs, 55_000);
+  assert.equal((await readPlayHistory(b.scope, "catalog:sky")).lastPlayedAt, history.lastPlayedAt);
+  b.visibility("visible"); b.advance(30_000); await stop(); await stop();
+  assert.equal((await readPlayHistory(b.scope, "catalog:sky")).playedMs, 55_000);
   b.advance(300_000); b.tick();
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").playedMs, 55_000);
+  assert.equal((await readPlayHistory(b.scope, "catalog:sky")).playedMs, 55_000);
   assert.equal(updates, 5);
 });
 
-test("pagehide and bfcache restoration exclude suspended time and sessions accumulate per copy", () => {
+test("pagehide and bfcache restoration exclude suspended time and sessions accumulate per copy", async () => {
   const b = browser();
   const stop = observePlayHistory(b.scope, "source:one");
   b.advance(12_000); b.scope.dispatchEvent(new Event("pagehide"));
   b.advance(300_000); b.tick();
   b.scope.dispatchEvent(new Event("pageshow"));
-  b.advance(4000); stop();
-  assert.equal(readPlayHistory(b.scope, "source:one").playedMs, 16_000);
+  b.advance(4000); await stop();
+  assert.equal((await readPlayHistory(b.scope, "source:one")).playedMs, 16_000);
   b.advance(60_000); // Time in a menu or outside the player.
   const resume = observePlayHistory(b.scope, "source:one");
-  b.advance(7000); resume();
-  assert.equal(readPlayHistory(b.scope, "source:one").playedMs, 23_000);
-  assert.equal(readPlayHistory(b.scope, "source:two"), null);
+  b.advance(7000); await resume();
+  assert.equal((await readPlayHistory(b.scope, "source:one")).playedMs, 23_000);
+  assert.equal(await readPlayHistory(b.scope, "source:two"), null);
   const second = observePlayHistory(b.scope, "source:two");
-  b.advance(2000); second();
-  assert.equal(readPlayHistory(b.scope, "source:two").playedMs, 2000);
-  assert.equal(readPlayHistory(b.scope, "source:one").playedMs, 23_000);
+  b.advance(2000); await second();
+  assert.equal((await readPlayHistory(b.scope, "source:two")).playedMs, 2000);
+  assert.equal((await readPlayHistory(b.scope, "source:one")).playedMs, 23_000);
 });
 
-test("a ready game opened in a hidden tab has no last-played date until visible", () => {
+test("a ready game opened in a hidden tab has no last-played date until visible", async () => {
   const b = browser();
   b.visibility("hidden");
   const stop = observePlayHistory(b.scope, "catalog:sky");
   b.advance(30_000); b.tick();
-  assert.equal(readPlayHistory(b.scope, "catalog:sky"), null);
-  b.visibility("visible"); b.advance(2000); stop();
-  assert.equal(readPlayHistory(b.scope, "catalog:sky").playedMs, 2000);
+  assert.equal(await readPlayHistory(b.scope, "catalog:sky"), null);
+  b.visibility("visible"); b.advance(2000); await stop();
+  assert.equal((await readPlayHistory(b.scope, "catalog:sky")).playedMs, 2000);
 });
 
-test("invalid history and blocked storage cannot prevent playback", () => {
-  const b = browser();
+test("invalid legacy history and blocked IndexedDB cannot prevent playback", async () => {
   for (const entry of ["invalid", "null", '{"playedMs":-1,"lastPlayedAt":1}',
     '{"playedMs":0,"lastPlayedAt":9007199254740991}']) {
-    b.storage.set("scummweb.play-history.v1:catalog:sky", entry);
-    assert.equal(readPlayHistory(b.scope, "catalog:sky"), null);
+    const b = browser();
+    b.scope.localStorage.setItem("scummweb.play-history.v1:catalog:sky", entry);
+    assert.equal(await readPlayHistory(b.scope, "catalog:sky"), null);
   }
-  b.scope.localStorage.getItem = () => { throw new Error("Storage blocked"); };
-  b.scope.localStorage.setItem = () => { throw new Error("Storage blocked"); };
-  assert.doesNotThrow(() => {
-    const stop = observePlayHistory(b.scope, "catalog:sky");
-    b.advance(12_000); b.tick(); stop();
-  });
+  const b = browser({ open: () => { throw new Error("Storage blocked"); } });
+  const stop = observePlayHistory(b.scope, "catalog:sky");
+  b.advance(12_000); b.tick();
+  await stop();
+});
+
+test("failed migration can retry and simultaneous tabs extend the same legacy total", async () => {
+  const indexedDB = indexedDbFixture();
+  const storage = memoryStorage();
+  const first = browser(indexedDB, storage);
+  const second = browser(indexedDB, storage);
+  const version = "catalog:sky";
+  const key = "scummweb.play-history.v1:" + version;
+  const legacy = '{"playedMs":1000,"lastPlayedAt":100}';
+  storage.setItem(key, legacy);
+  indexedDB.fail = ({ mode }) => mode === "readwrite" ? new DOMException("full", "QuotaExceededError") : undefined;
+  await assert.rejects(readLocalActivity(first.scope), { name: "QuotaExceededError" });
+  assert.equal(storage.getItem(key), legacy);
+
+  indexedDB.fail = null;
+  await Promise.all([addPlayedTime(first.scope, version, 600, 120), addPlayedTime(second.scope, version, 900, 110)]);
+  const reopened = browser(indexedDB, storage);
+  assert.deepEqual(await readPlayHistory(reopened.scope, version), { playedMs: 2500, lastPlayedAt: 120 });
+  assert.equal(storage.getItem(key), legacy);
 });
 
 test("play time and last played have readable boundaries without inventing legacy history", () => {

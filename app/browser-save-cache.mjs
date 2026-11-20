@@ -43,8 +43,10 @@ export function readCachedSave(game, storage, namespace = "", {
         && Boolean(storage.getBytes ? storage.getBytes(file.dataKey)?.length : storage.getItem(file.dataKey));
     }).sort((a, b) => b.modifiedAt - a.modifiedAt || a.slot - b.slot)[0];
     if (checkpoint && (!latest || checkpoint.savedAt > latest.modifiedAt)) {
-      const suffix = String(checkpoint.slot).padStart(3, "0");
-      const contents = includeContents ? checkpoint.files.find(({ name }) => name.endsWith("." + suffix))?.contents : undefined;
+      const suffix = checkpoint.engineId === "queen"
+        ? ".s" + String(checkpoint.slot).padStart(2, "0")
+        : "." + String(checkpoint.slot).padStart(3, "0");
+      const contents = includeContents ? checkpoint.files.find(({ name }) => name.endsWith(suffix))?.contents : undefined;
       return { slot: checkpoint.slot, modifiedAt: checkpoint.savedAt, engineId: checkpoint.engineId,
         gameId: checkpoint.gameId, extra: checkpoint.extra, autosave: true, progress: checkpoint.progress, contents };
     }

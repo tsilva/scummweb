@@ -30,6 +30,7 @@ export function browserSaveStorage(files = {}) {
 // A small asynchronous IndexedDB fixture covering only these stores' operations.
 export function indexedDbFixture() {
   const databases = new Map();
+  const tails = new Map();
   const durability = [];
   const fixture = { databases, durability, open(name) {
     const request = {};
@@ -42,33 +43,47 @@ export function indexedDbFixture() {
         transaction(names, mode, options) {
           durability.push({ name, table: names, mode, durability: options?.durability });
           const writes = [];
+          const ready = tails.get(name) ?? Promise.resolve();
+          let finish;
+          tails.set(name, new Promise((resolve) => { finish = resolve; }));
           let aborted = false;
           const tx = {
-            abort() { aborted = true; queueMicrotask(() => tx.onabort?.()); },
+            abort() { aborted = true; },
             objectStore(table = names) {
               const records = tables.get(table);
               function put(record, key) {
                 writes.push({ table, key, record: structuredClone(record) });
                 return { result: key };
               }
-              return { get: (key) => { const request = { result: structuredClone(records.get(key)) }; queueMicrotask(() => request.onsuccess?.()); return request; },
-                getAll: (range) => ({ result: structuredClone([...records.values()].filter(({ id }) =>
-                  !range || id >= range.lower && id < range.upper)) }),
+              function read(value) {
+                const request = {};
+                void ready.then(() => {
+                  request.result = structuredClone(value());
+                  request.onsuccess?.();
+                });
+                return request;
+              }
+              return { get: (key) => read(() => records.get(key)),
+                getAll: (range) => read(() => [...records.values()].filter(({ id }) =>
+                  !range || id >= range.lower && id < range.upper)),
                 put: (record) => put(record, record.id ?? record.key),
                 add: (record) => put(record, records.size + 1),
                 delete: (key) => { writes.push({ table, key }); return {}; } };
             },
           };
-          setTimeout(() => {
-            if (aborted) return;
-            tx.error = fixture.fail?.({ name, names, mode, writes });
-            if (tx.error) { tx.onabort?.(); return; }
-            for (const { table, key, record } of writes) {
-              if (record === undefined) tables.get(table).delete(key);
-              else tables.get(table).set(key, record);
+          void ready.then(() => setTimeout(() => {
+            try {
+              tx.error = fixture.fail?.({ name, names, mode, writes });
+              if (aborted || tx.error) { tx.onabort?.(); return; }
+              for (const { table, key, record } of writes) {
+                if (record === undefined) tables.get(table).delete(key);
+                else tables.get(table).set(key, record);
+              }
+              tx.oncomplete?.();
+            } finally {
+              finish();
             }
-            tx.oncomplete?.();
-          }, 0);
+          }, 0));
           return tx;
         },
       };
