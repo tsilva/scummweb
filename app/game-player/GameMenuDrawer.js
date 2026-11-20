@@ -72,16 +72,9 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
     focus?.focus({ preventScroll: true });
   }, [page, overwrite, busy]);
 
-  useEffect(() => {
-    if (!saved) return;
-    const timer = setTimeout(() => setSaved(false), 1500);
-    return () => clearTimeout(timer);
-  }, [saved]);
-
   function go(next) {
     setSettings(controller.current?.read({ includeAutosaves: next === "load" }) ?? defaultSettings);
     setError(null);
-    setSaved(false);
     setOverwrite(null);
     setPage(next);
   }
@@ -93,9 +86,8 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
 
   async function run(operation, slot) {
     const player = controller.current;
-    if (!player || busy) return;
+    if (!player || busy || (operation === "save" && saved)) return;
     setBusy(true);
-    setSaved(false);
     setError(null);
     try {
       const result = await player.run(operation, slot);
@@ -173,7 +165,7 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
       {page === "menu" ? (
         <>
           <div className="game-menu-actions">
-            <button aria-busy={busy} className="game-menu-outlined" data-menu-focus disabled={busy} onClick={saveGame} type="button">
+            <button aria-busy={busy} className="game-menu-outlined" data-menu-focus disabled={busy || saved} onClick={saveGame} type="button">
               <SaveIcon aria-hidden="true" className={busy ? "game-menu-saving-spinner" : undefined} size={22} />
               <span>{busy ? "Saving…" : saved ? "Saved" : "Save Game"}</span>
             </button>
