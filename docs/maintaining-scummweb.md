@@ -135,8 +135,9 @@ each axis to preserve symmetric spacing around cutouts.
   changes apply to the running game for the current session. **Resume Game** returns focus to the game, and
   **Quit Game** returns to the game page or library. Choosing Exit or Quit Game
   immediately removes the toolbar and touch controls while navigation completes.
-- **Save Game** writes to the next unused manual slot for the selected edition
-  and shows its status in the button. When all slots are in use, the player can
+- **Save Game** writes to the next unused manual slot for the selected edition.
+  After a successful save, the button stays disabled and reads **Saved** until
+  the player closes the menu. When all slots are in use, the player can
   choose a manual save to overwrite after confirmation. **Load Game** opens the
   saved-game list. Expand **Backed-up saves** to load a slot from an earlier
   copy for the current edition. Loading preserves active save files and
