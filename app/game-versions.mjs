@@ -3,6 +3,9 @@ const platformNames = { pc: "DOS", dos: "DOS", amiga: "Amiga", windows: "Windows
   c64: "Commodore 64" };
 const languageNames = { en: "English", de: "German", fr: "French", es: "Spanish", it: "Italian",
   pt: "Portuguese", pl: "Polish", ru: "Russian", nl: "Dutch", ja: "Japanese" };
+const graphicsQuality = new Map([
+  ["SVGA", 4], ["VGA", 3], ["EGA", 2], ["CGA", 1], ["Hercules", 1], ["High Res", 4], ["Low Res", 1],
+]);
 
 function knownValue(value) {
   if (typeof value !== "string") return;
@@ -32,8 +35,9 @@ function readMedia(text) {
 }
 
 function readGraphics(text) {
-  return ["SVGA", "VGA", "EGA", "CGA", "Hercules", "High Res", "Low Res"]
-    .find((value) => new RegExp(`\\b${value.replace(" ", "[ -]?")}\\b`, "i").test(text));
+  for (const value of graphicsQuality.keys()) {
+    if (new RegExp(`\\b${value.replace(" ", "[ -]?")}\\b`, "i").test(text)) return value;
+  }
 }
 
 function readRevision(text) {
@@ -73,7 +77,7 @@ export function getVersionMetadata(game, name = "", archiveFiles = []) {
       || (rawPlatform && (platformNames[rawPlatform.toLowerCase()] || readPlatform(rawPlatform) || rawPlatform))
       || readPlatform(fallback),
     media: revision ? "CD" : readMedia(knownValue(game.media) || "") || readMedia(labels) || readMedia(fallback),
-    graphics: readGraphics(knownValue(game.graphics) || "") || readGraphics(labels) || readGraphics(fallback),
+    graphics: revision ? "VGA" : readGraphics(knownValue(game.graphics) || "") || readGraphics(labels) || readGraphics(fallback),
     revision: revision || (rawRevision && readRevision(/^\d/.test(rawRevision) ? `v${rawRevision}` : rawRevision))
       || readRevision(labels) || readRevision(fallback),
   };
@@ -99,6 +103,20 @@ export function catalogGameEntries(catalog) {
   return catalog.map((game) => ({ key: `catalog:${game.target}`, game, title: game.displayTitle }));
 }
 
+function isIncluded({ source, game }) {
+  return !source && !game.importRequired;
+}
+
+function compareGameVersions(a, b, language = "") {
+  const discEdition = (media) => /(?:CD|DVD|Blu-ray)$/.test(media || "");
+  const matchesLanguage = ({ game }) => game.language?.toLowerCase() === language;
+  return (graphicsQuality.get(b.game.graphics) ?? 0) - (graphicsQuality.get(a.game.graphics) ?? 0)
+    || Number(discEdition(b.game.media)) - Number(discEdition(a.game.media))
+    || (b.game.revision || "").localeCompare(a.game.revision || "", "en", { numeric: true, sensitivity: "base" })
+    || Number(isIncluded(b)) - Number(isIncluded(a))
+    || Number(matchesLanguage(b)) - Number(matchesLanguage(a));
+}
+
 export function groupGameVersions(items) {
   const groups = new Map();
   for (const item of items) {
@@ -114,6 +132,7 @@ export function groupGameVersions(items) {
     group.versions.push(version);
   }
   for (const group of groups.values()) {
+    group.versions.sort(compareGameVersions);
     // Compare graphics within a platform; an Amiga/DOS choice needs no VGA tag.
     const graphicsByPlatform = new Map();
     for (const { game } of group.versions) {
@@ -140,17 +159,13 @@ export function groupGameVersions(items) {
 }
 
 export function chooseGameVersion(versions, remembered, language = "") {
-  const available = versions.filter(({ source, status }) => !source || ["available", "session"].includes(status));
+  const available = versions.filter((version) => isIncluded(version)
+    || (version.source && ["available", "session"].includes(version.status)));
   const choices = available.length ? available : versions;
   const selected = choices.find(({ key }) => key === remembered);
   if (selected) return selected;
-  const revisions = choices.filter(({ game }) => game.revision);
-  const compare = (a, b) => a.game.revision.localeCompare(b.game.revision, "en", { numeric: true, sensitivity: "base" });
-  const latest = revisions.reduce((best, version) => !best || compare(version, best) > 0 ? version : best, null);
-  const defaults = latest ? revisions.filter((version) => compare(version, latest) === 0) : choices;
-  return defaults.find(({ source, game }) => !source && !game.importRequired)
-    || defaults.find(({ game }) => game.language?.toLowerCase() === language.toLowerCase())
-    || defaults[0];
+  const languageKey = language.toLowerCase();
+  return [...choices].sort((a, b) => compareGameVersions(a, b, languageKey))[0];
 }
 
 export function readChosenVersion(groupKey) {

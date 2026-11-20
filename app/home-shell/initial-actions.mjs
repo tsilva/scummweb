@@ -23,7 +23,7 @@ export function initialActionState(group, version, versions, runtimeVersion = ru
       }
     } catch {}
   }
-  return { schema: 1, group, version: version.key, preference, runtimeVersion, game: identity,
+  return { schema: 2, group, version: version.key, preference, runtimeVersion, game: identity,
     playHref: game.playHref, infoHref: game.infoHref,
     source: Boolean(version.source), unavailable: !version.source && Boolean(game.importRequired),
     canContinue, nativeIdentity,
@@ -48,7 +48,7 @@ export function prepareInitialActions(container, readSave) {
     const remembered = storage.getItem(`scummweb.version:${state.group}`);
     if (remembered && remembered !== state.version) {
       const cached = JSON.parse(storage.getItem(`scummweb.hero-actions.v1:${state.group}`));
-      if (cached?.schema !== 1 || cached.group !== state.group
+      if (cached?.schema !== state.schema || cached.group !== state.group
         || (cached.version !== remembered && cached.preference !== remembered)
         || cached.runtimeVersion !== state.runtimeVersion) return;
       state = cached;

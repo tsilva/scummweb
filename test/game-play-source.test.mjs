@@ -156,6 +156,16 @@ test("refreshing an imported game restores the remembered accessible copy", asyn
   app.cleanup();
 });
 
+test("opening an imported game without a preference uses the highest-quality edition", async () => {
+  const floppy = { ...source(), id: "floppy", name: "Day of the Tentacle (DOS English Floppy v2).zip" };
+  const cd = { ...source(), id: "cd", name: "Day of the Tentacle (DOS English CD v1).zip" };
+  const app = await player({ sources: [floppy, cd] });
+  const view = app.render();
+  assert.equal(view.type, app.Archive);
+  assert.equal(view.props.game.saveVersionId, cd.id);
+  app.cleanup();
+});
+
 test("missing, denied and unavailable library storage show the import and reconnect controls", async () => {
   for (const options of [{}, { sources: [source("prompt")] }, { readError: true }]) {
     const app = await player(options);

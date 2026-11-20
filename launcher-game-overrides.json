@@ -49,6 +49,7 @@
       }
     },
     "sky": {
+      "graphics": "VGA",
       "skipIntro": {
         "strategy": "save-slot",
         "slot": 0,
