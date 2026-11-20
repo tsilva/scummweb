@@ -140,8 +140,9 @@ each axis to preserve symmetric spacing around cutouts.
   the player closes the menu. When all slots are in use, the player can
   choose a manual save to overwrite after confirmation. **Load Game** opens the
   saved-game list. Expand **Backed-up saves** to load a slot from an earlier
-  copy for the current edition. Loading preserves active save files and
-  **Save Game** records new progress. Games can deny saving or loading during
+  copy for the current edition. Loading preserves active save files. When the
+  engine blocks saves in the current scene, **Save Game** is disabled and the
+  menu shows “You can’t save in this location.” Games can also deny loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
 - **Report a bug** is the last game-menu action. Describe the problem and send

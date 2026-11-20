@@ -173,6 +173,7 @@
 .game-menu-slots small, .game-menu-note { color: #c5c5c5; }
 .game-menu-slots small { margin-top: .25rem; }
 .game-menu-note { margin: .5rem 0; }
+.game-menu-save-unavailable { margin: 0; color: #c5c5c5; font-size: .875rem; }
 .game-menu-note[role="alert"] { color: #ffd7c5; }
 
 .game-menu-backups-toggle {

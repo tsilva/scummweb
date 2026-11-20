@@ -1,0 +1,73 @@
+diff --git a/backends/modular-backend.cpp b/backends/modular-backend.cpp
+--- a/backends/modular-backend.cpp
++++ b/backends/modular-backend.cpp
+@@ -74,6 +74,8 @@
+ 	awaitingRestoreFrame = nullptr;
+ 
+ 	servicing = true;
++	const bool player = scummwebIsPlayerControl();
++	bool canSaveWhileHeld = false;
+ 	PauseToken pause;
+ 	while (!engine->shouldQuit()) {
+ 		const int control = EM_ASM_INT({
+@@ -81,8 +83,13 @@
+ 		}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop);
+ 		completedFrame = false;
+ 		if (control < 0) {
+-			if (!pause.isActive())
++			if (!pause.isActive()) {
++				// Match the save check before the pause token changes engine state.
++				canSaveWhileHeld = player && canSave && engine->canSaveGameStateCurrently();
+ 				pause = engine->pauseEngine();
++			}
++			if (player)
++				scummwebPublishSaveAvailability(canSaveWhileHeld);
+ 			emscripten_sleep(10);
+ 			continue;
+ 		}
+@@ -92,7 +99,6 @@
+ 			break;
+ 
+ 		const bool loading = control > maxSlot;
+-		const bool player = scummwebIsPlayerControl();
+ 		const int slot = player && control == 2 * maxSlot + 1 ? 0
+ 			: loading ? control - maxSlot : control;
+ 		Common::String failure;
+diff --git a/engines/scummweb-player.h b/engines/scummweb-player.h
+--- a/engines/scummweb-player.h
++++ b/engines/scummweb-player.h
+@@ -10,6 +10,10 @@
+ 	return EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); });
+ }
+ 
++inline void scummwebPublishSaveAvailability(bool available) {
++	EM_ASM({ globalThis.__scummwebPublishSaveAvailability?.(Boolean($0)); }, available);
++}
++
+ inline Common::String scummwebSaveCaption(int slot) {
+ 	char caption[128] = {};
+ 	EM_ASM({
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+--- a/engines/queen/queen.cpp
++++ b/engines/queen/queen.cpp
+@@ -150,6 +150,8 @@
+ 		}, _agentCompletedTick, maxSlot, player ? getAutosaveSlot() : 0);
+ 		_agentCompletedTick = false;
+ 		if (control < 0) {
++			if (player)
++				scummwebPublishSaveAvailability(canSaveGameStateCurrently());
+ 			held = true;
+ 			_system->delayMillis(10);
+ 			continue;
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -274,6 +274,8 @@
+ 		}, agentCompletedTick, MAX_SAVE_GAMES);
+ 		agentCompletedTick = false;
+ 		if (control < 0) {
++			if (scummwebIsPlayerControl())
++				scummwebPublishSaveAvailability(canSaveGameStateCurrently(nullptr));
+ 			agentHeld = true;
+ 			_system->delayMillis(10);
+ 			continue;
