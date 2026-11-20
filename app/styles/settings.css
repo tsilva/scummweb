@@ -20,20 +20,35 @@
 @keyframes settings-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .dropbox-spinner, .settings-loader svg { animation: none; } }
 .dropbox-sync-warning { position: fixed; bottom: max(1rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 200; max-width: min(32rem, 90vw); background: #24221e; color: #f1d5ac; border: 1px solid #76634a; padding: .65rem 1rem; font-size: .8125rem; pointer-events: none; }
-.settings-drawer { position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: 100dvh; max-height: 100dvh; border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); font-size: .875rem; overflow-y: auto; overscroll-behavior: contain; -webkit-user-select: none; user-select: none; transform: translateX(100%); transition: transform 240ms cubic-bezier(.2, .8, .2, 1), display 240ms allow-discrete, overlay 240ms allow-discrete; }
+.settings-drawer { position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; width: min(38rem, 100%); max-width: 100%; height: 100dvh; max-height: 100dvh; border: 0; border-left: 1px solid #343434; background: #191919; color: var(--ink); font-size: .875rem; overflow: hidden; -webkit-user-select: none; user-select: none; transform: translateX(100%); transition: transform 240ms cubic-bezier(.2, .8, .2, 1), display 240ms allow-discrete, overlay 240ms allow-discrete; }
 .settings-drawer[open] { transform: translateX(0); }
 .settings-drawer:focus { outline: none; }
-.settings-drawer { scrollbar-gutter: stable; }
 .settings-drawer::backdrop { background: rgb(0 0 0 / 55%); opacity: 0; transition: opacity 240ms ease, display 240ms allow-discrete, overlay 240ms allow-discrete; }
 .settings-drawer[open]::backdrop { opacity: 1; }
 @starting-style {
   .settings-drawer[open] { transform: translateX(100%); }
   .settings-drawer[open]::backdrop { opacity: 0; }
 }
-.settings-content { display: flex; flex-direction: column; min-height: 100%; padding: 1rem 1.75rem 1.75rem; }
+.settings-content {
+  --settings-padding-left: max(1.25rem, env(safe-area-inset-left));
+  --settings-padding-right: max(1.25rem, env(safe-area-inset-right));
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: .375rem var(--settings-padding-right) max(1.25rem, env(safe-area-inset-bottom)) var(--settings-padding-left);
+}
 .settings-loader { flex: 1; display: grid; place-items: center; color: var(--accent-strong); }
 .settings-loader span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.settings-heading { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #363636; background: #191919; }
+.settings-heading { display: flex; flex: none; align-items: center; justify-content: space-between; margin-inline: var(--settings-padding-left) var(--settings-padding-right); padding-bottom: 1rem; border-bottom: 1px solid #363636; }
 .settings-heading h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 1.35rem; letter-spacing: -.04em; }
 .settings-progress { margin-inline: auto .5rem; color: var(--ink-muted); font-size: .8rem; }
 .settings-close { display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
@@ -43,9 +58,6 @@
 .settings-close:hover { color: var(--accent-strong); }
 .settings-content .settings-status:not(:empty), .settings-content .settings-error { margin: 1rem 0; padding: .75rem; border-left: 3px solid var(--accent-strong); background: #222; }
 .settings-content .settings-error { border-color: #e9a075; color: #ffd7c5; }
-@media (max-width: 900px) {
-  .settings-content { padding: max(1.2rem, env(safe-area-inset-top)) max(1.2rem, env(safe-area-inset-right)) max(1.2rem, env(safe-area-inset-bottom)) max(1.2rem, env(safe-area-inset-left)); }
-}
 @media (prefers-reduced-motion: reduce) {
   .settings-drawer, .settings-drawer::backdrop { transition: none; }
 }
