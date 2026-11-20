@@ -13,6 +13,7 @@ function fixture(t, state = descriptor()) {
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
   function node() {
     return { textContent: "", hidden: false, attributes: {}, classList: { add() {}, toggle() {} },
+      remove() { this.removed = true; },
       setAttribute(key, value) { this.attributes[key] = value; },
       removeAttribute(key) { delete this.attributes[key]; if (key === "href") delete this.href; } };
   }
@@ -89,6 +90,7 @@ test("remembered imports use their own cached identity and wait for access valid
   f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify(cached));
   const namespace = "version-" + "a".repeat(64);
   f.values.set("scummweb.save-namespace.v1:floppy", namespace);
+  f.primary.href = game.playHref;
   prepareInitialActions(f.container, (identity, storage, selectedNamespace) => {
     assert.equal(identity.saveVersionId, "floppy"); assert.equal(selectedNamespace, namespace);
     return { slot: 2 };
@@ -96,10 +98,26 @@ test("remembered imports use their own cached identity and wait for access valid
   assert.equal(f.primary.textContent, "Continue");
   assert.equal(f.primary.href, undefined, "the provisional import cannot launch the catalog fallback");
   assert.equal(f.primary.attributes["aria-disabled"], "true");
+  assert.equal(f.restart.removed, true);
+  assert.equal(f.browse.removed, true);
   assert.equal(f.options.length, 2);
   assert.equal(f.options[1].selected, true);
   assert.equal(f.chooser.attributes["data-reserved"], undefined);
   assert.equal(f.chooser.attributes["aria-hidden"], undefined);
+});
+
+test("first paint keeps the chooser when the catalog copy stays selected", t => {
+  const f = fixture(t);
+  const imported = { key: "source:floppy", label: "DOS · Floppy" };
+  const cached = { ...descriptor(), versions: [{ key: catalog.key, label: "DOS · CD" }, imported] };
+  f.values.set("scummweb.hero-actions.v1:sky:sky:full", JSON.stringify(cached));
+  prepareInitialActions(f.container, () => ({ slot: 0 }));
+  assert.equal(f.primary.textContent, "Continue");
+  assert.equal(f.restart.removed, true);
+  assert.equal(f.browse.removed, true);
+  assert.equal(f.options.length, 2);
+  assert.equal(f.options[0].selected, true);
+  assert.equal(f.license.href, "https://example.test/launcher/notices/sky.txt");
 });
 
 test("first-paint import instructions follow the selected copy's availability", t => {

@@ -242,6 +242,12 @@ test("multiple versions expose an inline chooser and launch the selected catalog
   assert.doesNotMatch(html, /class="hero-edition" (?:data-reserved|aria-hidden)/);
   assert.doesNotMatch(html, /class="hero-version-control" data-reserved/);
   assert.match(html, />Continue<\/a>/);
+  assert.doesNotMatch(html, /start-fresh-button|browse-games-button/);
+  savedIdentity = null;
+  const fresh = renderToStaticMarkup(slide);
+  assert.match(fresh, />Play<\/a>/);
+  assert.match(fresh, /<select/);
+  assert.doesNotMatch(fresh, /start-fresh-button|browse-games-button/);
   assert.doesNotMatch(html, /aria-haspopup="dialog"/);
   preferredVersion = null;
 });
