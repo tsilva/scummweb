@@ -1,0 +1,355 @@
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -1495,6 +1495,13 @@
+ 	AGOSEngine_PN(OSystem *system, const AGOSGameDescription *gd);
+ 	~AGOSEngine_PN() override;
+ 
++#ifdef __EMSCRIPTEN__
++	static constexpr int kLastPlayerSaveSlot = 255;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
++
+ 	void setupGame() override;
+ 	void setupOpcodes() override;
+ 	void setupVideoOpcodes(VgaOpcodeProc *op) override;
+@@ -1616,6 +1623,9 @@
+ 
+ 	bool _noScanFlag;
+ 	char _keyboardBuffer[61];
++#ifdef __EMSCRIPTEN__
++	int _scummWebPendingLoadSlot = 0;
++#endif
+ 
+ 	uint16 _objects;
+ 	int16 _objectCountS;
+@@ -2308,6 +2318,12 @@
+ 	AGOSEngine_PuzzlePack(OSystem *system, const AGOSGameDescription *gd);
+ 	//~AGOSEngine_PuzzlePack();
+ 
++#ifdef __EMSCRIPTEN__
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
++	Common::Error loadGameState(int slot) override;
++#endif
++
+ 	void setupGame() override;
+ 	void setupOpcodes() override;
+ 
+@@ -2345,6 +2361,8 @@
+ 	bool _oopsValid;
+ 	uint32 _gameTime;
+ 
++	void resumePuzzleClock();
++
+ 	void initMouse() override;
+ 	void handleMouseMoved() override;
+ 	void drawMousePointer() override;
+diff --git a/engines/agos/input_pn.cpp b/engines/agos/input_pn.cpp
+--- a/engines/agos/input_pn.cpp
++++ b/engines/agos/input_pn.cpp
+@@ -120,7 +120,20 @@
+ 			_scanFlag = 0;
+ 			break;
+ 		}
++#ifdef __EMSCRIPTEN__
++		_scummWebAgentIdle = buffer == _inputline && !_noScanFlag;
++#endif
+ 		delay(1);
++#ifdef __EMSCRIPTEN__
++		_scummWebAgentIdle = false;
++		if (_scummWebPendingLoadSlot) {
++			// Run the English game's LOAD verb so its scripts restore the room
++			// and resume the parser at the correct point.
++			clearInputLine();
++			memcpy(buffer, "LOAD\r", 6);
++			return;
++		}
++#endif
+ 	}
+ 
+ 	if (!_inputReady) {
+diff --git a/engines/agos/metaengine.cpp b/engines/agos/metaengine.cpp
+--- a/engines/agos/metaengine.cpp
++++ b/engines/agos/metaengine.cpp
+@@ -68,10 +68,37 @@
+ 		(f == kSimpleSavesNames);
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static Common::String agosSaveGameId(const MetaEngine *meta, const char *target = nullptr) {
++	if (g_engine && g_engine->getMetaEngine() == meta &&
++			(!target || ConfMan.getActiveDomainName() == target)) {
++		switch (static_cast<const AGOS::AGOSEngine *>(g_engine)->getGameId()) {
++		case AGOS::GID_PN:
++			return "pn";
++		case AGOS::GID_DIMP:
++			return "dimp";
++		case AGOS::GID_SWAMPY:
++			return "swampy";
++		default:
++			break;
++		}
++	}
++	return target ? ConfMan.get("gameid", target) : ConfMan.get("gameid");
++}
++
++static bool hasFixedPuzzleSave(const Common::String &gameId) {
++	return gameId == "dimp" || gameId == "swampy";
++}
++#endif
++
+ bool AGOS::AGOSEngine::hasFeature(EngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+ 	if (f == kSupportsLoadingDuringRuntime || f == kSupportsSavingDuringRuntime) {
++		if (getGameType() == GType_PN)
++			return scummwebIsPlayerControl() && !(getFeatures() & GF_DEMO);
+ #ifdef ENABLE_AGOS2
++		if (getGameType() == GType_PP)
++			return scummwebIsPlayerControl() && (getGameId() == GID_DIMP || getGameId() == GID_SWAMPY);
+ 		if (getGameType() == GType_FF)
+ 			return scummwebIsPlayerControl() &&
+ 				static_cast<const AGOSEngine_Feeble *>(this)->supportsOraclePlayerSaves();
+@@ -132,6 +159,12 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ Common::String AgosMetaEngine::getSavegameFile(int slot, const char *target) const {
++	const Common::String gameId = agosSaveGameId(this, target);
++	if (hasFixedPuzzleSave(gameId))
++		return gameId + ".sav";
++	if (gameId == "pn")
++		return MetaEngine::getSavegameFile(slot, "pn");
++
+ 	// AGOS writes the edition's fixed filename even when autodetection gave
+ 	// the imported copy a different target name. Ask the running engine so
+ 	// the drawer and the native game use exactly the same slot filenames.
+@@ -177,6 +210,19 @@
+ 	filenames = saveFileMan->listSavefiles(pattern);
+ 
+ 	SaveStateList saveList;
++#ifdef __EMSCRIPTEN__
++	const Common::String gameId = agosSaveGameId(this, target);
++	if (hasFixedPuzzleSave(gameId)) {
++		Common::InSaveFile *in = saveFileMan->openForLoading(pattern);
++		if (in) {
++			in->readUint32BE(); // Item count
++			if (in->size() >= 20 && in->readUint32BE() == 0xFFFFFFFF)
++				saveList.push_back(SaveStateDescriptor(this, 1, _("Saved game")));
++			delete in;
++		}
++		return saveList;
++	}
++#endif
+ 	for (const auto &file : filenames) {
+ 		// Obtain the last 3 digits of the filename, since they correspond to the save slot
+ 		int slotNum = atoi(file.c_str() + file.size() - 3);
+@@ -187,7 +233,9 @@
+ 				saveDesc = file;
+ #ifdef __EMSCRIPTEN__
+ 				uint captionSize = 0;
+-				if (g_engine && g_engine->getMetaEngine() == this &&
++				if (gameId == "pn") {
++					captionSize = 8;
++				} else if (g_engine && g_engine->getMetaEngine() == this &&
+ 						ConfMan.getActiveDomainName() == target) {
+ 					const auto gameType = static_cast<const AGOS::AGOSEngine *>(g_engine)->getGameType();
+ 					if (gameType >= AGOS::GType_ELVIRA1 && gameType <= AGOS::GType_FF)
+@@ -204,6 +252,11 @@
+ 				char caption[101] = {};
+ 				if (captionSize && in->read(caption, captionSize) == captionSize && caption[0])
+ 					saveDesc = caption;
++				if (gameId == "pn" && (slotNum < 1 || slotNum > AGOS::AGOSEngine_PN::kLastPlayerSaveSlot ||
++						in->size() <= 10 || in->readUint16BE() != 0x2921)) {
++					delete in;
++					continue;
++				}
+ #endif
+ 				saveList.push_back(SaveStateDescriptor(this, slotNum, saveDesc));
+ 				delete in;
+@@ -217,6 +270,13 @@
+ }
+ 
+ int AgosMetaEngine::getMaximumSaveSlot() const {
++#ifdef __EMSCRIPTEN__
++	const Common::String gameId = agosSaveGameId(this);
++	if (gameId == "pn")
++		return AGOS::AGOSEngine_PN::kLastPlayerSaveSlot;
++	if (hasFixedPuzzleSave(gameId))
++		return 1;
++#endif
+ #if defined(__EMSCRIPTEN__) && defined(ENABLE_AGOS2)
+ 	if (ConfMan.get("gameid") == "feeble")
+ 		return AGOS::AGOSEngine_Feeble::kLastOracleSaveSlot;
+diff --git a/engines/agos/pn.cpp b/engines/agos/pn.cpp
+--- a/engines/agos/pn.cpp
++++ b/engines/agos/pn.cpp
+@@ -19,6 +19,12 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#include "engines/scummweb-agent-loop.h"
++
++extern "C" void scummweb_refresh_saves();
++#endif
+ #include "common/config-manager.h"
+ 
+ #include "agos/intern.h"
+@@ -147,6 +153,12 @@
+ 			clearWindow(_windowArray[0]);
+ 			clearWindow(_windowArray[2]);
+ 		}
++#ifdef __EMSCRIPTEN__
++		const bool player = scummwebIsPlayerControl();
++		ScummWebAgentLoop playerLoop(player);
++		if (player)
++			scummweb_refresh_saves();
++#endif
+ 		processor();
+ 	}
+ 
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -72,6 +72,56 @@
+ 	else
+ 		return "swampy.sav";
+ }
++
++#ifdef __EMSCRIPTEN__
++bool AGOSEngine_PuzzlePack::canSaveGameStateCurrently(Common::U32String *msg) {
++	if (!hasFeature(kSupportsSavingDuringRuntime))
++		return false;
++
++	// DIMP uses its own device controls while the standard AGOS mouse is hidden.
++	if (getGameId() == GID_DIMP)
++		return _scummWebAgentIdle && !_videoLockOut && _variableArray[150] != 0;
++
++	// The title presentation runs a demonstration board before showing the map.
++	return AGOSEngine::canSaveGameStateCurrently(msg) && getBitFlag(20) && !getBitFlag(110);
++}
++
++Common::Error AGOSEngine_PuzzlePack::saveGameState(int slot, const Common::String &, bool isAutosave) {
++	if (isAutosave || slot != 1 || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	if (getGameId() == GID_SWAMPY)
++		resumePuzzleClock();
++	return saveGame(slot, nullptr) ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error AGOSEngine_PuzzlePack::loadGameState(int slot) {
++	if (slot != 1 || !canLoadGameStateCurrently())
++		return Common::kReadingFailed;
++
++	const bool dimp = getGameId() == GID_DIMP;
++	Subroutine *redraw = getSubroutineByID(dimp ? 1522 : 8503);
++	if (!redraw || !loadGame(genSaveName(slot)))
++		return Common::kReadingFailed;
++
++	if (dimp) {
++		// The native startup restore resets its session counter and redraws the pet.
++		_variableArray[121] = 0;
++	} else {
++		// Subroutine 8502 normally loads progress at startup and enters the map
++		// (database item 1). Discard the current board's timers and input flags.
++		killAllTimers();
++		setItemParent(me(), derefItem(3));
++		setBitFlag(1, false);
++		setBitFlag(2, false);
++		setBitFlag(30, false); // Reload the map palette after leaving a board.
++		setBitFlag(31, false);
++		setBitFlag(107, false);
++	}
++	startSubroutine(redraw);
++	return Common::kNoError;
++}
++#endif
+ 
+ Common::String AGOSEngine_Feeble::genSaveName(int slot) const {
+ 	return Common::String::format("feeble.%.3d", slot);
+@@ -1738,6 +1788,43 @@
+ }
+ 
+ // Personal Nightmare specific
++#ifdef __EMSCRIPTEN__
++bool AGOSEngine_PN::canSaveGameStateCurrently(Common::U32String *) {
++	return _scummWebAgentIdle && _inputReady && !_videoLockOut && !_scummWebPendingLoadSlot;
++}
++
++Common::Error AGOSEngine_PN::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++	if (isAutosave || slot < 1 || slot > kLastPlayerSaveSlot || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	char previousCaption[sizeof(_saveFile)];
++	memcpy(previousCaption, _saveFile, sizeof(_saveFile));
++	memset(_saveFile, 0, sizeof(_saveFile));
++	memcpy(_saveFile, desc.c_str(), MIN<uint>(8, desc.size()));
++	const bool saved = saveFile(genSaveName(slot));
++	memcpy(_saveFile, previousCaption, sizeof(_saveFile));
++	return saved ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error AGOSEngine_PN::loadGameState(int slot) {
++	if (slot < 1 || slot > kLastPlayerSaveSlot || !canLoadGameStateCurrently())
++		return Common::kReadingFailed;
++
++	Common::InSaveFile *in = _saveFileMan->openForLoading(genSaveName(slot));
++	if (!in)
++		return Common::kReadingFailed;
++	const bool valid = in->size() == 10 + _quickptr[6] - _quickptr[2] &&
++		in->seek(8) && in->readUint16BE() == 0x2921;
++	delete in;
++	if (!valid)
++		return Common::kReadingFailed;
++
++	_scummWebPendingLoadSlot = slot;
++	_scummWebAgentIdle = false; // Acknowledge only after returning to the command prompt.
++	return Common::kNoError;
++}
++#endif
++
+ bool AGOSEngine_PN::badload(int8 errorNum) {
+ 	if (errorNum == -2)
+ 		return 0;
+diff --git a/engines/agos/script_pn.cpp b/engines/agos/script_pn.cpp
+--- a/engines/agos/script_pn.cpp
++++ b/engines/agos/script_pn.cpp
+@@ -384,6 +384,13 @@
+ 
+ 	switch (a) {
+ 		case 0:
++#ifdef __EMSCRIPTEN__
++			if (_scummWebPendingLoadSlot) {
++				bf = genSaveName(_scummWebPendingLoadSlot);
++				_scummWebPendingLoadSlot = 0;
++				break;
++			}
++#endif
+ 			getFilename();
+ 			slot = matchSaveGame(_saveFile, countSaveGames());
+ 			bf = genSaveName(slot);
+diff --git a/engines/agos/script_pp.cpp b/engines/agos/script_pp.cpp
+--- a/engines/agos/script_pp.cpp
++++ b/engines/agos/script_pp.cpp
+@@ -374,11 +374,15 @@
+ 	sendSync(a);
+ }
+ 
+-void AGOSEngine_PuzzlePack::opp_saveUserGame() {
+-	// 132: save game
++void AGOSEngine_PuzzlePack::resumePuzzleClock() {
+ 	if (_clockStopped != 0)
+ 		_gameTime += getTime() - _clockStopped;
+ 	_clockStopped = 0;
++}
++
++void AGOSEngine_PuzzlePack::opp_saveUserGame() {
++	// 132: save game
++	resumePuzzleClock();
+ 
+ 	if (!getBitFlag(110)) {
+ 		// Swampy adventures

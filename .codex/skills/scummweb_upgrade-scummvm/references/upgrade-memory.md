@@ -333,6 +333,12 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   active engine’s filename routine when available, with a matching pre-launch
   filename and caption layout for the initial list. The Feeble Files requires
   the original ORACLE setup before serialization and its redraw after restore.
+- Personal Nightmare accepts the hosted restore at its text command prompt
+  and uses its own LOAD command to redraw and resume. Preserve the
+  eight-byte native captions and numbered slots. Demon in my Pocket and
+  Swampy Adventures use one captionless native file each. Restore the pet
+  through its startup redraw and the puzzle progress through the map redraw
+  with its map palette. Keep the Swampy introduction outside the save boundary.
 - Gob’s executable script size excludes the appended text and resource tables.
   Verify the loaded script size and callback bytes when matching a save layout.
   Use the active Gob engine’s detected edition to enumerate saves for a

@@ -145,6 +145,9 @@ each axis to preserve symmetric spacing around cutouts.
   menu shows “You can’t save in this location.” Games can also deny loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
+- Personal Nightmare uses its original numbered slots and can save at the text
+  command prompt. Demon in my Pocket and Swampy Adventures each share a single
+  slot with their native saves. Swampy restores unlocked levels on the map.
 - **Report a bug** is the last game-menu action. Describe the problem and send
   the report; game identity and player settings are included automatically.
   Opening the form requests a native diagnostic save when the engine permits
