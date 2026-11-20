@@ -113,6 +113,9 @@ for (const [message, mobile, installed] of [
     const controls = children.find(({ type }) => type === Controls);
     assert.equal(controls.props.showExitControl, true);
     await controls.props.onExit();
+    const exitOverlay = render().find(({ type }) => type === Overlay);
+    assert.equal(exitOverlay.props.bootStatusText, "Exiting game…");
+    assert.equal(exitOverlay.props.hasBootFailed, false);
     assert.deepEqual(navigations, mobile ? ["/#library"] : ["exit immersive mode", "/#library"]);
   });
 }
@@ -731,10 +734,15 @@ test("exit waits for the save flush before removing the player frame or navigati
   const exit = player.controls.onExit();
   await new Promise(setImmediate);
   assert.ok(player.children.some(({ type }) => type === "iframe"));
+  assert.equal(player.overlay.showBootOverlay, true);
+  assert.equal(player.overlay.bootStatusText, "Exiting game…");
+  assert.equal(player.overlay.archiveBytes, undefined);
   assert.deepEqual(player.exits, []);
   flush.resolve();
   await exit;
   assert.equal(player.children.some(({ type }) => type === "iframe"), false);
+  assert.equal(player.overlay.showBootOverlay, true);
+  assert.equal(player.overlay.bootStatusText, "Exiting game…");
   assert.deepEqual(player.exits, ["/"]);
   player.unmount();
 });
@@ -865,6 +873,7 @@ function keyboardAction(player) {
 function readyPlayer(game, { ready = true, failed = false, mobile = false, landscape = true,
   fullscreen = false, canFullscreen = true, exitImmersiveMode = () => {} } = {}) {
   function Controls() {}
+  function Overlay() {}
   function CursorPad() {}
   function MovementStick() {}
   function TouchGamepad() {}
@@ -875,6 +884,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
   let stateIndex = 0;
   const states = [];
   const navigations = [];
+  let shellProps;
   let children;
   const module = { exports: {} };
   runInNewContext(code, {
@@ -912,6 +922,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
         focusGameCanvas() {},
       };
       if (name.endsWith("/GamePlayerControls")) return Controls;
+      if (name.endsWith("/GameBootOverlay")) return Overlay;
       if (name.endsWith("/GameTouchCursorPad")) return CursorPad;
       if (name.endsWith("/GameTouchGamepad")) return { GameMovementStick: MovementStick, GameTouchGamepad: TouchGamepad };
       if (name.endsWith("/useBootState")) return { useBootState: () => ({
@@ -932,11 +943,14 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
   function render() {
     refIndex = 0;
     stateIndex = 0;
-    children = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props.children.filter(Boolean);
+    shellProps = module.exports.default({ game, target: game.target, src: "/scummvm.html#game" }).props;
+    children = shellProps.children.filter(Boolean);
   }
   render();
   return {
     get controls() { return children.find(({ type }) => type === Controls)?.props; },
+    get overlay() { return children.find(({ type }) => type === Overlay).props; },
+    get mobileOrientation() { return shellProps["data-mobile-orientation"]; },
     get cursorPad() { return children.find(({ type }) => type === CursorPad)?.props; },
     get hugoStick() { return children.find(({ props }) => props.children?.type === MovementStick)?.props.children; },
     get grimGamepad() { return children.find(({ type, props }) => type === TouchGamepad && props.mode === "grim"); },
@@ -970,12 +984,15 @@ for (const game of [
       const fullscreenExit = Promise.withResolvers();
       const player = readyPlayer(game, { mobile, exitImmersiveMode: () => fullscreenExit.promise });
       assert.ok(player.controls);
+      assert.equal(player.overlay.showBootOverlay, false);
       if (mobile) assert.ok(player.controls.showTouchClickButtons || player.hugoStick || player.grimGamepad || player.monkey4Gamepad || player.castleGamepad || player.form);
       player.controls.onOpenMenu();
       player.render();
       assert.equal(player.controls.gameMenuOpen, true);
       const exit = player.controls.onExit();
       // No extra render: controls must disappear inside the exit handler itself.
+      assert.equal(player.overlay.showBootOverlay, true);
+      assert.equal(player.overlay.bootStatusText, "Exiting game…");
       assert.equal(player.controls, undefined);
       assert.equal(player.cursorPad, undefined);
       assert.equal(player.hugoStick, undefined);
@@ -1018,13 +1035,18 @@ test("game menu stays hidden while loading and after a boot failure", () => {
   }
 });
 
-test("portrait mobile play keeps Exit available and removes gameplay controls", () => {
+test("portrait mobile play keeps Exit available and shows the exit overlay when leaving", async () => {
   const game = { engineId: "sky", gameId: "sky", target: "sky" };
   const player = readyPlayer(game, { mobile: true, landscape: false });
   assert.equal(player.controls.showExitControl, true);
   assert.equal(player.controls.showGameMenuButton, false);
   assert.equal(player.controls.showTouchClickButtons, false);
   assert.equal(player.cursorPad.showTouchCursorPad, false);
+  assert.equal(player.mobileOrientation, "landscape");
+  await player.controls.onExit();
+  assert.equal(player.mobileOrientation, undefined);
+  assert.equal(player.overlay.showBootOverlay, true);
+  assert.equal(player.overlay.bootStatusText, "Exiting game…");
 });
 
 test("Mystery House opens a command field from the keyboard control on mobile", () => {

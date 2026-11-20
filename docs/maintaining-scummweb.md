@@ -762,8 +762,9 @@ exceptions and failures of those dependencies remain visible.
 
 The startup watchdog reports slow launches while retaining the runtime frame
 and prepared game files. A late, validated ready signal clears only that timeout and cancels its
-watchdog; other startup failures remain visible. Exiting still releases the
-selected game and cancels the launch.
+watchdog; other startup failures remain visible. The player shows **Exiting game…**
+while it finishes saving and returns to the launcher. Exiting during startup
+cancels the launch.
 
 The browsing hero and launch screen share `GameHeroScene`: the selected game's
 title, edition metadata, summary, artwork source, crop and viewport geometry
