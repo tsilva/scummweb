@@ -1,4 +1,5 @@
 .game-menu-drawer {
+  --game-menu-background: #191919;
   --game-menu-width: min(25rem, 100vw);
   --game-menu-disabled-opacity: .5;
   position: fixed;
@@ -17,7 +18,14 @@
   outline: none;
   -webkit-user-select: none;
   user-select: none;
-  background: #191919;
+  /* The covers scroll with the content, revealing the shadows at each edge. */
+  background:
+    linear-gradient(var(--game-menu-background) 1.25rem, transparent) top / 100% 2.25rem local,
+    linear-gradient(to top, var(--game-menu-background) 1.25rem, transparent) bottom / 100% 2.25rem local,
+    linear-gradient(rgb(0 0 0 / .8), transparent) top / 100% 1.25rem scroll,
+    linear-gradient(to top, rgb(0 0 0 / .8), transparent) bottom / 100% 1.25rem scroll
+    var(--game-menu-background);
+  background-repeat: no-repeat;
   color: var(--ink);
   font-size: 1rem;
 }
@@ -211,7 +219,7 @@
   box-sizing: content-box;
   padding: .5rem;
   border-radius: 50%;
-  background: #191919;
+  background: var(--game-menu-background);
 }
 @media (prefers-reduced-motion: no-preference) {
   .game-menu-saving-spinner, .game-menu-load-status svg { animation: game-menu-spin 1s linear infinite; }

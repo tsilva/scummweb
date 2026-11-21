@@ -125,7 +125,8 @@ each axis to preserve symmetric spacing around cutouts.
 - **Esc** or **Open game menu** opens the shared menu. **Esc** returns from a
   picker or closes the menu. Clicking or tapping outside the menu closes it
   when no save or load is in progress. The game pauses at a supported update
-  boundary.
+  boundary. Shadows at the menu's top and bottom edges indicate when more
+  content is available in that direction.
   **Sound Volume** starts at 100% and scales the whole audio mix. Each player
   launch sets ScummVM's music and effects levels to maximum and clears their
   mute settings, including overrides carried over from earlier sessions.
