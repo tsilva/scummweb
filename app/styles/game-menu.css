@@ -10,24 +10,49 @@
   height: auto;
   max-height: none;
   margin: 0;
-  padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) 1.25rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  padding: 0;
+  overflow: hidden;
   border: 0;
   border-left: 1px solid #343434;
   outline: none;
   -webkit-user-select: none;
   user-select: none;
-  /* The covers scroll with the content, revealing the shadows at each edge. */
-  background:
-    linear-gradient(var(--game-menu-background) 1.25rem, transparent) top / 100% 2.25rem local,
-    linear-gradient(to top, var(--game-menu-background) 1.25rem, transparent) bottom / 100% 2.25rem local,
-    linear-gradient(rgb(0 0 0 / .8), transparent) top / 100% 1.25rem scroll,
-    linear-gradient(to top, rgb(0 0 0 / .8), transparent) bottom / 100% 1.25rem scroll
-    var(--game-menu-background);
-  background-repeat: no-repeat;
+  background: var(--game-menu-background);
   color: var(--ink);
   font-size: 1rem;
+}
+
+.game-menu-drawer[open] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.game-menu-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.game-menu-content {
+  display: flow-root;
+  padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) 1.25rem;
+}
+
+.game-menu-drawer::before, .game-menu-drawer::after {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 1;
+  height: min(2rem, 20%);
+  pointer-events: none;
+}
+.game-menu-drawer[data-can-scroll-up]::before {
+  content: "";
+  top: 0;
+  background: linear-gradient(rgb(0 0 0 / .9), transparent);
+}
+.game-menu-drawer[data-can-scroll-down]::after {
+  content: "";
+  bottom: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / .9), transparent);
 }
 
 .game-menu-drawer::backdrop { background: transparent; }
@@ -256,7 +281,7 @@
 .game-bug-report-success .game-menu-primary { margin-top: .75rem; }
 
 @media (max-height: 500px) {
-  .game-menu-drawer:has(.game-bug-report) { padding-top: .75rem; padding-bottom: .75rem; }
+  .game-menu-content:has(.game-bug-report) { padding-top: .75rem; padding-bottom: .75rem; }
   .game-menu-drawer:has(.game-bug-report) .game-menu-header { padding-bottom: .5rem; }
   .game-menu-drawer:has(.game-bug-report) .game-menu-heading-row h2 { font-size: 1.4rem; }
   .game-bug-report { gap: .625rem; padding-top: .75rem; }
