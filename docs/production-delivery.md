@@ -11,6 +11,12 @@ A separate job builds and stages the artifact on Vercel, checks the deployment
 and its function inventory, and rechecks the head of `main` before promotion.
 Vercel's automatic Git deployments are disabled.
 
+CI and the separate Vercel staging job prepare a complete ScummVM bundle before
+testing or building the app. They can reuse the bundle cache for the same
+runtime inputs. A cache miss builds the pinned engine and its corresponding
+source archive. Both jobs verify the runtime and archive checksums, and Vercel
+staging checks them again in the finished deployment artifact.
+
 Automatic delivery accepts only successful main-push CI from this repository,
 for the same SHA as the delivery run and the current head of `main`. The CI
 workflow path, immutable repository IDs, run ID and rerun attempt are checked

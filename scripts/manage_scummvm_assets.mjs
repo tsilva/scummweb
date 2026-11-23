@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,6 +18,7 @@ function usage() {
       "usage:",
       "  manage_scummvm_assets.mjs sync <sourceDir> <targetDir>",
       "  manage_scummvm_assets.mjs validate [directory]",
+      "  manage_scummvm_assets.mjs ensure",
       "",
       "defaults:",
       "  validate => scummvm-shell/",
@@ -97,10 +99,28 @@ function validateCommand(directory = defaultShellDir) {
   validateManagedDirectory(directory, directory);
 }
 
+function ensureGeneratedRuntime() {
+  const { corresponding_source: offer } = JSON.parse(fs.readFileSync(path.join(defaultShellDir, "source-info.json"), "utf8"));
+  const plugins = Object.keys(offer?.runtime_sha256 ?? {}).filter((name) => /^data\/plugins\/lib[a-z0-9_]+\.so$/.test(name));
+  const generated = ["scummvm.wasm", sourceOfferArchive.slice(1), ...plugins];
+  if (generated.some((relative) => !fs.existsSync(path.join(defaultShellDir, relative)))) {
+    execFileSync("bash", [path.join(rootDir, "scripts/build_scummvm_web.sh")], {
+      cwd: rootDir,
+      env: { ...process.env, SCUMMVM_REUSE_CATALOG: "1" },
+      stdio: "inherit",
+    });
+  }
+  validateManagedDirectory(defaultShellDir);
+}
+
 function main() {
   const [command, ...args] = process.argv.slice(2);
 
   switch (command) {
+    case "ensure":
+      if (args.length) usage();
+      ensureGeneratedRuntime();
+      return;
     case "sync":
       if (args.length !== 2) {
         usage();

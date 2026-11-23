@@ -4,7 +4,8 @@
   "packageManager": "pnpm@10.27.0",
   "scripts": {
     "preinstall": "node -e \"const ua = process.env.npm_config_user_agent || ''; if (!ua.startsWith('pnpm/')) { console.error('Use pnpm for this repo.'); process.exit(1); }\"",
-    "prepare": "node ./scripts/manage_scummvm_assets.mjs validate && node ./scripts/generate-runtime-assets.mjs && pnpm run generate:artwork && node ./scripts/manage_scummvm_assets.mjs sync scummvm-shell public && node ./scripts/manage_scummvm_assets.mjs validate public && node ./scripts/generate-game-progress.mjs && pnpm run generate:social-cards",
+    "prepare": "pnpm run prepare:scummvm && node ./scripts/generate-runtime-assets.mjs && pnpm run generate:artwork && node ./scripts/manage_scummvm_assets.mjs sync scummvm-shell public && node ./scripts/manage_scummvm_assets.mjs validate public && node ./scripts/generate-game-progress.mjs && pnpm run generate:social-cards",
+    "prepare:scummvm": "node ./scripts/manage_scummvm_assets.mjs ensure",
     "generate:social-cards": "node ./scripts/generate-social-cards.mjs",
     "build:scummvm": "./scripts/build_scummvm_web.sh",
     "publish:games": "python3 scripts/upload_games_to_r2.py",

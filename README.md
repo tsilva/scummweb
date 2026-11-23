@@ -66,7 +66,6 @@ Open `http://localhost:47831` and select **Beneath a Steel Sky → Play**.
 - Original ScummWEB code uses the [Zero-Clause BSD license](LICENSE).
 - The bundled engine and patches use the [ScummVM GPL license](scummvm-shell/doc/COPYING).
   See the [live source offer](https://scummweb.tsilva.eu/doc/scummvm-source.html)
-  or this checkout's [build-source ZIP](scummvm-shell/doc/scummvm-source.zip)
-  and [third-party notices](scummvm-shell/doc/).
+  for the matching build-source ZIP and [third-party notices](scummvm-shell/doc/).
 - Games and artwork have their own terms. See the
   game-specific notices in the [catalog](https://scummweb.tsilva.eu#library).

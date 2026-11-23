@@ -38,4 +38,14 @@ tmp/
 /scummvm-shell/launcher/*.avif
 /image-assets/sources/road-gameplay.jpg
 
+# Large outputs rebuilt from the pinned ScummVM source and patches.
+/scummvm-shell/scummvm.wasm
+/scummvm-shell/data/plugins/libags.so
+/scummvm-shell/data/plugins/libglk.so
+/scummvm-shell/data/plugins/libkyra.so
+/scummvm-shell/data/plugins/libmads.so
+/scummvm-shell/data/plugins/libscumm.so
+/scummvm-shell/data/plugins/libtsage.so
+/scummvm-shell/doc/scummvm-source.zip
+
 /.runbox.yaml

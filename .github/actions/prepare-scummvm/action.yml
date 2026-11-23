@@ -1,0 +1,32 @@
+name: Prepare the ScummVM runtime
+description: Restore a verified runtime or build one from the pinned ScummVM source.
+
+runs:
+  using: composite
+  steps:
+    - name: Restore the runtime for these build inputs
+      id: runtime
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: dist
+        key: scummvm-runtime-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/**', 'lib/scummvm-shell-assets.js', 'patches/**', 'web-shell/**', 'scummvm-shell/**', 'branding/**', 'public/brand/**', 'app/save-backups/filesystem.mjs', 'data/classic-freeware.json', '.codex/skills/scummweb_upgrade-scummvm/**', 'LICENSE') }}
+
+    - name: Validate and stage the cached bundle
+      if: steps.runtime.outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        node scripts/manage_scummvm_assets.mjs validate dist
+        node scripts/manage_scummvm_assets.mjs sync dist scummvm-shell
+
+    - name: Install the system image library for a native build
+      if: steps.runtime.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        if ! python3 -c 'from PIL import Image'; then
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends python3-pil
+        fi
+
+    - name: Ensure the complete runtime is available
+      shell: bash
+      run: pnpm run prepare:scummvm

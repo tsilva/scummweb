@@ -213,9 +213,14 @@ bootstrap_toolchain() {
 
   mkdir -p "$ROOT_DIR/tools/bin"
 
+  local build_jobs="${SCUMMVM_BUILD_JOBS:-4}"
+  if [[ ! "$build_jobs" =~ ^[1-9][0-9]*$ ]]; then
+    echo "SCUMMVM_BUILD_JOBS must be a positive integer." >&2
+    exit 1
+  fi
   cat > "$ROOT_DIR/tools/bin/nproc" <<'EOF'
 #!/bin/sh
-sysctl -n hw.ncpu
+printf '%s\n' "${SCUMMVM_BUILD_JOBS:-4}"
 EOF
   chmod +x "$ROOT_DIR/tools/bin/nproc"
 

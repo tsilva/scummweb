@@ -628,10 +628,14 @@ dependency. Keep the full dependency audit and supply-chain holds enabled.
 | `pnpm run record:preview` | Stream distinct preview frames as MPEG-TS. |
 | `pnpm run verify` | Boot detected games with the Chrome/Chromium harness. |
 
-The app stages the tracked `scummvm-shell/` into `public/`. Edit
-`web-shell/` for browser-runtime changes. Keep the core and engine plugins
-from the same build. Set the same project-relative `SCUMMWEB_DIST_DIR` for
-build and start when an audit must coexist with another server.
+The app stages `scummvm-shell/` into `public/`. The core WASM, six large
+engine plugins, and corresponding-source ZIP are Git-ignored. On a fresh
+checkout, `pnpm run prepare:scummvm` builds the matching runtime and source
+archive from the pinned ScummVM checkout and Emscripten SDK. The build needs
+Bash, Git, curl, make, CMake, Python 3 with Pillow, and standard archive tools.
+`pnpm prepare` runs this check and reuses an existing validated bundle.
+Edit `web-shell/` for browser-runtime changes. Set the same project-relative
+`SCUMMWEB_DIST_DIR` for build and start when an audit must coexist with another server.
 
 Production builds use Next.js `experimental.inlineCss` to include each route's
 existing styles in its HTML, removing the first-render stylesheet request.

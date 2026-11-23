@@ -21,8 +21,8 @@ concurrency:
 jobs:
   application:
     name: Dependency security and application gates
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
 
     steps:
       - name: Check out repository
@@ -46,6 +46,9 @@ jobs:
 
       - name: Check JavaScript syntax
         run: pnpm lint
+
+      - name: Prepare the ScummVM runtime
+        uses: ./.github/actions/prepare-scummvm
 
       - name: Restore verified artwork
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5

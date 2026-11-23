@@ -79,6 +79,39 @@ test("asset manager rejects binaries and source archives that differ from the so
   }
 });
 
+test("runtime preparation rebuilds missing plugins and rejects present corrupt files", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-prepare-"));
+  try {
+    const shell = path.join(directory, "scummvm-shell");
+    const manager = path.join(directory, "scripts/manage_scummvm_assets.mjs");
+    const plugin = path.join(shell, "data/plugins/libexample.so");
+    const rebuilt = path.join(directory, "rebuilt");
+    writeFile(manager, fs.readFileSync(managerPath));
+    writeFile(path.join(directory, "lib/scummvm-shell-assets.js"),
+      fs.readFileSync(path.join(rootDir, "lib/scummvm-shell-assets.js")));
+    writeFile(path.join(directory, "scripts/build_scummvm_web.sh"), [
+      "set -e",
+      'test "$SCUMMVM_REUSE_CATALOG" = 1',
+      "printf plugin > scummvm-shell/data/plugins/libexample.so",
+      "touch rebuilt",
+    ].join("\n"));
+    createManagedTree(shell);
+    const ensure = () => execFileSync("node", [manager, "ensure"], { stdio: "pipe" });
+
+    ensure();
+    assert.equal(fs.existsSync(rebuilt), false);
+    writeFile(plugin, "different");
+    assert.throws(ensure, /ScummVM source offer checksum mismatch/);
+    assert.equal(fs.existsSync(rebuilt), false);
+    fs.unlinkSync(plugin);
+    ensure();
+    assert.equal(fs.existsSync(rebuilt), true);
+    assert.equal(fs.readFileSync(plugin, "utf8"), "plugin");
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("asset manager validate accepts managed trees and rejects incomplete ones", () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-validate-"));
   const validDir = path.join(tempDir, "valid");

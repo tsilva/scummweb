@@ -32,7 +32,7 @@ jobs:
       (!inputs.promote || github.workflow_ref == 'tsilva/scummweb/.github/workflows/production-delivery.yml@refs/heads/main')
     runs-on: ubuntu-24.04
     environment: Production
-    timeout-minutes: 25
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -92,6 +92,9 @@ jobs:
       - name: Install application dependencies from the lockfile
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Prepare the ScummVM runtime
+        uses: ./.github/actions/prepare-scummvm
+
       - name: Build the Vercel artifact
         env:
           VERCEL_ENV: production
@@ -116,6 +119,7 @@ jobs:
           jq -e --arg id "$SCUMMWEB_DEPLOYMENT_ID" '.deploymentId == $id' .vercel/output/config.json
           test -s .vercel/output/static/scummvm.html
           test -s .vercel/output/static/scummvm.wasm
+          node scripts/manage_scummvm_assets.mjs validate .vercel/output/static
           jq -e '.name == "ScummWEB"' .vercel/output/static/manifest.json
           test -n "$(find .vercel/output/static/social-cards -name 'beneath-a-steel-sky-*.jpg' -print -quit)"
 
