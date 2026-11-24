@@ -1,17 +1,21 @@
 import { DEFAULT_SITE_URL, GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
 import { classifyAnalyticsTraffic } from "../lib/analytics-traffic.mjs";
 
-function startAnalytics(id, productionOrigin, classifyTraffic) {
+function startAnalytics(id, productionOrigin, classifyTraffic, window = globalThis.window, document = globalThis.document) {
+  let canceled = false;
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag = function () {
+    if (window[`ga-disable-${id}`] !== true) window.dataLayer.push(arguments);
+  };
   // Set before config so automatic page views and enhanced-measurement events
   // receive the same classification as the catalog funnel.
   window.gtag("set", classifyTraffic(window, productionOrigin));
   window.gtag("js", new Date());
   const { origin, pathname, search } = window.location;
-  window.gtag("config", id, { page_location: origin + pathname + search });
+  window.gtag("config", id, { page_location: origin + pathname + search, cookie_domain: "none" });
 
   function load() {
+    if (canceled || window[`ga-disable-${id}`] === true || window.scummwebAnalyticsReady) return;
     const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
@@ -30,6 +34,33 @@ function startAnalytics(id, productionOrigin, classifyTraffic) {
 
   if (document.readyState === "complete") afterLoad();
   else window.addEventListener("load", afterLoad, { once: true });
+  return () => { canceled = true; };
 }
 
 export const analyticsStartupScript = `(${startAnalytics.toString()})(${JSON.stringify(GOOGLE_ANALYTICS_ID)},${JSON.stringify(DEFAULT_SITE_URL)},(${classifyAnalyticsTraffic.toString()}));`;
+
+let cancelPending;
+export function setGoogleAnalyticsAllowed(allowed, target = window) {
+  const disableKey = `ga-disable-${GOOGLE_ANALYTICS_ID}`;
+  const active = allowed && target.location.origin === DEFAULT_SITE_URL;
+  if (target[disableKey] === !active) return;
+  target[disableKey] = !active;
+  target.scummwebAnalyticsRevision = (target.scummwebAnalyticsRevision || 0) + 1;
+
+  if (active) {
+    if (!target.scummwebAnalyticsReady) {
+      cancelPending = startAnalytics(GOOGLE_ANALYTICS_ID, DEFAULT_SITE_URL, classifyAnalyticsTraffic, target, target.document);
+    }
+    return;
+  }
+  if (cancelPending && !target.scummwebAnalyticsReady) {
+    cancelPending();
+    target.dataLayer.length = 0;
+  }
+  cancelPending = undefined;
+  if (target.location.origin === DEFAULT_SITE_URL) {
+    for (const name of ["_ga", `_ga_${GOOGLE_ANALYTICS_ID.slice(2)}`]) {
+      target.document.cookie = `${name}=; Path=/; Max-Age=0; Secure; SameSite=Lax`;
+    }
+  }
+}

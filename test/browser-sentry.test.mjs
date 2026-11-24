@@ -5,6 +5,29 @@ import { createBrowserSentry, scheduleBrowserSentry } from "../lib/browser-sentr
 
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
+test("diagnostics neither loads before permission nor sends after it is withdrawn", async () => {
+  let allowed = false;
+  let loads = 0;
+  const sent = [];
+  const options = { enabled: true };
+  const transport = { send(envelope) { sent.push(envelope); return Promise.resolve({}); } };
+  const sdk = {
+    init() {},
+    getClient: () => ({ getTransport: () => transport, getOptions: () => options }),
+  };
+  const client = createBrowserSentry({ enabled: () => allowed, load: async () => { loads++; return sdk; }, options });
+  await client.run(() => assert.fail("blocked callback ran"));
+  assert.equal(loads, 0);
+  allowed = true;
+  await client.run(() => transport.send("allowed"));
+  allowed = false;
+  client.setActive(false);
+  await transport.send("blocked at transport");
+  await client.run(() => assert.fail("callback ran after withdrawal"));
+  assert.equal(options.enabled, false);
+  assert.deepEqual(sent, ["allowed"]);
+});
+
 function fixture({ hero, loading = false } = {}) {
   const target = new EventTarget();
   target.document = new EventTarget();

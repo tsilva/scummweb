@@ -47,7 +47,7 @@ jobs:
       contents: read
       actions: read
       id-token: write
-    uses: tsilva/.github/.github/workflows/production-delivery.yml@c262be7b75fe4654c170eb5e13240808a70b9936
+    uses: tsilva/.github/.github/workflows/production-delivery.yml@5c2df7794a257d5fba85d3c5b99ae649134efee5
     with:
       sync_only: true
     secrets:

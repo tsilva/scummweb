@@ -1,0 +1,46 @@
+.panel {
+  position: fixed;
+  inset-inline: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: max-content;
+  max-width: min(100% - 2rem, 44rem);
+  margin-inline: auto;
+  padding: 0.7rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  border: 1px solid var(--consent-border, #667066);
+  border-radius: 0.4rem;
+  background: var(--consent-background, #1c1b1b);
+  color: var(--consent-text, #e5e2e1);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.panel h2 { margin: 0 0 0.15rem; font-size: 0.95rem; }
+.panel p { margin: 0; }
+.actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.actions :is(button, a) { color: inherit; font: inherit; }
+.actions button {
+  min-height: 2.5rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.actions button:nth-child(-n + 2) { min-width: 6.6rem; }
+.actions .linkButton { border-color: transparent; text-decoration: underline; }
+.actions a { text-decoration: underline; }
+.panel :is(button, a, input):focus-visible { outline: 2px solid var(--consent-accent, #7fd37f); outline-offset: 2px; }
+.details { flex-direction: column; align-items: stretch; max-width: min(100% - 2rem, 28rem); }
+.purpose { display: flex; gap: 0.55rem; align-items: flex-start; }
+.purpose span span { display: block; margin-top: 0.15rem; }
+.purpose input { margin-top: 0.2rem; accent-color: var(--consent-accent, #7fd37f); }
+
+@media (max-width: 43rem) {
+  .panel { flex-direction: column; align-items: flex-start; }
+  .panel:not(.details) { top: calc(4rem + env(safe-area-inset-top, 0px)); bottom: auto; }
+}

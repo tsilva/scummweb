@@ -31,7 +31,7 @@ superseded runs cannot deploy. Manual and secret-change relay dispatches remain
 available, but fail immediately if the latest exact-commit CI is not already
 successful. CI artifacts and caches are not imported into the trusted sync job.
 
-The [pinned trust contract](https://github.com/tsilva/.github/blob/c262be7b75fe4654c170eb5e13240808a70b9936/.github/actions/production-delivery/README.md)
+The [pinned trust contract](https://github.com/tsilva/.github/blob/5c2df7794a257d5fba85d3c5b99ae649134efee5/.github/actions/production-delivery/README.md)
 defines the OIDC policy, caller-to-vault mapping, and allowlist. The trusted
 sync job keeps application secrets inside its boundary. Vercel supplies
 runtime secrets at deployment. Keep **Require Separate Values** enabled and
@@ -54,6 +54,37 @@ After fixing a failed gate, use **Actions → Production delivery → Run
 workflow → main**. To stage a Production-configured artifact without
 assigning production domains, use **Stage prebuilt deployment** from
 `main`. Its run summary links to the staged deployment.
+
+## Privacy request intake
+
+`/privacy` submits requests to `/api/privacy-requests`. The route sends a
+plain-text email using the Resend Emails API. The settings below are server-only
+runtime values in ScummWEB's pinned shared delivery allowlist. Store the
+Production values in ScummWEB's Infisical `prod` root and let the delivery
+workflow sync them to Vercel as Secrets. Coordinate provisioning with the
+release because adding or changing these values can dispatch Production delivery
+through the Infisical webhook.
+
+| Variable | Value |
+| --- | --- |
+| `SCUMMWEB_PRIVACY_REQUEST_RESEND_API_KEY` | Resend sending-only key scoped to the verified domain |
+| `SCUMMWEB_PRIVACY_REQUEST_FROM` | Sender address on the verified domain |
+| `SCUMMWEB_PRIVACY_REQUEST_TO` | Fixed address that reaches the monitored privacy inbox |
+
+Verify a sending subdomain in Resend and keep open and click tracking off.
+The subject identifies ScummWEB, and the visitor's address is the reply address.
+The route supplies a site-specific idempotency key derived from the submission
+reference. Resend uses it to suppress retries of the same submission for 24
+hours. The form shows a reference after Resend accepts the email. Verify inbox
+delivery separately, including that the forwarded message preserves the visitor's
+reply address. With delivery settings missing, the form is unavailable and the
+submission route returns 503.
+
+Review the data processing terms and retention for Resend, the forwarding
+service, and the receiving mailbox before enabling live intake. Use synthetic
+submissions to verify the authorized sender, receipt in the monitored inbox,
+and retry behavior. Keep production keys and mailbox addresses out of public
+client configuration and source control.
 
 ## Production performance audits
 

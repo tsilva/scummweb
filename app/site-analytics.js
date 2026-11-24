@@ -1,9 +1,10 @@
 "use client";
 
 import { Analytics } from "@vercel/analytics/next";
-import { useEffect, useState } from "react";
+import { consentStore } from "./privacy/consent-config.mjs";
 
 function omitGameZipFragment(event) {
+  if (!consentStore.allows("analytics")) return null;
   const url = new URL(event.url);
   if (new URLSearchParams(url.hash.slice(1)).has("zip")) {
     url.hash = "";
@@ -12,17 +13,7 @@ function omitGameZipFragment(event) {
   return event;
 }
 
-export default function SiteAnalytics() {
+export default function SiteAnalytics({ allowed }) {
   const enabled = process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED === "true";
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    if (!enabled) return;
-    const markReady = () => setReady(true);
-    if (window.scummwebAnalyticsReady) markReady();
-    else {
-      window.addEventListener("scummweb:analytics-ready", markReady, { once: true });
-      return () => window.removeEventListener("scummweb:analytics-ready", markReady);
-    }
-  }, [enabled]);
-  return enabled && ready ? <Analytics beforeSend={omitGameZipFragment} /> : null;
+  return enabled && allowed ? <Analytics beforeSend={omitGameZipFragment} /> : null;
 }

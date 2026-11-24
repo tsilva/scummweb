@@ -1,10 +1,9 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import { getVersionedSiteAssetPath } from "./asset-paths";
-import { analyticsStartupScript } from "./analytics-startup.mjs";
 import { APP_THEME_COLOR, HOME_DESCRIPTION, HOME_TITLE, SITE_NAME } from "./seo";
 import { getMetadataBase } from "./site-config";
-import SiteAnalytics from "./site-analytics";
 import DropboxSaveSync from "./dropbox-save-sync";
+import SiteConsent from "./privacy/site-consent";
 import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
 import { initialActionsScript } from "./home-shell/initial-actions.mjs";
 import { installPromptStartup } from "./home-shell/install-prompt-startup.mjs";
@@ -74,12 +73,10 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />
         <script dangerouslySetInnerHTML={{ __html: initialActionsScript }} />
         <script dangerouslySetInnerHTML={{ __html: installPromptStartup }} />
-        <script dangerouslySetInnerHTML={{ __html: analyticsStartupScript }} />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        {children}
+        <SiteConsent>{children}</SiteConsent>
         <DropboxSaveSync />
-        <SiteAnalytics />
       </body>
     </html>
   );

@@ -18,17 +18,19 @@ export function createGameLaunchAnalytics(gameSlug) {
   let stopWatching = null;
 
   function send(name, fields = {}) {
+    if (window[`ga-disable-${GOOGLE_ANALYTICS_ID}`] === true || window.scummwebAnalyticsRevision !== attempt.revision) return;
     window.gtag("event", name, { ...attempt.fields, ...fields, send_to: GOOGLE_ANALYTICS_ID });
   }
 
   return {
     start() {
       if (attempt || !gameSlug || window.location.origin !== DEFAULT_SITE_URL ||
-          typeof window.gtag !== "function") return;
+          typeof window.gtag !== "function" || window[`ga-disable-${GOOGLE_ANALYTICS_ID}`] === true) return;
 
       const entryPoint = new URLSearchParams(window.location.search).get("launch_from");
       attempt = {
         startedAt: window.performance.now(),
+        revision: window.scummwebAnalyticsRevision,
         fields: {
           launch_id: window.crypto.randomUUID(),
           game_slug: gameSlug,

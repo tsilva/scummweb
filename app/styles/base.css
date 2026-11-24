@@ -52,6 +52,17 @@ a {
   text-decoration: none;
 }
 
+.privacy-choices-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+
 .mobile-orientation-message {
   position: fixed;
   inset: 0;
