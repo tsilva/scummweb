@@ -79,6 +79,7 @@ const SharedHeroScene = await loadComponent("../app/game-player/GameHeroScene.js
   "./launch-tags.mjs": { getBundledLaunchTags },
 });
 const HeroStage = await loadComponent("../app/home-shell/hero-stage.js", {
+  "../../lib/privacy-consent/controls": { HeroPrivacyControls: () => null },
   "../game-player/GameHeroScene": SharedHeroScene,
   "./artwork-delivery": { useArtworkDelivery: () => undefined },
   "react-dom": { preload: (url, options) => imagePreloads.push({ url, ...options }) },

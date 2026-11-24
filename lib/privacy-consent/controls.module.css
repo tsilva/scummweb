@@ -1,64 +1,125 @@
+.heroQuick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0.65rem;
+  min-height: 2.75rem;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.8125rem;
+}
+
+.heroQuick[hidden] { display: none; }
+
+.prompt,
+.details {
+  border: 1px solid var(--consent-border, #667066);
+  border-radius: 0.45rem;
+  background: var(--consent-background, #1c1b1b);
+  color: var(--consent-text, #e5e2e1);
+  line-height: 1.4;
+}
+
 .prompt {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 0.75rem;
-  margin-top: 0.75rem;
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  justify-content: center;
+  gap: 0.35rem 0.65rem;
+  max-width: 100%;
+  padding: 0.25rem 0.55rem;
 }
 
-.actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
-.actions :is(button, a) { color: inherit; font: inherit; }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.actions :is(button, a),
+.choiceLink { color: inherit; font: inherit; }
+
 .actions button {
-  min-height: 2.5rem;
-  padding: 0.3rem 0.6rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.55rem;
   border: 1px solid currentColor;
   border-radius: 0.25rem;
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
 }
+
 .actions button:hover { background: rgb(255 255 255 / 8%); }
-.actions a { text-decoration: underline; }
-:is(.prompt, .details) :is(button, a, input):focus-visible { outline: 2px solid var(--consent-accent, #7fd37f); outline-offset: 2px; }
+.actions a,
+.choiceLink { text-decoration: underline; text-underline-offset: 0.15em; }
+
+.choiceLink {
+  min-height: 2rem;
+  padding: 0 0.35rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: rgb(20 20 20 / 72%);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+:is(.heroQuick, .details) :is(button, a, input):focus-visible {
+  outline: 2px solid var(--consent-accent, #7fd37f);
+  outline-offset: 2px;
+}
 
 .prompt .actions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-.prompt .actions button {
-  min-height: 2rem;
-  border-color: var(--consent-border, #667066);
-}
-
 .details {
-  position: fixed;
-  inset-inline: 1rem;
-  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-  z-index: 20;
-  width: max-content;
-  max-width: min(100% - 2rem, 28rem);
-  margin-inline: auto;
-  padding: 0.7rem 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  border: 1px solid var(--consent-border, #667066);
-  border-radius: 0.4rem;
-  background: var(--consent-background, #1c1b1b);
-  color: var(--consent-text, #e5e2e1);
-  font-size: 0.85rem;
-  line-height: 1.4;
+  gap: 0.4rem;
+  width: min(23.5rem, 100%);
+  padding: 0.55rem 0.65rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
 }
 
-.details h2 { margin: 0 0 0.15rem; font-size: 0.95rem; }
-.details .actions button { min-width: 6.6rem; }
-.purpose { display: flex; gap: 0.55rem; align-items: flex-start; }
-.purpose span span { display: block; margin-top: 0.15rem; }
-.purpose input { margin-top: 0.2rem; accent-color: var(--consent-accent, #7fd37f); }
+.details h2 { margin: 0; font-size: 0.95rem; }
+.details .actions a { margin-inline-start: 0.25rem; }
+.purpose { display: flex; gap: 0.45rem; align-items: flex-start; cursor: pointer; }
+.purpose span span { display: block; color: #d2cfce; }
+.purpose input { margin: 0.2rem 0 0; accent-color: var(--consent-accent, #7fd37f); }
 
-@media (max-width: 40rem), (pointer: coarse) {
-  .prompt .actions button { min-height: 2.75rem; }
+.floatingDetails {
+  position: fixed;
+  inset-inline: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 20;
+  width: min(23.5rem, 100% - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin-inline: auto;
+  overflow: auto;
+}
+
+@media (min-width: 68.001rem) and (min-height: 38rem) {
+  .heroDetails {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    width: 23.5rem;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 48rem), (pointer: coarse) {
+  .actions button,
+  .choiceLink { min-height: 2.75rem; }
+
+  .details .actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
 }

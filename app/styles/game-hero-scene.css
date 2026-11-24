@@ -163,6 +163,48 @@ html:has(.game-route-boot-overlay.is-visible) {
   font-size: 0.8rem;
 }
 
+.game-hero-scene:has(> .hero-footer[data-consent]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  height: auto;
+  min-height: 100svh;
+}
+
+.game-hero-scene:has(> .hero-footer[data-consent]) > .game-hero-content {
+  padding-bottom: 0;
+}
+
+.game-hero-scene > .hero-footer[data-consent] {
+  position: relative;
+  inset: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: "cue consent carousel";
+  padding-block-end: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.hero-footer[data-consent] > .hero-scroll-cue { grid-area: cue; justify-self: start; }
+.hero-footer[data-consent] > .hero-carousel-controls { grid-area: carousel; justify-self: end; }
+.hero-footer[data-consent] > .hero-privacy {
+  grid-area: consent;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  justify-self: center;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 2.75rem;
+}
+
+@media (max-width: 68rem) {
+  .game-hero-scene > .hero-footer[data-consent] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: "consent consent" "cue carousel";
+    row-gap: 0.35rem;
+  }
+}
+
 .game-hero-loading {
   height: 100%;
   max-height: 100%;

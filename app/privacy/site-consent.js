@@ -8,7 +8,7 @@ import { consentPurposes, consentStore } from "./consent-config.mjs";
 export default function SiteConsent({ children }) {
   const record = useSyncExternalStore(consentStore.subscribe, consentStore.getSnapshot, consentStore.getServerSnapshot);
 
-  return <ConsentControls message="Optional analytics and error reports help us fix slow loads and crashes."
+  return <ConsentControls message="Optional analytics and error reports"
     policyUrl="/privacy" purposes={consentPurposes} store={consentStore}>
     {children}
     <SiteAnalytics allowed={record?.choices.analytics === true} />
