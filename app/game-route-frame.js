@@ -18,7 +18,7 @@ import GameVoiceCommand from "./game-player/GameVoiceCommand";
 import { isZorkVoiceGame } from "./game-player/voice-command.mjs";
 import { GameMovementStick, GameTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
-import { observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
+import { getStartupTimeoutStep, observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { getStoryProgressRevision, observeStoryProgress } from "./game-player/story-progress.mjs";
 import { observePlayHistory } from "./game-player/play-history.mjs";
@@ -360,9 +360,8 @@ export default function GameRouteFrame({
   }, [closeCommand, showCommandForm]);
 
   useLayoutEffect(() => {
-    const navigationController = new AbortController();
     if (frameBootRef.current?.src !== frameSrc) {
-      frameBootRef.current = { src: frameSrc, reported: false, ready: false };
+      frameBootRef.current = { src: frameSrc, reported: false, ready: false, archiveTransferred: false };
     }
     const frameBoot = frameBootRef.current;
 
@@ -388,6 +387,10 @@ export default function GameRouteFrame({
       const description = BOOT_ERROR_MESSAGES.get(stage);
       if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
       frameBoot.reported = true;
+      const waitingFor = stage === "startup-timeout" ? getStartupTimeoutStep(frameRef.current, {
+        receiver: archiveReceiver.current,
+        transferred: frameBoot.archiveTransferred,
+      }) : undefined;
       void withBrowserSentry(({ withScope, captureMessage }) => withScope((scope) => {
         if (!catalogLaunch) {
           // The page URL or navigation breadcrumbs can contain a private ZIP link.
@@ -401,6 +404,7 @@ export default function GameRouteFrame({
           tags: {
             component: "scummvm-player",
             startup_stage: stage,
+            startup_waiting_for: waitingFor,
             game_source: catalogLaunch ? "catalog" : "local",
             game_slug: catalogLaunch ? game?.slug : undefined,
           },
@@ -415,33 +419,6 @@ export default function GameRouteFrame({
         });
       }));
     }
-
-    const navigationTimer = loadArchive && frameSrc && !archiveFrameDocument ? window.setTimeout(async () => {
-      const iframe = frameRef.current;
-      function needsRetry() {
-        const documentUrl = iframe?.contentDocument?.URL;
-        return !navigationController.signal.aborted && iframe &&
-          (!documentUrl || documentUrl === "about:blank");
-      }
-      if (!needsRetry()) return;
-
-      // The network response can arrive without the browser committing the frame
-      // navigation. Load the same-origin shell into the replacement frame directly.
-      const retryUrl = new URL(frameSrc, window.location.href);
-      retryUrl.searchParams.set("launchRetry", "inline");
-      try {
-        const response = await fetch(retryUrl, { mode: "same-origin", signal: navigationController.signal });
-        if (!response.ok) throw new Error("Could not load ScummVM.");
-        const shell = await response.text();
-        if (!shell.includes("<head>")) throw new Error("Invalid ScummVM shell.");
-        if (!needsRetry()) return;
-        const baseHref = retryUrl.href.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
-        setArchiveFrameDocument(shell.replace("<head>", `<head><base href="${baseHref}">`));
-        setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
-      } catch {
-        if (needsRetry()) setArchiveError("Could not load ScummVM. Select Exit game and try again.");
-      }
-    }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS) : null;
 
     const archiveFrame = loadArchive && frameSrc ? frameRef.current : null;
     let archiveBootTimer;
@@ -478,6 +455,7 @@ export default function GameRouteFrame({
       if (!archiveFiles.current || !receiver || receiver !== frameRef.current?.contentWindow) return;
       try {
         sendZipGameFiles(receiver, archiveFiles.current, { saveNamespace: game?.saveNamespace });
+        frameBoot.archiveTransferred = true;
         window.performance?.mark?.("scummweb:archive-transferred");
         archiveFiles.current = null;
         restartArchiveBootTimer();
@@ -630,19 +608,53 @@ export default function GameRouteFrame({
     window.addEventListener("message", handleMessage);
     deliverArchiveFiles();
 
-    if (!archiveFrameDocument && archiveFrame?.contentWindow &&
-        (!archiveFrame.contentDocument || archiveFrame.contentDocument.URL === "about:blank")) {
-      // Start navigation after the frame and ZIP handoff listener are both ready.
-      archiveFrame.contentWindow.location.replace(new URL(frameSrc, window.location.href).href);
-    }
-
     return () => {
-      navigationController.abort();
-      window.clearTimeout(navigationTimer);
       stopArchiveBootTimer();
       window.removeEventListener("message", handleMessage);
     };
   }, [archiveFrameDocument, archivePrepared, catalogLaunch, frameSrc, game?.engineId, game?.saveNamespace, game?.slug, launchAnalytics, loadArchive, navigateHome, src, target]);
+
+  useLayoutEffect(() => {
+    const iframe = frameRef.current;
+    if (!loadArchive || !frameSrc || archiveFrameDocument || !iframe?.contentWindow) return;
+
+    const navigationController = new AbortController();
+    function needsRetry() {
+      if (navigationController.signal.aborted || iframe !== frameRef.current) return false;
+      const documentUrl = iframe.contentDocument?.URL;
+      return !documentUrl || documentUrl === "about:blank";
+    }
+    if (!needsRetry()) return;
+
+    // Keep navigation and its recovery independent of ZIP preparation.
+    // The preceding layout effect has already installed the file handoff listener.
+    iframe.contentWindow.location.replace(new URL(frameSrc, window.location.href).href);
+    const navigationTimer = window.setTimeout(async () => {
+      if (!needsRetry()) return;
+
+      // The network response can arrive without the browser committing the frame
+      // navigation. Load the same-origin shell into the replacement frame directly.
+      const retryUrl = new URL(frameSrc, window.location.href);
+      retryUrl.searchParams.set("launchRetry", "inline");
+      try {
+        const response = await fetch(retryUrl, { mode: "same-origin", signal: navigationController.signal });
+        if (!response.ok) throw new Error("Could not load ScummVM.");
+        const shell = await response.text();
+        if (!shell.includes("<head>")) throw new Error("Invalid ScummVM shell.");
+        if (!needsRetry()) return;
+        const baseHref = retryUrl.href.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+        setArchiveFrameDocument(shell.replace("<head>", `<head><base href="${baseHref}">`));
+        setFrameSrc(`${retryUrl.pathname}${retryUrl.search}${retryUrl.hash}`);
+      } catch {
+        if (needsRetry()) setArchiveError("Could not load ScummVM. Select Exit game and try again.");
+      }
+    }, ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS);
+
+    return () => {
+      navigationController.abort();
+      window.clearTimeout(navigationTimer);
+    };
+  }, [archiveFrameDocument, frameSrc, loadArchive]);
 
   useEffect(() => {
     const controller = new AbortController();

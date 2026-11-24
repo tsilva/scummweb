@@ -8,6 +8,7 @@ import * as skipIntroConfig from "../app/skip-intro-config.mjs";
 import * as preview from "../app/dropbox/feature.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
+import * as startupDiagnostics from "../app/game-player/startup-diagnostics.mjs";
 import * as gameMenu from "../app/game-player/game-menu.mjs";
 import * as mobileControls from "../app/game-player/mobile-controls.mjs";
 import * as voiceCommands from "../app/game-player/voice-command.mjs";
@@ -121,6 +122,7 @@ for (const [message, mobile, installed] of [
 }
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
+  fetchShell = async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
   agentSaveScope, storyMaps = {},
   skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
   realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
@@ -130,6 +132,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   const messages = new Set();
   const timers = new Map();
   const deliveries = [];
+  const navigations = [];
   const archiveOptions = [];
   const reports = [];
   const storyObservers = [];
@@ -145,7 +148,10 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   let eventProcessor;
   const frame = {
     contentDocument: { URL: "about:blank", getElementById: () => null },
-    contentWindow: { focus() {}, postMessage() {}, location: { replace(href) { if (!stalledNavigation) frame.contentDocument.URL = href; } } },
+    contentWindow: { focus() {}, postMessage() {}, location: { replace(href) {
+      navigations.push(href);
+      if (!stalledNavigation) frame.contentDocument.URL = href;
+    } } },
     addEventListener() {}, removeEventListener() {}, focus() {},
   };
   const shellProperties = new Map();
@@ -193,7 +199,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   runInNewContext(code, {
     module, exports: module.exports, window, URL, URLSearchParams, AbortController,
     navigator: { virtualKeyboard }, HTMLElement: class {},
-    fetch: async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
+    fetch: fetchShell,
     require: function require(name) {
       if (name === "./dropbox/feature.mjs") return preview;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
@@ -270,7 +276,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name.endsWith("/game-launch-analytics.mjs")) return { createGameLaunchAnalytics: () => ({
         start() {}, fail() {}, confirm() { confirmations++; }, watchPlayTime() {},
       }) };
-      if (name.endsWith("/startup-diagnostics.mjs")) return { observeStartupDiagnostics() {} };
+      if (name.endsWith("/startup-diagnostics.mjs")) return startupDiagnostics;
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
       if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
       return {};
@@ -298,7 +304,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     } while (dirty);
   }
   return {
-    archive, archiveOptions, frame, deliveries, reports, timers, render, shellProperties, storyObservers, playObservers, exits,
+    archive, archiveOptions, frame, deliveries, navigations, reports, timers, render, shellProperties, storyObservers, playObservers, exits,
     get children() { return children; },
     get loadCount() { return loadCount; },
     get confirmations() { return confirmations; },
@@ -762,6 +768,32 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   player.unmount();
 });
 
+test("finishing archive preparation cannot interrupt an in-flight shell recovery", async () => {
+  const shell = Promise.withResolvers();
+  let fallbackSignal;
+  const player = pendingArchivePlayer({ stalledNavigation: true, fetchShell: (_url, { signal }) => {
+    fallbackSignal = signal;
+    return shell.promise;
+  } });
+  player.render();
+  const recovery = [...player.timers.values()].find(({ delay }) => delay === 8000).callback();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+
+  assert.equal(fallbackSignal.aborted, false);
+  assert.equal(player.navigations.length, 1);
+  shell.resolve({ ok: true, text: async () => "<html><head></head><body></body></html>" });
+  await recovery;
+  player.render();
+  assert.match(player.children.find(({ type }) => type === "iframe").props.srcDoc, /launchRetry=inline/);
+  player.ready();
+  assert.equal(player.deliveries.length, 1);
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
+  assert.equal(player.confirmations, 1);
+  player.unmount();
+});
+
 test("a late Sword25 first frame recovers the startup timeout without hiding other failures", async () => {
   for (const failure of ["timeout", "runtime"]) {
     const player = pendingArchivePlayer({ realBoot: true,
@@ -803,7 +835,9 @@ test("a startup timeout keeps prepared files available for a late runtime receiv
   player.render();
   player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
   await new Promise(setImmediate); player.render();
+  player.frame.contentWindow.performance = { getEntriesByName: (name) => name === "scummweb:wasm-ready" ? [{}] : [] };
   [...player.timers.values()].find(({ delay }) => delay === 120_000).callback();
+  assert.equal(player.reports[0].context.tags.startup_waiting_for, "filesystem-before-handoff");
   player.render(); player.ready(); player.render();
   assert.equal(player.deliveries.length, 1, "late startup must not lose the selected game files");
   player.ready();

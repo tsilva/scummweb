@@ -1,5 +1,27 @@
-// Opt-in, local-only diagnostics. No game bytes, saves, or request queries are
-// collected, and nothing is sent to an analytics endpoint.
+// Only return fixed step names. Frame URLs and game data must stay out of
+// timeout reports, including when a player launches a personal archive.
+export function getStartupTimeoutStep(iframe, { receiver, transferred }) {
+  try {
+    const documentUrl = iframe?.contentDocument?.URL;
+    const frame = iframe?.contentWindow;
+    if (!documentUrl || documentUrl === "about:blank" || !frame) return "shell-navigation";
+    if (!transferred && receiver === frame) return "archive-handoff";
+    const hasMark = (name) => frame.performance.getEntriesByName(`scummweb:${name}`, "mark").length > 0;
+    if (!hasMark("wasm-ready")) return "runtime-initialization";
+    if (!transferred) return "filesystem-before-handoff";
+    if (!hasMark("filesystems-ready")) return "filesystem-after-handoff";
+    switch (frame.__scummwebReadyState?.state) {
+      case "ready": return "ready-message";
+      case "launch-detected":
+      case "awaiting-frame": return "first-frame";
+      default: return "native-startup";
+    }
+  } catch {
+    return "unavailable";
+  }
+}
+
+// Opt-in console diagnostics. No game bytes, saves, or request queries are collected.
 export function collectStartupDiagnostics(parent, frame) {
   const describe = (performance) => ({
     timeOrigin: performance.timeOrigin,

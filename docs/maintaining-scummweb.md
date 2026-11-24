@@ -793,7 +793,10 @@ resource reports identify only scripts created by the player, while runtime
 exceptions and failures of those dependencies remain visible.
 
 The startup watchdog reports slow launches while retaining the runtime frame
-and prepared game files. A late, validated ready signal clears only that timeout and cancels its
+and prepared game files. Timeout reports include the pending startup step
+as `startup_waiting_for`, without adding game file or save details. Frame
+navigation recovery continues while ZIP preparation finishes. A late,
+validated ready signal clears only that timeout and cancels its
 watchdog; other startup failures remain visible. The player shows **Exiting game…**
 while it finishes saving and returns to the launcher. Exiting during startup
 cancels the launch.
