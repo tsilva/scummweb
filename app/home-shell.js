@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { PrivacyChoicesButton } from "../lib/privacy-consent/controls";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/deferred-source-library";
@@ -111,8 +110,7 @@ export default function HomeShell({
           <p className="footer-github">
             <a href={repositoryUrl} rel="noreferrer" target="_blank">ScummWEB on GitHub</a>
           </p>
-          <p><Link href="/privacy" prefetch={false}>Privacy policy</Link>{" · "}
-            <PrivacyChoicesButton className="privacy-choices-link" /></p>
+          <p><Link href="/privacy" prefetch={false}>Privacy policy</Link></p>
         </div>
       </footer>
 
