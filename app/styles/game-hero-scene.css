@@ -181,6 +181,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   grid-template-areas: "cue consent carousel";
+  align-items: end;
   padding-block-end: max(0.75rem, env(safe-area-inset-bottom));
 }
 

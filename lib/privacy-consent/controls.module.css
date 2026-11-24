@@ -1,125 +1,214 @@
 .heroQuick {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem 0.65rem;
-  min-height: 2.75rem;
+  display: grid;
+  place-items: center;
+  width: 100%;
   min-width: 0;
-  max-width: 100%;
+  min-height: 2.75rem;
   font-size: 0.8125rem;
 }
 
 .heroQuick[hidden] { display: none; }
 
-.prompt,
-.details {
+.panel {
+  --panel-width: 25rem;
+  --control-height: 2.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: min(var(--panel-width), 100%);
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
   border: 1px solid var(--consent-border, #667066);
-  border-radius: 0.45rem;
+  border-radius: 0.5rem;
   background: var(--consent-background, #1c1b1b);
   color: var(--consent-text, #e5e2e1);
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 
 .prompt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem 0.65rem;
-  max-width: 100%;
-  padding: 0.25rem 0.55rem;
+  justify-content: space-between;
+  min-height: 9.5rem;
+  border-color: #648a5f;
+}
+
+.details {
+  gap: 0.5rem;
+  padding-block: 0.65rem;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.intro p {
+  margin: 0.4rem 0 0;
+  color: #d2cfce;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: space-between;
+  gap: 0.4rem 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #ffffff26;
 }
 
-.actions :is(button, a),
-.choiceLink { color: inherit; font: inherit; }
-
-.actions button {
-  min-height: 2rem;
-  padding: 0.25rem 0.55rem;
-  border: 1px solid currentColor;
-  border-radius: 0.25rem;
-  background: transparent;
-  cursor: pointer;
-  white-space: nowrap;
+.decisionButtons,
+.editorButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-inline-start: auto;
 }
 
-.actions button:hover { background: rgb(255 255 255 / 8%); }
-.actions a,
-.choiceLink { text-decoration: underline; text-underline-offset: 0.15em; }
-
-.choiceLink {
-  min-height: 2rem;
-  padding: 0 0.35rem;
-  border: 0;
-  border-radius: 0.25rem;
-  background: rgb(20 20 20 / 72%);
-  color: #fff;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-:is(.heroQuick, .details) :is(button, a, input):focus-visible {
-  outline: 2px solid var(--consent-accent, #7fd37f);
-  outline-offset: 2px;
-}
-
-.prompt .actions {
+.decisionButtons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-.details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  width: min(23.5rem, 100%);
-  padding: 0.55rem 0.65rem;
+.actions .decisionButtons > :global(.secondary-button) {
+  width: 100%;
+  height: auto;
+  min-height: var(--control-height);
+  padding: 0.2rem 0.65rem;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.textAction,
+.choiceLink,
+.cancelButton,
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height, 2rem);
+  border: 0;
+  border-radius: 0.25rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.textAction,
+.choiceLink {
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.choiceLink {
+  padding-inline: 0.35rem;
+  background: rgb(20 20 20 / 72%);
+  color: #fff;
+}
+
+.cancelButton,
+.saveButton { padding-inline: 0.6rem; }
+
+.cancelButton:hover { background: #ffffff14; }
+
+.saveButton {
+  background: #dededc;
+  color: #1c1b1b;
+  font-weight: 600;
+}
+
+.saveButton:hover { background: #f2f2ef; }
+
+:is(.heroQuick, .panel) :is(button, a, input):focus-visible {
+  outline: 2px solid var(--consent-accent, #7fd37f);
+  outline-offset: 2px;
+}
+
+.purpose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.1rem 0.75rem;
+  cursor: pointer;
+}
+
+.purpose + .purpose {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #ffffff26;
+}
+
+.purposeDescription {
+  grid-column: 1 / -1;
+  color: #d2cfce;
   font-size: 0.75rem;
   line-height: 1.35;
 }
 
-.details h2 { margin: 0; font-size: 0.95rem; }
-.details .actions a { margin-inline-start: 0.25rem; }
-.purpose { display: flex; gap: 0.45rem; align-items: flex-start; cursor: pointer; }
-.purpose span span { display: block; color: #d2cfce; }
-.purpose input { margin: 0.2rem 0 0; accent-color: var(--consent-accent, #7fd37f); }
+.purpose input {
+  appearance: none;
+  position: relative;
+  width: 2.4rem;
+  height: 1.3rem;
+  margin: 0;
+  border: 1px solid #8a8a8a;
+  border-radius: 1rem;
+  background: #494949;
+  cursor: pointer;
+}
+
+.purpose input::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0.15rem;
+  width: 0.92rem;
+  height: 0.92rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #f6f6f5;
+}
+
+.purpose input:checked {
+  border-color: #83b37d;
+  background: #476c41;
+}
+
+.purpose input:checked::before { inset-inline-start: calc(100% - 1.07rem); }
 
 .floatingDetails {
   position: fixed;
   inset-inline: 1rem;
   bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 20;
-  width: min(23.5rem, 100% - 2rem);
+  width: min(var(--panel-width), 100% - 2rem);
   max-height: calc(100dvh - 2rem);
   margin-inline: auto;
   overflow: auto;
 }
 
-@media (min-width: 68.001rem) and (min-height: 38rem) {
+@media (min-width: 86rem) and (min-height: 38rem) {
+  .prompt,
   .heroDetails {
     position: absolute;
     inset-block-end: 0;
     inset-inline-start: 50%;
-    width: 23.5rem;
+    width: var(--panel-width);
     transform: translateX(-50%);
   }
 }
 
 @media (max-width: 48rem), (pointer: coarse) {
-  .actions button,
-  .choiceLink { min-height: 2.75rem; }
+  .panel,
+  .heroQuick { --control-height: 2.75rem; }
+}
 
-  .details .actions a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-  }
+@media (forced-colors: active) {
+  .purpose input { appearance: auto; }
+  .purpose input::before { display: none; }
 }

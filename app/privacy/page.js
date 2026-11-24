@@ -79,9 +79,9 @@ export default async function PrivacyPage() {
           {" · "}<a href="https://vercel.com/docs/analytics/limits-and-pricing#what-is-the-reporting-window">Reporting windows</a>
         </p>
         <p>
-          At the bottom of the homepage hero, choose <strong>Accept both</strong> or <strong>Reject both</strong>.
-          Use <PrivacyChoicesButton className="privacy-choices-link" /> in the hero, the site footer, or here to manage
-          analytics and error diagnostics separately or withdraw consent at any time.
+          The homepage prompt offers <strong>Reject all</strong>, <strong>Accept all</strong>, and <strong>Customize</strong>.
+          Use <PrivacyChoicesButton className="privacy-choices-link" /> in the hero after choosing, in the site footer,
+          or here to manage analytics and error diagnostics separately or withdraw consent at any time.
         </p>
       </section>
 
