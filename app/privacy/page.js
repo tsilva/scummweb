@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import { getPrivacyRequestDelivery } from "../../lib/privacy-request-delivery.mjs";
 import { PrivacyChoicesButton } from "../../lib/privacy-consent/controls";
-import PrivacyRequestForm from "./privacy-request-form";
 import styles from "./privacy.module.css";
 
 export const metadata = {
@@ -13,7 +11,8 @@ export const metadata = {
 
 export default async function PrivacyPage() {
   await connection();
-  const intakeAvailable = Boolean(getPrivacyRequestDelivery());
+  const email = process.env.SCUMMWEB_PRIVACY_REQUEST_TO?.trim() ?? "";
+  const privacyEmail = /^[a-z0-9][a-z0-9._-]{0,63}@duck\.com$/i.test(email) ? email : null;
   return (
     <main className={styles.page}>
       <Link className={styles.back} href="/">Back to ScummWEB</Link>
@@ -107,21 +106,20 @@ export default async function PrivacyPage() {
         <h2 id="privacy-correspondence">Controller and privacy requests</h2>
         <p>Tiago Silva is the data controller for ScummWEB.</p>
         <p>
-          Use the form at the end of this page for privacy requests. We use your reply address, message, and any
-          information needed to handle the request. We process requests about your privacy rights to comply with
-          our legal obligations. For other enquiries, we rely on our legitimate interest in responding. We keep
-          submissions and correspondence while the request is open. After closing it, we delete the contents
-          when no longer needed for follow-up, to document how we handled it, or to meet a legal obligation.
+          {privacyEmail
+            ? <>For privacy requests, email <a href={`mailto:${privacyEmail}`}>{privacyEmail}</a>.</>
+            : "The privacy email address is temporarily unavailable. Please check back later."}
         </p>
         <p>
-          When the form is available, Resend sends your request to a DuckDuckGo address, and DuckDuckGo Email
-          Protection forwards it to our private Gmail mailbox. Resend processes
-          your reply address, message, request type and reference in the United States and retains email
-          contents and delivery logs for 30 days on the plan we use. Its data processing agreement includes
-          the European Commission’s Standard Contractual Clauses for international transfers.
-          {" "}<a href="https://resend.com/security/gdpr">Resend storage and retention</a>
-          {" · "}<a href="https://resend.com/legal/dpa">Resend transfer terms</a>
-          {" · "}<a href="https://duckduckgo.com/duckduckgo-help-pages/email-protection/what-is-duckduckgo-email-protection/">DuckDuckGo forwarding</a>
+          We use your email address, message, and any information needed to handle the request. We process
+          requests about your privacy rights to comply with our legal obligations. For other enquiries, we rely
+          on our legitimate interest in responding. We keep correspondence while the request is open. After
+          closing it, we delete the contents when no longer needed for follow-up, to document how we handled
+          it, or to meet a legal obligation.
+        </p>
+        <p>
+          DuckDuckGo Email Protection forwards your message to our private Gmail mailbox.
+          {" "}<a href="https://duckduckgo.com/duckduckgo-help-pages/email-protection/what-is-duckduckgo-email-protection/">DuckDuckGo forwarding</a>
           {" · "}<a href="https://policies.google.com/privacy">Google privacy policy</a>
         </p>
       </section>
@@ -140,7 +138,7 @@ export default async function PrivacyPage() {
         </p>
         <p>
           If you connect Dropbox, Dropbox explains where it processes data in your account and which safeguards
-          apply. Use the form below for more information or a copy of applicable safeguards.
+          apply. <a href="#privacy-correspondence">Contact us</a> for more information or a copy of applicable safeguards.
           {" "}<a href="https://www.dropbox.com/privacy">Dropbox transfer information</a>
         </p>
       </section>
@@ -158,11 +156,6 @@ export default async function PrivacyPage() {
           approximate submission time can help us find the report. You manage ordinary save copies directly in
           your browser and Dropbox.
         </p>
-      </section>
-
-      <section className={styles.request} aria-labelledby="submit-request">
-        <h2 id="submit-request">Submit a privacy request</h2>
-        {intakeAvailable ? <PrivacyRequestForm /> : <p>The privacy request form is temporarily unavailable.</p>}
       </section>
     </main>
   );
