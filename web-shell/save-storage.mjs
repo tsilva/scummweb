@@ -21,23 +21,47 @@ function encode(bytes) {
 
 let opening;
 let factory;
+let databaseOpenAttempts = [];
+
+export function getSaveDatabaseOpenAttempts() {
+  return databaseOpenAttempts.slice();
+}
+
+function requestDatabaseOpen(databaseFactory) {
+  const startedAt = performance.now();
+  return new Promise((resolve, reject) => {
+    const request = databaseFactory.open("scummweb.active-saves", 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      db.createObjectStore("entries", { keyPath: "key" });
+      db.createObjectStore("migration", { autoIncrement: true });
+    };
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      db.onversionchange = () => { db.close(); opening = undefined; };
+      db.onclose = () => { opening = undefined; };
+      resolve(db);
+    };
+  }).then(db => {
+    databaseOpenAttempts.push({ durationMs: Math.round(performance.now() - startedAt) });
+    return db;
+  }, error => {
+    databaseOpenAttempts.push({ durationMs: Math.round(performance.now() - startedAt), errorName: error?.name || "Error" });
+    throw error;
+  });
+}
+
 function openDatabase() {
-  if (!opening || factory !== indexedDB) {
-    factory = indexedDB;
-    opening = new Promise((resolve, reject) => {
-      const request = indexedDB.open("scummweb.active-saves", 1);
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        db.createObjectStore("entries", { keyPath: "key" });
-        db.createObjectStore("migration", { autoIncrement: true });
-      };
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => {
-        const db = request.result;
-        db.onversionchange = () => { db.close(); opening = undefined; };
-        db.onclose = () => { opening = undefined; };
-        resolve(db);
-      };
+  const databaseFactory = indexedDB;
+  if (!opening || factory !== databaseFactory) {
+    factory = databaseFactory;
+    databaseOpenAttempts = [];
+    opening = requestDatabaseOpen(databaseFactory).catch(async error => {
+      if (error?.name !== "UnknownError") throw error;
+      // A transient disk-open failure can clear before a fresh request.
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return requestDatabaseOpen(databaseFactory);
     }).catch(error => { opening = undefined; throw error; });
   }
   return opening;
@@ -149,8 +173,9 @@ async function migrate(db) {
 }
 
 let migration;
-export async function ensureSaveStorage() {
+export async function ensureSaveStorage(onMigration) {
   const db = await openDatabase();
+  onMigration?.();
   if (!migration) {
     migration = migrate(db).finally(() => { migration = undefined; });
   }

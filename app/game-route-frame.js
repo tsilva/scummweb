@@ -18,7 +18,7 @@ import GameVoiceCommand from "./game-player/GameVoiceCommand";
 import { isZorkVoiceGame } from "./game-player/voice-command.mjs";
 import { GameMovementStick, GameTouchGamepad } from "./game-player/GameTouchGamepad";
 import { createGameLaunchAnalytics } from "./game-player/game-launch-analytics.mjs";
-import { getStartupTimeoutStep, observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
+import { getFilesystemStartupDiagnostics, getStartupTimeoutStep, observeStartupDiagnostics } from "./game-player/startup-diagnostics.mjs";
 import { withGameTelemetry } from "./game-player/telemetry.mjs";
 import { getStoryProgressRevision, observeStoryProgress } from "./game-player/story-progress.mjs";
 import { observePlayHistory } from "./game-player/play-history.mjs";
@@ -181,6 +181,7 @@ export default function GameRouteFrame({
   const frameBootRef = useRef(null);
   const archiveFiles = useRef(null);
   const archiveReceiver = useRef(null);
+  const archiveDelivery = useRef("pending");
   const commandInputRef = useRef(null);
   const commandDispatchRef = useRef(null);
   const [archivePrepared, setArchivePrepared] = useState(false);
@@ -405,14 +406,7 @@ export default function GameRouteFrame({
       return true;
     }
 
-    function reportBootError(stage, { name, message, status } = {}) {
-      const description = BOOT_ERROR_MESSAGES.get(stage);
-      if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
-      frameBoot.reported = true;
-      const waitingFor = stage === "startup-timeout" ? getStartupTimeoutStep(frameRef.current, {
-        receiver: archiveReceiver.current,
-        transferred: frameBoot.archiveTransferred,
-      }) : undefined;
+    function captureStartupReport(title, { stage, level, name, message, status, waitingFor, filesystem }) {
       void withBrowserSentry(({ withScope, captureMessage }) => withScope((scope) => {
         if (!catalogLaunch) {
           // The page URL or navigation breadcrumbs can contain a private ZIP link.
@@ -421,8 +415,8 @@ export default function GameRouteFrame({
             return { ...event, contexts: safeContexts };
           });
         }
-        captureMessage(`ScummVM startup failed: ${description}`, {
-          level: "error",
+        captureMessage(title, {
+          level,
           tags: {
             component: "scummvm-player",
             startup_stage: stage,
@@ -437,9 +431,35 @@ export default function GameRouteFrame({
               detail: catalogLaunch ? getCatalogBootErrorDetail(message) : undefined,
               exit_status: Number.isInteger(status) ? status : undefined,
             },
+            ...(filesystem && { filesystem_startup: filesystem }),
           },
         });
       }));
+    }
+
+    function filesystemContext(payload) {
+      const diagnostics = getFilesystemStartupDiagnostics(payload);
+      if (!diagnostics) return;
+      return {
+        ...diagnostics,
+        archive_delivery: loadArchive ? archiveDelivery.current : "not-required",
+        archive_prepared: Boolean(archivePrepared || archiveFiles.current || frameBoot.archiveTransferred),
+        archive_transferred: frameBoot.archiveTransferred,
+      };
+    }
+
+    function reportBootError(stage, { name, message, status, filesystem } = {}) {
+      const description = BOOT_ERROR_MESSAGES.get(stage);
+      if (!frameSrc || !description || frameBoot.ready || frameBoot.reported) return;
+      frameBoot.reported = true;
+      const waitingFor = stage === "startup-timeout" ? getStartupTimeoutStep(frameRef.current, {
+        receiver: archiveReceiver.current,
+        transferred: frameBoot.archiveTransferred,
+      }) : undefined;
+      captureStartupReport(`ScummVM startup failed: ${description}`, {
+        stage, level: "error", name, message, status, waitingFor,
+        filesystem: stage === "filesystem" ? filesystemContext(filesystem) : undefined,
+      });
     }
 
     const archiveFrame = loadArchive && frameSrc ? frameRef.current : null;
@@ -618,6 +638,16 @@ export default function GameRouteFrame({
         if (event.data.reason === "rendered-frame-detected") {
           window.performance?.mark?.("scummweb:game-ready");
           launchAnalytics.confirm();
+          const filesystem = filesystemContext(event.data.filesystem);
+          if (!frameBoot.saveOpenRecoveryReported && filesystem?.step === "save-open" &&
+              filesystem.open_attempts === 2 && filesystem.first_open_error_name === "UnknownError" &&
+              !filesystem.retry_open_error_name && filesystem.first_open_ms !== undefined &&
+              filesystem.retry_open_ms !== undefined) {
+            frameBoot.saveOpenRecoveryReported = true;
+            captureStartupReport("ScummVM recovered from a save database open failure", {
+              stage: "save-open-recovered", level: "info", filesystem,
+            });
+          }
         } else if (event.data.reason === "rendered-frame-timeout") {
           launchAnalytics.fail("first_frame_timeout");
         }
@@ -700,6 +730,7 @@ export default function GameRouteFrame({
     setArchivePrepared(false);
     archiveFiles.current = null;
     archiveReceiver.current = null;
+    archiveDelivery.current = "pending";
     setSkipIntroConsumed(catalogIntroLaunch !== null);
 
     async function openGame() {
@@ -753,8 +784,11 @@ export default function GameRouteFrame({
           // handoff below supports either side becoming ready first.
           window.performance?.mark?.("scummweb:runtime-requested");
           setFrameSrc(launchSrc);
-          const files = await loadArchive(controller.signal, (_progress, details) => {
+          const files = await loadArchive(controller.signal, (progress, details) => {
             if (!controller.signal.aborted) {
+              if (details?.cached) archiveDelivery.current = "cached";
+              else if (details?.downloading) archiveDelivery.current = "downloading";
+              else if (progress === 100 && details?.loaded > 0) archiveDelivery.current = "downloaded";
               setArchiveProgress(details ?? null);
             }
           });

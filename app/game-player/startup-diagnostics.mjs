@@ -62,3 +62,31 @@ export function observeStartupDiagnostics(parent, frameRef) {
   }, 120);
   return () => parent.clearInterval(timer);
 }
+const filesystemSteps = new Set([
+  "save-open", "save-migration", "save-lock", "save-read", "save-initialize", "save-commit",
+  "save-filesystem-mount", "game-filesystem-mount", "game-filesystem-configure",
+  "runtime-filesystem-index", "runtime-filesystem-mount",
+]);
+const databaseErrorNames = new Set([
+  "AbortError", "Error", "InvalidStateError", "NotAllowedError", "QuotaExceededError",
+  "SecurityError", "UnknownError", "VersionError",
+]);
+
+export function getFilesystemStartupDiagnostics(payload) {
+  if (!filesystemSteps.has(payload?.step)) return;
+  const attempts = Array.isArray(payload.openAttempts) ? payload.openAttempts.slice(0, 2) : [];
+  const duration = (attempt) => Number.isInteger(attempt?.durationMs) && attempt.durationMs >= 0
+    ? Math.min(attempt.durationMs, 900_000) : undefined;
+  const errorName = (attempt) => attempt?.errorName
+    ? databaseErrorNames.has(attempt.errorName) ? attempt.errorName : "OtherError"
+    : undefined;
+  // Keep attempt values shallow so Sentry's event normalization retains them.
+  return {
+    step: payload.step,
+    open_attempts: attempts.length,
+    first_open_ms: duration(attempts[0]),
+    first_open_error_name: errorName(attempts[0]),
+    retry_open_ms: duration(attempts[1]),
+    retry_open_error_name: errorName(attempts[1]),
+  };
+}

@@ -657,6 +657,14 @@ their complete upstream archives and each has a 200 MiB download allowance with 
 ten-minute timeout. Downloads up to 256 MiB use memory backing to avoid browser
 temporary-file reservation failures; larger catalog ZIPs retain Blob backing.
 
+ScummVM retries an IndexedDB `UnknownError` once when opening the active save
+database. If the retry fails, startup stops with the original save data intact.
+When browser Sentry reporting is active, filesystem startup reports include the
+failed step, database open attempt timings and error names, and archive delivery
+and handoff status. A retry that recovers and reaches a rendered frame emits one
+separate informational report. These fields exclude filenames, archive URLs and
+save data.
+
 Local builds skip Sentry source-map uploads. For startup reports, filter Sentry
 by `component:scummvm-player` and narrow by `startup_stage`, `game_source`,
 or `game_slug`. Imported-game reports omit private source details. The

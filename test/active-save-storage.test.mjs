@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { captureFilesystem, initializeSaveEdition, restoreSaveGroups } from "../app/save-backups/filesystem.mjs";
 import { readSaveTree } from "../web-shell/save-editions.mjs";
-import { openLegacyRecoveryStorage, openSaveStorage } from "../web-shell/save-storage.mjs";
+import { getSaveDatabaseOpenAttempts, openLegacyRecoveryStorage, openSaveStorage } from "../web-shell/save-storage.mjs";
 import { browserSaveStorage, indexedDbFixture } from "./helpers/dropbox-fixtures.mjs";
 
 function setup(t, files) {
@@ -20,6 +20,58 @@ function setup(t, files) {
   }
   return globals;
 }
+
+function failDatabaseOpen(indexedDB, errors) {
+  const open = indexedDB.open.bind(indexedDB);
+  let attempts = 0;
+  indexedDB.open = (...args) => {
+    const error = errors[attempts++];
+    if (!error) return open(...args);
+    const request = { error };
+    queueMicrotask(() => request.onerror());
+    return request;
+  };
+  return () => attempts;
+}
+
+test("concurrent save storage callers share one retry after an IndexedDB disk-open error", async t => {
+  const { indexedDB } = setup(t, { "SKY-VM.001": Uint8Array.of(1) });
+  const attempts = failDatabaseOpen(indexedDB, [new DOMException("Unable to open database file on disk", "UnknownError")]);
+  const views = await Promise.all([openSaveStorage(), openSaveStorage()]);
+
+  assert.equal(attempts(), 2);
+  const opens = getSaveDatabaseOpenAttempts();
+  assert.deepEqual(opens.map(attempt => attempt.errorName), ["UnknownError", undefined]);
+  assert.ok(opens.every(attempt => Number.isInteger(attempt.durationMs) && attempt.durationMs >= 0));
+  for (const view of views) {
+    assert.deepEqual(captureFilesystem(view).files.map(({ path }) => path), ["SKY-VM.001"]);
+  }
+});
+
+test("a second disk-open failure leaves legacy saves intact and allows a later launch to retry", async t => {
+  const { indexedDB, localStorage } = setup(t, { "SKY-VM.001": Uint8Array.of(1) });
+  const error = new DOMException("Unable to open database file on disk", "UnknownError");
+  const attempts = failDatabaseOpen(indexedDB, [error, error]);
+  const before = new Map(localStorage.values);
+
+  await assert.rejects(openSaveStorage(), error);
+  assert.equal(attempts(), 2);
+  assert.deepEqual(getSaveDatabaseOpenAttempts().map(attempt => attempt.errorName), ["UnknownError", "UnknownError"]);
+  assert.deepEqual(localStorage.values, before);
+  assert.equal(indexedDB.databases.size, 0);
+
+  const view = await openSaveStorage();
+  assert.deepEqual(captureFilesystem(view).files.map(({ path }) => path), ["SKY-VM.001"]);
+});
+
+test("save storage does not retry when IndexedDB access is denied", async t => {
+  const { indexedDB } = setup(t, {});
+  const error = new DOMException("Blocked", "SecurityError");
+  const attempts = failDatabaseOpen(indexedDB, [error]);
+
+  await assert.rejects(openSaveStorage(), error);
+  assert.equal(attempts(), 1);
+});
 
 test("migration retains shared, isolated, imported and autosave bytes and only removes legacy keys after commit", async t => {
   const namespace = "version-" + "a".repeat(64);

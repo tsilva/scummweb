@@ -12,7 +12,7 @@ function isExpectedRuntimeExit(error) {
 var reportScummvmBootError = (function () {
   var reported = false;
 
-  function report(stage, error, message) {
+  function report(stage, error, message, filesystem) {
     if (reported || window.parent === window ||
         (window.__scummwebReadyState && window.__scummwebReadyState.state === "ready")) return;
     if (isExpectedRuntimeExit(error) || (scummwebPageUnloading && error && error.name === "AbortError")) return;
@@ -26,7 +26,8 @@ var reportScummvmBootError = (function () {
         href: href,
         stage: stage,
         name: error && typeof error.name === "string" ? error.name.slice(0, 48) : "",
-        message: typeof details === "string" ? details.slice(0, 512) : ""
+        message: typeof details === "string" ? details.slice(0, 512) : "",
+        ...(filesystem && { filesystem })
       }, new URL(href).origin);
       reported = true;
     } catch {}
@@ -188,6 +189,12 @@ function bindBrowserFsOperations(filesystem) {
 }
 
 /*__SCUMMWEB_SAVE_EDITIONS__*/
+let filesystemStep = "save-open";
+let filesystemFailureStep;
+function filesystemDiagnostics(step) {
+  return { step, openAttempts: globalThis.__scummwebSaveEditions.getSaveDatabaseOpenAttempts() };
+}
+
 async function prepareSaveRoot() {
   const { editionKey, acquireEditionSession, initializeSaveEdition, initializeSaveRoot, saveLockName,
     ensureSaveStorage, openSaveStorage, waitForSaveSession } = globalThis.__scummwebSaveEditions;
@@ -200,14 +207,18 @@ async function prepareSaveRoot() {
   const edition = agentSaveScope ? "" : editionKey(namespace, target);
   const locks = navigator.locks;
   const openSession = async () => {
-    const db = await ensureSaveStorage();
+    filesystemStep = "save-open";
+    const db = await ensureSaveStorage(() => { filesystemStep = "save-migration"; });
+    filesystemStep = "save-lock";
     await acquireEditionSession(locks, edition);
     return db;
   };
   const db = params.get("hostPlayer") === "1" && !params.has("saveQuery") && agentSaveScope === null
     ? await waitForSaveSession(openSession) : await openSession();
   return locks.request(saveLockName + ":setup", async () => {
+    filesystemStep = "save-read";
     const storage = await openSaveStorage(db);
+    filesystemStep = "save-initialize";
     let config;
     if (storage.getItem("/") === null) {
       const response = await fetch(buildVersionedAssetUrl("scummvm.ini"));
@@ -215,6 +226,7 @@ async function prepareSaveRoot() {
       config = await response.text();
     }
     const editionRoot = edition ? initializeSaveEdition(storage, edition, config) : initializeSaveRoot(storage, config);
+    filesystemStep = "save-commit";
     await storage.commit();
     return { editionRoot, storage };
   });
@@ -228,6 +240,7 @@ function setupLocalFilesystem() {
     ENOTEMPTY: 55, ENOTSUP: 58, EPERM: 63, EROFS: 69,
   };
   return Promise.all([prepareSaveRoot(), scummwebBrowserFsReady]).then(([{ editionRoot, storage }]) => new Promise((resolve, reject) => {
+    filesystemStep = "save-filesystem-mount";
     BrowserFS.FileSystem.InMemory.Create((storageError, filesystemStorage) => {
       if (storageError) return reject(storageError);
       const { Buffer } = BrowserFS.BFSRequire("buffer");
@@ -537,16 +550,29 @@ function setupFilesystem() {
       const args = Module.arguments.filter(arg => !arg.startsWith("--savepath="));
       Module.arguments.splice(0, Module.arguments.length, `--savepath=${savePath}`, ...args);
     })
-    .then(() => isLocalGame ? setupLocalGame() : undefined)
+    .then(() => {
+      filesystemStep = "game-filesystem-mount";
+      return isLocalGame ? setupLocalGame() : undefined;
+    })
+    .then(() => { filesystemStep = "game-filesystem-configure"; })
     .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") && (!isLocalGame || isCatalogArchive)
       ? installMissingCatalogTarget().then(setupSkipIntroSaves)
       : undefined)
     .then(() => !scummwebLaunchUrl.searchParams.has("saveQuery") ? setupGameDefaults() : undefined)
     .then(() => { if (window.scummwebPlayerControls) installDiagnosticSaves(window, FS, Module); })
     .then(() => globalThis.__scummwebInstallContinueSaves?.({ scope: window, FS, Module,
-      launchUrl: scummwebLaunchUrl, assetUrl: buildVersionedAssetUrl }));
-  Promise.all([window.ScummvmFSReady, localFilesReady])
+      launchUrl: scummwebLaunchUrl, assetUrl: buildVersionedAssetUrl }))
+    .catch(error => {
+      filesystemFailureStep ??= filesystemStep;
+      throw error;
+    });
+  const runtimeFilesReady = window.ScummvmFSReady.catch(error => {
+    filesystemFailureStep ??= "runtime-filesystem-index";
+    throw error;
+  });
+  Promise.all([runtimeFilesReady, localFilesReady])
     .then(([{ filesystems }]) => {
+      filesystemStep = "runtime-filesystem-mount";
       for (const { name, filesystem } of filesystems) {
         filesystem.FS = FS;
         FS.mkdir("/" + name);
@@ -564,7 +590,9 @@ function setupFilesystem() {
         if (error.name === "SaveSessionBusyError") {
           window.parent.postMessage({ type: "scummweb:save-session-busy", reason: error.busyReason }, scummwebLaunchUrl.origin);
         } else {
-          if (!scummwebLaunchUrl.searchParams.has("saveQuery")) reportScummvmBootError("filesystem", error);
+          if (!scummwebLaunchUrl.searchParams.has("saveQuery")) {
+            reportScummvmBootError("filesystem", error, null, filesystemDiagnostics(filesystemFailureStep ?? filesystemStep));
+          }
           if (isLocalGame) reportLocalGameStatus("error");
         }
         Module.printErr(`abort(${error.message})`);
@@ -658,7 +686,10 @@ const emitGameReady = (reason) => {
     reportLocalGameStatus("running");
     if (!isCatalogArchive) return true;
   }
-  postParentMessage({ type: "scummvm-ready", ...nextReadyState });
+  const diagnostics = filesystemDiagnostics("save-open");
+  const recovered = diagnostics.openAttempts.length === 2 && diagnostics.openAttempts[0].errorName === "UnknownError"
+    && !diagnostics.openAttempts[1].errorName;
+  postParentMessage({ type: "scummvm-ready", ...nextReadyState, ...(recovered && { filesystem: diagnostics }) });
   return true;
 };
 syncReadyState({});

@@ -123,7 +123,7 @@ for (const [message, mobile, installed] of [
 
 function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = false, catalog = true,
   fetchShell = async () => ({ ok: true, text: async () => "<html><head></head><body></body></html>" }),
-  agentSaveScope, storyMaps = {},
+  agentSaveScope, storyMaps = {}, diagnosticsEnabled = true,
   skipIntro, visualViewport, virtualKeyboard, shellBottom = visualViewport?.height,
   realBoot = false, game = { target: "sky", slug: "sky", engineId: "sky" },
   downloadDetails = { downloading: true, loaded: 12_400_000, total: 85_200_000 } } = {}) {
@@ -221,7 +221,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       if (name === "react-dom") return { flushSync(callback) { callback(); render(); } };
       if (name.endsWith("/mobile-controls.mjs")) return mobileControls;
       if (name.endsWith("/voice-command.mjs")) return voiceCommands;
-      if (name === "../lib/browser-sentry.mjs") return { withBrowserSentry: (callback) => callback(require("@sentry/nextjs")) };
+      if (name === "../lib/browser-sentry.mjs") return {
+        withBrowserSentry: (callback) => diagnosticsEnabled && callback(require("@sentry/nextjs")),
+      };
       if (name === "@sentry/nextjs") return {
         withScope(callback) {
           try { callback({ addEventProcessor: (processor) => { eventProcessor = processor; } }); }
@@ -314,9 +316,9 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     ready(origin = window.location.origin, source = frame.contentWindow) {
       for (const handler of [...messages]) handler({ origin, source, data: { type: "scummweb:local-game-ready" } });
     },
-    gameReady(href) {
+    gameReady(href, filesystem) {
       for (const handler of [...messages]) handler({ origin: window.location.origin, source: frame.contentWindow,
-        data: { type: "scummvm-ready", source: "scummweb", target: game.target, href, reason: "rendered-frame-detected" } });
+        data: { type: "scummvm-ready", source: "scummweb", target: game.target, href, reason: "rendered-frame-detected", filesystem } });
     },
     gameplayStarted({ origin = window.location.origin, source = frame.contentWindow,
       href = frame.contentDocument.URL, target = "sky" } = {}) {
@@ -703,6 +705,57 @@ test("an imported game's startup report omits its identity and error text", () =
   assert.equal(context.breadcrumbs, undefined);
   assert.equal(context.transaction, undefined);
   player.unmount();
+});
+
+test("filesystem failure reports separate save storage, retry, and archive progress", () => {
+  const player = pendingArchivePlayer();
+  player.render();
+  player.archiveOptions[0].onProgress(100, { loaded: 1024 });
+  player.bootError({ stage: "filesystem", name: "UnknownError", filesystem: {
+    step: "save-open",
+    openAttempts: [
+      { durationMs: 8, errorName: "UnknownError", path: "private-file" },
+      { durationMs: 12, errorName: "private-file.zip" },
+      { durationMs: 40 },
+    ],
+    rawUrl: "https://private.example",
+  } });
+  const { filesystem_startup: filesystem } = player.reports[0].context.contexts;
+  assert.deepEqual(JSON.parse(JSON.stringify(filesystem)), {
+    step: "save-open",
+    open_attempts: 2, first_open_ms: 8, first_open_error_name: "UnknownError",
+    retry_open_ms: 12, retry_open_error_name: "OtherError",
+    archive_delivery: "downloaded", archive_prepared: false, archive_transferred: false,
+  });
+  player.unmount();
+});
+
+test("a database open recovery reports once after the first frame when browser diagnostics are enabled", async () => {
+  const filesystem = {
+    step: "save-open", openAttempts: [{ durationMs: 8, errorName: "UnknownError" }, { durationMs: 12 }],
+  };
+  for (const diagnosticsEnabled of [false, true]) {
+    const player = pendingArchivePlayer({ diagnosticsEnabled });
+    player.render();
+    player.ready();
+    player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+    await new Promise(setImmediate);
+    player.render();
+    assert.equal(player.reports.length, 0);
+    player.gameReady(player.frame.contentDocument.URL, filesystem);
+    player.gameReady(player.frame.contentDocument.URL, filesystem);
+    if (diagnosticsEnabled) {
+      assert.equal(player.reports.length, 1);
+      const { context } = player.reports[0];
+      assert.equal(context.level, "info");
+      assert.equal(context.tags.startup_stage, "save-open-recovered");
+      assert.equal(context.contexts.filesystem_startup.archive_prepared, true);
+      assert.equal(context.contexts.filesystem_startup.archive_transferred, true);
+    } else {
+      assert.equal(player.reports.length, 0);
+    }
+    player.unmount();
+  }
 });
 
 test("a runtime failure after the first game frame is not a startup error", () => {
