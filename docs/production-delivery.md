@@ -11,6 +11,12 @@ A separate job builds and stages the artifact on Vercel, checks the deployment
 and its function inventory, and rechecks the head of `main` before promotion.
 Vercel's automatic Git deployments are disabled.
 
+The standalone [secret-scanning workflow](../.github/workflows/secret-scanning.yml)
+scans commits reachable from the pushed tip and absent from the previous tip.
+If a history rewrite leaves the previous tip unavailable at checkout, it scans
+all history reachable from the new tip. Production delivery scans the checked-out
+files by default.
+
 CI and the separate Vercel staging job prepare a complete ScummVM bundle before
 testing or building the app. They can reuse the bundle cache for the same
 runtime inputs. A cache miss builds the pinned engine and its corresponding
