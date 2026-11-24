@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { PrivacyChoicesButton } from "../lib/privacy-consent/controls";
+import { PrivacyChoicesButton, PrivacyConsentPrompt } from "../lib/privacy-consent/controls";
 import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/deferred-source-library";
@@ -113,6 +113,7 @@ export default function HomeShell({
           </p>
           <p><Link href="/privacy" prefetch={false}>Privacy</Link>{" · "}
             <PrivacyChoicesButton className="privacy-choices-link" /></p>
+          {isHomePage && <PrivacyConsentPrompt />}
         </div>
       </footer>
 

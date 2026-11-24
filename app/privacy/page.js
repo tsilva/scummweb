@@ -78,7 +78,11 @@ export default async function PrivacyPage() {
           {" "}<a href="https://vercel.com/docs/analytics/privacy-policy">Vercel Web Analytics privacy</a>
           {" · "}<a href="https://vercel.com/docs/analytics/limits-and-pricing#what-is-the-reporting-window">Reporting windows</a>
         </p>
-        <p>Use <PrivacyChoicesButton className="privacy-choices-link" /> to change or withdraw your choices at any time.</p>
+        <p>
+          On your first visit, the homepage footer offers <strong>Allow both</strong> and <strong>Decline both</strong>.
+          Use <PrivacyChoicesButton className="privacy-choices-link" /> here or in the footer to manage
+          analytics and error diagnostics separately or withdraw consent at any time.
+        </p>
       </section>
 
       <section aria-labelledby="diagnostics">
