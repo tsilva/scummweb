@@ -43,6 +43,7 @@ const SCUMMWEB_ASPECT_RATIO_MESSAGE_TYPE = "scummweb-aspect-ratio";
 const ARCHIVE_FRAME_NAVIGATION_TIMEOUT_MS = 8000;
 const ARCHIVE_BOOT_IDLE_TIMEOUT_MS = 120_000;
 const ARCHIVE_BOOT_TIMEOUT_MESSAGE = "ScummVM took too long to start. Select Exit game and try again.";
+const GRAPHICS_LOST_MESSAGE = "Unsaved progress may be lost.";
 const BOOT_ERROR_MESSAGES = new Map([
   ["script-load", "Could not load a player script"],
   ["script-error", "Player JavaScript error"],
@@ -185,6 +186,8 @@ export default function GameRouteFrame({
   const [archivePrepared, setArchivePrepared] = useState(false);
   const [archiveError, setArchiveError] = useState("");
   const [archiveProgress, setArchiveProgress] = useState(null);
+  const [graphicsRecovery, setGraphicsRecovery] = useState(null);
+  const [launchAttempt, setLaunchAttempt] = useState(0);
   const [launchAnalytics] = useState(() => createGameLaunchAnalytics(catalogLaunch ? game?.slug : null));
   const [frameSrc, setFrameSrc] = useState(null);
   const [archiveFrameDocument, setArchiveFrameDocument] = useState(null);
@@ -254,7 +257,26 @@ export default function GameRouteFrame({
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
-  const hasBootFailed = Boolean(archiveError) || bootState.hasBootFailed;
+  async function restartAfterGraphicsLoss() {
+    const failedFrame = frameRef.current;
+    setGraphicsRecovery("restarting");
+    try { await failedFrame?.contentWindow?.__scummwebFlushSaveStorage?.(); }
+    catch { /* The previous committed saves remain available. */ }
+    if (frameRef.current !== failedFrame) return;
+
+    // Dispose of the lost context and release this frame's save session.
+    // A fresh launch also prepares files again for ZIP-based games.
+    flushSync(() => {
+      setFrameSrc(null);
+      setArchiveFrameDocument(null);
+      setArchiveError(null);
+      setReadySignal(null);
+      setGraphicsRecovery(null);
+      setLaunchAttempt((attempt) => attempt + 1);
+    });
+  }
+
+  const hasBootFailed = Boolean(graphicsRecovery || archiveError) || bootState.hasBootFailed;
   const waitingForLandscape = immersiveMode.isTouchMobile && !immersiveMode.isLandscapeViewport;
   const showBootOverlay = !bootState.hasBootCompleted || hasBootFailed;
   useEffect(() => {
@@ -424,6 +446,7 @@ export default function GameRouteFrame({
     let archiveBootTimer;
 
     function restartArchiveBootTimer() {
+      if (frameBoot.graphicsLost) return;
       window.clearTimeout(archiveBootTimer);
       archiveBootTimer = window.setTimeout(() => {
         if (frameBoot.ready || frameBootRef.current !== frameBoot) return;
@@ -452,7 +475,7 @@ export default function GameRouteFrame({
 
     function deliverArchiveFiles() {
       const receiver = archiveReceiver.current;
-      if (!archiveFiles.current || !receiver || receiver !== frameRef.current?.contentWindow) return;
+      if (frameBoot.graphicsLost || !archiveFiles.current || !receiver || receiver !== frameRef.current?.contentWindow) return;
       try {
         sendZipGameFiles(receiver, archiveFiles.current, { saveNamespace: game?.saveNamespace });
         frameBoot.archiveTransferred = true;
@@ -467,7 +490,18 @@ export default function GameRouteFrame({
     }
 
     function handleMessage(event) {
-      if (event.origin !== window.location.origin) {
+      if (event.origin !== window.location.origin || frameBoot.graphicsLost) {
+        return;
+      }
+      if (event.data?.type === "scummvm-graphics-lost") {
+        if (frameSrc && event.source === frameRef.current?.contentWindow &&
+            typeof event.data.href === "string" && getNormalizedFrameHref(event.data.href) === frameSrc) {
+          reportBootError("webgl-context-lost");
+          frameBoot.graphicsLost = true;
+          stopArchiveBootTimer();
+          launchAnalytics.fail("startup_error");
+          setGraphicsRecovery("lost");
+        }
         return;
       }
       if (event.data?.type === "scummweb:compatibility-warning") {
@@ -739,7 +773,7 @@ export default function GameRouteFrame({
 
     void openGame();
     return () => { controller.abort(); };
-  }, [catalogIntroLaunch, catalogLaunch, dropboxDestination, game, intro, launchAnalytics, loadArchive, progressRevision, progressVersion, src, target]);
+  }, [catalogIntroLaunch, catalogLaunch, dropboxDestination, game, intro, launchAnalytics, launchAttempt, loadArchive, progressRevision, progressVersion, src, target]);
 
   useEffect(() => {
     if (!currentReadySignal || !dropboxEnabled() || new URL(window.location.href).searchParams.has("agentSaveScope")) return;
@@ -1032,7 +1066,7 @@ export default function GameRouteFrame({
     </div>
   ) : keyboardAction;
   const showBottomActions = showSkipIntroBottomAction || showTouchMouse || Boolean(touchActions);
-  const bootStatusText = archiveError || (loadArchive && !archivePrepared && !bootState.hasBootFailed
+  const bootStatusText = (graphicsRecovery ? GRAPHICS_LOST_MESSAGE : archiveError) || (loadArchive && !archivePrepared && !bootState.hasBootFailed
     ? gameLoadingStatus(archiveProgress ?? undefined)
     : bootState.bootStatusText);
 
@@ -1058,6 +1092,8 @@ export default function GameRouteFrame({
         bootStatusText={isExiting ? "Exiting game…" : bootStatusText}
         game={game}
         hasBootFailed={!isExiting && hasBootFailed}
+        graphicsRecovery={isExiting ? null : graphicsRecovery}
+        onRestart={restartAfterGraphicsLoss}
         showBootOverlay={isExiting || showBootOverlay}
         showBundledTags={catalogLaunch}
         title={title}
@@ -1140,7 +1176,7 @@ export default function GameRouteFrame({
         className="game-route-frame"
         data-scummvm-route-frame="true"
         data-scummvm-target={target}
-        inert={isExiting || gameMenuOpen || remoteToolbarOpen || waitingForLandscape}
+        inert={isExiting || Boolean(graphicsRecovery) || gameMenuOpen || remoteToolbarOpen || waitingForLandscape}
         ref={frameRef}
         loading="eager"
         src={loadArchive ? "about:blank" : frameSrc}

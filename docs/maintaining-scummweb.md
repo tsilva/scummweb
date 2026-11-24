@@ -801,6 +801,13 @@ watchdog; other startup failures remain visible. The player shows **Exiting game
 while it finishes saving and returns to the launcher. Exiting during startup
 cancels the launch.
 
+If the browser loses the game's WebGL context during launch or play, the player
+offers **Restart game**. Restarting flushes completed save writes, tears down
+the old runtime and opens the original launch again with a fresh canvas and game
+files. Unsaved progress may be lost. Test real context loss with
+`WEBGL_lose_context` on a local player, then verify that a restart reaches a new
+game frame. Cover both loss before the first frame and loss during gameplay.
+
 The browsing hero and launch screen share `GameHeroScene`: the selected game's
 title, edition metadata, summary, artwork source, crop and viewport geometry
 stay fixed during launch. The homepage also shows the selected game's title.

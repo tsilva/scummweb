@@ -48,9 +48,6 @@ var reportScummvmBootError = (function () {
     window.addEventListener("unhandledrejection", function (event) {
       report("promise-rejection", event.reason);
     });
-    document.getElementById("canvas").addEventListener("webglcontextlost", function () {
-      report("webgl-context-lost");
-    });
   }
   return report;
 })();
@@ -67,6 +64,41 @@ const scummwebBrowserFsReady=new Promise((resolve,reject)=>{
   document.head.appendChild(script);
 });
 scummwebBrowserFsReady.catch(()=>{});
+</script>
+<dialog id="scummweb-graphics-recovery" aria-labelledby="scummweb-graphics-recovery-title">
+  <h2 id="scummweb-graphics-recovery-title">Game graphics interrupted</h2>
+  <p>Restart the game to recover. Unsaved progress may be lost.</p>
+  <button type="button">Restart game</button>
+</dialog>
+<script>
+(() => {
+  let scummwebGraphicsLost = false;
+  document.getElementById("canvas").addEventListener("webglcontextlost", (event) => {
+    event.preventDefault();
+    if (scummwebGraphicsLost || scummwebPageUnloading) return;
+    scummwebGraphicsLost = true;
+    if (document.pointerLockElement) document.exitPointerLock();
+
+    if (window.parent !== window && scummwebLaunchUrl.searchParams.get("hostPlayer") === "1") {
+      window.parent.postMessage({
+        type: "scummvm-graphics-lost",
+        href: scummwebLaunchUrl.href,
+      }, scummwebLaunchUrl.origin);
+      return;
+    }
+
+    const recovery = document.getElementById("scummweb-graphics-recovery");
+    const restart = recovery.querySelector("button");
+    recovery.addEventListener("cancel", (event) => event.preventDefault());
+    restart.addEventListener("click", async () => {
+      restart.disabled = true;
+      try { await window.__scummwebFlushSaveStorage?.(); }
+      catch { /* The previous committed saves remain available. */ }
+      window.location.reload();
+    }, { once: true });
+    recovery.showModal();
+  });
+})();
 </script><script>
 const scummwebInlineFrame = window.location.pathname === "srcdoc";
 const scummwebLaunchUrl = new URL(scummwebInlineFrame ? document.baseURI : window.location.href);
@@ -539,7 +571,7 @@ function setupFilesystem() {
         throw error;
       }
     );
-}var Module={preRun:[setupFilesystem],postRun:[],print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(t){arguments.length>1&&(t=Array.prototype.slice.call(arguments).join(" ")),console.log(t),e&&(e.value+=t+"\n",e.scrollTop=e.scrollHeight)}}(),printErr:function(e){arguments.length>1&&(e=Array.prototype.slice.call(arguments).join(" ")),console.error(e)},canvas:function(){var e=document.getElementById("canvas");return e.addEventListener("webglcontextlost",(function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()}),!1),e}(),setStatus:function(e){if(console.log((new Date).toLocaleTimeString()+" "+e),Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0),statusElement.style.display=e?"block":"none",statusElement.textContent=e&&statusElement.classList.contains("error")?e:e?scummwebLoadingStatus:"")}},totalDependencies:0,monitorRunDependencies:function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":loadingDoneMessage())}};Module.setStatus("Downloading ScummVM...");
+}var Module={preRun:[setupFilesystem],postRun:[],print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(t){arguments.length>1&&(t=Array.prototype.slice.call(arguments).join(" ")),console.log(t),e&&(e.value+=t+"\n",e.scrollTop=e.scrollHeight)}}(),printErr:function(e){arguments.length>1&&(e=Array.prototype.slice.call(arguments).join(" ")),console.error(e)},canvas:document.getElementById("canvas"),setStatus:function(e){if(console.log((new Date).toLocaleTimeString()+" "+e),Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0),statusElement.style.display=e?"block":"none",statusElement.textContent=e&&statusElement.classList.contains("error")?e:e?scummwebLoadingStatus:"")}},totalDependencies:0,monitorRunDependencies:function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":loadingDoneMessage())}};Module.setStatus("Downloading ScummVM...");
 window.onerror = function (message, source, line, column, error) {
   if (isExpectedRuntimeExit(error)) return true;
   statusElement.classList.add("error");
@@ -563,7 +595,7 @@ let didHandleExit=false;
 let pendingExitStatus=null;
 let pendingExitTimer=0;
 const hideExitedGame=()=>{const canvas=document.getElementById("canvas");if(canvas)canvas.style.visibility="hidden"};
-const handleExit=status=>{if(didHandleExit)return;didHandleExit=true;hideExitedGame();if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,scummwebLaunchUrl.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{scummwebLaunchUrl.href=resolvedExitHref}};
+const handleExit=status=>{if(didHandleExit||document.getElementById("scummweb-graphics-recovery")?.open)return;didHandleExit=true;hideExitedGame();if(pendingExitTimer){window.clearTimeout(pendingExitTimer);pendingExitTimer=0}const exitMessage={type:"scummvm-exit",href:resolvedExitHref,status};if(window.parent&&window.parent!==window){try{window.parent.postMessage(exitMessage,scummwebLaunchUrl.origin);return}catch{}}try{window.location.replace(resolvedExitHref)}catch{scummwebLaunchUrl.href=resolvedExitHref}};
 // Native exit/launcher callbacks are authoritative, including exits without input.
 // Hide synchronously while allowing native cleanup to finish before navigation.
 const requestExit=status=>{if(didHandleExit||pendingExitStatus!==null)return;pendingExitStatus=Number.isFinite(status)?status:0;hideExitedGame();pendingExitTimer=window.setTimeout((()=>{pendingExitTimer=0;handleExit(pendingExitStatus)}),150)};

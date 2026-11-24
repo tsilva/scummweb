@@ -6,7 +6,9 @@ export default function GameBootOverlay({
   archiveBytes,
   bootStatusText,
   game,
+  graphicsRecovery,
   hasBootFailed,
+  onRestart,
   showBootOverlay,
   title,
 }) {
@@ -21,15 +23,20 @@ export default function GameBootOverlay({
       data-launch-archive-bytes={archiveBytes}
     >
       <GameHeroScene game={game} title={title}>
-        <div className="game-hero-loading" role={hasBootFailed ? "alert" : "status"} aria-atomic="true">
+        <div className={`game-hero-loading${graphicsRecovery ? " has-restart" : ""}`}>
           {!hasBootFailed ? <div aria-hidden="true" className="game-hero-progress" /> : null}
-          <div className="game-hero-loading-message">
+          <div className="game-hero-loading-message" role={hasBootFailed ? "alert" : "status"} aria-atomic="true">
             <StatusIcon aria-hidden="true" className="game-hero-status-icon" size={28} strokeWidth={2} />
             <div>
-              {hasBootFailed ? <p className="game-hero-status-label">Launch failed</p> : null}
+              {hasBootFailed ? <p className="game-hero-status-label">{graphicsRecovery ? "Game graphics interrupted" : "Launch failed"}</p> : null}
               <p className="game-hero-status-text" data-launch-status="true">{bootStatusText || GAME_LOADING_STATUS}</p>
             </div>
           </div>
+          {graphicsRecovery ? (
+            <button className="secondary-button game-hero-restart" disabled={graphicsRecovery === "restarting"} onClick={onRestart} type="button">
+              {graphicsRecovery === "restarting" ? "Restarting…" : "Restart game"}
+            </button>
+          ) : null}
         </div>
       </GameHeroScene>
     </div>

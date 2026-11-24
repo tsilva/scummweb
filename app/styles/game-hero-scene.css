@@ -132,7 +132,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   margin-top: 1.75rem;
 }
 
-.game-hero-action-slot:has(> .hero-launch) {
+.game-hero-action-slot:has(> :is(.hero-launch, .has-restart)) {
   height: auto;
   min-height: var(--scene-action-height);
 }
@@ -213,6 +213,9 @@ html:has(.game-route-boot-overlay.is-visible) {
 
 .is-error .game-hero-loading { --scene-accent: #ff9e9e; }
 .game-hero-status-label { color: var(--scene-accent); font-weight: 600; }
+.game-hero-loading.has-restart { height: auto; max-height: none; padding-top: 0; overflow: visible; }
+.has-restart .game-hero-loading-message { margin-top: 0; }
+.game-hero-restart { min-height: 2.75rem; margin-top: 0.5rem; }
 
 /* Keep the artwork visible at the top and separate the toolbar from scrolling content. */
 .dashboard-nav-home {

@@ -356,6 +356,61 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   };
 }
 
+test("graphics loss during startup stops the watchdog and offers a fresh launch", async () => {
+  const player = pendingArchivePlayer({ realBoot: true });
+  player.render();
+  player.archive.resolve([{ path: "sky.dnr", data: Uint8Array.of(1) }]);
+  await new Promise(setImmediate);
+  player.render();
+  assert.ok([...player.timers.values()].some(({ delay }) => delay === 120_000));
+
+  const loseGraphics = (data = {}) => player.bootError({ type: "scummvm-graphics-lost", ...data });
+  loseGraphics({ origin: "https://other.test" });
+  loseGraphics({ source: {} });
+  loseGraphics({ href: "/scummvm.html#another-game" });
+  player.render();
+  assert.equal(player.overlay.graphicsRecovery, null);
+
+  loseGraphics();
+  loseGraphics();
+  player.gameReady(player.frame.contentDocument.URL);
+  player.render();
+  assert.equal(player.overlay.graphicsRecovery, "lost");
+  assert.equal(player.overlay.hasBootFailed, true);
+  assert.equal(player.confirmations, 0);
+  assert.equal(player.reports.length, 1);
+  assert.equal(player.reports[0].context.tags.startup_stage, "webgl-context-lost");
+  assert.equal([...player.timers.values()].some(({ delay }) => delay === 120_000), false);
+
+  const flush = Promise.withResolvers();
+  player.frame.contentWindow.__scummwebFlushSaveStorage = () => flush.promise;
+  const restart = player.overlay.onRestart();
+  player.render();
+  assert.equal(player.overlay.graphicsRecovery, "restarting");
+  assert.equal(player.loadCount, 1);
+  flush.resolve();
+  await restart;
+  assert.equal(player.overlay.graphicsRecovery, null);
+  assert.equal(player.loadCount, 2);
+  player.unmount();
+});
+
+test("graphics loss during play reopens the recovery overlay without a startup error", () => {
+  const player = pendingArchivePlayer({ realBoot: true });
+  player.render();
+  player.gameReady(player.frame.contentDocument.URL);
+  player.render();
+  assert.equal(player.overlay.showBootOverlay, false);
+
+  player.bootError({ type: "scummvm-graphics-lost" });
+  player.render();
+  assert.equal(player.overlay.graphicsRecovery, "lost");
+  assert.equal(player.overlay.showBootOverlay, true);
+  assert.equal(player.children.find(({ type }) => type === "iframe").props.inert, true);
+  assert.equal(player.reports.length, 0);
+  player.unmount();
+});
+
 test("personal play history starts after a confirmed frame and pauses for the shared menu", async () => {
   const player = pendingArchivePlayer();
   player.render();
