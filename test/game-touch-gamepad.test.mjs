@@ -18,6 +18,7 @@ const pointer = (pointerId, clientX, clientY) => ({
   pointerId, clientX, clientY, button: 0, preventDefault() {},
   currentTarget: {
     setPointerCapture() {},
+    hasPointerCapture: () => true,
     getBoundingClientRect: () => ({ width: 100, height: 100 }),
   },
 });
@@ -112,6 +113,35 @@ test("Grim's stick ignores thumb drift and holds both keys on a deliberate diago
   assert.deepEqual(events.slice(8), [
     "press ArrowDown", "press ArrowRight", "release ArrowDown", "release ArrowRight",
   ]);
+});
+
+test("an interrupted pointer cannot start a movement grip or block the next gesture", () => {
+  const events = [];
+  const gamepad = loadGamepad({
+    holdGameKey(_frame, { key }) {
+      events.push(`press ${key}`);
+      return () => events.push(`release ${key}`);
+    },
+  });
+  const stick = gamepad.GameMovementStick({ frameRef: { current: {} } }).props;
+
+  for (const [id, errorName] of [[1, "InvalidStateError"], [2, "NotFoundError"], [3, null]]) {
+    const down = { ...pointer(id, 50, 50), pointerType: "touch" };
+    down.currentTarget.hasPointerCapture = () => false;
+    down.currentTarget.setPointerCapture = () => {
+      if (errorName) throw new DOMException("Capture unavailable", errorName);
+    };
+    stick.onPointerDown(down);
+    stick.onPointerMove(pointer(id, 50, 25));
+    assert.deepEqual(events, []);
+  }
+
+  stick.onPointerDown(pointer(4, 50, 50));
+  stick.onPointerMove(pointer(4, 50, 25));
+  stick.onLostPointerCapture(pointer(4, 50, 25));
+  stick.onPointerMove(pointer(4, 75, 50));
+  stick.onPointerUp(pointer(4, 75, 50));
+  assert.deepEqual(events, ["press ArrowUp", "release ArrowUp"]);
 });
 
 for (const mode of ["grim", "monkey4"]) {

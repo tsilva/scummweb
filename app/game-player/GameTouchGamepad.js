@@ -160,8 +160,16 @@ export function GameMovementStick({ frameRef, hugo = false, castle = false }) {
   function start(event) {
     if ((castle && event.pointerType === "touch") || event.button !== 0 || grip.current) return;
     event.preventDefault();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    beginGrip(event, event.currentTarget, "pointer");
+    const target = event.currentTarget;
+    try {
+      target.setPointerCapture?.(event.pointerId);
+    } catch (error) {
+      // The browser can invalidate the pointer or its target during an interruption.
+      if (error.name === "NotFoundError" || error.name === "InvalidStateError") return;
+      throw error;
+    }
+    if (!target.hasPointerCapture?.(event.pointerId)) return;
+    beginGrip(event, target, "pointer");
   }
 
   function stop(event, inputType = "pointer") {
