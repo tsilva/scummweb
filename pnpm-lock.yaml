@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  '@rollup/plugin-commonjs@28.0.1>@rollup/pluginutils': 5.4.0
   '@rollup/plugin-commonjs@28.0.1>picomatch': '-'
   '@rollup/pluginutils@5.4.0>picomatch': '-'
   fdir@6.5.0>picomatch: '-'

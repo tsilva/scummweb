@@ -606,11 +606,13 @@ Follow the [README quickstart](../README.md#run-locally) for a credential-free
 server. Development needs no private service credentials. `pnpm secrets:check` verifies credential absence without
 retrieving source values.
 
-The pinned patches in `patches/dependencies/` replace Rollup's vulnerable
-`picomatch` calls with the already pinned `minimatch` implementation. Package
+The pinned patches in `patches/dependencies/` replace Rollup's `picomatch`
+calls with the already pinned `minimatch` implementation. Package
 extensions supply the replacement; overrides remove both direct dependencies
-and fdir's unused optional peer. Both CommonJS and ES module entry points are
-patched. This covers Sentry's current filters and wrapping, plus ordinary
+and fdir's unused optional peer. An override keeps the patched CommonJS plugin
+on the patched `@rollup/pluginutils` version during Sentry dependency refreshes.
+Both CommonJS and ES module entry points are patched. This covers Sentry's
+current filters and wrapping, plus ordinary
 dynamic target globs, rather than promising identical semantics for every
 picomatch-specific glob form. `test/dependency-security.test.mjs` checks bounded
 ReDoS inputs, both entry points, CommonJS wrapping, source maps, dotfiles and
