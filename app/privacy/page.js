@@ -80,8 +80,9 @@ export default async function PrivacyPage() {
         </p>
         <p>
           The homepage prompt offers <strong>Reject all</strong>, <strong>Accept all</strong>, and <strong>Customize</strong>.
-          Use <PrivacyChoicesButton className="privacy-choices-link" /> in the hero after choosing, in the site footer,
-          or here to manage analytics and error diagnostics separately or withdraw consent at any time.
+          Open <strong>Settings → Privacy</strong> to manage analytics and error diagnostics separately.
+          Changes there save immediately. You can also use <PrivacyChoicesButton className="privacy-choices-link" /> here
+          to change or withdraw consent at any time.
         </p>
       </section>
 

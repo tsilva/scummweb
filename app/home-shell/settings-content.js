@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownUp, Check, ChevronDown, Download, Info, Save, Upload } from "lucide-react";
+import { ArrowDownUp, Check, ChevronDown, Download, Info, Save, Shield, Upload } from "lucide-react";
+import { PrivacySettingsSwitches } from "../../lib/privacy-consent/controls";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
@@ -240,6 +241,14 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         <div className="settings-review-actions"><button type="button" className="secondary-button" disabled={busy} onClick={() => setReview(null)}>Cancel</button>
           <button type="button" className="launch-button" disabled={busy} onClick={confirmImport}>Import saves</button></div>
       </div>}
+    </section>
+    <button type="button" className={`settings-section-heading ${section === "privacy" ? "is-active" : ""}`}
+      aria-expanded={section === "privacy"} aria-controls="settings-privacy"
+      onClick={() => setSection(section === "privacy" ? "" : "privacy")}>
+      <Shield size={24} aria-hidden="true" /><span>Privacy</span><ChevronDown size={20} aria-hidden="true" />
+    </button>
+    <section id="settings-privacy" hidden={section !== "privacy"} aria-label="Privacy permissions">
+      <PrivacySettingsSwitches />
     </section>
     <button type="button" className={`settings-section-heading ${section === "about" ? "is-active" : ""}`}
       aria-expanded={section === "about"} aria-controls="settings-about" onClick={() => setSection(section === "about" ? "" : "about")}>

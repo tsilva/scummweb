@@ -10,7 +10,7 @@ export default function SiteConsent({ children }) {
 
   return <ConsentControls title="Help improve ScummWEB"
     message="If you accept, optional analytics and error reports help us spot slow game loads and fix crashes."
-    policyUrl="/privacy" purposes={consentPurposes} store={consentStore}>
+    purposes={consentPurposes} store={consentStore}>
     {children}
     <SiteAnalytics allowed={record?.choices.analytics === true} />
   </ConsentControls>;

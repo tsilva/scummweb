@@ -111,7 +111,7 @@ export default function HomeShell({
           <p className="footer-github">
             <a href={repositoryUrl} rel="noreferrer" target="_blank">ScummWEB on GitHub</a>
           </p>
-          <p><Link href="/privacy" prefetch={false}>Privacy</Link>{" · "}
+          <p><Link href="/privacy" prefetch={false}>Privacy policy</Link>{" · "}
             <PrivacyChoicesButton className="privacy-choices-link" /></p>
         </div>
       </footer>

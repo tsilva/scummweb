@@ -181,7 +181,8 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision, hasRoot: true }), readStoredSets: async () => copies,
     withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
   const View = await component("../app/home-shell/settings-content.js", {
-    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
+    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Shield", "Upload"].map(name => [name, () => null])),
+    "../../lib/privacy-consent/controls": { PrivacySettingsSwitches: () => null },
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: readSources || (async () => []) },
     "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
