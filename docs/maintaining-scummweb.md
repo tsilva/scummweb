@@ -150,6 +150,8 @@ each axis to preserve symmetric spacing around cutouts.
 - Personal Nightmare uses its original numbered slots and can save at the text
   command prompt. Demon in my Pocket and Swampy Adventures each share a single
   slot with their native saves. Swampy restores unlocked levels on the map.
+- Discworld (Demo), the DOS CD edition, supports **Save Game** and **Load Game**
+  through the shared menu once Rincewind is controllable.
 - **Report a bug** is the last game-menu action. Describe the problem and send
   the report; game identity and player settings are included automatically.
   Opening the form requests a native diagnostic save when the engine permits

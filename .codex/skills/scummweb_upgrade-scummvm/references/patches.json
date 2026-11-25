@@ -484,16 +484,17 @@
     {
       "path": "patches/scummvm/28-agent-tinsel-runtime-saves.patch",
       "status": "active",
-      "sha256": "efa16d5d2f6354369f6e6bbc7256752fc38b5a7e723f5572a6ca24a6b2799fbd",
+      "sha256": "07aefe126b15492ef20bb4f373da216ef1b6b9561dc545185be1c90b2aa80dd8",
       "purpose": "Expose scoped Tinsel saves using the existing scene and interpreter serializer.",
       "invariants": [
         "Use the physical slot without remapping.",
-        "Service agent controls after completed game cycles and wait for scene reconstruction before acknowledging restores."
+        "Service agent controls after completed game cycles and wait for scene reconstruction before acknowledging restores.",
+        "Enable the Discworld I DOS CD demo through the detected Tinsel V1 edition; keep the demo guard for other demo formats. Use the same runtime capability for the menu and the save operation."
       ],
       "verification": [
-        "Save in a controllable Discworld scene, move, and verify the earlier scene or player position after restoring."
+        "In the Discworld I DOS CD demo, save from the browser menu, move, and verify the earlier scene or player position after restoring. Relaunch with Continue and check the restored state."
       ],
-      "retire_when": "Upstream supports equivalent runtime saves at a completed Tinsel game cycle."
+      "retire_when": "Upstream supports equivalent runtime saves at a completed Tinsel game cycle, including the Discworld I DOS CD demo."
     },
     {
       "path": "patches/scummvm/29-agent-grim-runtime-saves.patch",
