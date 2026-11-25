@@ -1,0 +1,7 @@
+{
+  "name": "scummweb-browser-tools",
+  "private": true,
+  "devDependencies": {
+    "playwright-core": "1.64.1"
+  }
+}
