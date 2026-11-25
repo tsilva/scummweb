@@ -364,8 +364,9 @@ demo starts at its original clickable title and uses British English (`gb`) for
 exact engine detection; it also has no saving through the ScummWEB game menu.
 Goblins Quest 3’s English DOS interactive demo starts from its original clickable
 title. Once the ship accepts input, the ScummWEB Game Menu can save and load the
-game’s original slots. The full DOS CD v1.02 release also uses the game’s
-original slots from the ScummWEB Game Menu during normal play.
+game’s original slots. Continue waits until the ship can load the selected save.
+The full DOS CD v1.02 release also uses the game’s original slots from the
+ScummWEB Game Menu during normal play.
 
 Gabriel Knight’s Day One demo retains its original Intro/Play menu. Choose Play
 to enter the bookshop; native saves and restore are supported.
@@ -386,9 +387,9 @@ are disabled for this demo, so it has no checkpoint or Continue.
 
 Toonstruck’s English DOS demo uses the complete unchanged official ZIP and shares the original game’s artwork. Native intro skip preserves the opening Zanydu scene. Walking, Save/Load and Continue are verified; the original demo content and choices remain intact.
 
-Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save/Load and the original quick-save command are rejected at the tested opening scenes; launcher Continue is unavailable for this engine. No checkpoint is seeded.
+Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save/Load and the original quick-save command are rejected at the tested opening scenes. No checkpoint or Continue save is available for this demo.
 
-Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged official ZIP, including its compressed setup bundle and notices. The original intro can be skipped with the supported native action. Movement and in-session Save/Load work; launcher Continue is unavailable for this engine, so restart and use Load Game. No checkpoint is seeded. Its catalog target follows the original fixed simon2 save prefix.
+Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged official ZIP, including its compressed setup bundle and notices. The original intro can be skipped with the supported native action. Movement and in-session Save/Load work. Continue skips the opening and restores the saved position with the original quick-load routine. No checkpoint is seeded. Its catalog target follows the original fixed simon2 save prefix.
 
 Hand of Fate’s English DOS interactive CD demo preserves the complete unchanged official ZIP, with original game fonts, drivers and notices. Native intro skip reaches Zanthia’s laboratory, and walking works. Bucket-backed Save/Load and cached Continue restored the tested save positions. Native guards can reject further save/load requests in the opening room; no checkpoint is seeded.
 
@@ -413,11 +414,11 @@ English Windows mini demo omits the scripts for saving and loading.
 
 Touché’s English DOS demo preserves the complete unchanged official ZIP, including its DATABASE directory and root speech files. The native intro action reaches the original street without a seeded checkpoint. Movement, Save/Load and Continue restore the tested character position.
 
-Tony Tough’s English Windows extracted demo keeps the complete unchanged official ZIP with all music and speech directories. It retains the original New Game menu and native intro action. Movement works in the office; the original demo disables saving and loading, so no Continue checkpoint is seeded.
+Tony Tough’s English Windows extracted demo keeps the complete unchanged official ZIP with all music and speech directories. It retains the original New Game menu and native intro action. Once Tony can move, ScummWEB Save, Load and Continue use the original engine’s save files. The demo starts with its original opening on a fresh Play.
 
 Return to Zork’s English DOS CD editions with a recognized save-script layout
 share their slots between the ScummWEB Game Menu and the original F2 and F3
-menus. Load during gameplay after relaunching. The English DOS v1.2 CD demo’s
+menus. Continue restores the saved scene in the English DOS v1.2 CD demo. Its
 unchanged official ZIP includes the compressed RED driver archives and original
 Anthology readme. It omits ripped CD audio tracks, so acknowledge ScummVM’s
 CD-audio notice to proceed. The checksum-pinned ZIP has a 150 MiB download limit
@@ -427,11 +428,11 @@ Sherlock Holmes: The Serrated Scalpel’s English DOS interactive demo preserves
 
 Bud Tucker’s English DOS interactive demo keeps the complete unchanged official ZIP, including its original source/data files, sound drivers and WAV audio. It starts directly in the original Plugs scene without a seeded checkpoint. Movement, scene scrolling, the F1 action-panel switch, Save/Load and Continue are verified.
 
-Rex Nebular’s English DOS three-room interactive demo keeps the complete unchanged official ZIP, including its original intro, executables and sound drivers. It preserves the original opening and native Skip intro without a seeded checkpoint. Movement and in-session Save/Load are verified. Continue is disabled because fresh startup loading misplaces Rex.
+Rex Nebular’s English DOS three-room interactive demo keeps the complete unchanged official ZIP, including its original intro, executables and sound drivers. It preserves the original opening and native Skip intro without a seeded checkpoint. Movement, in-session Save/Load and Continue restore the tested cabin position. Continue initializes the original first room before loading.
 
 Torin’s Passage’s English DOS/Windows interactive demo keeps its complete unchanged official ZIP, including the original packed setup, Help, drivers, documents and audio. Its original preview menu and Escarpa start prompt are preserved without a seeded browser checkpoint. Movement, scene navigation and native pause are verified. Saving was rejected in both tested Escarpa views; Load and Continue have no verified player save. Its original Windows Write README is delivered as readable UTF-8 text; the source ZIP remains unchanged.
 
-Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. The original menu, New Game movie and office start prompt are preserved without a seeded browser checkpoint. Scrapbook interaction and page navigation work. Saving was rejected in both the scrapbook and stable office views; Load and Continue have no verified player save.
+Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. The original menu, New Game movie and office start prompt are preserved without a seeded browser checkpoint. Scrapbook interaction and page navigation work. ScummWEB saves use the native SCI32 format. Load Game can restore the office from the scrapbook, and Continue can reopen the saved office or scrapbook.
 
 Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. Saving was rejected in the tested reached scene; Load and Continue have no verified player save. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
 
@@ -469,17 +470,22 @@ The English Windows demo of Let’s Explore the Airport opens at an airplane boa
 
 The English Windows demo of Let’s Explore the Farm opens in the barn. The native Skip Intro action works. Select the book to open the glossary and choose a word to see its illustrated entry. The original demo does not support saving.
 
-The original Windows v1.0 demo of The Tortoise and the Hare contains one page in English and Spanish. Select a language on the book menu, then choose Read to Me for word highlighting or Let Me Play to explore the animated page. The cottage door reacts to clicks. Saving and loading through the ScummWEB menu are unavailable.
+The six bundled Living Books demos below can save a story page through the
+ScummWEB Game Menu. Load Game and Continue reopen the saved page from its
+beginning in the same language and reading or play mode. Page animations and
+narration start over.
 
-The original Windows demo of Arthur’s Birthday contains one page in English and Spanish. Choose a language, then use Read to Me to follow the highlighted words or Let Me Play to explore the kitchen. The calendar reacts to clicks. Saving and loading through the ScummWEB menu are unavailable.
+The original Windows v1.0 demo of The Tortoise and the Hare contains one page in English and Spanish. Select a language on the book menu, then choose Read to Me for word highlighting or Let Me Play to explore the animated page. The cottage door reacts to clicks.
 
-The original Windows v1.0 demo of Just Grandma and Me contains one animated page in English, Japanese and Spanish. Choose a language, then open Read to Me or Let Me Play. The round marker beside the text replays the passage. Saving and loading through the ScummWEB menu are unavailable.
+The original Windows demo of Arthur’s Birthday contains one page in English and Spanish. Choose a language, then use Read to Me to follow the highlighted words or Let Me Play to explore the kitchen. The calendar reacts to clicks.
 
-The original Windows demo of Arthur’s Teacher Trouble contains one animated school hallway page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page. Saving and loading through the ScummWEB menu are unavailable.
+The original Windows v1.0 demo of Just Grandma and Me contains one animated page in English, Japanese and Spanish. Choose a language, then open Read to Me or Let Me Play. The round marker beside the text replays the passage.
 
-The original Windows demo of Ruff’s Bone contains one animated story page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page. Saving and loading through the ScummWEB menu are unavailable.
+The original Windows demo of Arthur’s Teacher Trouble contains one animated school hallway page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page.
 
-The original Windows v1.1 demo of The New Kid on the Block includes one English poem. Read to Me shows one illustrated page. Let Me Play includes two interactive pages. The right arrow advances to the original publisher message after the last page. Saving and loading through the ScummWEB menu are unavailable.
+The original Windows demo of Ruff’s Bone contains one animated story page in English and Spanish. Choose a language, then select Read to Me or Let Me Play. The right arrow opens the original end-of-demo page.
+
+The original Windows v1.1 demo of The New Kid on the Block includes one English poem. Read to Me shows one illustrated page. Let Me Play includes two interactive pages. The right arrow advances to the original publisher message after the last page.
 
 The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-Running Demo. F7 returns to the original menu. ScummWEB can save and restore progress in the hands-on mode.
 
@@ -534,18 +540,16 @@ is bundled. Its existing shared artwork is reused.
 
 Technobabylon’s English Windows demo preserves its original Start menu and
 opening. Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,
-900 MiB expanded-data allowance and 10-minute timeout. The first Trance scene
-accepts walking. Host save creation failed verification, so saving and Continue
-are unreliable for this demo. Its embedded nedraed fonts retain their CC BY-SA 3.0
+900 MiB expanded-data allowance and 10-minute timeout. The first playable Trance
+scene supports Save, Load and Continue. Its embedded nedraed fonts retain their CC BY-SA 3.0
 notices; a separate launcher notice provides the original font titles, creator,
 source links and license link. This font license does not cover the game itself.
 
 Primordia’s English Windows demo retains its original Start Game menu and opening.
 The unchanged archive is approximately 804 MiB, so this target alone allows a
 900 MiB download, 1 GiB expanded data and a 15-minute download timeout. Its
-first deck scene accepts walking input. Save attempts currently produce empty
-files in the browser runtime; saving and Continue are unreliable for this demo.
-Keep this limitation in the compatibility record and play the demo in one sitting.
+first deck scene accepts walking input. Save, Load and Continue restored
+Horatio to his saved deck position.
 
 Gemini Rue’s English Windows demo supports native saving and restoration. Its
 intro checkpoint starts on the first playable street scene after the original

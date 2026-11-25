@@ -1,0 +1,100 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -233,6 +233,9 @@
+ 	if (engineId == "mohawk" && extra.contains("demo") && !meta.hasFeature(MetaEngine::kSavesUseExtendedFormat))
+ 		supported = false;
+ 	if (engineId == "agos" && gameId == "simon2" && extra == "cd demo")
++		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
++	if ((engineId == "gob" && gameId == "gob3" && extra == "interactive demo 3 (v0.02)") ||
++			(engineId == "made" && gameId == "rtz" && extra == "v1.2, 9/8/94, demo cd"))
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	EM_ASM({ if (globalThis.__scummwebBeginSaveScan) globalThis.__scummwebBeginSaveScan(UTF8ToString($0), UTF8ToString($1), UTF8ToString($2), $3, UTF8ToString($4)); },
+ 		engineId.c_str(), gameId.c_str(), target.c_str(), supported, extra.c_str());
+@@ -368,8 +371,13 @@
+ 			ConfMan.setBool("speech_mute", false);
+ 		}
+ 		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
+-		if (resumeSlot >= 0)
++		if (resumeSlot >= 0) {
+ 			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
++		} else if (game.engineId == "mads" && game.gameId == "nebular" &&
++				EM_ASM_INT({ return (globalThis.__scummwebPeekStartupLoad?.() ?? -1) >= 0; })) {
++			// Build the demo's normal first room before replaying the live restore path.
++			ConfMan.setBool("start_game", true, Common::ConfigManager::kTransientDomain);
++		}
+ #endif
+ 		err = metaEngine.createInstance(&system, &engine, game, meDescriptor);
+ 	}
+diff --git a/backends/modular-backend.cpp b/backends/modular-backend.cpp
+--- a/backends/modular-backend.cpp
++++ b/backends/modular-backend.cpp
+@@ -78,9 +78,15 @@
+ 	bool canSaveWhileHeld = false;
+ 	PauseToken pause;
+ 	while (!engine->shouldQuit()) {
+-		const int control = EM_ASM_INT({
+-			return globalThis.__scummwebAgentFrameBoundary($0, $1, $2, $3, $4, $5);
+-		}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop);
++		const int startupSlot = player && canLoad && !pause.isActive()
++			? EM_ASM_INT({ return globalThis.__scummwebPeekStartupLoad?.() ?? -1; }) : -1;
++		const bool restoreAtStartup = startupSlot >= 0 && startupSlot <= maxSlot &&
++			engine->canLoadGameStateCurrently() &&
++			EM_ASM_INT({ return Boolean(globalThis.__scummwebTakeStartupLoad?.()); });
++		const int control = restoreAtStartup ? (startupSlot == 0 ? 2 * maxSlot + 1 : maxSlot + startupSlot)
++			: EM_ASM_INT({
++				return globalThis.__scummwebAgentFrameBoundary($0, $1, $2, $3, $4, $5);
++			}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop);
+ 		completedFrame = false;
+ 		if (control < 0) {
+ 			if (!pause.isActive()) {
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -104,7 +104,8 @@
+ 
+ bool GobMetaEngine::hasFeature(MetaEngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+-	if (scummweb_agent_game_loop_enabled() && f == kSupportsListSaves)
++	if (f == kSupportsListSaves && (scummweb_agent_game_loop_enabled() ||
++			isGob3CheckpointTarget(ConfMan.getActiveDomainName())))
+ 		return true;
+ #endif
+ 	return false;
+diff --git a/engines/made/metaengine.cpp b/engines/made/metaengine.cpp
+--- a/engines/made/metaengine.cpp
++++ b/engines/made/metaengine.cpp
+@@ -24,6 +24,7 @@
+ #include "common/savefile.h"
+ #include "common/system.h"
+ #include "made/made.h"
++#include "common/config-manager.h"
+ #include "engines/scummweb-agent-loop.h"
+ #include "made/detection.h"
+ #include "made/database.h"
+@@ -125,7 +126,9 @@
+ 
+ bool MadeMetaEngine::hasFeature(MetaEngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+-	return scummweb_agent_game_loop_enabled() &&
++	const bool rtzDemo = ConfMan.get("gameid") == "rtz" &&
++		ConfMan.get("extra").equalsIgnoreCase("V1.2, 9/8/94, Demo CD");
++	return (scummweb_agent_game_loop_enabled() || rtzDemo) &&
+ 		(f == kSupportsListSaves || f == kSimpleSavesNames);
+ #else
+ 	return false;
+diff --git a/engines/mads/mads.cpp b/engines/mads/mads.cpp
+--- a/engines/mads/mads.cpp
++++ b/engines/mads/mads.cpp
+@@ -141,6 +141,11 @@
+ }
+ 
+ bool MADSEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++#ifdef __EMSCRIPTEN__
++	if (getGameID() == GType_RexNebular && isDemo() &&
++			(kernel_mode != KERNEL_ACTIVE_CODE || !player.commands_allowed || !player.walker_is_loaded))
++		return false;
++#endif
+ 	return game.going && !win_status && !kernel.activate_menu &&
+ 		inter_input_mode == INTER_BUILDING_SENTENCES &&
+ 		conv_control.running == -1;

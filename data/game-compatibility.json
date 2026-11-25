@@ -1012,7 +1012,7 @@
       "gameId": "made:rtz",
       "edition": "rtz-dos-cd-demo2-en.zip",
       "recordedOn": "2026-11-20",
-      "observation": "English DOS v1.2 CD demo. The ScummWEB drawer and original F2/F3 menus share the same save slots. The drawer restored the mountain pass from the sign close-up. Loading a drawer save through F3 restored the close-up after closing the original picker. The demo displays a CD-audio notice."
+      "observation": "English DOS v1.2 CD demo. The ScummWEB drawer and original F2/F3 menus share the same save slots. The drawer restored the mountain pass from the sign close-up. Loading a drawer save through F3 restored the close-up after closing the original picker. Continue restored the saved lighthouse scene after acknowledging the CD-audio notice."
     },
     {
       "title": "Rex Nebular and the Cosmic Gender Bender",
@@ -1028,7 +1028,7 @@
       "gameId": "mads:nebular",
       "edition": "rex-dos-demo-en.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English DOS three-room demo: correct native detection, original intro/cabin, native intro skip, movement and in-session Save/Load verified. Fresh startup loading misplaces Rex; Continue is disabled for this demo. No seeded checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English DOS three-room demo: correct native detection, original intro/cabin, native intro skip, movement and in-session Save/Load verified. Continue restored Rex’s saved position on the cabin floor. No seeded checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Ringworld: Revenge of the Patriarch",
@@ -1085,7 +1085,7 @@
       "gameId": "sci:shivers",
       "edition": "shivers-win-demo2-en.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English Windows interactive demo: correct native edition, original menu/New Game movie and office start prompt preserved without a seeded browser checkpoint. Desk scrapbook opens and pages turn; return navigation works. Saving rejected in tested scrapbook and stable office views; Load and Continue have no verified save. Full playthrough and independent audible output not verified."
+      "observation": "English Windows interactive demo. Original menu, opening movie, office and scrapbook interaction work. ScummWEB Save and Load restored the office, and Continue restored the office or scrapbook from the latest save. No seeded checkpoint."
     },
     {
       "title": "Simon the Sorcerer",
@@ -1115,7 +1115,7 @@
       "gameId": "agos:simon2",
       "edition": "simon2-dos-cd-demo-en.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English DOS CD demo: native edition detection, original village opening, native intro skip, movement, Save and Load restoring the original doorway position verified. Launcher Continue is not supported for AGOS; restart and use Load Game. No seeded checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English DOS CD demo: native edition detection, original village opening, native intro skip, movement, Save and Load restoring the original doorway position verified. Continue skips the original opening and restores Simon’s saved position. No seeded checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
@@ -1422,7 +1422,7 @@
       "gameId": "tony:tony",
       "edition": "tony-demo.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English Windows extracted demo: correct native detection, original New Game menu, native intro skip and office movement verified. Saving and loading are disabled by the original demo; no Continue or seeded checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English Windows extracted demo: correct native detection, original New Game menu, native intro skip and office movement verified. ScummWEB Save, Load and Continue restored Tony’s position in the office. No seeded checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Toonstruck",
@@ -1559,7 +1559,7 @@
       "gameId": "mohawk:tortoise",
       "edition": "tortoise-win-demo-en.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows v1.0 demo with one bilingual page. Native Skip Intro, English Let Me Play, a cottage-door animation and Spanish Read to Me word highlighting were verified. The ScummWEB save and load menus were unavailable for this edition. Audible narration was unverified."
+      "observation": "Original Windows v1.0 demo with one bilingual page. Native Skip Intro, English Let Me Play, a cottage-door animation and Spanish Read to Me word highlighting were verified. Save and Continue restored the Spanish Read to Me page. Audible narration was unverified."
     },
     {
       "title": "Arthur's Birthday",
@@ -1575,7 +1575,7 @@
       "gameId": "mohawk:arthurbday",
       "edition": "arthurbday-win-demo-en.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the kitchen calendar animation and Spanish Read to Me word highlighting were verified. The ScummWEB save and load menus were unavailable. Audible narration was unverified."
+      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the kitchen calendar animation and Spanish Read to Me word highlighting were verified. ScummWEB saves reopen the saved page in the same language and reading or play mode. Audible narration was unverified."
     },
     {
       "title": "Arthur's Computer Adventure",
@@ -2002,7 +2002,7 @@
       "gameId": "mohawk:grandma",
       "edition": "grandma-win-demo-en.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows v1.0 demo with one page in English, Japanese and Spanish. Native Skip Intro, the Options screen, English Let Me Play, the read-along button and Japanese and Spanish Read to Me were verified. ScummWEB save and load are unavailable. Audible narration was unverified."
+      "observation": "Original Windows v1.0 demo with one page in English, Japanese and Spanish. Native Skip Intro, the Options screen, English Let Me Play, the read-along button and Japanese and Spanish Read to Me were verified. ScummWEB saves reopen the saved page in the same language and reading or play mode. Audible narration was unverified."
     },
     {
       "title": "King's Questions",
@@ -2068,7 +2068,7 @@
       "gameId": "mohawk:arthur",
       "edition": "arthur-win-demo-en.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the classroom animation, the publisher’s end-of-demo page and Spanish Read to Me were verified. ScummWEB save and load menus were unavailable. Audible narration was unverified."
+      "observation": "Original Windows demo with one bilingual page. Native Skip Intro, English Let Me Play, the classroom animation, the publisher’s end-of-demo page and Spanish Read to Me were verified. ScummWEB saves reopen the saved page in the same language and reading or play mode. Audible narration was unverified."
     },
     {
       "title": "Mixed Up Fairy Tales",
@@ -2349,7 +2349,7 @@
       "gameId": "mohawk:ruff",
       "edition": "ruff-win-demo-en.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows demo with one page in English and Spanish. Native Skip Intro, English Let Me Play, the original publisher end page and Spanish Read to Me were verified. ScummWEB save and load were unavailable. Audible narration was unverified."
+      "observation": "Original Windows demo with one page in English and Spanish. Native Skip Intro, English Let Me Play, the original publisher end page and Spanish Read to Me were verified. ScummWEB saves reopen the saved page in the same language and reading or play mode. Audible narration was unverified."
     },
     {
       "title": "Sheila Rae, the Brave",
@@ -2473,7 +2473,7 @@
       "gameId": "mohawk:newkid",
       "edition": "newkid-win-demo-en-v1.1.zip",
       "recordedOn": "2026-11-19",
-      "observation": "Original Windows demo v1.1 with one English poem. Native Skip Intro, one Read to Me page with highlighted words, both Let Me Play pages and the original publisher ending in each mode were verified. ScummWEB Save and Load were unavailable. Audible narration was unverified."
+      "observation": "Original Windows demo v1.1 with one English poem. Native Skip Intro, one Read to Me page with highlighted words, both Let Me Play pages and the original publisher ending in each mode were verified. Save, Load and Continue reopened the second interactive page from its beginning. Audible narration was unverified."
     },
     {
       "title": "Zork Nemesis: The Forbidden Lands",
@@ -4092,7 +4092,7 @@
       "edition": "primordia-demo.zip",
       "issueScope": "scummweb",
       "recordedOn": "2026-11-14",
-      "observation": "English Windows demo reaches its original menu, voiced opening and first deck scene from the public bucket; walking works. Save attempts currently produce empty files, so saving and Continue are unreliable in this browser runtime. Play this demo in one sitting."
+      "observation": "English Windows demo reaches its original menu, voiced opening and first deck scene from the public bucket. Save, Load and Continue restored Horatio’s position on the deck."
     },
     {
       "title": "Private Eye",
@@ -4427,7 +4427,7 @@
       "edition": "technobabylon-demo.zip",
       "issueScope": "scummweb",
       "recordedOn": "2026-11-14",
-      "observation": "English Windows demo renders its original Start menu, voiced introduction and first Trance scene; walking works. Host save creation failed verification, so saving and Continue are unreliable in this browser runtime. Play this demo in one sitting."
+      "observation": "English Windows demo renders its original Start menu, voiced introduction and first Trance scene. Save, Load and Continue restored the playable Trance tutorial."
     },
     {
       "title": "Tender Loving Care",
@@ -4920,7 +4920,7 @@
       "status": "startup-verified",
       "gameId": "gob:gob3",
       "edition": "Official English DOS interactive demo 3 v0.02 (gob3-dos-demo-en.zip)",
-      "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. Save and Load in the ScummWEB Game Menu use the original save slots on the ship."
+      "observation": "The original title and ship scene render. Click the title to start the playable demo. Blount responds to walking input. Save and Load in the ScummWEB Game Menu use the original save slots on the ship. Continue restored a ship autosave after startup."
     },
     {
       "title": "Gabriel Knight: Sins of the Fathers (Demo)",

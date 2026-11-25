@@ -1,0 +1,68 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -232,6 +232,8 @@
+ 	extra.toLowercase();
+ 	if (engineId == "mohawk" && extra.contains("demo"))
+ 		supported = false;
++	if (engineId == "agos" && gameId == "simon2" && extra == "cd demo")
++		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	EM_ASM({ if (globalThis.__scummwebBeginSaveScan) globalThis.__scummwebBeginSaveScan(UTF8ToString($0), UTF8ToString($1), UTF8ToString($2), $3, UTF8ToString($4)); },
+ 		engineId.c_str(), gameId.c_str(), target.c_str(), supported, extra.c_str());
+ 	const bool playerListing = meta.hasFeature(MetaEngine::kSupportsListSaves) &&
+diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
+--- a/engines/agos/input.cpp
++++ b/engines/agos/input.cpp
+@@ -236,6 +236,15 @@
+ 				if (!ScummWebIntro::startupFinished() && canSaveGameStateCurrently() &&
+ 					!getBitFlag(9)) {
+ 					_openingScript = false;
++					if (isSimon2CdDemo() && ConfMan.hasKey("save_slot", Common::ConfigManager::kTransientDomain)) {
++						const int slot = ConfMan.getInt("save_slot", Common::ConfigManager::kTransientDomain);
++						ConfMan.removeKey("save_slot", Common::ConfigManager::kTransientDomain);
++						// Restore through the native redraw before exposing the first gameplay frame.
++						_scummWebAgentIdle = false;
++						if (slot >= 0 && !quickRestoreGame(slot))
++							warning("Could not restore Simon II save slot %d at startup", slot);
++						_scummWebAgentIdle = true;
++					}
+ 					ScummWebIntro::gameplayStarted();
+ 				}
+ #endif
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -524,6 +524,7 @@
+ 	bool _openingScript = false;
+ 	bool _skipOpeningScript = false;
+ 	bool wantsSkipOpening(bool canSkip);
++	bool isSimon2CdDemo() const;
+ #endif
+ 
+ 	uint16 _soundFileId;
+diff --git a/engines/agos/agos.cpp b/engines/agos/agos.cpp
+--- a/engines/agos/agos.cpp
++++ b/engines/agos/agos.cpp
+@@ -1194,6 +1194,11 @@
+ }
+ 
+ #ifdef __EMSCRIPTEN__
++bool AGOSEngine::isSimon2CdDemo() const {
++	return getGameType() == GType_SIMON2 && getPlatform() == Common::kPlatformDOS &&
++		ConfMan.get("extra").equalsIgnoreCase("CD Demo");
++}
++
+ bool AGOSEngine::wantsSkipOpening(bool canSkip) {
+ 	if (!_openingScript)
+ 		return false;
+@@ -1248,7 +1253,9 @@
+ 	}
+ 
+ #ifdef __EMSCRIPTEN__
+-	_openingScript = ScummWebIntro::nativeSkipEnabled() && !ConfMan.hasKey("save_slot");
++	const bool continuingDemo = isSimon2CdDemo() && ConfMan.hasKey("save_slot", Common::ConfigManager::kTransientDomain);
++	_openingScript = continuingDemo || (ScummWebIntro::nativeSkipEnabled() && !ConfMan.hasKey("save_slot"));
++	_skipOpeningScript = continuingDemo;
+ #endif
+ 	runSubroutine101();
+ 	permitInput();

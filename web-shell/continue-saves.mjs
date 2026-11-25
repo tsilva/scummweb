@@ -4,7 +4,13 @@ import { installRotatingAutosaves } from "./rotating-autosaves.mjs";
 // files enter this index; an index never substitutes for the files themselves.
 export const saveIndexPrefix = "scummweb.continue.v1:";
 export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
-const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mohawk mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
+const livingBooksDemos = new Set(["tortoise", "arthurbday", "grandma", "arthur", "ruff", "newkid"]);
+const deferredDemoContinue = new Map([
+  ["gob:gob3", "interactive demo 3 (v0.02)"],
+  ["made:rtz", "v1.2, 9/8/94, demo cd"],
+  ["mads:nebular", "demo"],
+]);
 const retiredIntroCheckpoints = new Map([
   ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
   ["qfi-demo/qfi-demo.098", "3dbd22f47c355795c96fcef11b2bb2aab5a84841b7b3b8f601715162d67c0b9c"],
@@ -19,10 +25,18 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
   return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
 }
 export function supportsContinue(engineId, gameId, extra = "") {
+  const edition = typeof extra === "string" ? extra.toLowerCase() : "";
+  if (deferredDemoContinue.get(`${engineId}:${gameId}`) === edition) return true;
+  if (engineId === "agos") {
+    return gameId === "simon2" && edition === "cd demo";
+  }
+  if (engineId === "mohawk") {
+    if (livingBooksDemos.has(gameId)) return edition.startsWith("demo");
+    return ["myst", "riven"].includes(gameId) && !edition.includes("demo");
+  }
   return supportedEngines.has(engineId)
-    && !(engineId === "mads" && gameId === "nebular" && /demo/i.test(extra))
-    && !(engineId === "agi" && ["mickey", "winnie", "troll"].includes(gameId))
-    && !(engineId === "mohawk" && (!["myst", "riven"].includes(gameId) || /demo/i.test(extra)));
+    && !(engineId === "mads" && gameId === "nebular" && edition.includes("demo"))
+    && !(engineId === "agi" && ["mickey", "winnie", "troll"].includes(gameId));
 }
 
 export function saveIndexKey(namespace, target) {
@@ -181,7 +195,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     scope.__scummwebScanningSaves = true;
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
-    if (storage.commit && params.has("saveQuery") && params.get("v")) snapshot.checkedByRuntime = params.get("v");
+    if (params.has("saveQuery") && params.get("v")) snapshot.checkedByRuntime = params.get("v");
     if (scope.__scummwebPublishPlayerSaves) {
       playerSaves = [];
       occupiedSlots = new Set();
@@ -222,9 +236,13 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     const persisted = persist();
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
-    const autoSlot = scope.__scummwebAutosaves?.startup(snapshot, save) ?? -1;
+    const deferred = params.get("continue") === "1" &&
+      deferredDemoContinue.get(`${snapshot.engineId}:${snapshot.gameId}`) === snapshot.extra.toLowerCase();
+    const schedule = deferred ? scope.__scummwebQueueStartupLoad : undefined;
+    const autoSlot = !deferred || schedule ? scope.__scummwebAutosaves?.startup(snapshot, save, schedule) ?? -1 : -1;
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
-    if (!resumeReported && (latestSlot !== null && params.get("continue") === "1"
+    if (!resumeReported && deferred && autoSlot < 0 && save) schedule?.(save.slot);
+    if (!resumeReported && (!deferred && latestSlot !== null && params.get("continue") === "1"
       || /^#-x(?:%20| )/i.test(launchUrl.hash) && !params.has("skipIntroTarget"))) {
       scope.__scummwebAutosaves?.afterLoad();
     }
@@ -249,7 +267,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       });
     } else publish();
     scope.__scummwebBeginIntroCheckpoint?.(snapshot.target);
-    return params.get("continue") === "1" ? latestSlot ?? -1 : -1;
+    return params.get("continue") === "1" && !deferred ? latestSlot ?? -1 : -1;
   };
 
   async function start() {
@@ -260,7 +278,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       }
       const extra = params.get("saveExtra") || "";
       if (extra.length > 256 || /[\r\n\[\]\x00]/.test(extra)) throw new Error("Invalid save edition");
-      FS.writeFile("/tmp/scummweb-query.ini", `[scummvm]\nsavepath=${savePath}\n\n[${target}]\nengineid=${engine}\ngameid=${gameId}\nextra=${extra}\n`);
+      const platform = params.get("savePlatform");
+      if (platform && !/^[a-z0-9]+$/i.test(platform)) throw new Error("Invalid save platform");
+      const platformSetting = platform ? `platform=${platform}\n` : "";
+      FS.writeFile("/tmp/scummweb-query.ini", `[scummvm]\nsavepath=${savePath}\n\n[${target}]\nengineid=${engine}\ngameid=${gameId}\nextra=${extra}\n${platformSetting}`);
       // The native bridge terminates query mode before engine construction.
       // Use ordinary plugin initialization; the CLI listing command runs
       // before the web backend is ready for dynamic engine modules.

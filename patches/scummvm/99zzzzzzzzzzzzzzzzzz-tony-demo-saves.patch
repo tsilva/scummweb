@@ -1,0 +1,92 @@
+diff --git a/engines/tony/gfxengine.h b/engines/tony/gfxengine.h
+--- a/engines/tony/gfxengine.h
++++ b/engines/tony/gfxengine.h
+@@ -133,7 +133,7 @@
+ 
+ 	void setPerorate(bool bpal);
+ 
+-	bool canLoadSave();
++	bool canLoadSave(bool allowDemo = false);
+ };
+ 
+ } // End of namespace Tony
+diff --git a/engines/tony/gfxengine.cpp b/engines/tony/gfxengine.cpp
+--- a/engines/tony/gfxengine.cpp
++++ b/engines/tony/gfxengine.cpp
+@@ -841,8 +841,8 @@
+ 	CoroScheduler.waitForSingleObject(coroParam, _hWipeEvent, CORO_INFINITE);
+ }
+ 
+-bool RMGfxEngine::canLoadSave() {
+-	return _bInput && !_tony.inAction() && !g_vm->getIsDemo();
++bool RMGfxEngine::canLoadSave(bool allowDemo) {
++	return _bInput && !_tony.inAction() && (!g_vm->getIsDemo() || allowDemo);
+ }
+ 
+ RMGfxEngine::operator RMGfxTargetBuffer &() {
+diff --git a/engines/tony/tony.cpp b/engines/tony/tony.cpp
+--- a/engines/tony/tony.cpp
++++ b/engines/tony/tony.cpp
+@@ -27,6 +27,10 @@
+ #include "common/file.h"
+ #include "common/compression/installshield_cab.h"
+ #include "common/translation.h"
++#include "engines/scummweb-agent-loop.h"
++#ifdef __EMSCRIPTEN__
++#include <emscripten/em_asm.h>
++#endif
+ #include "tony/tony.h"
+ #include "tony/custom.h"
+ #include "tony/debugger.h"
+@@ -36,6 +40,15 @@
+ namespace Tony {
+ 
+ TonyEngine *g_vm;
++
++static bool supportsHostedDemoSaves(const TonyEngine &engine) {
++#ifdef __EMSCRIPTEN__
++	return engine.getIsDemo() && EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); }) &&
++		ConfMan.get("extra").equalsIgnoreCase("Extracted Demo");
++#else
++	return false;
++#endif
++}
+ 
+ TonyEngine::TonyEngine(OSystem *syst, const TonyGameDescription *gameDesc) : Engine(syst),
+ 	_gameDescription(gameDesc), _randomSource("tony") {
+@@ -696,6 +709,10 @@
+  * Play the game
+  */
+ void TonyEngine::play() {
++#ifdef __EMSCRIPTEN__
++	const bool hostedDemo = supportsHostedDemoSaves(*this);
++	ScummWebAgentLoop playerLoop(hostedDemo);
++#endif
+ 	// Create the game player process
+ 	CoroScheduler.createProcess(playProcess, NULL);
+ 
+@@ -709,6 +726,10 @@
+ 
+ 		// Call any scheduled processes
+ 		CoroScheduler.schedule();
++#ifdef __EMSCRIPTEN__
++		if (hostedDemo && _loadSlotNumber < 0)
++			scummweb_agent_game_loop();
++#endif
+ 	}
+ }
+ 
+@@ -740,11 +761,11 @@
+ }
+ 
+ bool TonyEngine::canLoadGameStateCurrently(Common::U32String *msg) {
+-	return GLOBALS._gfxEngine != NULL && GLOBALS._gfxEngine->canLoadSave();
++	return GLOBALS._gfxEngine != nullptr && GLOBALS._gfxEngine->canLoadSave(supportsHostedDemoSaves(*this));
+ }
+ 
+ bool TonyEngine::canSaveGameStateCurrently(Common::U32String *msg) {
+-	return GLOBALS._gfxEngine != NULL && GLOBALS._gfxEngine->canLoadSave();
++	return canLoadGameStateCurrently(msg);
+ }
+ 
+ Common::Error TonyEngine::loadGameState(int slot) {

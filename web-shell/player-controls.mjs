@@ -17,6 +17,7 @@ export function installPlayerControls(scope, requestMenu) {
   let saves = [];
   let occupied = new Set();
   let pending;
+  let startupLoad;
   let exitSave;
 
   function finishExitSave() {
@@ -147,13 +148,34 @@ export function installPlayerControls(scope, requestMenu) {
     if (pending?.dispatched && pending.operation === "save") pending.written.add(name);
   };
 
+  scope.__scummwebQueueStartupLoad = (slot, files) => {
+    if (startupLoad || !Number.isInteger(slot) || slot < 0) return false;
+    startupLoad = { slot, files };
+    return true;
+  };
+  scope.__scummwebPeekStartupLoad = () => !menuOpen && !exitSave && !pending ? startupLoad?.slot ?? -1 : -1;
+  scope.__scummwebTakeStartupLoad = () => {
+    if (!startupLoad || menuOpen || exitSave || pending || scope.__scummwebSaveWriteInProgress?.()) return false;
+    const { slot, files } = startupLoad;
+    startupLoad = undefined;
+    const resolve = ({ error }) => {
+      if (error) scope.__scummwebPostCompatibilityWarning?.("The saved game could not be resumed. Use Load Game to select a save.");
+    };
+    if (files && !scope.__scummwebDiagnosticSaves?.beginRestore(files)) {
+      resolve({ error: true });
+      return false;
+    }
+    pending = { operation: "load", slot, resolve, isolated: Boolean(files), dispatched: true };
+    return true;
+  };
+
   function boundary(max, reserved, save, load) {
     maxSlot = max;
     reservedSlot = reserved;
     canSave = save;
     canLoad = load;
     const autosaveDue = scope.__scummwebAutosaves?.due();
-    if (!pending && (exitSave || (!menuOpen && autosaveDue))) {
+    if (!pending && !startupLoad && (exitSave || (!menuOpen && autosaveDue))) {
       if (canSave && canLoad) {
         const slot = reserved === 1 ? 2 : 1;
         scope.__scummwebAutosaves.retry();

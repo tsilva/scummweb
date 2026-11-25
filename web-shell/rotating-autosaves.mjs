@@ -94,13 +94,18 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
     },
     retry() { due = Date.now() + 5000; },
     afterLoad() { due = 0; },
-    startup(identity, manualSave) {
+    startup(identity, manualSave, schedule) {
       if (!enabled || !identity.supported || attemptedStartup || params.get("continue") !== "1") return -1;
       attemptedStartup = true;
       const excluded = new Set([...(identity.pending || []), ...(params.get("excludeAutosaves") || "").split(",")]);
       for (const { name, record } of readAutosaveRing(read, data => matches(data, identity), excluded)) {
         if (!record || scope.__scummwebHasIntroCheckpoint) continue;
         if (manualSave && record.savedAt <= manualSave.modifiedAt) break;
+        if (schedule) {
+          if (!schedule(record.slot, record.files)) continue;
+          scope.__scummwebStartupAutosave = name;
+          return record.slot;
+        }
         try {
           try { FS.mkdir("/tmp/scummweb-intro"); } catch { /* Directory may already exist. */ }
           overlay = new Set();

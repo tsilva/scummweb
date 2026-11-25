@@ -1812,6 +1812,76 @@
         "Save and load through the ScummWEB menu in Personal Nightmare, Demon in my Pocket and Swampy Adventures. Verify progress is restored and slots survive a relaunch."
       ],
       "retire_when": "Upstream exposes compatible runtime save APIs for the Personal Nightmare parser and both save-capable Puzzle Pack games."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzz-simon2-continue.patch",
+      "status": "active",
+      "sha256": "ddc285d10cffbb2b58fb9c623af9e0468e29ca84951cbd71bc687adceca52232",
+      "purpose": "Resume the interactive Simon the Sorcerer II CD demo through its existing native quick-restore path.",
+      "invariants": [
+        "Keep the native simon2 save prefix and wait for playable input before restoring the transient startup slot.",
+        "Limit the new eligibility to the interactive CD demo and preserve fresh starts."
+      ],
+      "verification": [
+        "Save the playable village scene. Exit, choose launcher Continue and verify the actual saved state. Start from beginning and verify the save remains available."
+      ],
+      "retire_when": "Upstream restores the interactive Simon II demo through its native startup save slot."
+    },
+{
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzz-living-books-page-saves.patch",
+      "status": "active",
+      "sha256": "eb1a885e0d566fa26f3610f9c82eec62f0d41677db4fc1c400c5ba75f74e899e",
+      "purpose": "Save and resume pages in the bundled Living Books demos.",
+      "invariants": [
+        "Reopen the original page and subpage from its start in its saved language and Read to Me or Let Me Play mode.",
+        "Use ScummVM save metadata, check the page record before listing, and preserve the current page if a requested page is unavailable."
+      ],
+      "verification": [
+        "Save in both story modes and in a second language. Load after a page turn and continue after reopening. Verify malformed records do not displace the active page."
+      ],
+      "retire_when": "Upstream provides equivalent page checkpoints in the bundled Living Books demos."
+    },
+{
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzz-tony-demo-saves.patch",
+      "status": "active",
+      "sha256": "2b8f37c2290f50a4116f35604816ba28b1a817301d685e0185e5b37e3754b5d9",
+      "purpose": "Allow the extracted Tony Tough demo to write and restore MPAL saves through ScummWEB.",
+      "invariants": [
+        "Keep the original fixed native filename and allow saves only with normal input outside a character action.",
+        "Wait for the native restore coroutine to finish before acknowledging a load."
+      ],
+      "verification": [
+        "Save in the demo office, walk elsewhere, restore in the same session and then relaunch through Continue."
+      ],
+      "retire_when": "Upstream exposes compatible MPAL save and load support in the extracted demo."
+    },
+{
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzz-demo-deferred-continue.patch",
+      "status": "active",
+      "sha256": "4130c567e70eba932bd8942e4deb4c97e6f08e7c96608373842e634596ba0c7a",
+      "purpose": "Continue from native demo saves using the normal runtime load boundary.",
+      "invariants": [
+        "Keep existing native save names and only enable verified demo layouts. Let the engine finish startup and accept runtime loading before dispatching the saved slot.",
+        "Rex constructs its ordinary first room before restoring. Preserve the native paths for fresh launches and regular editions."
+      ],
+      "verification": [
+        "Make a native save, move, relaunch through Continue and confirm the saved position in each covered demo. Exercise the same path with an isolated rotating autosave."
+      ],
+      "retire_when": "Upstream restores the covered demo slots at startup with the same state as a runtime load."
+    },
+{
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzz-shivers-demo-saves.patch",
+      "status": "active",
+      "sha256": "ef6a8d51c47852f5513686e58ec4cebab2e10406cb55a3ad5c2a055ec080051b",
+      "purpose": "Service hosted SCI32 save and restore at the interpreter event boundary in the interactive Shivers demo.",
+      "invariants": [
+        "Limit the hosted override to the interactive Shivers demo. Preserve native execution-stack, user-control and delayed restore checks.",
+        "Allow the browser drawer in the demo, whose original menus omit save and restore."
+      ],
+      "verification": [
+        "Save in the original office, load through the drawer and continue into the saved scrapbook. Verify the original native startup and menu remain intact on Play."
+      ],
+      "retire_when": "Upstream supports direct browser save and restore in this demo."
     }
   ]
 }

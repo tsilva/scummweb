@@ -1,0 +1,274 @@
+diff --git a/engines/mohawk/livingbooks.h b/engines/mohawk/livingbooks.h
+--- a/engines/mohawk/livingbooks.h
++++ b/engines/mohawk/livingbooks.h
+@@ -56,6 +56,18 @@
+ 
+ bool tryOpenPage(Archive *archive, const Common::String &fileName);
+ 
++#ifdef __EMSCRIPTEN__
++struct LivingBooksPageSave {
++	LBMode mode = kLBReadMode;
++	uint16 page = 0;
++	uint16 subpage = 0;
++	uint16 language = 0;
++
++	static bool supports(const Common::String &gameId, const Common::String &edition);
++	bool read(Common::SeekableReadStream &stream);
++};
++#endif
++
+ struct NotifyEvent {
+ 	NotifyEvent(uint t, uint p) : type(t), param(p), newUnknown(0), newMode(0), newPage(0), newSubpage(0) { }
+ 	uint type;
+@@ -88,6 +100,15 @@
+ public:
+ 	MohawkEngine_LivingBooks(OSystem *syst, const MohawkGameDescription *gamedesc);
+ 	~MohawkEngine_LivingBooks() override;
++
++#ifdef __EMSCRIPTEN__
++	bool hasFeature(EngineFeature f) const override;
++	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override;
++	bool canSaveAutosaveCurrently() override { return false; }
++	Common::Error saveGameStream(Common::WriteStream *stream, bool isAutosave) override;
++	Common::Error loadGameStream(Common::SeekableReadStream *stream) override;
++#endif
+ 
+ 	Common::RandomSource *_rnd;
+ 
+diff --git a/engines/mohawk/livingbooks.cpp b/engines/mohawk/livingbooks.cpp
+--- a/engines/mohawk/livingbooks.cpp
++++ b/engines/mohawk/livingbooks.cpp
+@@ -44,8 +44,76 @@
+ #include "graphics/cursorman.h"
+ 
+ #include "engines/scummweb-intro.h"
++#include "engines/scummweb-agent-loop.h"
++#include "engines/metaengine.h"
+ 
+ namespace Mohawk {
++
++#ifdef __EMSCRIPTEN__
++static constexpr uint32 kLivingBooksPageTag = MKTAG('L', 'B', 'P', '1');
++
++bool LivingBooksPageSave::supports(const Common::String &gameId, const Common::String &edition) {
++	Common::String extra = edition;
++	extra.toLowercase();
++	return extra.hasPrefix("demo") && (gameId == "tortoise" || gameId == "arthurbday" ||
++		gameId == "grandma" || gameId == "arthur" || gameId == "ruff" || gameId == "newkid");
++}
++
++bool LivingBooksPageSave::read(Common::SeekableReadStream &stream) {
++	if (stream.readUint32BE() != kLivingBooksPageTag)
++		return false;
++	const byte savedMode = stream.readByte();
++	page = stream.readUint16LE();
++	subpage = stream.readUint16LE();
++	language = stream.readUint16LE();
++	if (stream.err() || stream.eos() || !page || !language ||
++			(savedMode != kLBReadMode && savedMode != kLBPlayMode))
++		return false;
++	mode = static_cast<LBMode>(savedMode);
++	return true;
++}
++
++bool MohawkEngine_LivingBooks::hasFeature(EngineFeature f) const {
++	if (f == kSupportsSavingDuringRuntime || f == kSupportsLoadingDuringRuntime)
++		return scummweb_agent_game_loop_enabled() && LivingBooksPageSave::supports(getGameId(), ConfMan.get("extra"));
++	return MohawkEngine::hasFeature(f);
++}
++
++bool MohawkEngine_LivingBooks::canSaveGameStateCurrently(Common::U32String *) {
++	return _page && (_curMode == kLBReadMode || _curMode == kLBPlayMode);
++}
++
++bool MohawkEngine_LivingBooks::canLoadGameStateCurrently(Common::U32String *) {
++	return _page && _curMode != kLBIntroMode;
++}
++
++Common::Error MohawkEngine_LivingBooks::saveGameStream(Common::WriteStream *stream, bool isAutosave) {
++	if (isAutosave || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++
++	stream->writeUint32BE(kLivingBooksPageTag);
++	stream->writeByte(_curMode);
++	stream->writeUint16LE(_curPage);
++	stream->writeUint16LE(_curSubPage);
++	stream->writeUint16LE(_curLanguage);
++	return stream->err() ? Common::kWritingFailed : Common::kNoError;
++}
++
++Common::Error MohawkEngine_LivingBooks::loadGameStream(Common::SeekableReadStream *stream) {
++	LivingBooksPageSave saved;
++	if (!saved.read(*stream) || saved.page > _numPages || saved.language > _numLanguages)
++		return Common::kReadingFailed;
++
++	const uint16 previousLanguage = _curLanguage;
++	_curLanguage = saved.language;
++	if (!loadPage(saved.mode, saved.page, saved.subpage)) {
++		_curLanguage = previousLanguage;
++		return Common::kReadingFailed;
++	}
++	_curSelectedPage = saved.page;
++	return Common::kNoError;
++}
++#endif
+ 
+ // read a null-terminated string from a stream
+ Common::String MohawkEngine_LivingBooks::readString(Common::ReadStream *stream) {
+@@ -154,7 +221,19 @@
+ 	_cursor->setDefaultCursor();
+ 	_cursor->showCursor();
+ 
+-	if (!tryLoadPageStart(kLBIntroMode, 1))
++	bool resumed = false;
++#ifdef __EMSCRIPTEN__
++	ScummWebAgentLoop playerLoop(hasFeature(kSupportsLoadingDuringRuntime));
++	if (hasFeature(kSupportsLoadingDuringRuntime) && ConfMan.hasKey("save_slot", Common::ConfigManager::kTransientDomain)) {
++		const int slot = ConfMan.getInt("save_slot", Common::ConfigManager::kTransientDomain);
++		ConfMan.removeKey("save_slot", Common::ConfigManager::kTransientDomain);
++		resumed = slot >= 0 && slot <= getMetaEngine()->getMaximumSaveSlot() &&
++			loadGameState(slot).getCode() == Common::kNoError;
++		if (!resumed)
++			warning("Could not reopen the saved Living Books page");
++	}
++#endif
++	if (!resumed && !tryLoadPageStart(kLBIntroMode, 1))
+ 		error("Could not load intro page");
+ 
+ 	Common::Event event;
+@@ -241,6 +320,10 @@
+ 			NotifyEvent notifyEvent = _notifyEvents.pop();
+ 			handleNotify(notifyEvent);
+ 		}
++#ifdef __EMSCRIPTEN__
++		if (hasFeature(kSupportsLoadingDuringRuntime) && !_needsRedraw && !_needsUpdate)
++			scummweb_agent_game_loop();
++#endif
+ 	}
+ 
+ 	return Common::kNoError;
+@@ -321,8 +404,6 @@
+ }
+ 
+ bool MohawkEngine_LivingBooks::loadPage(LBMode mode, uint page, uint subpage) {
+-	destroyPage();
+-
+ 	Common::String name = stringForMode(mode);
+ 
+ 	Common::String base;
+@@ -334,12 +415,12 @@
+ 	Common::String filename, leftover;
+ 
+ 	filename = getFileNameFromConfig(name, base, leftover);
+-	_readOnly = false;
++	bool readOnly = false;
+ 
+ 	if (filename.empty()) {
+ 		leftover.clear();
+ 		filename = getFileNameFromConfig(name, base + ".r", leftover);
+-		_readOnly = true;
++		readOnly = true;
+ 	}
+ 
+ 	// TODO: fading between pages
+@@ -351,7 +432,7 @@
+ #endif
+ 
+ 	if (leftover.contains("read")) {
+-		_readOnly = true;
++		readOnly = true;
+ 	}
+ 	if (leftover.contains("load")) {
+ 		// FIXME: don't ignore this
+@@ -368,6 +449,8 @@
+ 
+ 	Archive *pageArchive = createArchive();
+ 	if (!filename.empty() && tryOpenPage(pageArchive, filename)) {
++		destroyPage();
++		_readOnly = readOnly;
+ 		_page = new LBPage(this);
+ 		_page->open(pageArchive, 1000);
+ 	} else {
+diff --git a/engines/mohawk/metaengine.cpp b/engines/mohawk/metaengine.cpp
+--- a/engines/mohawk/metaengine.cpp
++++ b/engines/mohawk/metaengine.cpp
+@@ -24,5 +24,6 @@
+ 
++#include "common/ptr.h"
+ #include "common/savefile.h"
+ #include "common/system.h"
+ #include "common/translation.h"
+ 
+@@ -162,6 +162,10 @@
+ };
+ 
+ bool MohawkMetaEngine::hasFeature(MetaEngineFeature f) const {
++#ifdef __EMSCRIPTEN__
++	if (f == kSavesUseExtendedFormat || f == kSimpleSavesNames)
++		return Mohawk::LivingBooksPageSave::supports(ConfMan.get("gameid"), ConfMan.get("extra"));
++#endif
+ 	return
+ 		(f == kSupportsListSaves)
+ 		|| (f == kSupportsLoadingDuringStartup)
+@@ -199,8 +203,12 @@
+ SaveStateList MohawkMetaEngine::listSaves(const char *target) const {
+ 	Common::String gameId = ConfMan.get("gameid", target);
+ 	SaveStateList saveList;
+-
+-	// Loading games is only supported in Myst/Riven currently.
++#ifdef __EMSCRIPTEN__
++	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)))
++		return MetaEngine::listSaves(target);
++#endif
++
++	// Myst and Riven use their original slot formats.
+ #ifdef ENABLE_MYST
+ 	if (gameId == "myst") {
+ 		saveList = listSavesForPrefix("myst", "mys");
+@@ -232,7 +240,10 @@
+ bool MohawkMetaEngine::removeSaveState(const char *target, int slot) const {
+ 	Common::String gameId = ConfMan.get("gameid", target);
+ 
+-	// Removing saved games is only supported in Myst/Riven currently.
++#ifdef __EMSCRIPTEN__
++	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)))
++		return MetaEngine::removeSaveState(target, slot);
++#endif
+ #ifdef ENABLE_MYST
+ 	if (gameId == "myst") {
+ 		return Mohawk::MystGameState::deleteSave(slot);
+@@ -248,6 +259,15 @@
+ 
+ SaveStateDescriptor MohawkMetaEngine::querySaveMetaInfos(const char *target, int slot) const {
+ 	Common::String gameId = ConfMan.get("gameid", target);
++#ifdef __EMSCRIPTEN__
++	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target))) {
++		Common::ScopedPtr<Common::InSaveFile> file(g_system->getSavefileManager()->openForLoading(getSavegameFile(slot, target)));
++		Mohawk::LivingBooksPageSave saved;
++		if (!file || !saved.read(*file))
++			return SaveStateDescriptor();
++		return MetaEngine::querySaveMetaInfos(target, slot);
++	}
++#endif
+ 
+ #ifdef ENABLE_MYST
+ 	if (gameId == "myst") {
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -225,12 +225,12 @@
+ 	if (engineId == "agi" && (gameId == "mickey" || gameId == "winnie" || gameId == "troll"))
+ 		supported = false;
+ 	if (engineId == "mohawk" && gameId != "myst" && gameId != "riven")
+-		supported = false;
++		supported = supported && meta.hasFeature(MetaEngine::kSavesUseExtendedFormat);
+ 	if (engineId == "scumm" && gameId == "freddi3")
+ 		supported = false;
+ 	Common::String extra = ConfMan.get("extra");
+ 	extra.toLowercase();
+-	if (engineId == "mohawk" && extra.contains("demo"))
++	if (engineId == "mohawk" && extra.contains("demo") && !meta.hasFeature(MetaEngine::kSavesUseExtendedFormat))
+ 		supported = false;
+ 	if (engineId == "agos" && gameId == "simon2" && extra == "cd demo")
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);

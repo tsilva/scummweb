@@ -231,6 +231,18 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - AGOS quick saves use the idle input path and the original redraw scripts.
   Plumbers checkpoints use the decision scene, its prior scene and the score.
   Keep either adapter away from unfinished transitions and cinematic frames.
+- The interactive Simon II CD demo consumes a transient save slot at its
+  first playable input boundary. Use the native intro skip and quick-restore
+  redraw. Preserve the fixed `simon2` filenames and rescan older save indexes.
+- Living Books demo saves record the page, subpage, mode and language. A book
+  can number several visible pages as subpages of one logical page. Reopen
+  through the original page loader once the book and resources are initialized.
+  A missing destination must leave the current page available. Keep Myst and
+  Riven on their own formats.
+- Demo Continue can wait until the engine accepts its ordinary runtime load.
+  Queue the selected slot once, let the native bridge confirm the loaded
+  frame, and use diagnostic isolation for an autosave’s companion files.
+  Keep the original startup path for engines with a working slot loader.
 
 - Exact ticks belong to a supported engine update boundary. The Sky hook
   acknowledges pause only after the completed tick renders, yields while held,
@@ -396,3 +408,7 @@ bounded to one line and retain native DiMUSE playback and original-SOU behavior.
 Do not apply this exception to compressed DIG/COMI bundles or lossy FT formats.
 
 - Intro availability must cover Iceman’s credits (102) and Tahiti prologue (1), ending at first beach control. Use Return for its original any-key cancellation; Escape opens Sierra’s menu. Myst must finish startup at its linking book or demo menu so later polls cannot reopen Skip intro. Verify natural completion and an explicit skip.
+- The interactive Shivers demo uses the SCI32 serializer and the original
+  delayed restore selector. Service the browser drawer at the interpreter
+  event boundary. Keep the stack and user-control checks when allowing the
+  drawer in this edition with no original save or restore menu entry.

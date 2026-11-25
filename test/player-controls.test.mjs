@@ -103,6 +103,27 @@ test("hosted save operations honor occupied slots, autosaves, and native confirm
   assert.equal(boundary(), 0);
 });
 
+test("deferred Continue restores once and keeps autosave files isolated until the native acknowledgment", () => {
+  const { scope, controls } = createPlayer();
+  const files = [{ name: "demo.001", contents: "Kg==" }];
+  const events = [];
+  scope.__scummwebDiagnosticSaves = { beginRestore: (received) => (events.push(received), true),
+    finishRestore: () => events.push("restore finished") };
+  scope.__scummwebAutosaves = { due: () => true, afterLoad: () => events.push("resumed") };
+  assert.equal(scope.__scummwebQueueStartupLoad(1, files), true);
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true), 0);
+  controls.setMenuOpen(true);
+  assert.equal(scope.__scummwebPeekStartupLoad(), -1);
+  assert.equal(scope.__scummwebTakeStartupLoad(), false);
+  controls.setMenuOpen(false);
+  assert.equal(scope.__scummwebPeekStartupLoad(), 1);
+  assert.equal(scope.__scummwebTakeStartupLoad(), true);
+  assert.equal(scope.__scummwebTakeStartupLoad(), false);
+  assert.deepEqual(events, [files]);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(events, [files, "restore finished", "resumed"]);
+});
+
 test("the paused engine reports scene save availability before a manual request", async () => {
   const { scope, controls, timers } = createPlayer();
   const boundary = () => scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true);

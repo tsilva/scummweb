@@ -5,7 +5,7 @@ import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, sup
 import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
 
 function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false, preview = false,
-  target = "sky", catalogGame, storage = new Map(), files = new Map() } = {}) {
+  target = "sky", catalogGame, storage = new Map(), files = new Map(), engineId = "sky", gameId = "sky", extra = "" } = {}) {
   const normal = "/home/web_user/.local/share/scummvm/saves";
   const base = agentSaveScope ? `${normal}-agent/${agentSaveScope}` : normal + (namespace ? `/${namespace}` : "");
   function put(name, contents, modifiedAt) { files.set(`${base}/${name}`, { bytes: new TextEncoder().encode(contents), modifiedAt }); }
@@ -44,7 +44,7 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
   if (query) for (const [key, value] of Object.entries({ saveQuery: "nonce", saveEngine: "sky", saveGameId: "sky", saveTarget: target })) launchUrl.searchParams.set(key, value);
   const start = () => installContinueSaves({ scope, FS, Module, launchUrl, assetUrl: (path) => path });
   function scan(saves, supported = true) {
-    scope.__scummwebBeginSaveScan("sky", "sky", target, supported);
+    scope.__scummwebBeginSaveScan(engineId, gameId, target, supported, extra);
     for (const [slot, name] of saves) scope.__scummwebAddSave(slot, name);
     return scope.__scummwebEndSaveScan();
   }
@@ -108,10 +108,34 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   f.put("SKY-VM.001", "player", 200);
   assert.equal(f.scan([[1, "SKY-VM.001"]], false), -1);
   assert.equal(supportsContinue("mohawk", "myst", "Demo"), false);
-  // Fresh startup loading misplaces Rex in the three-room DOS demo.
-  assert.equal(supportsContinue("mads", "nebular", "Demo"), false);
+  assert.equal(supportsContinue("mohawk", "myst", null), true);
+  for (const game of ["tortoise", "arthurbday", "grandma", "arthur", "ruff", "newkid"]) {
+    assert.equal(supportsContinue("mohawk", game, "Demo v1.0"), true);
+    assert.equal(supportsContinue("mohawk", game), false);
+  }
+  assert.equal(supportsContinue("mads", "nebular", "Demo"), true);
   assert.equal(supportsContinue("mads", "nebular"), true);
   assert.equal(supportsContinue("mads", "phantom", "Demo"), true);
+  assert.equal(supportsContinue("agos", "simon2", "CD Demo"), true);
+  assert.equal(supportsContinue("agos", "simon2", "CD Non-Interactive Demo"), false);
+  assert.equal(supportsContinue("agos", "simon1", "CD Demo"), false);
+  assert.equal(supportsContinue("agos", "pn"), false);
+});
+
+test("demos with deferred Continue queue the newest slot without a native startup slot", async () => {
+  const identity = { engineId: "mads", gameId: "nebular", target: "nebular-demo", extra: "demo" };
+  for (const autosave of [false, true]) {
+    const f = shell({ ...identity, preview: true, resume: true });
+    const actions = [];
+    f.scope.__scummwebQueueStartupLoad = (...args) => { actions.push(args); return true; };
+    f.put("nebular-demo.002", "manual", 10);
+    if (autosave) f.put(".scummweb-autosave.0", encodeAutosave({ ...identity, slot: 1, savedAt: 20,
+      files: [{ name: "nebular-demo.001", data: Uint8Array.of(42) }] }), 20);
+    await f.start();
+    assert.equal(f.scan([[2, "nebular-demo.002"]]), -1);
+    assert.equal(f.scan([[2, "nebular-demo.002"]]), -1);
+    assert.deepEqual(actions, autosave ? [[1, [{ name: "nebular-demo.001", contents: "Kg==" }]]] : [[2]]);
+  }
 });
 
 test("the managed Wasm actually exports the native save bridge", async () => {

@@ -188,12 +188,15 @@ test("unindexed imported saves use one native query with origin, source and nonc
   assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
 });
 
-test("an old empty AGS index is reconciled even when the save files have not changed", async (t) => {
-  const game = { target: "qfi-demo", gameId: "qfi", engineId: "ags", extra: "Demo 2.0" };
-  useStorage(t, makeBrowserStorage([["qfi-demo.001", "player", 123]]));
+for (const { game, supported } of [
+  { game: { target: "qfi-demo", gameId: "qfi", engineId: "ags", extra: "Demo 2.0" }, supported: true },
+  { game: { target: "gob3-demo", gameId: "gob3", engineId: "gob", extra: "Interactive Demo 3 (v0.02)", platform: "dos" },
+    supported: false },
+]) test(`an older ${game.engineId} index is reconciled even when the save files have not changed`, async (t) => {
+  useStorage(t, makeBrowserStorage([[`${game.target}.001`, "player", 123]]));
   const { files } = await readBrowserSaveFiles(game);
   const key = saveIndexKey("", game.target);
-  const old = { schemaVersion: 1, ...game, supported: true, saves: [], revision: saveRevision(files) };
+  const old = { schemaVersion: 1, ...game, supported, saves: [], revision: saveRevision(files) };
   window.localStorage.setItem(key, JSON.stringify(old));
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
   t.after(() => { if (descriptor) Object.defineProperty(globalThis, "document", descriptor); else delete globalThis.document; });
@@ -206,10 +209,13 @@ test("an old empty AGS index is reconciled even when the save files have not cha
     createElement: () => frame,
     body: { appendChild() {
       appended++;
-      const index = { ...old, saves: [{ ...files[0], slot: 1 }] };
+      const params = new URL(frame.src).searchParams;
+      assert.equal(params.get("savePlatform"), game.platform || null);
+      const index = { ...old, supported: true, saves: [{ ...files[0], slot: 1 }] };
+      if (!supported) index.checkedByRuntime = params.get("v");
       window.localStorage.setItem(key, JSON.stringify(index));
       const data = { ...index, type: "scummweb:saves-listed", persisted: true,
-        query: new URL(frame.src).searchParams.get("saveQuery") };
+        query: params.get("saveQuery") };
       queueMicrotask(() => {
         for (const receive of [...listeners]) receive({ origin: window.location.origin, source: frame.contentWindow, data });
       });

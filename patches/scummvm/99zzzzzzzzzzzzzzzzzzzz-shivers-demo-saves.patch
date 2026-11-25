@@ -1,0 +1,117 @@
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -36,6 +36,9 @@
+ #include "engines/advancedDetector.h"
+ #include "engines/util.h"
+ #include "engines/scummweb-agent-loop.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/scummweb-demo-saves.h"
++#endif
+ 
+ #include "engines/scummweb-intro.h"
+ #include "sci/sci.h"
+@@ -698,7 +701,7 @@
+ 
+ void SciEngine::runGame() {
+ #ifdef __EMSCRIPTEN__
+-	ScummWebAgentLoop agentLoop(getSciVersion() < SCI_VERSION_2);
++	ScummWebAgentLoop agentLoop(getSciVersion() < SCI_VERSION_2 || scummwebSupportsSci32DemoSaves(*this));
+ #endif
+ 	setTotalPlayTime(17);
+ 
+diff --git a/engines/sci/metaengine.cpp b/engines/sci/metaengine.cpp
+--- a/engines/sci/metaengine.cpp
++++ b/engines/sci/metaengine.cpp
+@@ -21,6 +21,9 @@
+ 
+ #include "engines/advancedDetector.h"
+ #include "engines/scummweb-agent-loop.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/scummweb-demo-saves.h"
++#endif
+ #include "base/plugins.h"
+ #include "common/config-manager.h"
+ #include "common/file.h"
+@@ -393,7 +396,8 @@
+ #ifdef __EMSCRIPTEN__
+-	// The scoped SCI16 provider calls at an event boundary. Keep the
++	// The hosted providers call at an event boundary. Keep the
+ 	// engine's game exclusions, stack checks and user-control restrictions.
+-	requireMenuOption = getSciVersion() >= SCI_VERSION_2 || !scummweb_agent_game_loop_enabled();
++	requireMenuOption = !scummwebSupportsSci32DemoSaves(*this) &&
++		(getSciVersion() >= SCI_VERSION_2 || !scummweb_agent_game_loop_enabled());
+ #endif
+ 	return
+ 		_features->canSaveFromGMM(requireMenuOption) &&
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -26,6 +26,9 @@
+ #include "sci/sci.h"
+ #include "sci/engine/features.h"
+ #include "engines/scummweb-agent-loop.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/scummweb-demo-saves.h"
++#endif
+ #include "sci/engine/guest_additions.h"
+ #include "sci/engine/kernel.h"
+ #include "sci/engine/savegame.h"
+@@ -240,7 +243,8 @@
+ #ifdef __EMSCRIPTEN__
+ 	// Let the original guest restore handler finish before holding the
+ 	// interpreter again. A renderer callback may be inside a kernel call.
+-	if (getSciVersion() < SCI_VERSION_2 && s->_delayedRestoreGameId == -1)
++	if ((getSciVersion() < SCI_VERSION_2 || scummwebSupportsSci32DemoSaves(*g_sci)) &&
++		s->_delayedRestoreGameId == -1)
+ 		scummweb_agent_game_loop();
+ #endif
+ 	if (g_sci->_guestAdditions->kGetEventHook()) {
+diff --git a/engines/sci/scummweb-demo-saves.h b/engines/sci/scummweb-demo-saves.h
+new file mode 100644
+--- /dev/null
++++ b/engines/sci/scummweb-demo-saves.h
+@@ -0,0 +1,17 @@
++#ifndef SCI_SCUMMWEB_DEMO_SAVES_H
++#define SCI_SCUMMWEB_DEMO_SAVES_H
++
++#include "common/config-manager.h"
++#include "engines/scummweb-agent-loop.h"
++#include "sci/sci.h"
++
++namespace Sci {
++
++inline bool scummwebSupportsSci32DemoSaves(const SciEngine &engine) {
++	return engine.getGameId() == GID_SHIVERS && engine.isDemo() &&
++		ConfMan.get("extra").equalsIgnoreCase("Demo") && scummweb_agent_game_loop_enabled();
++}
++
++} // End of namespace Sci
++
++#endif
+diff --git a/engines/sci/metaengine.cpp b/engines/sci/metaengine.cpp
+--- a/engines/sci/metaengine.cpp
++++ b/engines/sci/metaengine.cpp
+@@ -378,14 +378,14 @@
+ 
+ bool SciEngine::canLoadGameStateCurrently(Common::U32String *msg) {
+ #ifdef ENABLE_SCI32
+-	const Common::String &guiOptions = ConfMan.get("guioptions");
+-	if (getSciVersion() >= SCI_VERSION_2) {
+-		if (ConfMan.getBool("originalsaveload") ||
+-			Common::checkGameGUIOption(GUIO_NOLAUNCHLOAD, guiOptions)) {
+-
+-			return false;
+-		}
+-	}
++	bool checkOriginalMenu = getSciVersion() >= SCI_VERSION_2;
++#ifdef __EMSCRIPTEN__
++	checkOriginalMenu = checkOriginalMenu && !scummwebSupportsSci32DemoSaves(*this);
++#endif
++	if (checkOriginalMenu &&
++			(ConfMan.getBool("originalsaveload") ||
++			 Common::checkGameGUIOption(GUIO_NOLAUNCHLOAD, ConfMan.get("guioptions"))))
++		return false;
+ #endif
+ 
+ 	return !_gamestate->executionStackBase;

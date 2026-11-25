@@ -104,8 +104,9 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
     frame.title = "Checking saved games";
     const url = new URL("/scummvm.html", window.location.href);
     const target = game.nativeTarget || game.target || game.gameId;
+    const platform = /^[a-z0-9]+$/i.test(game.platform || "") ? game.platform.toLowerCase() : "";
     for (const [key, value] of Object.entries({ saveQuery: query, saveEngine: game.engineId,
-      saveGameId: gameId, saveTarget: target, saveExtra: game.extra, saveNamespace: namespace,
+      saveGameId: gameId, saveTarget: target, saveExtra: game.extra, savePlatform: platform, saveNamespace: namespace,
       catalogSaveTarget: namespace ? null : game.target, v: assetVersion })) {
       if (value) url.searchParams.set(key, value);
     }
@@ -151,7 +152,10 @@ export async function getLatestBrowserSave(game, assetVersion) {
     // empty index once with the current runtime even when the files match it.
     const uncheckedAgs = index?.engineId === "ags" && index.checkedByRuntime !== assetVersion
       && !latestPlayerSave(index, files);
-    if (index?.schemaVersion !== 1 || index.revision !== revision || uncheckedAgs) {
+    // Runtime support can change without changing any existing save bytes.
+    const uncheckedUnsupported = index?.supported === false
+      && index.checkedByRuntime !== assetVersion && supportsContinue(index.engineId, index.gameId, index.extra);
+    if (index?.schemaVersion !== 1 || index.revision !== revision || uncheckedAgs || uncheckedUnsupported) {
       const queryKey = `${key}:${revision}`;
       if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
         const generation = queryGeneration;
@@ -160,8 +164,9 @@ export async function getLatestBrowserSave(game, assetVersion) {
           if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace, game.target, await activeStorage()).files) !== revision) return null;
           attempts.set(key, Date.now());
           return queryNativeSaves({ ...game,
-          engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
-          extra: index?.extra ?? game.extra, nativeTarget: index?.target }, namespace, assetVersion, generation);
+            engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
+            extra: index?.extra ?? game.extra, nativeTarget: index?.target || game.nativeTarget,
+          }, namespace, assetVersion, generation);
         });
         queryQueue = request.catch(() => null);
         queries.set(queryKey, request);
