@@ -895,6 +895,28 @@ Point `SCUMMVM_GAMES_ORIGIN` at that server and start
 `pnpm run dev`. Publish and verify each ZIP before deploying
 its catalog entry. See [game-library publishing](production-delivery.md#game-library-publishing).
 
+## Privacy choices
+
+The framework-independent store and the React controls in `lib/privacy-consent/`
+take a site key, notice version, purpose definitions, and prompt eligibility.
+ScummWEB supplies those values in `app/privacy/consent-config.mjs` and
+`app/privacy/site-consent.js`. On the homepage, visitors without a current choice
+see the prompt if they are in the EEA or UK, or if their location is unknown.
+`/api/privacy-prompt` reads Cloudflare's `CF-IPCountry` header. Its uncached
+response includes the prompt decision and `countryKnown`, which indicates
+whether the header contained a usable country code. Enable IP Geolocation on the
+Cloudflare zone to supply that header. A missing header or failed lookup defaults
+to showing the prompt. Settings → Privacy and the privacy policy offer the
+controls worldwide. Analytics and browser diagnostics require opt-in everywhere.
+Gameplay never waits for a choice. Decisions stay in the site's browser storage
+with the notice version and timestamp. A notice version change requires a fresh
+choice. No central consent receipts are sent.
+
+Keep provider-specific code outside the shared controls. Each adapter checks
+the latest choice before starting and before sending after a withdrawal. Run
+`node --test test/privacy-consent.test.mjs test/game-launch-analytics.test.mjs test/browser-sentry.test.mjs`
+after changing the store or its integrations.
+
 ## Game launch analytics
 
 The catalog funnel emits each event at most once per play page visit. It
