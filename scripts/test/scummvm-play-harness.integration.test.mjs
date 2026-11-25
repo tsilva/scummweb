@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { calibrateScreenshotTargeting, launchGame } from "../scripts/scummvm_play_harness.mjs";
+import { calibrateScreenshotTargeting, launchGame } from "../scummvm_play_harness.mjs";
 
 const shouldRunIntegration = process.env.SCUMMWEB_RUN_INTEGRATION === "1";
 const baseUrl = process.env.SCUMMWEB_BASE_URL || "";

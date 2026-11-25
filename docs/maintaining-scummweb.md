@@ -625,6 +625,7 @@ dependency. Keep the full dependency audit and the 48-hour dependency release ho
 | `pnpm lint` | Check JavaScript and JSX syntax, including the agent backbone. |
 | `pnpm test` | Run the app's Node test suite. |
 | `pnpm test:backbone` | Run the optional [agent backbone](agent-backbone.md) test suite. |
+| `pnpm test:browser-tools` | Run the optional browser-tools test suite. |
 | `pnpm build` | Stage assets and build the app. |
 | `pnpm run dev` | Develop at `http://localhost:47831`. |
 | `pnpm run start` | Serve the production build at `http://localhost:47831`. |

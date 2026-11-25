@@ -3,8 +3,8 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { chromium } from "playwright-core";
-import { findChromeExecutable } from "../scripts/playwright_headless_repl.mjs";
-import { detectCursorBox, normalizeHotspotLabel, runTesseractOcr } from "../scripts/scummvm_hotspot_tools.mjs";
+import { findChromeExecutable } from "../playwright_headless_repl.mjs";
+import { detectCursorBox, normalizeHotspotLabel, runTesseractOcr } from "../scummvm_hotspot_tools.mjs";
 
 function createSyntheticCursorSample() {
   const width = 64;

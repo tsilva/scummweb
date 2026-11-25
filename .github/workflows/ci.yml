@@ -39,7 +39,9 @@ jobs:
         run: corepack enable && corepack prepare pnpm@10.27.0 --activate
 
       - name: Install from lockfile
-        run: pnpm install --filter scummweb --filter scummweb-agent-backbone --frozen-lockfile --ignore-scripts
+        run: >-
+          pnpm install --filter scummweb --filter scummweb-agent-backbone
+          --filter scummweb-browser-tools --frozen-lockfile --ignore-scripts
 
       - name: Audit dependency graph
         run: pnpm audit --audit-level=low
@@ -61,6 +63,7 @@ jobs:
         run: |
           pnpm test
           pnpm test:backbone
+          pnpm test:browser-tools
 
       - name: Build production application
         run: pnpm build
