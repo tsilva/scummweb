@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { ConsentControls } from "../../lib/privacy-consent/controls";
-import SiteAnalytics from "../site-analytics";
 import { consentPurposes, consentStore } from "./consent-config.mjs";
 
 export default function SiteConsent({ children }) {
@@ -43,6 +42,5 @@ export default function SiteConsent({ children }) {
     message="If you accept, optional analytics and error reports help us spot slow game loads and fix crashes."
     purposes={consentPurposes} store={consentStore} firstVisitPrompt={showFirstVisitPrompt === true}>
     {children}
-    <SiteAnalytics allowed={record?.choices.analytics === true} />
   </ConsentControls>;
 }

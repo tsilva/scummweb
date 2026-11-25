@@ -72,12 +72,6 @@ export default async function PrivacyPage() {
           {" "}<a href="https://support.google.com/analytics/answer/7667196">Google Analytics retention</a>
         </p>
         <p>
-          With your permission, Vercel Web Analytics measures site traffic using an identifier derived from
-          the web request. Vercel discards that identifier after 24 hours. Reports follow its separate reporting window.
-          {" "}<a href="https://vercel.com/docs/analytics/privacy-policy">Vercel Web Analytics privacy</a>
-          {" · "}<a href="https://vercel.com/docs/analytics/limits-and-pricing#what-is-the-reporting-window">Reporting windows</a>
-        </p>
-        <p>
           The homepage prompt offers <strong>Reject all</strong>, <strong>Accept all</strong>, and <strong>Customize</strong>.
           Open <strong>Settings → Privacy</strong> to manage analytics and error diagnostics separately.
           Changes there save immediately. You can also use <PrivacyChoicesButton className="privacy-choices-link" /> here

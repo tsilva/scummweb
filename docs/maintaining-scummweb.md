@@ -941,9 +941,8 @@ while hidden or controls are unavailable, and fire once per threshold. They do
 not establish active input or puzzle progress. The existing five-minute event
 retains its meaning; shorter milestones have distinct names.
 
-Page locations sent to GA4 omit URL fragments; Vercel Analytics redacts direct
-ZIP fragments. Do not include ZIP URLs, file names, saves, or input contents in
-analytics fields.
+Page locations sent to GA4 omit URL fragments. Do not include ZIP URLs, file
+names, saves, or input contents in analytics fields.
 
 ### GA4 custom definitions
 

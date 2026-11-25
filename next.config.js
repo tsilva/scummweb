@@ -128,7 +128,6 @@ const nextConfig = {
     ];
   },
   env: {
-    NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED: process.env.VERCEL === "1" ? "true" : "false",
     NEXT_PUBLIC_SENTRY_ENABLED_DEFAULT: getSentryEnabledDefault(),
     NEXT_PUBLIC_SENTRY_ENVIRONMENT: getSentryEnvironment(),
     NEXT_PUBLIC_SCUMMVM_ASSET_VERSION: getScummvmAssetVersion(),
