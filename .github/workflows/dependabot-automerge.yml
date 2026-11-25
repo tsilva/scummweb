@@ -1,0 +1,57 @@
+name: Queue GitHub-maintained action updates
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Queue eligible Dependabot PRs for auto-merge
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scummweb-dependabot-automerge
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: >-
+      github.repository == 'tsilva/scummweb' && github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || vars.DEPENDABOT_AUTOMERGE_ENABLED == 'true')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: dependabot-automerge
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Create ScummWEB installation token
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.DEPENDABOT_MERGE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.DEPENDABOT_MERGE_APP_PRIVATE_KEY }}
+          owner: tsilva
+          repositories: scummweb
+          permission-actions: read
+          permission-administration: read
+          permission-checks: read
+          permission-contents: write
+          permission-pull-requests: write
+          permission-statuses: read
+
+      - name: Review eligible Dependabot pull requests
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APPLY: ${{ github.event_name == 'schedule' || inputs.apply }}
+        run: |
+          args=()
+          if [[ "$APPLY" = true ]]; then
+            args+=(--apply)
+          fi
+          python3 -B .github/scripts/queue_github_action_updates.py "${args[@]}"

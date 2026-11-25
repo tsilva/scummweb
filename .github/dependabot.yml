@@ -35,6 +35,13 @@ updates:
       default-days: 7
     open-pull-requests-limit: 5
     groups:
+      github-maintained:
+        patterns:
+          - "actions/*"
+          - "github/*"
       github-actions:
         patterns:
           - "*"
+        exclude-patterns:
+          - "actions/*"
+          - "github/*"
