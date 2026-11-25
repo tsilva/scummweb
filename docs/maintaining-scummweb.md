@@ -1032,6 +1032,11 @@ the proportions of the box front. Trim added padding at the artwork boundary.
 For an illustrated fallback such as Fun Seeker's Guide, set
 `posterImagePosition` to fill the card with the same crop for the artwork and
 its loading preview. Record the source illustration in the poster credit.
+For near-square original front scans with lettering close to the edges,
+`squarePoster` uses a square frame and places the game title below the artwork.
+Set `versionQuery` on an artwork storage record when the CDN has cached a
+missing response for its immutable path. The public request URL then includes
+the same content hash as a query parameter.
 Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally.
 The hero slideshow uses the catalogue's Featured order, including imported games
 and demos, regardless of the catalogue's current sort or genre filter.

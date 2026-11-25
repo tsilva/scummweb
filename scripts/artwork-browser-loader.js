@@ -11,10 +11,11 @@ module.exports = function artworkBrowserLoader() {
   if (this.getOptions?.().defer) {
     return `export default ${JSON.stringify({ published, origin, files: {}, deferred: true })};`;
   }
-  const deliveryFiles = Object.fromEntries(Object.entries(files).map(([name, { key, width, height, sha256, placeholder }]) => {
+  const deliveryFiles = Object.fromEntries(Object.entries(files).map(([name, { key, width, height, sha256, placeholder, versionQuery }]) => {
     const filename = name.slice(name.lastIndexOf("/") + 1);
     const address = key === `artwork/${sha256}/${filename}` ? { hash: sha256 } : { key };
-    return [name, { ...address, width, ...(placeholder ? { height, placeholder } : {}) }];
+    return [name, { ...address, width, ...(placeholder ? { height, placeholder } : {}),
+      ...(versionQuery ? { versionQuery: true } : {}) }];
   }));
   // Parse data as JSON instead of compiling thousands of JavaScript literals.
   const data = JSON.stringify({ published, origin, files: deliveryFiles, images });

@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { DEFAULT_GAMES_ORIGIN } from "../lib/site-config.mjs";
+import { artworkObjectUrl } from "../lib/artwork-storage.mjs";
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
@@ -75,7 +76,7 @@ export async function readArtworkFile(root, name, request = fetch, { manifest, c
   if (cached && valid(cached)) return cached;
   if (manifest.origin !== DEFAULT_GAMES_ORIGIN
     || entry.key !== `artwork/${entry.sha256}/${path.posix.basename(name)}`) throw new Error("Untrusted artwork location");
-  const bytes = await downloadArtwork(name, `${manifest.origin}/${entry.key}`, entry, request);
+  const bytes = await downloadArtwork(name, artworkObjectUrl(name, manifest), entry, request);
   if (cacheDownload) {
     await fs.mkdir(path.dirname(cache), { recursive: true });
     await fs.writeFile(cache, bytes);

@@ -40428,6 +40428,108 @@
       "width": 555,
       "height": 740,
       "placeholder": "UklGRloAAABXRUJQVlA4IE4AAAAwAgCdASoJAAwAAsBIJYwCdIExGZU6kqMnAAD+6iw632mjGy8NyCvzogUKOpTwiICPy46NZ4n3yBzqn1KgAD4qjt+xYC/+w/nnjRGgAAA="
+    },
+    "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp": {
+      "key": "artwork/ab6301d42e5e900b2ee243827484472f260794c2d4d07e8934f246b99e00393e/arthurs-reading-race-original-scan-2026-11-25-cover.webp",
+      "sha256": "ab6301d42e5e900b2ee243827484472f260794c2d4d07e8934f246b99e00393e",
+      "bytes": 126052,
+      "contentType": "image/webp",
+      "width": 900,
+      "height": 894,
+      "placeholder": "UklGRogAAABXRUJQVlA4IHwAAAAwAgCdASoMAAwAAsBIJbACdDBKwUTos0NzAAD+9AxAU1yUJlTdbwwf8nIaAyxpI3FfTsXDAx7H/6e7rhrfRelRtS2ONPe/WcWD4e19ixFas9SIW8tr/ow/R+qRdtsV6wnWjWkkKTSUmUvjbbMmTzoopSP9Lg5CQyABYAAA",
+      "versionQuery": true
+    },
+    "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp": {
+      "key": "artwork/9ef66714655537df7635ae8631dbebba088c92358d0b8d049a2797beeda1e40e/backyard-baseball-2001-original-scan-2026-11-25-cover.webp",
+      "sha256": "9ef66714655537df7635ae8631dbebba088c92358d0b8d049a2797beeda1e40e",
+      "bytes": 78188,
+      "contentType": "image/webp",
+      "width": 805,
+      "height": 800,
+      "placeholder": "UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoMAAwAAsBIJZACdAEO/4G7KZgAAP70FOUt5udlztQr9/YWdChLSTPSknLsdU1kL6RCx7HCa5/3MTuQcvY1bPOvkMvRCBUIQ8Ryw9dAmROkmUZPKrAjzLhobvKZCdBvKyAAAA==",
+      "versionQuery": true
+    },
+    "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp": {
+      "key": "artwork/8f7f3e66b929f85fcb8e28890a3821ba7c2013196db8b8483c3f130189581ec1/backyard-baseball-original-scan-2026-11-25-cover.webp",
+      "sha256": "8f7f3e66b929f85fcb8e28890a3821ba7c2013196db8b8483c3f130189581ec1",
+      "bytes": 48090,
+      "contentType": "image/webp",
+      "width": 490,
+      "height": 477,
+      "placeholder": "UklGRoIAAABXRUJQVlA4IHYAAABwAgCdASoMAAwAAsBIJbACdGaAEDOWFhSeeIAAAPzZX1FmevGrGm7UZIrTWc34/Dof6J77nwtxwOBPCbL+NWGJznUDWuSOF6wTOY6ihQ4rhQNOOqPhSAlXmmEJrTArwcAwdW8vYzixI2GicosbZYqM0jqzIgAA",
+      "versionQuery": true
+    },
+    "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-320.webp": {
+      "key": "artwork/3760fa4e47243b83c47dc3e36208ff16e3e8605e9be8c66cf4d6ec1ab77d44da/arthurs-reading-race-original-scan-2026-11-25-cover-320.webp",
+      "sha256": "3760fa4e47243b83c47dc3e36208ff16e3e8605e9be8c66cf4d6ec1ab77d44da",
+      "bytes": 29552,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 318,
+      "versionQuery": true
+    },
+    "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-480.webp": {
+      "key": "artwork/3a6fea34f5e53d65e05a908c8d13799e8a1e5e52167c6e8ce118d0c932418ffc/arthurs-reading-race-original-scan-2026-11-25-cover-480.webp",
+      "sha256": "3a6fea34f5e53d65e05a908c8d13799e8a1e5e52167c6e8ce118d0c932418ffc",
+      "bytes": 51476,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 477,
+      "versionQuery": true
+    },
+    "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-640.webp": {
+      "key": "artwork/a8ffbafcf765b5fa42fc8a81f0afb09a08209bc190178bc0f46ee5f4ce526f72/arthurs-reading-race-original-scan-2026-11-25-cover-640.webp",
+      "sha256": "a8ffbafcf765b5fa42fc8a81f0afb09a08209bc190178bc0f46ee5f4ce526f72",
+      "bytes": 75366,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 636,
+      "versionQuery": true
+    },
+    "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-320.webp": {
+      "key": "artwork/a97e4b46c1d88afecfcf8ca7c5522b6e8e62fe96bd9e2e3e09c67ce208dbda95/backyard-baseball-2001-original-scan-2026-11-25-cover-320.webp",
+      "sha256": "a97e4b46c1d88afecfcf8ca7c5522b6e8e62fe96bd9e2e3e09c67ce208dbda95",
+      "bytes": 19774,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 318,
+      "versionQuery": true
+    },
+    "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-480.webp": {
+      "key": "artwork/1e3a836ebdb83b116bcfb7702efeb5c1b9fb8f8f38715218f92df5de39043c55/backyard-baseball-2001-original-scan-2026-11-25-cover-480.webp",
+      "sha256": "1e3a836ebdb83b116bcfb7702efeb5c1b9fb8f8f38715218f92df5de39043c55",
+      "bytes": 34426,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 477,
+      "versionQuery": true
+    },
+    "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-640.webp": {
+      "key": "artwork/355624e3a180fde34bfe467250b6328b0ec757d537da30a584e6ed30efb462fa/backyard-baseball-2001-original-scan-2026-11-25-cover-640.webp",
+      "sha256": "355624e3a180fde34bfe467250b6328b0ec757d537da30a584e6ed30efb462fa",
+      "bytes": 47752,
+      "contentType": "image/webp",
+      "width": 640,
+      "height": 636,
+      "versionQuery": true
+    },
+    "/launcher/responsive/backyard-baseball-original-scan-2026-11-25-cover-320.webp": {
+      "key": "artwork/a99e72ec668283564f6e19d17fc5b9201ca52d3c5a6527addf2f6fac5e2c4ec8/backyard-baseball-original-scan-2026-11-25-cover-320.webp",
+      "sha256": "a99e72ec668283564f6e19d17fc5b9201ca52d3c5a6527addf2f6fac5e2c4ec8",
+      "bytes": 20854,
+      "contentType": "image/webp",
+      "width": 320,
+      "height": 312,
+      "versionQuery": true
+    },
+    "/launcher/responsive/backyard-baseball-original-scan-2026-11-25-cover-480.webp": {
+      "key": "artwork/f7c90c35dc9bd08359159c4fcbed2f2ee8a3e906ff7345376a4928e218301a8a/backyard-baseball-original-scan-2026-11-25-cover-480.webp",
+      "sha256": "f7c90c35dc9bd08359159c4fcbed2f2ee8a3e906ff7345376a4928e218301a8a",
+      "bytes": 35904,
+      "contentType": "image/webp",
+      "width": 480,
+      "height": 467,
+      "versionQuery": true
     }
   },
   "images": {
@@ -54966,6 +55068,41 @@
       "webp": [
         "/launcher/responsive/tony-tough-2026-11-20-portrait-cover-320.webp",
         "/launcher/tony-tough-2026-11-20-portrait-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp": {
+      "width": 900,
+      "height": 894,
+      "fallback": "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp",
+      "webp": [
+        "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-320.webp",
+        "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-480.webp",
+        "/launcher/responsive/arthurs-reading-race-original-scan-2026-11-25-cover-640.webp",
+        "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp": {
+      "width": 490,
+      "height": 477,
+      "fallback": "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp",
+      "webp": [
+        "/launcher/responsive/backyard-baseball-original-scan-2026-11-25-cover-320.webp",
+        "/launcher/responsive/backyard-baseball-original-scan-2026-11-25-cover-480.webp",
+        "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp"
+      ],
+      "avif": []
+    },
+    "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp": {
+      "width": 805,
+      "height": 800,
+      "fallback": "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp",
+      "webp": [
+        "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-320.webp",
+        "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-480.webp",
+        "/launcher/responsive/backyard-baseball-2001-original-scan-2026-11-25-cover-640.webp",
+        "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp"
       ],
       "avif": []
     }

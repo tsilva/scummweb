@@ -31,7 +31,7 @@ export function verifyCoverDelivery(paths, manifest = storage) {
       .flatMap((srcSet) => srcSet.split(", ").map((candidate) => candidate.split(" ")[0]))];
 
     for (const url of new Set(candidates)) {
-      if (!url?.startsWith(origin) || !/^[a-f0-9]{64}\/[a-z0-9-]+\.(?:png|webp|avif)$/.test(url.slice(origin.length))
+      if (!url?.startsWith(origin) || !/^[a-f0-9]{64}\/[a-z0-9-]+\.(?:png|webp|avif)$/.test(url.slice(origin.length).split("?", 1)[0])
         || !publishedURLs.has(url)) {
         failures.push(`${logical}: expected an immutable R2 URL, got ${url}`);
       }

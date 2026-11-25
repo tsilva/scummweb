@@ -51,7 +51,9 @@ test("browser artwork metadata preserves delivery records without verification f
   const alternate = { ...file, width: 4, key: `artwork/${sha256}/different-name.webp` };
   const images = { [name]: { width: 8, height: 12, fallback: name, webp: [variant, name], avif: [] } };
   const placeholder = bytes.toString("base64");
-  const published = { ...sample, published: true, files: { [name]: { ...file, placeholder }, [variant]: alternate }, images };
+  const published = { ...sample, published: true, files: {
+    [name]: { ...file, placeholder, versionQuery: true }, [variant]: { ...alternate, versionQuery: true },
+  }, images };
   const inventory = await fs.realpath(path.join(root, manifestFile));
   await fs.writeFile(inventory, JSON.stringify(published));
   const loaderPath = path.join(root, "scripts/artwork-browser-loader.js");
@@ -65,9 +67,12 @@ test("browser artwork metadata preserves delivery records without verification f
   const module = await import(`data:text/javascript,${encodeURIComponent(code)}`);
   const browser = module.default;
   assert.deepEqual(browser.images, images);
-  assert.deepEqual(browser.files[name], { hash: file.sha256, width: file.width, height: file.height, placeholder });
-  assert.deepEqual(browser.files[variant], { key: alternate.key, width: alternate.width });
+  assert.deepEqual(browser.files[name], {
+    hash: file.sha256, width: file.width, height: file.height, placeholder, versionQuery: true,
+  });
+  assert.deepEqual(browser.files[variant], { key: alternate.key, width: alternate.width, versionQuery: true });
   const url = artworkUrl(name, published);
+  assert.equal(url, `${published.origin}/${file.key}?v=${file.sha256}`);
   assert.equal(artworkUrl(name, browser), url);
   assert.equal(artworkPath(url, browser), name);
   assert.equal(artworkPath(artworkUrl(variant, browser), browser), variant);
@@ -88,6 +93,19 @@ test("browser artwork metadata preserves delivery records without verification f
     addDependency() {}, getOptions: () => ({ defer: true }),
   }))}`);
   assert.deepEqual(entry.default, { published: true, origin: published.origin, files: {}, deferred: true });
+});
+
+test("verification and fresh builds request the configured artwork version", async (t) => {
+  const root = await fixture(t);
+  const name = "/launcher/sample-cover.webp";
+  const manifest = { ...sample, published: true, files: { [name]: { ...file, versionQuery: true } } };
+  const requests = [];
+  const request = async (url) => { requests.push(url); return response(); };
+  await fs.unlink(path.join(root, "scummvm-shell", name.slice(1)));
+  assert.equal(await verifyArtwork(manifest, request), 1);
+  assert.deepEqual(await readArtworkFile(root, name, request, { manifest }), bytes);
+  const url = `${sample.origin}/${file.key}?v=${file.sha256}`;
+  assert.deepEqual(requests, [url, url]);
 });
 
 test("plans preserve live mappings and retain exact original bytes outside Git", async (t) => {
