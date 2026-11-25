@@ -91,11 +91,10 @@ test("the library chooses the newest intact manual save or autosave by its own s
     ]);
     window.localStorage = storage;
     await indexSaves(game, [["SKY-VM.001", 1]]);
-    const chosen = readCachedSave(game, storage, "", { includeContents: true, preview: true });
+    const chosen = readCachedSave(game, storage, "", { includeContents: true });
     assert.equal(chosen.slot, modifiedAt < 200 ? 2 : 1);
     assert.equal(chosen.contents, (modifiedAt < 200 ? autoBytes : Buffer.from("manual bytes")).toString("base64"));
-    assert.equal(readCachedSave(game, storage)?.slot, 1);
-    assert.equal(readCachedSave(game, storage, "", { preview: true, autosavesOnly: true })?.slot, 2);
+    assert.equal(readCachedSave(game, storage, "", { autosavesOnly: true })?.slot, 2);
   }
 });
 
@@ -107,7 +106,7 @@ test("Queen progress can read the native save inside the selected autosave", asy
   useStorage(t, storage);
   await indexSaves(game, []);
 
-  const save = readCachedSave(game, storage, "", { preview: true, includeContents: true });
+  const save = readCachedSave(game, storage, "", { includeContents: true });
   assert.equal(save?.slot, 2);
   assert.equal((await readQueenSaveSnapshot(save.contents))?.room_id, 70);
 });

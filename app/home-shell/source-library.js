@@ -13,7 +13,6 @@ import { startArchiveRecovery } from "./archive-recovery.mjs";
 import LibraryView from "./library-view";
 import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
-import { withDropboxPreview } from "../dropbox/feature.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseArchiveHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
@@ -415,7 +414,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
       }
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       if (!onPlayArchive?.(game, resume)) {
-        router.push(withDropboxPreview(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`, window.location.href));
+        router.push(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`);
       }
       navigated = true;
     }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
@@ -477,9 +476,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     // normal Next.js navigation, including direct links from compatibility.
     const group = groups.find((group) => buildGameExitHref(group.game) === path);
     if (!group) return false;
-    const href = withDropboxPreview(path, window.location.href);
-    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== href) {
-      window.history.pushState(null, "", href);
+    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== path) {
+      window.history.pushState(null, "", path);
     }
     // Next updates usePathname in a transition; select the hero immediately.
     setSelection(group.key);

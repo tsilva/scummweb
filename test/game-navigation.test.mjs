@@ -11,7 +11,6 @@ import * as playSources from "../app/game-play-source.mjs";
 import { libraryItems } from "../app/home-shell/library-items.mjs";
 import * as seo from "../lib/seo.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
-import * as preview from "../app/dropbox/feature.mjs";
 import * as libraryRemoval from "../app/home-shell/library-removal.mjs";
 
 await swc.loadBindings();
@@ -29,8 +28,6 @@ async function component(file, imports, globals = {}) {
       if (name === "react-dom") return imports[name] ?? { flushSync: (fn) => fn() };
       if (name === "./hero-order.mjs") return heroOrder;
       if (name === "./initial-actions.mjs") return initialActions;
-      if (name === "../dropbox/feature.mjs") return preview;
-      if (name === "../dropbox/use-preview-href") return { useDropboxPreviewHref: href => href };
       if (name === "./library-removal.mjs") return imports[name] ?? libraryRemoval;
       if (name === "./artwork-delivery") return imports[name] ?? { useArtworkDelivery: () => undefined };
       return imports[name] ?? {};

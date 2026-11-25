@@ -1,10 +1,8 @@
-import { dropboxPreviewEnabled } from "./feature.mjs";
+import { connectionKey } from "./client.mjs";
 import { readStoredBrowserSave } from "../browser-saves.mjs";
 
-const key = "scummweb.dropbox-connection.v1";
 export function dropboxEnabled() {
-  if (!dropboxPreviewEnabled()) return false;
-  try { return JSON.parse(window.localStorage.getItem(key))?.enabled === true; } catch { return false; }
+  try { return JSON.parse(window.localStorage.getItem(connectionKey))?.enabled === true; } catch { return false; }
 }
 export async function prepareDropboxLaunch(launchDestinationKey = null, resumeGame = null) {
   if (!dropboxEnabled()) return;

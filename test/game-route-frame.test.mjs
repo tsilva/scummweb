@@ -5,7 +5,6 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
-import * as preview from "../app/dropbox/feature.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as startupDiagnostics from "../app/game-player/startup-diagnostics.mjs";
@@ -50,7 +49,6 @@ for (const [message, mobile, installed] of [
         hash: "", search: "", replace: (href) => navigations.push(href),
       } },
       require(name) {
-        if (name === "./dropbox/feature.mjs") return preview;
         if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
@@ -201,7 +199,6 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: fetchShell,
     require: function require(name) {
-      if (name === "./dropbox/feature.mjs") return preview;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
@@ -808,6 +805,8 @@ test("catalog and imported launches retain distinct compatibility warnings from 
     const player = pendingArchivePlayer({ catalog });
     player.render();
     assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("hostCompatibilityWarning"), "1");
+    assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("dropbox"), "true",
+      "a plain player route enables the shell's rotating save checkpoints");
     assert.equal(player.controls.compatibilityWarnings.length, 0);
     player.compatibilityWarning("Other origin", { origin: "https://untrusted.test" });
     player.compatibilityWarning("Other frame", { source: {} });
@@ -871,7 +870,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&dropbox=true&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });
@@ -897,7 +896,7 @@ test("finishing archive preparation cannot interrupt an in-flight shell recovery
   assert.match(player.children.find(({ type }) => type === "iframe").props.srcDoc, /launchRetry=inline/);
   player.ready();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&dropbox=true&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1);
   player.unmount();
 });
@@ -1036,7 +1035,6 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
-      if (name === "./dropbox/feature.mjs") return preview;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {

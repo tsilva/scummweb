@@ -1,5 +1,4 @@
 import { createNativeCloudClient, credentialKey, dropboxNativeConfig } from "../cloud/native-client.mjs";
-import { dropboxPreviewEnabled } from "./feature.mjs";
 import { trackCloudTransfers } from "../cloud/transfer-progress.mjs";
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
 import { createSaveCollection, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
@@ -45,7 +44,10 @@ export function markWaiting(message = "Your latest saves are on this device and 
 function connection() {
   try { return JSON.parse(localStorage.getItem(connectionKey)); } catch { return null; }
 }
-function session() { return dropboxPreviewEnabled() && connection()?.enabled ? connection() : null; }
+function session() {
+  const current = connection();
+  return current?.enabled === true ? current : null;
+}
 function failure(error) {
   if (error.kind === "cancelled" || error.kind === "priority") return;
   if (error.kind === "integrity") { update({ phase: "connected", message: "", verified: false }); return; }
@@ -671,15 +673,8 @@ async function launchIsVerified(destinationKey) {
 }
 
 export async function syncDropbox({ beforeLaunch = false, launchDestinationKey = null } = {}) {
-  if (!dropboxPreviewEnabled()) return;
-  if (!connection()?.enabled) { update({ phase: "disconnected", message: "", conflicts: [] }); return; }
   const auth = session();
-  if (!auth) {
-    const error = new DropboxError("Reconnect Dropbox to sync your saves.", "auth");
-    failure(error);
-    if (beforeLaunch) throw error;
-    return;
-  }
+  if (!auth) { update({ phase: "disconnected", message: "", conflicts: [] }); return; }
   if (beforeLaunch && launchDestinationKey && flight && !flightPriority) {
     // Existing publications are immutable and outbox entries remain durable
     // until acknowledged. Restart a background-only pass with this game first.
@@ -743,14 +738,14 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     const priority = beforeLaunch && launchDestinationKey === flightPriority?.destination ? flightPriority : null;
     if (priority && await Promise.race([flight, priority.promise]) === true) return;
     await flight;
-    if (!dropboxPreviewEnabled()) return;
+    if (!session()) return;
     if (beforeLaunch && state.phase !== "connected" && !await launchIsVerified(launchDestinationKey)) {
       const message = launchDestinationKey && state.phase === "waiting" && !launchSyncSnapshot?.complete
         ? launchSyncSnapshot?.blockedMessage || state.message : state.message;
       throw new DropboxError(message || "Finish syncing before playing.");
     }
   } catch (error) {
-    if (beforeLaunch && dropboxPreviewEnabled() && error.kind !== "integrity") throw error;
+    if (beforeLaunch && session() && error.kind !== "integrity") throw error;
   }
 }
 
@@ -815,7 +810,6 @@ export async function disconnectDropbox() {
 }
 
 export function startDropboxSync() {
-  if (!dropboxPreviewEnabled()) return () => {};
   const retry = () => { if (!document.hidden) void syncDropbox(); };
   let debounce;
   const changed = () => { clearTimeout(debounce); debounce = setTimeout(retry, 750); };
@@ -831,13 +825,6 @@ export function startDropboxSync() {
   window.addEventListener("scummweb:saves-changed", changed);
   retry();
   return () => {
-    if (!dropboxPreviewEnabled()) {
-      generation++;
-      stopAccountActivity();
-      launchSyncSnapshot = null;
-      flightController?.abort(new DropboxError("Dropbox preview disabled.", "cancelled"));
-      update({ phase: "disconnected", message: "", conflicts: [], checking: false, verified: false });
-    }
     clearInterval(timer); clearTimeout(debounce);
     window.removeEventListener("online", retry); window.removeEventListener("focus", retry);
     document.removeEventListener("visibilitychange", retry);

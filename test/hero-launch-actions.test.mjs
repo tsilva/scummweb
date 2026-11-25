@@ -10,7 +10,6 @@ import { getArtworkPlaceholderStyle } from "../app/home-shell/artwork-image-prop
 import * as heroOrder from "../app/home-shell/hero-order.mjs";
 import { chooseGameVersion, formatVersionLabel, getVersionMetadata, readChosenVersion, rememberGameVersion } from "../app/game-versions.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
-import * as preview from "../app/dropbox/feature.mjs";
 import { getBundledLaunchTags } from "../app/game-player/launch-tags.mjs";
 import { buildGameExitHref } from "../app/home-shell/hero-selection.mjs";
 
@@ -45,8 +44,6 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
       if (name === "react") return hooks;
       if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
       if (name === "./initial-actions.mjs") return imports[name] || initialActions;
-      if (name.endsWith("/dropbox/feature.mjs")) return preview;
-      if (name === "./dropbox/use-preview-href") return { useDropboxPreviewHref: href => href };
       if (name.endsWith("/useLaunchFeedback")) return imports[name] || (() => ({ show() {}, dismiss() {}, overlay: null }));
       if (name.endsWith("/use-save-launch-block")) return useSaveLaunchBlock;
       if (name.endsWith("/launch-pending")) return LaunchPending;

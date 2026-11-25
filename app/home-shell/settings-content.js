@@ -6,7 +6,6 @@ import { PrivacySettingsSwitches } from "../../lib/privacy-consent/controls";
 import { readGameSources } from "../game-sources.mjs";
 import "../styles/settings-details.css";
 import DropboxRow from "./dropbox-row";
-import DropboxPreview from "./dropbox-preview";
 import { openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
@@ -204,7 +203,7 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     </button>
     <section id="settings-saves" hidden={section !== "saves"} aria-busy={busy}>
       {!review && <>
-        <DropboxPreview><DropboxRow /></DropboxPreview>
+        <DropboxRow />
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
           <div><h3>Transfer saves</h3><p>Transfer saves to or from your ScummVM apps.</p></div>
           <div className="settings-transfer-actions">

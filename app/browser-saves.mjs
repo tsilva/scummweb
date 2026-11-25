@@ -1,7 +1,6 @@
 import { getVersionSaveNamespace, readVersionSaveNamespace } from "./game-versions.mjs";
 import { latestPlayerSave, saveIndexKey, saveIndexPrefix, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
 import { readCachedSave } from "./browser-save-cache.mjs";
-import { dropboxPreviewEnabled } from "./dropbox/feature.mjs";
 import { editionKey, editionLockName, readSaveTree, saveLockName } from "../web-shell/save-editions.mjs";
 import { openSaveStorage, saveStorageEvent, saveStorageKey } from "../web-shell/save-storage.mjs";
 
@@ -68,7 +67,7 @@ function getCachedSave(game, { includeContents, autosavesOnly, storage = cachedS
   try {
     if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
-    const save = readCachedSave(game, storage, namespace, { includeContents, autosavesOnly, preview: dropboxPreviewEnabled() });
+    const save = readCachedSave(game, storage, namespace, { includeContents, autosavesOnly });
     return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save : null;
   } catch { return null; }
 }

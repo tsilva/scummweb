@@ -6,7 +6,6 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import { connectionKey } from "../app/dropbox/client.mjs";
 import * as transfers from "../app/cloud/transfer-progress.mjs";
-import { dropboxPreviewEnabled } from "../app/dropbox/feature.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -31,42 +30,30 @@ const text = (node) => typeof node === "string" || typeof node === "number" ? St
 const button = (root, name) => nodes(root).find((node) => node.type === "button" && text(node) === name);
 
 for (const phase of ["waiting", "reconnect"]) {
-  test(`${phase} sync coordinator and warning require the Dropbox URL flag`, async () => {
-    let query = "", state = null, starts = 0, stops = 0, unsubscribes = 0;
+  test(`${phase} sync coordinator starts after a Dropbox connection on a plain URL`, async () => {
+    let connected = false, state = null, starts = 0, stops = 0, unsubscribes = 0;
     const effects = [], listeners = new Map();
-    const Preview = await component("../app/home-shell/dropbox-preview.js", {
-      "next/navigation": { useSearchParams: () => new URLSearchParams(query) },
-      "../dropbox/feature.mjs": { dropboxPreviewEnabled },
-    }, { Suspense: nativeRequire("react").Suspense });
     const Sync = await component("../app/dropbox-save-sync.js", {
-      "./home-shell/dropbox-preview": Preview,
-      "./dropbox/bridge.mjs": { dropboxEnabled: () => dropboxPreviewEnabled(query) },
+      "./dropbox/bridge.mjs": { dropboxEnabled: () => connected },
       "./dropbox/runtime.mjs": {
         getDropboxState: () => ({ phase }),
         subscribeDropbox: () => () => { unsubscribes++; },
         startDropboxSync: () => { starts++; return () => { stops++; }; },
       },
-      window: { addEventListener: (name, callback) => listeners.set(name, callback),
+      window: { location: new URL("https://example.test/"), addEventListener: (name, callback) => listeners.set(name, callback),
         removeEventListener: (name) => listeners.delete(name) },
     }, { useState: () => [state, (next) => { state = next; }], useEffect: (effect) => effects.push(effect) });
     const render = () => renderToStaticMarkup(Sync());
     assert.doesNotMatch(render(), /role="status"/);
-    assert.equal(effects.length, 0, "unflagged pages never mount the coordinator");
-    for (query of ["", "other=true", "dropbox=false", "dropbox=1"]) {
-      assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
-      assert.equal(effects.length, 0);
-    }
-    assert.equal(starts, 0);
-    query = "other=true&dropbox=true";
-    render();
     const cleanup = effects[0]();
+    assert.equal(starts, 0);
+    connected = true;
+    listeners.get("scummweb:dropbox-connection")();
     await new Promise(setImmediate);
     assert.equal(starts, 1);
     assert.match(render(), /class="dropbox-sync-warning" role="status"/);
     assert.match(render(), phase === "waiting" ? /waiting to sync/ : /Reconnect Dropbox/);
-    query = "";
-    assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
-    cleanup(); // React unmounts the gated child when the flag is removed.
+    cleanup();
     assert.equal(stops, 1);
     assert.equal(unsubscribes, 1);
     assert.equal(listeners.size, 0);
@@ -184,7 +171,7 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Shield", "Upload"].map(name => [name, () => null])),
     "../../lib/privacy-consent/controls": { PrivacySettingsSwitches: () => null },
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: readSources || (async () => []) },
-    "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
+    "./dropbox-row": { __esModule: true, default: "dropbox-row" },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
     "../save-backups/scummvm-transfer.mjs": { exportScummvmSaves: async () => new Blob(["export"]), readSaveImport: async (files, destinations, game) => {
@@ -201,6 +188,11 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     setBusy(busy) { props.busy = busy; }, loadingIndicator: "settings spinner" };
   return { calls, copies, effects, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
+
+test("Saved games includes the Dropbox row without a preview wrapper", async () => {
+  const fixture = await settingsFixture();
+  assert.ok(nodes(fixture.render()).some(node => node.type === "dropbox-row"));
+});
 
 test("Settings keeps the spinner until the initial save read settles", async () => {
   for (const fail of [false, true]) {

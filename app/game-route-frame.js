@@ -8,7 +8,6 @@ import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
 import { dropboxEnabled, prepareDropboxLaunch, prioritizeDropboxGameplay, reportDropboxSave } from "./dropbox/bridge.mjs";
-import { withDropboxPreview } from "./dropbox/feature.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -254,7 +253,7 @@ export default function GameRouteFrame({
     if (flushPlayHistory) await flushPlayHistory;
     // Release this frame's save locks before revealing the launcher again.
     flushSync(() => setFrameSrc(null));
-    const destination = withDropboxPreview(getSafeHref(href));
+    const destination = getSafeHref(href);
     if (catalogLaunch) window.location.replace(destination);
     else router.replace(destination);
   }, [catalogLaunch, router, immersiveMode.exitImmersiveMode]);
@@ -735,7 +734,8 @@ export default function GameRouteFrame({
 
     async function openGame() {
       try {
-        if (dropboxEnabled()) {
+        const isolatedSave = new URLSearchParams(window.location.search).has("agentSaveScope");
+        if (!isolatedSave && dropboxEnabled()) {
           await prepareDropboxLaunch(dropboxDestination, window.location.hash === "#continue" ? game : null);
         }
         if (controller.signal.aborted) return;
@@ -771,11 +771,12 @@ export default function GameRouteFrame({
           }
         }
         const shellUrl = new URL(launchSrc, window.location.origin);
-        shellUrl.searchParams.delete("dropbox");
         if (target && !game?.saveNamespace) shellUrl.searchParams.set("catalogSaveTarget", target);
         shellUrl.searchParams.set("hostCompatibilityWarning", "1");
         shellUrl.searchParams.set("hostPlayer", "1");
-        if (progressVersion && progressRevision && !new URL(window.location.href).searchParams.has("agentSaveScope")) {
+        // The hosted shell uses this parameter for local rotating save checkpoints.
+        shellUrl.searchParams.set("dropbox", "true");
+        if (progressVersion && progressRevision && !isolatedSave) {
           shellUrl.searchParams.set("telemetry", "1");
         }
         launchSrc = withGameTelemetry(`${shellUrl.pathname}${shellUrl.search}${shellUrl.hash}`, window.location.href);

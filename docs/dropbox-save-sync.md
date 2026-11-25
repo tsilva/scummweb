@@ -16,7 +16,10 @@ appears. Personal game archives keep their existing library and import flows.
    `https://YOUR_SITE/dropbox-callback.html`.
 5. Set `NEXT_PUBLIC_DROPBOX_APP_KEY` to the public application key before
    building the website. No application secret belongs in the browser or build.
-6. Follow Dropbox's production-approval process before broad rollout.
+6. Enable additional users in the Dropbox Developer Console. Dropbox normally
+   starts reviewing production applications at 50 linked accounts. From that
+   point, new connections can be frozen if approval takes more than two weeks.
+   See the [Dropbox production approval guide](https://docs.dropboxapi.com/dropbox-api/docs/developer-resources/developer-guide#production-approval).
 
 The callback is the tracked static page `public/dropbox-callback.html`. Verify
 that it returns HTTP 200 at each registered origin. `pnpm dev` and `pnpm start`
@@ -43,18 +46,6 @@ it retains browser saves, pending snapshots and cloud history. Clearing site
 data also removes authorization; reconnecting the same Dropbox account restores
 verified cloud saves. Browser-side credentials are accessible to scripts on the
 same origin, so the usual application XSS protections remain essential.
-
-## Live testing access
-
-Dropbox controls, synchronization and rotating ScummWEB autosaves are available only when the current page URL includes
-`?dropbox=true` (or `&dropbox=true` alongside other parameters). For example,
-open `https://scummweb.tsilva.eu/?dropbox=true`, then open Settings.
-Game selection, Continue, Play and game exit carry the flag in the URL. On a
-plain URL, the player uses the normal native save flow and performs no Dropbox
-sync. Removing the flag stops the coordinator and cancels an active sync.
-Stored authorization, checkpoints, pending saves and cloud history are retained for the next
-flagged visit. Anyone with the URL can reveal the controls and must still
-authorize their own Dropbox account.
 
 ## Player experience
 
@@ -179,7 +170,7 @@ browser's IndexedDB, including when Dropbox is disabled. Existing records are
 copied from browser local storage on first use, using the existing browser
 identity so previously synced playtime is counted once.
 
-With Dropbox connected and the URL flag enabled on each device, ScummWEB also
+With the same Dropbox account connected on each device, ScummWEB also
 syncs recorded playtime, last-played dates and verified story progress. Existing
 browser records contribute on the next sync. Older cards with no time or date
 recorded cannot supply those values. Activity can make a game appear in Recently
