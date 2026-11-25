@@ -238,16 +238,25 @@ export default function GameRouteFrame({
   });
   const immersiveMode = useImmersiveMode({ shellRef });
   const stopPlayHistory = useRef(null);
-  const navigateHome = useCallback(async (href) => {
-    const flushSaves = frameRef.current?.contentWindow?.__scummwebFlushSaveStorage;
+  const exitStarted = useRef(false);
+  const navigateHome = useCallback(async (href, saveOnExit = false) => {
+    if (exitStarted.current) return;
+    exitStarted.current = true;
+    const player = frameRef.current?.contentWindow;
     const flushPlayHistory = stopPlayHistory.current?.();
     // Remove every overlay control before fullscreen teardown or navigation can wait.
     flushSync(() => setIsExiting(true));
     fullscreenExitExpected.current = true;
     // Keep the landscape lock until the mobile player has left the screen.
     if (!isTouchMobileClient()) await immersiveMode.exitImmersiveMode();
-    if (flushSaves) {
-      try { await flushSaves(); }
+    if (saveOnExit) {
+      try {
+        const checkpoint = player?.scummwebPlayerControls?.saveOnExit?.();
+        if (checkpoint) await checkpoint;
+      } catch { /* Exit still flushes any saves already made. */ }
+    }
+    if (player?.__scummwebFlushSaveStorage) {
+      try { await player.__scummwebFlushSaveStorage(); }
       catch { /* The previous committed copy remains available after a failed write. */ }
     }
     if (flushPlayHistory) await flushPlayHistory;
@@ -940,7 +949,7 @@ export default function GameRouteFrame({
   }, [frameSrc, waitingForLandscape]);
 
   function handleExitClick() {
-    return navigateHome(exitHref);
+    return navigateHome(exitHref, !graphicsRecovery);
   }
 
   function handleControlMouseDown(event) {

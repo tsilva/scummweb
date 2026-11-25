@@ -839,17 +839,30 @@ test("save-lock contention returns to the launcher only for the active player fr
   player.unmount();
 });
 
-test("exit waits for the save flush before removing the player frame or navigating", async () => {
+test("exit waits for a checkpoint and then the save flush before removing the frame or navigating", async () => {
   const player = pendingArchivePlayer();
   player.render();
+  const checkpoint = Promise.withResolvers();
   const flush = Promise.withResolvers();
-  player.frame.contentWindow.__scummwebFlushSaveStorage = () => flush.promise;
+  const saves = [];
+  player.frame.contentWindow.scummwebPlayerControls = {
+    saveOnExit() { saves.push("checkpoint"); return checkpoint.promise; },
+  };
+  player.frame.contentWindow.__scummwebFlushSaveStorage = () => {
+    saves.push("flush");
+    return flush.promise;
+  };
   const exit = player.controls.onExit();
   await new Promise(setImmediate);
   assert.ok(player.children.some(({ type }) => type === "iframe"));
   assert.equal(player.overlay.showBootOverlay, true);
   assert.equal(player.overlay.bootStatusText, "Exiting game…");
   assert.equal(player.overlay.archiveBytes, undefined);
+  assert.deepEqual(player.exits, []);
+  assert.deepEqual(saves, ["checkpoint"]);
+  checkpoint.resolve();
+  await new Promise(setImmediate);
+  assert.deepEqual(saves, ["checkpoint", "flush"]);
   assert.deepEqual(player.exits, []);
   flush.resolve();
   await exit;

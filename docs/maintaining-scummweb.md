@@ -227,8 +227,8 @@ hidden. They return to their normal visibility when the action disappears.
 
 **Continue** loads the latest intact ScummWEB autosave or eligible native save
 for the selected edition. It skips damaged checkpoints. Supported games keep up
-to three checkpoints,
-updated about every two minutes and at the first safe moment after loading.
+to three checkpoints, updated about every two minutes, at the first safe moment
+after loading, and when you select **Exit game** in a scene that allows saving.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. Saved story progress uses checkpoint data where a
@@ -906,8 +906,8 @@ see the prompt if they are in the EEA or UK, or if their location is unknown.
 response includes the prompt decision and `countryKnown`, which indicates
 whether the header contained a usable country code. Enable IP Geolocation on the
 Cloudflare zone to supply that header. A missing header or failed lookup defaults
-to showing the prompt. Settings → Privacy, the site footer, and the privacy policy
-offer the controls worldwide. Analytics and browser diagnostics require opt-in
+to showing the prompt. Settings → Privacy and the privacy policy offer the
+controls worldwide. Analytics and browser diagnostics require opt-in
 everywhere.
 Gameplay never waits for a choice. Decisions stay in the site's browser storage
 with the notice version and timestamp. A notice version change requires a fresh

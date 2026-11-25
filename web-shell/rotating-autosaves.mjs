@@ -57,6 +57,8 @@ export function readAutosaveRing(read, match, excluded = new Set()) {
 export function installRotatingAutosaves(scope, FS, savePath, params) {
   const enabled = params.get("dropbox") === "true" && params.get("hostPlayer") === "1"
     && !params.has("agentSaveScope") && !params.has("saveQuery");
+  const canCapture = () => enabled && scope.__scummwebSaveStatus?.supported === true
+    && scope.__scummwebReadyState?.state === "ready";
   const matches = (data, identity) => ["engineId", "gameId", "target", "extra"].every(key => data[key] === identity[key]);
   const read = name => FS.readFile(`${savePath}/${name}`, { encoding: "utf8" });
   function available() {
@@ -85,10 +87,10 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
       }));
     },
     find(name) { return available().find(entry => entry.name === name)?.record; },
+    canCapture,
     due() {
       if (scope.__scummwebReadyState?.state === "ready") clearOverlay();
-      return enabled && scope.__scummwebSaveStatus?.supported === true
-        && scope.__scummwebReadyState?.state === "ready" && Date.now() >= due;
+      return canCapture() && Date.now() >= due;
     },
     retry() { due = Date.now() + 5000; },
     afterLoad() { due = 0; },
