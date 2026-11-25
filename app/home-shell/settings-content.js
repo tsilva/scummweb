@@ -10,7 +10,7 @@ import { openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const formatSaveCount = (count) => `${count} save ${count === 1 ? "file" : "files"}`;
 
-export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy, loadingIndicator }) {
+export default function SettingsContent({ catalog, officialUrl, scummvmVersion, sourceInfoDate, working, busy, setBusy }) {
   const picker = useRef(null);
   const pendingImport = useRef(null);
   const reviewHeading = useRef(null);
@@ -186,9 +186,9 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
     });
   }
 
-  if (!data) return loadingIndicator;
-
-  const savedCount = data.sets.reduce((total, set) => total + set.files.length, 0);
+  const loadingSaves = !data;
+  const transferDisabled = busy || loadingSaves;
+  const hasSaves = data?.sets.some(({ files }) => files.length > 0) || Boolean(data?.stored.length);
   const unmatchedCount = review?.rows.filter((row) => !row.destinationKey).length ?? 0;
   const replacingProgress = review?.rows.some((row) => row.choice === "imported" && data.sets.some((set) =>
     set.destination.key === row.destinationKey && set.hash !== row.set.hash));
@@ -206,12 +206,12 @@ export default function SettingsContent({ catalog, officialUrl, scummvmVersion, 
         <DropboxRow />
         <div className="settings-action-block"><ArrowDownUp size={25} aria-hidden="true" />
           <div><h3>Transfer saves</h3><p>Transfer saves to or from your ScummVM apps.</p></div>
-          <div className="settings-transfer-actions">
-            <button type="button" className="secondary-button settings-wide" disabled={busy || exported || (!savedCount && !data.stored.length)} onClick={download}>
+          <div className="settings-transfer-actions" aria-busy={loadingSaves}>
+            <button type="button" className="secondary-button settings-wide" disabled={transferDisabled || exported || !hasSaves} onClick={download}>
               {exported ? <Check size={20} aria-hidden="true" /> : <Download size={20} aria-hidden="true" />}
               <span aria-live="polite" aria-atomic="true">{exported ? "Downloaded" : "Export saves"}</span>
             </button>
-            <button type="button" className="launch-button settings-wide" disabled={busy} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
+            <button type="button" className="launch-button settings-wide" disabled={transferDisabled} onClick={() => picker.current.click()}><Upload size={20} aria-hidden="true" />Import saves</button>
           </div>
           {needsImportGame && <label className="settings-save-choice">Game for imported saves
             <select value={importGame} disabled={busy} onChange={chooseImportGame}>

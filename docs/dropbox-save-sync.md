@@ -53,7 +53,9 @@ Choose **Settings → Saved games → Dropbox sync → Connect**. Active browser
 preserved backup sets are copied automatically, without deleting browser originals.
 The main Saved games view contains Dropbox sync and Transfer saves. Transfer saves
 offers Export saves and Import saves side by side.
-A spinner appears while Settings loads and while a save transfer is in progress.
+A spinner appears while the Settings interface loads and during save transfers.
+Once the interface is visible, you can open either section while ScummWEB reads
+local saves. The transfer buttons stay disabled during that read.
 Export starts the ZIP download automatically. The export button briefly shows
 **Downloaded** when the browser takes over the download.
 To play from an earlier copy, open the matching game edition and go to

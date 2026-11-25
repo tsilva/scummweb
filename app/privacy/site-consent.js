@@ -38,8 +38,9 @@ export default function SiteConsent({ children }) {
     };
   }, [needsRegionCheck]);
 
-  return <ConsentControls title="Help improve ScummWEB"
-    message="If you accept, optional analytics and error reports help us spot slow game loads and fix crashes."
+  return <ConsentControls title="Privacy choices"
+    message="Google Analytics uses cookies to measure visits and game performance. Sentry receives browser diagnostics to help fix errors. You can play with both off."
+    policyHref="/privacy"
     purposes={consentPurposes} store={consentStore} firstVisitPrompt={showFirstVisitPrompt === true}>
     {children}
   </ConsentControls>;

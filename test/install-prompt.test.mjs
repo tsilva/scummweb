@@ -18,7 +18,7 @@ const { code } = await swc.transform(source.replace('import("./install-prompt-st
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const visitsKey = "scummweb.install-prompt-visits";
 function fixture({ available = false, pathname = "/", standalone = false, embedded = false,
-  userAgent = "Brave", touch = 0, visits = 2, store = new Map([[visitsKey, String(visits)]]), storageError = false } = {}) {
+  userAgent = "Brave", touch = 0, store = new Map(), storageError = false } = {}) {
   const listeners = new Map(), slots = [], effects = new Map(), reports = [], calls = [];
   let cursor = 0, pending = [], mounted = true, invalidUpdates = 0, gesture = false, styleRequests = 0;
   let resolveStyles, rejectStyles;
@@ -28,6 +28,7 @@ function fixture({ available = false, pathname = "/", standalone = false, embedd
     isSecureContext: true, localStorage: {
       getItem: key => { if (storageError) throw new Error("Storage unavailable"); return store.get(key); },
       setItem: (key, value) => { if (storageError) throw new Error("Storage unavailable"); store.set(key, value); },
+      removeItem: key => { if (storageError) throw new Error("Storage unavailable"); store.delete(key); },
     },
     matchMedia: () => ({ matches: standalone, addEventListener() {}, removeEventListener() {} }),
     addEventListener(name, handler) { if (!listeners.has(name)) listeners.set(name, new Set()); listeners.get(name).add(handler); },
@@ -85,40 +86,21 @@ function find(node, predicate) {
 const content = node => typeof node === "string" ? node : Array.isArray(node) ? node.map(content).join(" ") : node?.props ? content(node.props.children) : "";
 async function ready(f) { f.render(); f.render(); f.resolveStyles(); await tick(); return f.render(); }
 
-test("installation is hidden for two visits, available from the third, and never returns after dismissal", async () => {
-  const store = new Map();
-  for (let visit = 1; visit <= 5; visit++) {
-    const f = fixture({ available: true, store });
-    const tree = await ready(f);
-    assert.equal(store.get(visitsKey), String(Math.min(visit, 3)));
-    if (visit < 3 || visit === 5) {
-      assert.equal(tree, null);
-      assert.equal(f.styleRequests, 0);
-      f.offer(); assert.equal(f.render(), null);
-    } else {
-      assert.equal(tree.type, "aside");
-      if (visit === 4) f.click(find(tree, n => n.props?.["aria-label"] === "Dismiss install invitation"));
-    }
-    f.unmount();
-  }
-});
-test("rerenders and remounts in one document do not advance the visit count", async () => {
-  const f = fixture({ available: true, visits: 0 });
-  assert.equal(await ready(f), null);
+test("installation is available on the first eligible visit and removes obsolete visit counts", async () => {
+  const store = new Map([[visitsKey, "2"]]);
+  const f = fixture({ available: true, store });
+  const tree = await ready(f);
+  assert.equal(tree.type, "aside");
+  assert.equal(store.size, 0);
+  f.click(find(tree, n => n.props?.["aria-label"] === "Dismiss install invitation"));
   f.remount();
   assert.equal(await ready(f), null);
-  assert.equal(f.store.get(visitsKey), "1");
+  assert.equal(store.has(visitsKey), false);
   f.unmount();
 });
-test("Safari also waits for the third visit, and unavailable storage keeps invitations hidden", async () => {
-  for (const options of [
-    { userAgent: "iPhone Version/17 Safari/1", visits: 0 },
-    { userAgent: "Macintosh Version/17 Safari/1", visits: 1 },
-    { available: true, storageError: true },
-  ]) {
-    const f = fixture(options);
-    assert.equal(await ready(f), null); assert.equal(f.styleRequests, 0); f.unmount();
-  }
+test("unavailable storage keeps invitations hidden", async () => {
+  const f = fixture({ available: true, storageError: true });
+  assert.equal(await ready(f), null); assert.equal(f.styleRequests, 0); f.unmount();
 });
 test("dismissal in another tab hides the invitation and prevents later offers", async () => {
   const f = fixture({ available: true });

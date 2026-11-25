@@ -83,7 +83,7 @@ export function installPlayerControls(scope, requestMenu) {
       if (diagnostic) {
         if (slot > maxSlot) return { status: "unavailable", files: [], reason: "no-manual-slot" };
       } else if (operation === "save") {
-        if (canSaveHere === false) return { error: "You can’t save in this location." };
+        if (canSaveHere === false) return { error: "You can’t save right now." };
         if (!canSave || !Number.isInteger(slot) || slot < 1 || slot > maxSlot || slot === reservedSlot ||
             (!isNew && !entry?.writable)) return { error: "This save slot is unavailable." };
       } else if (operation !== "load" || !canLoad || (!entry && !isolated)

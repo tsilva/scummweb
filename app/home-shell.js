@@ -11,6 +11,7 @@ import GalleryOrientation from "./home-shell/GalleryOrientation";
 import { getGamesOrigin } from "../lib/site-config.mjs";
 import { artworkDelivery, artworkStorage } from "../lib/artwork-storage.mjs";
 import { homeArtworkDelivery } from "./home-shell/initial-artwork.mjs";
+import { PrivacyChoicesButton } from "../lib/privacy-consent/controls";
 import assetConfig from "../lib/scummvm-shell-assets";
 
 const repositoryUrl = "https://github.com/tsilva/scummweb";
@@ -110,7 +111,9 @@ export default function HomeShell({
           <p className="footer-github">
             <a href={repositoryUrl} rel="noreferrer" target="_blank">ScummWEB on GitHub</a>
           </p>
-          <p><Link href="/privacy" prefetch={false}>Privacy policy</Link></p>
+          <p><Link href="/privacy" prefetch={false}>Privacy policy</Link>{" · "}
+            <PrivacyChoicesButton className="privacy-choices-link" />
+          </p>
         </div>
       </footer>
 

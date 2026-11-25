@@ -39,6 +39,12 @@
   color: #d2cfce;
 }
 
+.intro a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -107,7 +113,7 @@
 
 .saveButton:hover { background: #f2f2ef; }
 
-:is(.panel, .settingsSwitches) :is(button, input):focus-visible {
+:is(.panel, .settingsSwitches) :is(a, button, input):focus-visible {
   outline: 2px solid var(--consent-accent, #7fd37f);
   outline-offset: 2px;
 }

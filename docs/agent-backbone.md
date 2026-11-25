@@ -10,8 +10,9 @@ The backbone never imports or launches AgentSCUMM.
 ## Setup
 
 Install this checkout's dependencies with `pnpm install --frozen-lockfile` and
-install ScummBench using its documented editable setup. The backbone uses the
-existing locked `playwright-core` and `zod` packages; no MCP SDK is required.
+install ScummBench using its documented editable setup. The backbone is a pnpm
+workspace package. It declares `playwright-core` and `zod` and uses the
+repository's shared `pnpm-lock.yaml`.
 It retains the existing managed browser runtime and native macOS spectator.
 It bundles no game data. macOS spectators require Xcode Command Line Tools.
 Install the managed game-rendering browser binary for the locked driver with
@@ -50,6 +51,9 @@ Native maps and story-progress semantics remain in ScummWEB. Evaluation conditio
 and receipts remain private to the runner; player observations exclude them.
 
 ## Verification
+
+The routine local and CI commands `pnpm lint` and `pnpm test` include the
+backbone. Run the backbone checks directly when working on this component.
 
 ```sh
 pnpm check:backbone

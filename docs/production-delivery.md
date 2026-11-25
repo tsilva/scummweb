@@ -67,6 +67,12 @@ existing delivery workflow sync it to Vercel. A change can dispatch Production
 delivery through the Infisical webhook. Verify that the deployed policy shows
 the expected alias and that the alias forwards to the monitored inbox.
 
+Track the date each rights request arrives. Respond within one month. If a lawful
+extension is needed, explain the reason within that month and record the revised
+deadline. Verify the requester only to the extent needed to handle the request.
+Use the report ID, or the game and approximate submission time, to look for an
+in-game bug report in Sentry.
+
 ## Production performance audits
 
 Lighthouse CI runs after successful Production delivery, or by manual dispatch.

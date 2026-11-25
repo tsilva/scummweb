@@ -11,13 +11,23 @@ function startAnalytics(id, productionOrigin, classifyTraffic, window = globalTh
   // receive the same classification as the catalog funnel.
   window.gtag("set", classifyTraffic(window, productionOrigin));
   window.gtag("js", new Date());
-  const { origin, pathname, search } = window.location;
-  window.gtag("config", id, { page_location: origin + pathname + search, cookie_domain: "none" });
+  const { origin, pathname } = window.location;
+  const referrer = URL.canParse(document.referrer) ? new URL(document.referrer) : null;
+  window.gtag("config", id, {
+    page_location: origin + pathname,
+    page_referrer: referrer ? referrer.origin + referrer.pathname : "",
+    cookie_domain: "none",
+    cookie_expires: 180 * 24 * 60 * 60,
+    cookie_update: false,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
 
   function load() {
     if (canceled || window[`ga-disable-${id}`] === true || window.scummwebAnalyticsReady) return;
     const script = document.createElement("script");
     script.async = true;
+    script.referrerPolicy = "no-referrer";
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
     document.head.appendChild(script);
     window.scummwebAnalyticsReady = true;

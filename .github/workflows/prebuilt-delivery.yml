@@ -45,7 +45,7 @@ jobs:
 
       - name: Install the pinned Vercel CLI
         run: |
-          npm install --prefix "$RUNNER_TEMP/vercel-cli" --no-save --ignore-scripts --min-release-age=7 vercel@65.4.0
+          npm install --prefix "$RUNNER_TEMP/vercel-cli" --no-save --ignore-scripts --min-release-age=2 vercel@65.4.0
           echo "$RUNNER_TEMP/vercel-cli/node_modules/.bin" >> "$GITHUB_PATH"
           corepack enable
           corepack prepare pnpm@10.27.0 --activate

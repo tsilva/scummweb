@@ -77,7 +77,7 @@ export default function SettingsPanel(props) {
         </header>
         <div className="settings-body">
           {open && (SettingsContent
-            ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} loadingIndicator={loadingIndicator} />
+            ? <SettingsContent {...props} working={working} busy={busy} setBusy={setBusy} />
             : loadFailed
               ? <p className="settings-status" role="alert">Could not load settings. Reload this page to try again.</p>
               : loadingIndicator)}

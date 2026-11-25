@@ -185,7 +185,7 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     return [state[index], value => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
   } }, browserGlobals);
   const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false,
-    setBusy(busy) { props.busy = busy; }, loadingIndicator: "settings spinner" };
+    setBusy(busy) { props.busy = busy; } };
   return { calls, copies, effects, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
 
@@ -194,22 +194,29 @@ test("Saved games includes the Dropbox row without a preview wrapper", async () 
   assert.ok(nodes(fixture.render()).some(node => node.type === "dropbox-row"));
 });
 
-test("Settings keeps the spinner until the initial save read settles", async () => {
+test("Settings sections are usable while save transfer actions wait for the initial read", async () => {
   for (const fail of [false, true]) {
     const sources = Promise.withResolvers();
     let reads = 0;
     const fixture = await settingsFixture({ readSources: () => { reads++; return sources.promise; } });
-    assert.equal(fixture.render(), "settings spinner");
+    fixture.render();
     fixture.effects[0]();
     fixture.effects[0]();
     assert.equal(reads, 1);
-    assert.equal(fixture.render(), "settings spinner");
+    const pending = fixture.render();
+    assert.equal(button(pending, "Saved games").props.disabled, undefined);
+    assert.equal(button(pending, "About").props.disabled, undefined);
+    assert.equal(button(pending, "Export saves").props.disabled, true);
+    assert.equal(button(pending, "Import saves").props.disabled, true);
+    button(pending, "About").props.onClick();
+    assert.equal(button(fixture.render(), "About").props["aria-expanded"], true);
     if (fail) sources.reject(new Error("Could not read saves."));
     else sources.resolve([]);
     await new Promise(setImmediate);
     const tree = fixture.render();
-    assert.equal(button(tree, "Saved games").props.disabled, undefined);
-    assert.equal(button(tree, "About").props.disabled, undefined);
+    assert.equal(button(tree, "About").props["aria-expanded"], true);
+    assert.equal(button(tree, "Export saves").props.disabled, fail);
+    assert.equal(button(tree, "Import saves").props.disabled, false);
     if (fail) assert.match(text(tree), /Could not read saves/);
   }
 });

@@ -42,9 +42,9 @@ test("reports without a snapshot remain useful, and imported metadata excludes p
   const game = { source: "local", engineId: "scumm", gameId: "monkey", title: "Personal file", target: "private-file", zip: "private" };
   assert.deepEqual(reportGameIdentity(game), { source: "local", engineId: "scumm", gameId: "monkey" });
   const { post, reports } = fixture();
-  assert.equal((await post(request({ metadata: { game, capture: { status: "timeout", files: [] } } }))).status, 200);
+  assert.equal((await post(request({ metadata: { game, capture: { status: "omitted", files: [] } } }))).status, 200);
   assert.equal(reports[0].attachments.length, 1);
-  assert.equal(reports[0].manifest.capture.status, "timeout");
+  assert.equal(reports[0].manifest.capture.status, "omitted");
   assert.doesNotMatch(JSON.stringify(reports[0].manifest), /private|Personal/);
 });
 

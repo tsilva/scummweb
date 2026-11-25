@@ -30,7 +30,7 @@ const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), 
 
 for (const [message, mobile, installed] of [
   ["This ZIP link returned HTTP 404.", false, false],
-  ["Could not download the ZIP.", true, false],
+  ["Couldn't download the game. Try again in a moment.", true, false],
   ["This ZIP link returned HTTP 404.", false, true],
 ]) {
   test(`Exit remains usable after an intro-enabled game's archive fails in ${installed ? "installed" : mobile ? "mobile" : "desktop browser"} mode`, async () => {

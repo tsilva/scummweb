@@ -151,10 +151,10 @@ test("supply-chain protections remain fail-closed", () => {
   const npmrc = fs.readFileSync(path.join(rootDir, ".npmrc"), "utf8");
   const workspace = fs.readFileSync(path.join(rootDir, "pnpm-workspace.yaml"), "utf8");
 
-  assert.match(npmrc, /^minimum-release-age=10080$/m);
+  assert.match(npmrc, /^minimum-release-age=2880$/m);
   assert.match(npmrc, /^block-exotic-subdeps=true$/m);
   assert.match(npmrc, /^ignore-scripts=true$/m);
-  assert.match(workspace, /^minimumReleaseAge: 10080$/m);
+  assert.match(workspace, /^minimumReleaseAge: 2880$/m);
   assert.match(workspace, /^blockExoticSubdeps: true$/m);
 });
 

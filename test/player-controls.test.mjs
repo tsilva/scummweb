@@ -118,7 +118,7 @@ test("the paused engine reports scene save availability before a manual request"
   assert.equal(controls.read().canSave, true);
   assert.equal(controls.read().canLoad, true);
   assert.deepEqual(updates, [false]);
-  assert.match(controls.run("save", null).error, /can’t save in this location/);
+  assert.equal(controls.run("save", null).error, "You can’t save right now.");
   assert.equal(timers.size, 0);
 
   controls.setMenuOpen(false);

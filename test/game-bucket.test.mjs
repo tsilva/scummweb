@@ -88,6 +88,14 @@ test("the remote ZIP loader fetches the exact URL without credentials or a refer
   assert.equal(request.mock.callCount(), 2);
 });
 
+test("a failed download request gives the player a short retry message", async (t) => {
+  t.mock.method(globalThis, "fetch", async () => { throw new TypeError("Failed to fetch"); });
+
+  await assert.rejects(readRemoteGameArchive(`${customUrl}/game.zip`), {
+    message: "Couldn't download the game. Try again in a moment.",
+  });
+});
+
 test("full downloads reject HTTP errors and web pages before reading their bodies", async (t) => {
   for (const [options, message] of [
     [{ status: 404 }, /HTTP 404/],
