@@ -39,7 +39,7 @@ export default function SiteConsent({ children }) {
   }, [needsRegionCheck]);
 
   return <ConsentControls title="Privacy choices"
-    message="Google Analytics uses cookies to measure visits and game performance. Sentry receives browser diagnostics to help fix errors. You can play with both off."
+    message="We use site and game analytics to understand how people use ScummWEB. We track errors to fix problems and make the site and games run more reliably."
     policyHref="/privacy"
     purposes={consentPurposes} store={consentStore} firstVisitPrompt={showFirstVisitPrompt === true}>
     {children}
