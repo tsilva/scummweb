@@ -822,9 +822,9 @@ title, edition metadata, summary, artwork source, crop and viewport geometry
 stay fixed during launch. The homepage also shows the selected game's title.
 The reserved action area changes from Play/Continue to **Loading game…**.
 During a network transfer it shows **Downloading game…** with the amount
-received and the total when available. The title and artwork keep their size
-and position. The hero toolbar keeps the original logo and consistent
-navigation links on the left, with Settings at
+received and the total when available, each in MB with one decimal place. The
+title and artwork keep their size and position. The hero toolbar keeps the
+original logo and consistent navigation links on the left, with Settings at
 the right edge. Loading shows only the same exit control used during play,
 including while the route is being prepared. The spinner and progress accent are
 indeterminate and stop animating with reduced motion enabled. Startup failures

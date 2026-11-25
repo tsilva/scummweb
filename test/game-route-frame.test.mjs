@@ -981,8 +981,8 @@ for (const runtimeFirst of [true, false]) {
 }
 
 for (const [downloadDetails, label] of [
-  [{ downloading: true, loaded: 12_000_000, total: null }, "Downloading game… 12 MB"],
-  [{ downloading: true, loaded: 0, total: 85_000_000 }, "Downloading game… 0 of 85 MB"],
+  [{ downloading: true, loaded: 12_000_000, total: null }, "Downloading game… 12.0 MB"],
+  [{ downloading: true, loaded: 0, total: 85_000_000 }, "Downloading game… 0.0 of 85.0 MB"],
   [{ downloading: true, loaded: 0, total: null }, "Downloading game…"],
   [{ cached: true }, "Loading game…"],
   [{ loaded: 12_000_000, total: 85_000_000 }, "Loading game…"],
