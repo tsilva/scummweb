@@ -11135,7 +11135,8 @@
     "aliases": [
       "Living Books - Arthur's Reading Race (CD Windows)"
     ],
-    "posterImage": "/launcher/arthurs-reading-race-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp",
+    "squarePoster": true,
     "screenshots": [
       "/launcher/retro-mohawk-arthurrace-shot-1.webp",
       "/launcher/retro-mohawk-arthurrace-shot-play-2.webp",
@@ -11143,18 +11144,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Living%20Books_%20Arthur%27s%20Reading%20Race.png",
-            "kind": "box-scan",
-            "credit": "Original Living Books CD jewel-case front insert, Libretro",
-            "sha256": "1545117c10df7012d90ed3b1c30d5c571ea73afd4f735ed2a15899cf6817e0fa"
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://images.launchbox-app.com/1e38c004-a37f-4af4-8987-7d0406b064f2.jpg",
+        "page": "https://gamesdb.launchbox-app.com/games/images/99491-arthurs-reading-race",
+        "credit": "Original Living Books jewel-case front insert, scanned by LaunchBox Games Database contributors",
+        "sha256": "09c1d4761b972e275c494af3228a2277140b5ec56f22f471b12f21cddd2a5e30"
       },
       "screenshots": [
         {
@@ -11368,7 +11362,8 @@
     "aliases": [
       "Backyard Baseball (CD Windows)"
     ],
-    "posterImage": "/launcher/backyard-baseball-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp",
+    "squarePoster": true,
     "screenshots": [
       "/launcher/retro-scumm-baseball-shot-1.webp",
       "/launcher/retro-scumm-baseball-shot-2.webp",
@@ -11376,18 +11371,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment CD case front, Libretro",
-            "sha256": "5e7f4f92b535a1913381837db3ddcdee89edd6d809ea89c8d93e8da08dc220a1"
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://images.launchbox-app.com/80ef1bb8-bb55-4827-909f-902a55e93d27.jpg",
+        "page": "https://gamesdb.launchbox-app.com/games/images/92966-backyard-baseball",
+        "credit": "Original Humongous Entertainment jewel-case front insert, scanned by LaunchBox Games Database contributors",
+        "sha256": "54d9729c8ed21d586c3d0d90aeefbd2cdd8b8b74c7070f0f5c35f1562d93f8dd"
       },
       "screenshots": [
         {
@@ -11445,7 +11433,8 @@
     "aliases": [
       "Backyard Baseball 2001 (CD Windows)"
     ],
-    "posterImage": "/launcher/backyard-baseball-2001-scummweb-generated-2026-11-07-r1-cover.webp",
+    "posterImage": "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp",
+    "squarePoster": true,
     "screenshots": [
       "/launcher/retro-scumm-baseball2001-shot-1.webp",
       "/launcher/retro-scumm-baseball2001-shot-2.webp",
@@ -11453,18 +11442,11 @@
     ],
     "sources": {
       "poster": {
-        "kind": "generated-cover",
-        "generatedOn": "2026-11-07",
-        "generator": "image_gen (built-in)",
-        "creativeBasis": "box-front-restoration",
-        "references": [
-          {
-            "url": "https://thumbnails.libretro.com/ScummVM/Named_Boxarts/Backyard%20Baseball%202001.png",
-            "kind": "box-scan",
-            "credit": "Original Humongous Entertainment retail front, Libretro",
-            "sha256": "5576332291cf3c96a653c680a1c8e976793fce09c703ee53edf9005278a08ae1"
-          }
-        ]
+        "kind": "box-scan",
+        "url": "https://cdn.mobygames.com/covers/4358115-backyard-baseball-2001-windows-front-cover.jpg",
+        "page": "https://www.mobygames.com/game/21073/backyard-baseball-2001/",
+        "credit": "Original Humongous Entertainment jewel-case front insert, MobyGames cover archive",
+        "sha256": "fd3e49b46b4a4dfce1a7b6ea3c4b3eae378b591056745d5196a38719652b6567"
       },
       "screenshots": [
         {

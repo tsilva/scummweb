@@ -2406,6 +2406,42 @@ button.nav-icon-link {
   aspect-ratio: 3 / 4;
 }
 
+.poster-grid .poster-entry:has(.poster-media[data-square-poster]) {
+  aspect-ratio: auto;
+  align-self: start;
+  content-visibility: visible;
+}
+
+.poster-grid .poster-card:has(> .poster-media[data-square-poster]) {
+  height: auto;
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+.poster-media[data-square-poster] {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+}
+
+.poster-media[data-square-poster]::after {
+  display: none;
+}
+
+.poster-media[data-square-poster] .poster-media-image {
+  --artwork-fit: cover;
+  --artwork-position: center;
+  filter: none;
+  transform: none;
+}
+
+.poster-card:has(> .poster-media[data-square-poster]) .poster-overlay {
+  position: relative;
+  display: block;
+  padding: 0.7rem 0;
+  background: none;
+}
+
 @media (max-width: 48rem) {
   .hero-stage-library .hero-copy h1 {
     height: 2.7em;

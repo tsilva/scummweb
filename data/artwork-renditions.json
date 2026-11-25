@@ -3524,5 +3524,31 @@
     "widths": [
       320
     ]
+  },
+  "/launcher/arthurs-reading-race-original-scan-2026-11-25-cover.webp": {
+    "width": 900,
+    "height": 894,
+    "widths": [
+      320,
+      480,
+      640
+    ]
+  },
+  "/launcher/backyard-baseball-original-scan-2026-11-25-cover.webp": {
+    "width": 490,
+    "height": 477,
+    "widths": [
+      320,
+      480
+    ]
+  },
+  "/launcher/backyard-baseball-2001-original-scan-2026-11-25-cover.webp": {
+    "width": 805,
+    "height": 800,
+    "widths": [
+      320,
+      480,
+      640
+    ]
   }
 }

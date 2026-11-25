@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
 import { DEFAULT_GAMES_ORIGIN } from "../lib/site-config.mjs";
+import { artworkObjectUrl } from "../lib/artwork-storage.mjs";
 import { readArtworkFile } from "./artwork-files.mjs";
 import { resolveArtworkWorkspace } from "./artwork-workspace.mjs";
 
@@ -48,6 +49,9 @@ export function validateManifest(manifest) {
       || !/^UklGR[A-Za-z0-9+/]+={0,2}$/.test(file.placeholder)
       || file.placeholder.length % 4 || file.placeholder.length > 1024)) {
       throw new Error(`Invalid artwork placeholder: ${name}`);
+    }
+    if (file.versionQuery !== undefined && file.versionQuery !== true) {
+      throw new Error(`Invalid artwork version query: ${name}`);
     }
   }
   for (const [source, image] of Object.entries(manifest.images || {})) {
@@ -103,7 +107,9 @@ export async function planArtwork(root = rootDir) {
     const placeholder = isArtworkSource(name)
       ? (previous.files[name]?.sha256 === sha256 && previous.files[name].placeholder) || await encodePlaceholder(bytes)
       : undefined;
-    files[name] = { key, sha256, bytes: bytes.length, contentType: types[path.extname(filename)], width, height, ...(placeholder ? { placeholder } : {}) };
+    const versionQuery = previous.files[name]?.sha256 === sha256 && previous.files[name].versionQuery;
+    files[name] = { key, sha256, bytes: bytes.length, contentType: types[path.extname(filename)], width, height,
+      ...(placeholder ? { placeholder } : {}), ...(versionQuery ? { versionQuery: true } : {}) };
   }
   const delivery = await fs.readFile(path.join(root, workspace, "delivery.json"), "utf8")
     .then(JSON.parse).catch((error) => { if (error.code !== "ENOENT") throw error; return null; });
@@ -143,12 +149,12 @@ export async function backfillArtworkPlaceholders(root = rootDir, request = fetc
 
 export async function verifyArtwork(manifest, request = fetch, cacheRoot) {
   validateManifest(manifest);
-  const pending = Object.values(manifest.files);
+  const pending = Object.entries(manifest.files);
   let verified = 0;
   await Promise.all(Array.from({ length: Math.min(8, pending.length) }, async () => {
     while (pending.length) {
-      const file = pending.pop();
-      const response = await request(`${manifest.origin}/${file.key}`, {
+      const [name, file] = pending.pop();
+      const response = await request(artworkObjectUrl(name, manifest), {
         redirect: "error", signal: AbortSignal.timeout(30_000),
       });
       if (!response.ok || response.headers.get("content-type")?.split(";")[0] !== file.contentType
