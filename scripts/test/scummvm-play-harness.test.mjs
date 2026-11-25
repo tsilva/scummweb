@@ -26,13 +26,13 @@ import {
   saveTargetPointCache,
   saveRoomHotspotMap,
   verifyChange,
-} from "../scripts/scummvm_play_harness.mjs";
+} from "../scummvm_play_harness.mjs";
 import {
   buildRoomKey,
   dedupeHotspotItems,
   normalizeHotspotFilename,
   normalizeHotspotLabel,
-} from "../scripts/scummvm_hotspot_tools.mjs";
+} from "../scummvm_hotspot_tools.mjs";
 
 test("play harness normalizes library metadata and finds games by target", () => {
   const library = getPlayGameLibrary({

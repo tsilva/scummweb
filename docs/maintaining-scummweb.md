@@ -623,12 +623,19 @@ dependency. Keep the full dependency audit and the 48-hour dependency release ho
 | Command | Purpose |
 | --- | --- |
 | `pnpm lint` | Check JavaScript and JSX syntax, including the agent backbone. |
-| `pnpm test` | Run the app and agent backbone Node test suites. |
+| `pnpm test` | Run the app's Node test suite. |
+| `pnpm test:backbone` | Run the optional [agent backbone](agent-backbone.md) test suite. |
+| `pnpm test:browser-tools` | Run the optional browser-tools test suite. |
 | `pnpm build` | Stage assets and build the app. |
 | `pnpm run dev` | Develop at `http://localhost:47831`. |
 | `pnpm run start` | Serve the production build at `http://localhost:47831`. |
 | `pnpm run record:preview` | Stream distinct preview frames as MPEG-TS. |
 | `pnpm run verify` | Boot detected games with the Chrome/Chromium harness. |
+
+The site install only installs the root package. The Chrome/Chromium verifier,
+browser REPL, and local ScummVM rebuilds that redetect the game catalog need the
+optional browser tools. Install them from the repository root with
+`pnpm --filter scummweb-browser-tools install --frozen-lockfile`.
 
 The app stages `scummvm-shell/` into `public/`. The core WASM, six large
 engine plugins, and corresponding-source ZIP are Git-ignored. On a fresh

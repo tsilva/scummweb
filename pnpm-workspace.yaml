@@ -1,6 +1,8 @@
 packages:
   - agent-backbone
+  - scripts
 
+recursiveInstall: false
 minimumReleaseAge: 2880
 blockExoticSubdeps: true
 allowBuilds:
