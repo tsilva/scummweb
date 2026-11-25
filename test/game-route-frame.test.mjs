@@ -27,6 +27,18 @@ const bootUrl = new URL("../app/game-player/useBootState.js", import.meta.url);
 const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), {
   filename: bootUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
 });
+const archiveStartupUrl = new URL("../app/game-player/archive-startup.mjs", import.meta.url);
+const { code: archiveStartupCode } = await swc.transform(await readFile(archiveStartupUrl, "utf8"), {
+  filename: archiveStartupUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
+});
+
+function loadArchiveStartup(window, sendZipGameFiles) {
+  const module = { exports: {} };
+  runInNewContext(archiveStartupCode, {
+    module, exports: module.exports, window, require: () => ({ sendZipGameFiles }),
+  });
+  return module.exports;
+}
 
 for (const [message, mobile, installed] of [
   ["This ZIP link returned HTTP 404.", false, false],
@@ -42,13 +54,14 @@ for (const [message, mobile, installed] of [
     function Controls() {}
     function Overlay() {}
     const compiled = { exports: {} };
+    const window = { matchMedia: (query) => ({ matches: installed && query.includes("display-mode: standalone") }), location: {
+      href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
+      hash: "", search: "", replace: (href) => navigations.push(href),
+    } };
     runInNewContext(code, {
-      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator,
-      window: { matchMedia: (query) => ({ matches: installed && query.includes("display-mode: standalone") }), location: {
-        href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
-        hash: "", search: "", replace: (href) => navigations.push(href),
-      } },
+      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator, window,
       require(name) {
+        if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup(window);
         if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
@@ -194,11 +207,13 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   function Overlay() {}
   const module = { exports: {} };
   const bootModule = { exports: {} };
+  const archiveStartup = loadArchiveStartup(window, (receiver, files) => deliveries.push({ receiver, files }));
   runInNewContext(code, {
     module, exports: module.exports, window, URL, URLSearchParams, AbortController,
     navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: fetchShell,
     require: function require(name) {
+      if (name.endsWith("/archive-startup.mjs")) return archiveStartup;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
@@ -277,7 +292,6 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       }) };
       if (name.endsWith("/startup-diagnostics.mjs")) return startupDiagnostics;
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
-      if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
       return {};
     },
   });
@@ -1048,6 +1062,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
+      if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup();
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {

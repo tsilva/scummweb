@@ -634,6 +634,8 @@ checkout, `pnpm run prepare:scummvm` builds the matching runtime and source
 archive from the pinned ScummVM checkout and Emscripten SDK. The build needs
 Bash, Git, curl, make, CMake, Python 3 with Pillow, and standard archive tools.
 `pnpm prepare` runs this check and reuses an existing validated bundle.
+Staging keeps unchanged managed files in `public/`, updates changed files and
+clears stale managed files before validating the staged bundle.
 Edit `web-shell/` for browser-runtime changes. Set the same project-relative
 `SCUMMWEB_DIST_DIR` for build and start when an audit must coexist with another server.
 

@@ -84,8 +84,6 @@ test("reopened copies retain their save namespace and legacy saves remain explic
   assert.equal(refreshed.game.saveNamespace, first.game.saveNamespace);
   assert.equal(first.game.saveVersionId, imported.id);
   assert.equal(first.game.recentGameId, `source:${imported.id}`);
-  assert.equal(first.game.platform, "DOS");
-  assert.equal(first.game.language, "English");
   assert.equal(first.game.skipIntro, null);
   const legacy = await playSources.prepareGameSourcePlayer(source(), game, { legacySaves: true });
   assert.equal(legacy.game.saveNamespace, undefined);
@@ -166,6 +164,8 @@ test("refreshing an imported game restores the remembered accessible copy", asyn
   assert.equal(view.type, app.Archive);
   assert.equal(view.props.game.saveVersionId, second.id);
   assert.equal(view.props.game.playHref, tentacle.playHref);
+  assert.equal(view.props.game.platform, "DOS");
+  assert.equal(view.props.game.language, "English");
   app.cleanup();
 });
 

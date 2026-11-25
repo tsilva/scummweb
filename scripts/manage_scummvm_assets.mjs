@@ -70,13 +70,42 @@ function shouldCopyEntry(sourcePath) {
   return !skipNames.has(path.basename(sourcePath));
 }
 
-function copyManagedPath(sourceDir, targetDir, relativePath) {
-  const sourcePath = path.join(sourceDir, relativePath);
-  const targetPath = path.join(targetDir, relativePath);
+const sourceChunk = Buffer.allocUnsafe(128 * 1024);
+const targetChunk = Buffer.allocUnsafe(sourceChunk.length);
 
-  if (!fs.existsSync(sourcePath)) {
+function hasSameContents(sourcePath, targetPath) {
+  const source = fs.openSync(sourcePath, "r");
+  try {
+    const target = fs.openSync(targetPath, "r");
+    try {
+      while (true) {
+        const sourceBytes = fs.readSync(source, sourceChunk);
+        const targetBytes = fs.readSync(target, targetChunk);
+        if (sourceBytes !== targetBytes) return false;
+        if (!sourceBytes) return true;
+        if (!sourceChunk.subarray(0, sourceBytes).equals(targetChunk.subarray(0, targetBytes))) return false;
+      }
+    } finally {
+      fs.closeSync(target);
+    }
+  } finally {
+    fs.closeSync(source);
+  }
+}
+
+function syncManagedPath(sourcePath, targetPath) {
+  const source = shouldCopyEntry(sourcePath) ? fs.statSync(sourcePath, { throwIfNoEntry: false }) : undefined;
+  const target = fs.lstatSync(targetPath, { throwIfNoEntry: false });
+  if (source?.isDirectory() && target?.isDirectory()) {
+    const names = new Set([...fs.readdirSync(sourcePath), ...fs.readdirSync(targetPath)]);
+    for (const name of names) syncManagedPath(path.join(sourcePath, name), path.join(targetPath, name));
     return;
   }
+  if (source?.isFile() && target?.isFile() && source.size === target.size && source.mode === target.mode &&
+      hasSameContents(sourcePath, targetPath)) return;
+
+  if (target) fs.rmSync(targetPath, { force: true, recursive: true });
+  if (!source) return;
 
   fs.cpSync(sourcePath, targetPath, {
     dereference: true,
@@ -88,10 +117,10 @@ function copyManagedPath(sourceDir, targetDir, relativePath) {
 
 function syncManagedAssets(sourceDir, targetDir) {
   fs.mkdirSync(targetDir, { recursive: true });
-  removeRelativePaths(targetDir, [...managedPaths, ...stalePaths]);
+  removeRelativePaths(targetDir, stalePaths);
 
   for (const managedPath of managedPaths) {
-    copyManagedPath(sourceDir, targetDir, managedPath);
+    syncManagedPath(path.join(sourceDir, managedPath), path.join(targetDir, managedPath));
   }
 }
 

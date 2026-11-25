@@ -71,6 +71,10 @@ test("ISO import, folder drops, reconnect, access restore and reopened player pr
   const player = await prepareGameSourcePlayer(source, presentation);
   assert.equal(player.game.saveVersionId, source.id);
   await assert.rejects(player.loadArchive(signal()), /Allow file access/);
+  const selected = await prepareGameSourcePlayer({ ...source, handle: undefined }, presentation, { validatedFile: file });
+  assert.equal(selected.game.saveNamespace, player.game.saveNamespace);
+  const [selectedEntry] = await selected.loadArchive(signal());
+  assert.equal(await selectedEntry.blob.text(), "123456789");
   assert.equal(await requestGameSourceAccess(source), "available");
   const [entry] = await player.loadArchive(signal());
   assert.equal(await entry.blob.text(), "123456789");

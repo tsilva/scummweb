@@ -11,7 +11,7 @@ import { fileNode, handleNode } from "../game-import-nodes.mjs";
 import { inspectLocalSourceFiles } from "../game-source-inspection.mjs";
 import { startArchiveRecovery } from "./archive-recovery.mjs";
 import LibraryView from "./library-view";
-import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
+import { catalogGameEntries, getGameFamilyKey, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseArchiveHandles } from "./local-game";
@@ -381,16 +381,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         if (group) selectGame(group.game);
         return;
       }
-      game = { ...game, recentGameId: `source:${source.id}`, activityVersion: sourceActivityVersion(source),
-        saveFingerprint: source.fingerprint,
-        saveVersionId: legacySaves ? undefined : source.id,
-        saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
-      if (source.url) {
-        selectGameArchive(async (signal, onProgress) => {
-          const { readRemoteGameArchive } = await import("../game-bucket.mjs");
-          return readRemoteGameArchive(source.url, { signal, onProgress });
-        }, game);
-      } else {
+      let validatedFile;
+      if (!source.url) {
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
@@ -400,10 +392,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         try {
           const file = data ?? await source.handle.getFile();
           validateLocalGameArchive(file);
-          selectGameArchive(async (signal, onProgress) => {
-            const { openLocalGameArchive } = await import("../local-game-archive.mjs");
-            return openLocalGameArchive(file, signal, onProgress);
-          }, game);
+          validatedFile = file;
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
@@ -412,6 +401,11 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
           return;
         }
       }
+      const player = await sourcePresentation.prepareGameSourcePlayer(source, {
+        ...game, activityVersion: sourceActivityVersion(source), saveFingerprint: source.fingerprint,
+      }, { legacySaves, validatedFile });
+      game = player.game;
+      selectGameArchive(player.loadArchive, game);
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       if (!onPlayArchive?.(game, resume)) {
         router.push(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`);
