@@ -221,7 +221,7 @@ export async function readStoredSets(destinations) {
   for (const sets of copies) {
     for (const set of sets) {
       const id = `${set.destination.key}:${set.hash}`;
-      if (!unique.has(id)) unique.set(id, { ...set, id });
+      if (!unique.has(id)) unique.set(id, { ...set, id, legacyMigration: true });
     }
   }
   return [...unique.values()];
@@ -230,6 +230,10 @@ export async function preserveSets(sets) {
   return withSetStore("readwrite", (store) => {
     for (const set of sets) store.put({ ...set, id: `${set.destination.key}:${set.hash}`, preservedAt: Date.now() });
   });
+}
+
+export function removePreservedSet(set) {
+  return withSetStore("readwrite", (store) => store.delete(`${set.destination.key}:${set.hash}`));
 }
 
 export async function withSaveLock(action) {

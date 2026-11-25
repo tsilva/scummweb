@@ -3,15 +3,17 @@ import { trackCloudTransfers } from "../cloud/transfer-progress.mjs";
 import { authorizationRequest, connectionKey, DropboxError, exchangeCode, sessionKey } from "./client.mjs";
 import { createSaveCollection, publishProfile, readSnapshot, saveProfileId } from "./protocol.mjs";
 import { syncStore } from "./store.mjs";
+import { cloudSaveStatus, lastSaveAccess, openHistoryCache, recentlyOpened, recordKey,
+  rememberCloudSave, withSaveAccess, workingSaveLimit } from "./local-cache.mjs";
 import { syncPlayActivity } from "./activity-sync.mjs";
 import { activityCacheKey } from "../game-player/activity.mjs";
-import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
-  readStoredSets, saveLockName } from "../save-backups/backups.mjs";
+import { applyImport, destinationMatches, getActiveSaveSets, getSaveDestinations, identifySet, matchDestination, preserveSets,
+  readStoredSets, removePreservedSet, saveLockName } from "../save-backups/backups.mjs";
 import { captureFilesystem, replaceEmptySaveFile } from "../save-backups/filesystem.mjs";
 import { baseballRecordsPath, hasEmptyBaseballRecords, newestBaseballRecords } from "../save-backups/baseball-records.mjs";
 import { readIncompleteSaveWrites } from "../save-backups/incomplete-writes.mjs";
 import { readGameSources } from "../game-sources.mjs";
-import { editionDirectory, editionKey, editionLockName, matchesLegacySave, saveDirectory } from "../../web-shell/save-editions.mjs";
+import { editionDirectory, editionKey, editionLockName, matchesLegacySave, readSaveTree, saveDirectory } from "../../web-shell/save-editions.mjs";
 import { ensureSaveStorage, openSaveStorage } from "../../web-shell/save-storage.mjs";
 
 const ownerKey = "scummweb.dropbox-owner.v1";
@@ -25,6 +27,7 @@ let activityController;
 const restoreSpaceWait = new Map();
 const downloadedRestores = new Map();
 const restoreSpaceMessage = "Browser storage is full. Saves that could not be restored are retained in Dropbox.";
+const cloudChangedMessage = "Cloud saves changed during sync. Checking them again shortly.";
 const isQuotaError = (error) => [error?.name, error?.cause?.name].includes("QuotaExceededError");
 const appKey = () => process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || "";
 export function dropboxConfigured() { return Boolean(appKey()); }
@@ -33,6 +36,74 @@ export function subscribeDropbox(listener) { listeners.add(listener); return () 
 export async function waitForDownloadedSave(destinationKey) {
   const pending = downloadedRestores.get(destinationKey);
   return pending ? Boolean((await pending.catch(() => null))?.restored) : false;
+}
+export async function requiresDropboxRestore(destinationKey) {
+  if (!destinationKey) return false;
+  const account = connection()?.accountId;
+  const known = cloudSaveStatus(destinationKey);
+  return Boolean(known?.needsRestore || account && globalThis.indexedDB
+    && await syncStore.get(recordKey(account, "evicted", destinationKey)));
+}
+export async function hasLocalDropboxFiles(destinationKey) {
+  if (!destinationKey || destinationKey === "shared") return false;
+  const family = destinationKey.startsWith("catalog:") ? destinationKey.slice(8) : null;
+  const namespace = family ? "" : destinationKey;
+  const edition = editionKey(namespace, family);
+  if (!edition) return false;
+  const storage = await openSaveStorage();
+  const { editionRoot, files, inode } = readSaveTree(storage, edition, namespace);
+  return Object.entries(files).some(([name, key]) => {
+    if (!editionRoot && !namespace && !destinationMatches({ family }, name)) return false;
+    if (name === "timestamps") return false;
+    const file = inode(key);
+    return file?.type === 0x8000 && file.size > 0 && storage.getBytes(file.dataKey)?.length === file.size;
+  });
+}
+async function withBackupCollection(destination, action, signal) {
+  const auth = session();
+  if (!auth) throw new DropboxError("Connect to Dropbox to view these backups.");
+  const controller = AbortSignal.timeout(180000);
+  const transport = await createNativeCloudClient(auth, { signal: signal ? AbortSignal.any([signal, controller]) : controller });
+  try {
+    const client = await createSaveCollection(transport, await openHistoryCache(auth.accountId, { persist: false }));
+    const result = await action(client, await saveProfileId({ destination }));
+    if (session()?.connectionId !== auth.connectionId || session()?.accountId !== auth.accountId) {
+      throw new DropboxError("Dropbox disconnected.", "cancelled");
+    }
+    return result;
+  } finally { transport.close(); }
+}
+export function listDropboxBackups(destination, signal) {
+  return withBackupCollection(destination, (client, profile) => client.backups(profile), signal);
+}
+export function downloadDropboxBackup(destination, hash, signal) {
+  return withBackupCollection(destination, (client, profile) => client.snapshot(profile, hash), signal);
+}
+export async function restorePendingForLaunch(destinationKey) {
+  const account = connection()?.accountId;
+  if (!account || !destinationKey) return false;
+  const pending = destinationKey.startsWith("catalog:")
+    ? await syncStore.get(recordKey(account, "pending", await saveProfileId({ destination: { key: destinationKey } })))
+    : (await syncStore.all(recordKey(account, "pending", ""))).find(item => item.set.destination.key === destinationKey);
+  if (!pending?.set.files?.length || await identifySet(pending.set) !== pending.set.hash) return false;
+  const { destination } = pending.set;
+  const destinations = [destination];
+  return await lockedSaves(async (storage, scoped) => {
+    const active = await getActiveSaveSets(storage, destinations);
+    if (active.sets.some(set => matchDestination(set, [destination]))) return true;
+    if (readIncompleteSaveWrites(storage, destinations, active.sets).length) return false;
+    const latest = await syncStore.get(pending.id);
+    if (latest?.set.hash !== pending.set.hash) return false;
+    let initialConfig;
+    if (!active.hasRoot) {
+      const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) return false;
+      initialConfig = await response.text();
+    }
+    await applyImport({ storage, destinations, revision: active.revision, initialConfig, scoped: scoped ? destinationKey : undefined,
+      rows: [{ set: pending.set, destinationKey, choice: "imported" }], preserve: () => {} });
+    return true;
+  }, { destination }) === true;
 }
 function update(next) {
   if (next.phase && next.phase !== "syncing") next = { transferProgress: null, ...next };
@@ -52,7 +123,7 @@ function failure(error) {
   if (error.kind === "cancelled" || error.kind === "priority") return;
   if (error.kind === "integrity") { update({ phase: "connected", message: "", verified: false }); return; }
   update({ phase: !connection()?.enabled ? "disconnected" : error.kind === "auth" ? "reconnect" : "waiting",
-    message: error instanceof DropboxError ? error.message : isQuotaError(error) ? restoreSpaceMessage
+    message: error instanceof DropboxError ? error.message : isQuotaError(error) ? "Browser storage is full. Free space to sync new saves."
       : "Could not sync saves. Your local copies are retained.", verified: false });
 }
 async function context() {
@@ -132,8 +203,62 @@ async function lockedSaves(action, { readOnly = false, destination } = {}) {
     });
   });
 }
-// Baselines and cached nodes belong to this storage layout and snapshot format.
-const recordKey = (account, kind, profile) => `${account}/saves-v1/${kind}/${profile}`;
+const saveBytes = (set) => set.files.reduce((total, file) => total + file.data.byteLength, 0);
+
+async function evictColdSaves({ account, client, destinations, scanned, protectedProfiles, heads, check, restoreNeeded }) {
+  if (scanned.busy || scanned.incomplete.length) return false;
+  const { budget, reclaim } = await workingSaveLimit();
+  let excess = Math.max(scanned.active.sets.reduce((total, set) => total + saveBytes(set), 0) - budget, reclaim, restoreNeeded);
+  if (excess <= 0) return false;
+  const candidates = [];
+  for (const set of scanned.active.sets) {
+    const destinationKey = matchDestination(set, destinations);
+    if (set.destination.key !== destinationKey || destinationKey === "shared") continue;
+    const profile = await saveProfileId(set);
+    if (protectedProfiles.has(profile) || heads.get(profile)?.active !== set.hash) continue;
+    const access = await lastSaveAccess(account, destinationKey);
+    if (!recentlyOpened(access)) candidates.push({ set, profile, destinationKey, usedAt: access?.usedAt ?? 0 });
+  }
+  candidates.sort((a, b) => a.usedAt - b.usedAt || saveBytes(b.set) - saveBytes(a.set));
+  let evicted = false;
+  for (const { set, profile, destinationKey } of candidates) {
+    if (excess <= 0) break;
+    check();
+    let remote;
+    try { remote = await client.verifySnapshot(profile, set.hash); }
+    catch (error) {
+      if (error.kind !== "integrity") throw error;
+      continue;
+    }
+    const didEvict = await withSaveAccess(destinationKey, () => lockedSaves(async (storage, scoped) => {
+      check();
+      if (recentlyOpened(await lastSaveAccess(account, destinationKey))
+        || await syncStore.get(recordKey(account, "pending", profile))) return false;
+      const current = await getActiveSaveSets(storage, destinations);
+      if (readIncompleteSaveWrites(storage, destinations, current.sets).length) return false;
+      const copies = current.sets.filter(item => matchDestination(item, [set.destination]));
+      if (copies.length !== 1 || copies[0].hash !== set.hash || copies[0].destination.key !== destinationKey) return false;
+      const remoteTimes = new Map(remote.files.map(({ path, modifiedAt }) => [path, modifiedAt]));
+      if (copies[0].files.some(({ path, modifiedAt }) => remoteTimes.get(path) !== modifiedAt)) return false;
+      const empty = { ...copies[0], files: [] };
+      empty.hash = await identifySet(empty);
+      check();
+      // Persist the cloud-only receipt before the filesystem transaction. If
+      // eviction is interrupted, an intact local copy can still be opened.
+      await syncStore.put({ id: recordKey(account, "evicted", destinationKey), hash: set.hash });
+      rememberCloudSave(destinationKey, { hash: set.hash, needsRestore: true });
+      check();
+      await applyImport({ storage, destinations, revision: current.revision, check, scoped: scoped ? destinationKey : undefined,
+        rows: [{ set: empty, destinationKey, choice: "imported" }], preserve: () => {} });
+      return true;
+    }, { destination: set.destination }), { ifAvailable: true });
+    if (didEvict === true) {
+      evicted = true;
+      excess -= saveBytes(set);
+    }
+  }
+  return evicted;
+}
 function baseballRepairs(storage, destinations, active, incomplete) {
   const repairs = [];
   for (const entry of incomplete) {
@@ -274,15 +399,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
     const focusProfile = launchProfile ?? playingProfile;
     check();
     syncAccountActivity(transport.activityClient(), auth, sources);
-    const historyPrefix = recordKey(account, "history", "");
-    const metadata = new Map((await syncStore.all(historyPrefix)).map(({ node }) => [node.id, node]));
-    const client = await createSaveCollection(transport, {
-      load: (id, revision) => metadata.get(id)?.revision === revision ? metadata.get(id) : undefined,
-      async save(node) {
-        await syncStore.put({ id: historyPrefix + node.id, node });
-        metadata.set(node.id, node);
-      },
-    });
+    const client = await createSaveCollection(transport, await openHistoryCache(account));
     check();
     const scanGeneration = localGeneration;
     const scanned = await scanLocalSaves(destinations, client, check);
@@ -294,14 +411,15 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         ...active.sets.map(set => set.destination.key), ...incomplete.map(entry => entry.destinationKey),
       ]);
       const isUnmatched = entry => !destinations.some(({ key }) => key === entry.destinationKey);
-      if (!scanned.busy && !scanned.incomplete.some(isUnmatched)) {
+      if (launchProfile && !scanned.busy && !scanned.incomplete.some(isUnmatched)) {
         const occupied = occupiedEditions(scanned.active, scanned.incomplete);
         const rows = [];
-        for await (const snapshot of client.verifiedFallbacks()) {
+        for await (const snapshot of client.verifiedFallbacks(launchProfile)) {
           const set = await withoutEmptyRecords(snapshot);
           if (!set) continue;
           const destinationKey = matchDestination(set, destinations);
-          if (!destinationKey || destinationKey === "shared" || occupied.has(destinationKey)) continue;
+          if (destinationKey !== priority.destination || occupied.has(destinationKey)) continue;
+          if (await syncStore.get(recordKey(account, "evicted", destinationKey))) continue;
           occupied.add(destinationKey);
           rows.push({ set, destinationKey, choice: "imported" });
         }
@@ -320,7 +438,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
             initialConfig = await response.text();
           }
           check();
-          await applyImport({ storage, destinations, rows: imports, revision: active.revision, initialConfig, check });
+          await applyImport({ storage, destinations, rows: imports, revision: active.revision, initialConfig, check, preserve: () => {} });
           window.dispatchEvent(new Event("scummweb:saves-changed"));
         });
       }
@@ -329,8 +447,11 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
     }
     const baselinePrefix = recordKey(account, "base", "");
     const baselines = new Map((await syncStore.all(baselinePrefix)).map(record => [record.id.slice(baselinePrefix.length), record]));
-    const preservedHashes = new Set();
-    const preservedUnmatched = new Set();
+    const recoveries = new Map();
+    const keepRecovery = (profile, set, remove) => {
+      if (!recoveries.has(profile)) recoveries.set(profile, []);
+      recoveries.get(profile).push({ set, remove });
+    };
     const groups = new Map();
     const collected = scanned.busy ? scanned : await (async () => {
       const { active, incomplete } = scanned;
@@ -356,14 +477,12 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       }
       for (const set of stored) {
         const profile = await saveProfileId(set);
-        const identity = `${profile}/${set.hash}`;
-        preservedHashes.add(identity);
-        if (!matchDestination(set, destinations)) preservedUnmatched.add(identity);
         if (blocked.has(profile)) continue;
         const usable = await withoutEmptyRecords(set);
         if (!usable) continue;
         if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
         groups.get(profile).alternatives.push(usable);
+        if (usable === set && !set.legacyMigration) keepRecovery(profile, set, () => removePreservedSet(set));
       }
       for (const [profile, group] of groups) {
         check();
@@ -373,8 +492,6 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         if (group.local && group.local.hash !== baselines.get(profile)?.hash) {
           await syncStore.putIfAbsent({ id: recordKey(account, "pending", profile), profile, set: group.local });
         }
-        // Preserved imports/migration data survive a browser purge as well.
-        for (const set of group.alternatives) await syncStore.put({ id: recordKey(account, "preserved", `${profile}/${set.hash}`), profile, set });
       }
       return { busy: false, blocked, revision: active.revision };
     })();
@@ -398,6 +515,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       if (!set) continue;
       if (!groups.has(item.profile)) groups.set(item.profile, { local: null, alternatives: [] });
       groups.get(item.profile).alternatives.push(set);
+      if (set === item.set) keepRecovery(item.profile, set, () => syncStore.remove(item.id));
     }
     for (const profile of client.profiles()) {
       if (!groups.has(profile)) groups.set(profile, { local: null, alternatives: [] });
@@ -413,6 +531,11 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       const baseline = baselines.get(profile);
       return { profile, ...group, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], check };
     };
+    async function rememberBaseline(profile, head) {
+      const current = baselines.get(profile);
+      if (current?.hash === head.active && current.tips?.join() === head.tips.join()) return;
+      await syncStore.put({ id: recordKey(account, "base", profile), hash: head.active, tips: head.tips });
+    }
     const hasIndependentWorkingCopy = (input) => input.browserSet && input.browserSet.hash !== input.local?.hash
       && input.browserSet.hash !== input.base;
     async function stageBackground() {
@@ -431,18 +554,15 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
     const hasIncomplete = Boolean(collected.incomplete || collected.blocked?.size);
     let deferred = false;
     let deferredMessage = "";
-    const playingRestores = new Set();
-    async function deferPlayingRestore(profile, head, local) {
-      if (local && head.snapshots.includes(local.hash)) {
-        await syncStore.removeIf(recordKey(account, "pending", profile), pending => pending.set.hash === local.hash);
-      }
-      playingRestores.add(profile);
-    }
+    let restoreNeeded = 0;
+    const destinationsByProfile = new Map(await Promise.all(destinations.map(async destination =>
+      [await saveProfileId({ destination }), destination])));
     let stagedBackground = false;
     for (const [profile, group] of ordered) {
       check();
       if (collected.blocked?.has(profile)) continue;
       const focused = profile === focusProfile;
+      const restoreOnLaunch = profile === launchProfile;
       if (!focused && !stagedBackground) {
         if (playback) playback.background = true;
         await stageBackground();
@@ -459,33 +579,48 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         result = await publishProfile({ client, profile, local: group.local, base: baseline?.hash ?? null, baseTips: baseline?.tips ?? [], refreshUnchanged: false, check });
       }
       check();
-      for (const hash of result.head.alternatives) {
-        const identity = `${profile}/${hash}`;
-        if (preservedHashes.has(identity)) continue;
-        const alternative = await readSnapshot(client, profile, hash);
+      const verifiedRecoveries = new Set();
+      for (const { set, remove } of recoveries.get(profile) ?? []) {
+        if (!result.head.snapshots.includes(set.hash)) continue;
+        if (!verifiedRecoveries.has(set.hash)) {
+          await client.verifySnapshot(profile, set.hash);
+          verifiedRecoveries.add(set.hash);
+        }
         check();
-        await preserveSets([alternative]);
-        preservedHashes.add(identity);
+        await remove();
       }
       const remoteHash = result.head.active;
-      if (remoteHash && !preservedUnmatched.has(`${profile}/${remoteHash}`)
-        && (result.action === "download" || !collected.busy && remoteHash !== group.browserSet?.hash)) {
-        if (collected.busy) {
-          if (baseline?.hash !== remoteHash) {
-            deferred = true;
-            deferredMessage ||= "Close games in other ScummWEB tabs before restoring cloud saves.";
-          }
-          continue; // Never replace a running game's files.
+      const destination = destinationsByProfile.get(profile);
+      const destinationKey = destination?.key;
+      const hasLocal = Boolean(group.browserSet?.files.length);
+      const needsRestore = Boolean(remoteHash && remoteHash !== group.browserSet?.hash);
+      if (destinationKey && destinationKey !== "shared") {
+        if (result.head.fileCount) {
+          try { rememberCloudSave(destinationKey, { hash: remoteHash, needsRestore }); } catch { /* Discovery is optional. */ }
+        } else if (!collected.busy && !await syncStore.get(recordKey(account, "evicted", destinationKey))) {
+          try { rememberCloudSave(destinationKey, null); } catch { /* An earlier receipt still prevents a blank launch. */ }
         }
-        const identity = `${profile}/${remoteHash}`;
-        if (profile === playingProfile && preservedHashes.has(identity)) {
-          const edition = editionKey(playingDestination.namespace, playingDestination.family);
-          const locks = await navigator.locks.query?.();
-          if (edition && locks?.held.some(lock => lock.name === editionLockName(edition))) {
-            check();
-            await deferPlayingRestore(profile, result.head, group.local);
-            continue;
-          }
+      }
+      if (!remoteHash && restoreOnLaunch && !hasLocal && await requiresDropboxRestore(destinationKey)) {
+        throw new DropboxError("This game’s Dropbox saves could not be verified. Reconnect Dropbox or try again.");
+      }
+      if (needsRestore && !restoreOnLaunch) {
+        if (group.local && result.head.snapshots.includes(group.local.hash)) {
+          await syncStore.removeIf(recordKey(account, "pending", profile), pending => pending.set.hash === group.local.hash);
+        }
+        // Keep the baseline of the existing working copy until launch actually
+        // restores the reconciled set. A stale copy must not look like a new edit.
+        if (!hasLocal && !collected.busy && !group.local) {
+          await rememberBaseline(profile, result.head);
+        }
+        committedHeads.set(profile, result.head);
+        continue;
+      }
+      if (needsRestore) {
+        if (collected.busy) {
+          deferred = true;
+          deferredMessage ||= "Close games in other ScummWEB tabs before restoring cloud saves.";
+          continue; // Never replace a running game's files.
         }
         const restoreKey = recordKey(account, "restore-space", profile);
         const previous = restoreSpaceWait.get(restoreKey);
@@ -495,13 +630,19 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         }
         const remote = await readSnapshot(client, profile, remoteHash);
         check();
+        if (matchDestination(remote, destinations) !== destinationKey) continue;
         if (hasEmptyBaseballRecords(remote)) {
           await client.recoverBaseballRecords(profile, newestBaseballRecords([group.browserSet, group.local].filter(Boolean)), check);
           return { retry: true };
         }
+        const verified = new Set([remoteHash, ...verifiedRecoveries]);
+        for (const set of [group.browserSet, ...group.alternatives].filter(Boolean)) {
+          if (verified.has(set.hash) || !result.head.snapshots.includes(set.hash)) continue;
+          await readSnapshot(client, profile, set.hash);
+          verified.add(set.hash);
+        }
+        check();
         let restoreRevision;
-        const destinationKey = matchDestination(remote, destinations);
-        const destination = destinations.find(({ key }) => key === destinationKey);
         const restoration = lockedSaves(async (storage, scoped) => {
           check();
           for (const entry of readIncompleteSaveWrites(storage, destinations)) {
@@ -522,7 +663,11 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
           check();
           activity({ stage: "restore", title: remote.destination.title, percentage: 100 });
           await applyImport({ storage, destinations, revision: current.revision, initialConfig, check, scoped: scoped ? destinationKey : undefined,
-            rows: [{ set: remote, destinationKey, choice: "imported" }] });
+            rows: [{ set: remote, destinationKey, choice: "imported" }],
+            preserve: async (sets) => {
+              const unverified = sets.filter(set => !verified.has(set.hash));
+              if (unverified.length) await preserveSets(unverified);
+            } });
           activity({ stage: "verify", title: remote.destination.title, percentage: 100 });
           return { changed: false, restored: Boolean(destinationKey) && local?.hash !== remote.hash };
         }, { destination }).catch((error) => {
@@ -540,14 +685,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         }
         if (restored.quota) {
           spaceBlocked.add(profile);
-          continue;
-        }
-        if (restored.playing) {
-          // Keep the received result and the current player's exact bytes.
-          // Leave the old baseline until the local restore can be applied.
-          if (!preservedHashes.has(identity)) await preserveSets([remote]);
-          check();
-          await deferPlayingRestore(profile, result.head, group.local);
+          restoreNeeded = saveBytes(remote);
           continue;
         }
         if (restored.busy || restored.changed) {
@@ -557,11 +695,14 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
           continue;
         }
         restoreSpaceWait.delete(restoreKey);
-        // Preserving an unavailable edition changes no active saves. Announcing
-        // it would schedule another pass forever through startDropboxSync.
-        if (restored.restored) window.dispatchEvent(new Event("scummweb:saves-changed"));
+        if (restored.restored) {
+          await syncStore.remove(recordKey(account, "evicted", destinationKey));
+          window.dispatchEvent(new Event("scummweb:saves-changed"));
+        }
+        try { rememberCloudSave(destinationKey, result.head.fileCount ? { hash: remoteHash, needsRestore: false } : null); }
+        catch { /* Files are committed. */ }
       }
-      await syncStore.put({ id: recordKey(account, "base", profile), hash: result.head.active, tips: result.head.tips });
+      await rememberBaseline(profile, result.head);
       await syncStore.removeIf(recordKey(account, "pending", profile), (pending) => pending.set.hash === group.local?.hash);
       readyProfiles.add(profile);
       committedHeads.set(profile, result.head);
@@ -571,13 +712,22 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         await client.refresh();
         check();
         if (client.hasDamagedArchives()) return { retry: true };
-        if (!sameHead(profile, result.head)) return { retry: true };
+        if (!sameHead(profile, result.head)) {
+          update({ phase: "waiting", message: cloudChangedMessage });
+          return { retry: true };
+        }
         await queue.catch(() => {});
         const pending = await syncStore.get(recordKey(account, "pending", profile));
         check();
         if (pending || scanGeneration !== localGeneration) return { retry: true };
         priority.ready();
       }
+    }
+    const evicted = await evictColdSaves({ account, client, destinations, scanned, heads: committedHeads, check, restoreNeeded,
+      protectedProfiles: new Set([launchProfile, playingProfile]) });
+    if (evicted && spaceBlocked.size) {
+      for (const profile of spaceBlocked) restoreSpaceWait.delete(recordKey(account, "restore-space", profile));
+      return { retry: true };
     }
     if (spaceBlocked.size) {
       deferred = true;
@@ -592,8 +742,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       || [...committedHeads].some(([profile, head]) => !sameHead(profile, head));
     if (cloudChanged || reconciliationChanged) {
       launchSyncSnapshot = null;
-      update({ phase: "waiting", conflicts: [],
-        message: "Cloud saves changed during sync. Checking them again shortly." });
+      update({ phase: "waiting", conflicts: [], message: cloudChangedMessage });
       return { retry: true };
     }
     const observedGeneration = localGeneration;
@@ -614,7 +763,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
       scanned: new Set(groups.keys()), ready: new Set([...readyProfiles].filter((profile) => !pendingProfiles.has(profile))) };
     const pendingOther = pending.some(item => !collected.incomplete && !collected.blocked?.has(item.profile));
     update({ phase: pendingOther || deferred ? "waiting" : "connected", conflicts: [],
-      verified: !pending.length && !deferred && !collected.busy && !hasIncomplete && !playingRestores.size,
+      verified: !pending.length && !deferred && !collected.busy && !hasIncomplete,
       message: deferred ? deferredMessage || "Saved progress is waiting to be checked again."
         : pendingOther ? "Your latest saves are waiting to sync." : "" });
     return { retry: !collected.busy && !collected.incomplete
@@ -679,6 +828,10 @@ export async function syncDropbox({ beforeLaunch = false, launchDestinationKey =
     // Existing publications are immutable and outbox entries remain durable
     // until acknowledged. Restart a background-only pass with this game first.
     flightController?.abort(new DropboxError("Prioritizing the game being launched.", "priority"));
+    await flight.catch(() => {});
+    return syncDropbox({ beforeLaunch, launchDestinationKey });
+  }
+  if (beforeLaunch && launchDestinationKey && flightPriority && launchDestinationKey !== flightPriority.destination) {
     await flight.catch(() => {});
     return syncDropbox({ beforeLaunch, launchDestinationKey });
   }

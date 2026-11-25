@@ -164,6 +164,7 @@ export async function createSaveCollection(transport, cache) {
     await drain();
     nodes = next;
     damaged = rejected;
+    cache?.retainListed?.(new Set(nodes.keys()));
     for (const [id, entry] of recent) if (!nodes.has(id) || nodes.get(id).revision !== entry.revision) evict(id);
     return changed;
   }
@@ -171,10 +172,18 @@ export async function createSaveCollection(transport, cache) {
   const history = (profile) => profileHistory([...nodes.values()], profile);
   const head = (profile) => {
     const { tips, alternatives, own } = history(profile);
-    return { active: tips[0]?.hash ?? null, tips: tips.map(({ id }) => id), concurrent: tips.length > 1,
+    return { active: tips[0]?.hash ?? null, fileCount: tips[0]?.fileCount ?? 0, tips: tips.map(({ id }) => id), concurrent: tips.length > 1,
       snapshots: [...new Set(own.map(({ hash }) => hash))],
       alternatives: [...new Set([...alternatives, ...tips.slice(1)].map(({ hash }) => hash))].filter((hash) => hash !== tips[0]?.hash) };
   };
+  function findSnapshot(profile, hash) {
+    const { tips, own } = history(profile);
+    const matches = tips.some(item => item.hash === hash) ? tips : own;
+    const node = matches.filter(item => item.hash === hash)
+      .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id))[0];
+    if (!node) throw new DropboxError("Cloud snapshot is missing. Local saves are unchanged.", "integrity");
+    return node;
+  }
   async function put(set, parents, active, check) {
     const node = await makeSnapshot(set, parents, active);
     if (!nodes.has(node.id)) {
@@ -237,17 +246,24 @@ export async function createSaveCollection(transport, cache) {
     hasDamagedArchives: () => damaged.size > 0,
     stage,
     reconcile,
-    async *verifiedFallbacks() {
+    async *verifiedFallbacks(profile) {
       const latest = new Map();
       // Missing ancestry cannot authorize a merge or upload. Individual
       // checksummed archives can still seed a browser with no local progress.
-      for (const node of [...nodes.values()].filter(({ active }) => active)
+      for (const node of [...nodes.values()].filter(node => node.active && (!profile || node.profile === profile))
         .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id))) {
         if (!latest.has(node.profile)) latest.set(node.profile, node);
       }
       for (const node of latest.values()) if (node.fileCount) yield await readSet(node);
     },
     head,
+    backups(profile) {
+      const { tips, own } = history(profile);
+      const seen = new Set([tips[0]?.hash]);
+      return own.filter(node => node.fileCount).sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id))
+        .filter(node => !seen.has(node.hash) && seen.add(node.hash))
+        .map(({ hash, savedAt }) => ({ hash, savedAt }));
+    },
     async recoverBaseballRecords(profile, local, check) {
       let latest = local;
       const own = [...nodes.values()].filter(node => node.profile === profile && node.fileCount)
@@ -274,11 +290,14 @@ export async function createSaveCollection(transport, cache) {
       return latest;
     },
     async snapshot(profile, hash) {
-      const { tips, own } = history(profile);
-      const matches = tips.some((item) => item.hash === hash) ? tips : own;
-      const node = matches.filter((item) => item.hash === hash).sort((a, b) => b.savedAt - a.savedAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))[0];
-      if (!node) throw new DropboxError("Cloud snapshot is missing. Local saves are unchanged.", "integrity");
-      return readSet(node);
+      return readSet(findSnapshot(profile, hash));
+    },
+    async verifySnapshot(profile, hash) {
+      const node = findSnapshot(profile, hash);
+      return readNode(transport, node.id).then(verified => {
+        remember(verified, node.revision);
+        return verified.set;
+      });
     },
     async publish({ refreshUnchanged = true, ...input }) {
       if (await stage(input) || refreshUnchanged) await refresh();

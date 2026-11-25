@@ -93,7 +93,7 @@ test("verified routine checks show an up-to-date status and only the disconnect 
 
 test("connect is the only disconnected action and opens Dropbox authorization", async () => {
   const { tree, calls } = await row({ phase: "disconnected" });
-  assert.match(text(tree), /Saves are stored on this device/);
+  assert.match(text(tree), /New saves are stored on this device/);
   assert.deepEqual(nodes(tree).filter(({ type }) => type === "button").map(text), ["Connect"]);
   await button(tree, "Connect").props.onClick();
   assert.deepEqual(calls, ["connect"]);
@@ -105,7 +105,7 @@ test("connect is the only disconnected action and opens Dropbox authorization", 
 test("offline saves supersede up-to-date and in-progress cloud statuses", async () => {
   for (const state of [{ phase: "connected", verified: true }, { phase: "syncing", transferProgress: { stage: "upload", direction: "upload", percentage: 42, title: "Beneath a Steel Sky" } }, { phase: "waiting" }]) {
     const { tree } = await row(state, { online: false });
-    assert.match(text(tree), /Offline · Saves stay on this device/);
+    assert.match(text(tree), /Offline · New saves stay on this device/);
     assert.match(text(tree), /Sync resumes automatically/);
     assert.doesNotMatch(text(tree), /Saves up to date|Syncing saves|42%/);
     assert.deepEqual(nodes(tree).filter(({ type }) => type === "button").map(text), ["Disconnect"]);
@@ -252,7 +252,7 @@ test("export hands the ZIP to the browser without adding a second download link"
 test("Settings offers transfers while saved backups are handled in Load Game", async () => {
   const fixture = await settingsFixture();
   const tree = fixture.render();
-  assert.match(text(tree), /Transfer saves to or from your ScummVM apps/);
+  assert.match(text(tree), /Export saves on this device or import saves from another ScummVM app/);
   assert.ok(button(tree, "Export saves") && button(tree, "Import saves"));
   assert.doesNotMatch(text(tree), /Restore a backup|Choose a backup|Review backup/);
 });

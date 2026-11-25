@@ -7,7 +7,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { flushSync } from "react-dom";
 import { buildSkipIntroLaunchSrc } from "./skip-intro-config.mjs";
 import { readCatalogGameArchive } from "./game-bucket.mjs";
-import { dropboxEnabled, prepareDropboxLaunch, prioritizeDropboxGameplay, reportDropboxSave } from "./dropbox/bridge.mjs";
+import { dropboxEnabled, hasDropboxLaunchState, prepareDropboxLaunch, prioritizeDropboxGameplay, reportDropboxSave } from "./dropbox/bridge.mjs";
 import { gameLoadingStatus } from "./game-loading-status.mjs";
 import { isTvBrowser } from "./controller-device.mjs";
 import GameBootOverlay from "./game-player/GameBootOverlay";
@@ -698,8 +698,8 @@ export default function GameRouteFrame({
     async function openGame() {
       try {
         const isolatedSave = new URLSearchParams(window.location.search).has("agentSaveScope");
-        if (!isolatedSave && dropboxEnabled()) {
-          await prepareDropboxLaunch(dropboxDestination, window.location.hash === "#continue" ? game : null);
+        if (!isolatedSave && hasDropboxLaunchState(dropboxDestination)) {
+          await prepareDropboxLaunch(dropboxDestination, window.location.hash === "#continue" ? game : null, game, controller.signal);
         }
         if (controller.signal.aborted) return;
         let launchSrc = src;

@@ -50,7 +50,8 @@ same origin, so the usual application XSS protections remain essential.
 ## Player experience
 
 Choose **Settings → Saved games → Dropbox sync → Connect**. Active browser saves and
-preserved backup sets are copied automatically, without deleting browser originals.
+local recovery sets sync automatically. Once Dropbox verifies a recovery set,
+ScummWEB can release its browser copy. The complete recovery history stays in Dropbox.
 The main Saved games view contains Dropbox sync and Transfer saves. Transfer saves
 offers Export saves and Import saves side by side.
 A spinner appears while the Settings interface loads and during save transfers.
@@ -59,7 +60,8 @@ local saves. The transfer buttons stay disabled during that read.
 Export starts the ZIP download automatically. The export button briefly shows
 **Downloaded** when the browser takes over the download.
 To play from an earlier copy, open the matching game edition and go to
-**Load Game → Backed-up saves**. Select a slot to load it directly. ScummWEB
+**Load Game → Backed-up saves**. Select a dated Dropbox backup to download its
+slots, then select a slot to load it directly. Local backups show slots directly. ScummWEB
 opens the backup and its companion files in temporary storage. Your active
 save files stay intact. Use **Save Game** to keep playing from that point
 in a normal save slot. The backup list appears in games that support
@@ -106,10 +108,10 @@ still sync.
 Continue chooses the newest intact manual save or autosave at launch. If
 Dropbox has already downloaded progress for that edition, Continue lets the
 restore finish before choosing. An intact local save can open while unrelated
-games are still syncing. Routine background checks read a committed save
-snapshot while the game's launch controls stay available. A launch that needs
-cloud progress verifies and restores the selected edition first, then lets the
-other games continue syncing in the background.
+games are still syncing. Background checks discover cloud progress and keep
+the **Continue** action available for games whose saves are in Dropbox. Starting
+or continuing a game restores its edition when it needs cloud progress. Other
+editions stay in Dropbox until they are opened.
 On the first sync of an account, ScummWEB downloads and verifies unseen
 snapshots in small groups. Large ZIPs are verified one at a time. Subsequent
 checks reuse the metadata for unchanged Dropbox revisions. Changed editions
@@ -117,23 +119,29 @@ share a folder refresh, and upload readback is reused when its revision
 matches the listing. Sync also runs after saves change, when returning to
 the app, when connectivity returns, and periodically while the page is visible.
 During play, the active game's completed local saves get priority for upload.
-Other editions can upload and restore in the background while their save
-folders are idle. Incoming progress for a running edition is retained and
-applies after the player exits. The transfer row keeps the last named game
-visible until the next game is identified.
+Other editions can upload in the background. Incoming progress for a running
+edition is available on its next launch. The transfer row keeps the last named
+game visible until the next game is identified.
 
-When the browser goes offline, Settings shows **Offline · Saves stay on this device**
+When the browser goes offline, Settings shows **Offline · New saves stay on this device**
 and sync resumes automatically on reconnect. **Reconnect Dropbox** is available
 when Dropbox requires sign-in again. Other failures show **Saves waiting to sync**
 with details. Unsynced saves stay on the device. Restores reuse unchanged save
 files. If one game's cloud copy exceeds the available browser space, its restore is deferred and
-other games can still sync. A closed browser cannot upload; reopening retries
-durable work. Clearing site data before an upload finishes can still lose
-unsynced progress. Only verified cloud copies survive a site-data reset.
-Dropbox remains optional; unconnected play stays local.
+other games can still sync. When working save files exceed 128 MiB, browser
+storage has less than an estimated 32 MiB free, or a restore needs space, ScummWEB
+can remove the least recently opened idle editions from this device. It
+downloads and verifies the exact save set before eviction and checks for
+pending writes again while holding the save lock. Pending uploads and games
+that are running or opening stay protected. An evicted game prompts the player
+to connect to Dropbox if its saves are needed offline. A closed browser cannot
+upload; reopening retries durable work. Clearing site data before an upload
+finishes can still lose unsynced progress. Unconnected play keeps new saves local.
 
-The export retains current and recovery files. Select **Export saves** again to
-create another ZIP.
+Export includes the current and recovery files on this device. Open a
+cloud-only edition to restore its current files before exporting them. For
+older cloud copies, download the desired archive from the ScummWEB folder in
+Dropbox. Select **Export saves** again to create another ZIP.
 
 ### Transfer saves to and from desktop ScummVM
 
@@ -153,7 +161,7 @@ recovery. Confirmation refreshes current saves under the exclusive save lock and
 merges the original incoming files again, so background synchronization during
 review does not discard newly completed compatible slots or require reopening the ZIP. Games absent from an exported collection remain unchanged.
 
-**Export saves** downloads a ZIP of ordinary ScummVM save files with original
+**Export saves** downloads a ZIP of locally held ScummVM save files with original
 filenames and unchanged bytes. Each game edition has its own folder, with
 `current` and separate `recovery-…` copies so matching filenames never overwrite
 each other. Extract the chosen copy's contents into desktop ScummVM's save
@@ -263,8 +271,9 @@ Existing save locks protect migration and restoration; a separate cross-tab
 lock serializes cloud coordination. Import and recovery retain revision checks, preservation before activation and
 exclusive save locks. Cloud ZIPs can also be imported manually
 using **Saved games**. Each save archive retains the 64 MiB limit. ScummWEB
-keeps the entire Dropbox history and caches verified snapshot metadata by
-Dropbox revision. A new browser can verify up to four small listed snapshots
+keeps the entire Dropbox history and caches up to 1,024 verified snapshot
+metadata records under a 2 MiB budget. A cache write failure leaves sync
+available. A new browser can verify up to four small listed snapshots
 at once. Later checks reuse verified metadata and download save bytes when
 needed for a restore or merge. Dropbox's download response provides the exact
 byte count for validation and size limits. The native listing can round sizes,

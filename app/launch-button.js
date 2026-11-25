@@ -7,13 +7,15 @@ import useBrowserSave from "./use-browser-save";
 import useSaveLaunchBlock from "./use-save-launch-block";
 import LaunchPending from "./launch-pending";
 import { cancelBrowserSaveQueries } from "./browser-saves.mjs";
+import useCloudSave from "./dropbox/use-cloud-save";
 
 export default function LaunchButton({ game, entryPoint, label = "Play", continueLabel = "Continue", className = "", onLaunch, browseHref, primaryOnly = false }) {
   const router = useRouter();
   const launchFeedback = useLaunchFeedback();
   const classes = ["launch-button", className].filter(Boolean).join(" ");
   const slot = useBrowserSave(game, !game.importRequired);
-  const canContinue = slot !== undefined && slot !== null;
+  const cloudSave = useCloudSave(game);
+  const canContinue = slot != null || cloudSave;
   const updating = useSaveLaunchBlock(game, !game.importRequired);
   const href = entryPoint ? `${game.playHref}?launch_from=${entryPoint}` : game.playHref;
   const launch = (event) => {

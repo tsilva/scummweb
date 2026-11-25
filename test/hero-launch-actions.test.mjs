@@ -45,6 +45,7 @@ async function loadComponent(path, imports = {}, hooks = saveHooks, globals = {}
       if (name === "react/jsx-runtime" || name === "lucide-react") return nativeRequire(name);
       if (name === "./initial-actions.mjs") return imports[name] || initialActions;
       if (name.endsWith("/useLaunchFeedback")) return imports[name] || (() => ({ show() {}, dismiss() {}, overlay: null }));
+      if (name.endsWith("/use-cloud-save")) return imports[name] || (() => false);
       if (name.endsWith("/use-save-launch-block")) return useSaveLaunchBlock;
       if (name.endsWith("/launch-pending")) return LaunchPending;
       return imports[name] || {};
@@ -348,6 +349,17 @@ test("save hook reads cached slots synchronously with a hydration-safe Play fall
   assert.equal(typeof subscription(() => {}), "function");
 });
 
+
+test("a Dropbox-only catalog save offers Continue without a local slot", async () => {
+  const CatalogLaunch = await loadComponent("../app/launch-button.js", {
+    "next/navigation": { useRouter: () => ({ push() {} }) },
+    "./use-browser-save": () => null,
+    "./dropbox/use-cloud-save": () => true,
+  });
+  const markup = renderToStaticMarkup(CatalogLaunch({ game }));
+  assert.match(markup, /href="[^"]+#continue">Continue<\/a>/);
+  assert.match(markup, /Start from beginning/);
+});
 
 test("catalog launches keep the document and request mobile fullscreen within the gesture", async () => {
   const calls = [];

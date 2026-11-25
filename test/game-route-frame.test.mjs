@@ -62,7 +62,7 @@ for (const [message, mobile, installed] of [
       module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator, window,
       require(name) {
         if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup(window);
-        if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
+        if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, hasDropboxLaunchState: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
             const index = stateIndex++;
@@ -214,7 +214,7 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
     fetch: fetchShell,
     require: function require(name) {
       if (name.endsWith("/archive-startup.mjs")) return archiveStartup;
-      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
+      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, hasDropboxLaunchState: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
           const index = cursor++;
@@ -1063,7 +1063,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
     },
     require(name) {
       if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup();
-      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
+      if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, hasDropboxLaunchState: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
           const index = stateIndex++;

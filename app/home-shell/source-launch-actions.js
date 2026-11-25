@@ -6,13 +6,15 @@ import useBrowserSave from "../use-browser-save";
 import useSaveLaunchBlock from "../use-save-launch-block";
 import LaunchPending from "../launch-pending";
 import { cancelBrowserSaveQueries } from "../browser-saves.mjs";
+import useCloudSave from "../dropbox/use-cloud-save";
 
 export default function SourceLaunchActions({ version, onLaunch, showAccessHelp = true,
   helpId = showAccessHelp ? "game-file-access-help" : undefined, browseHref, primaryOnly = false }) {
   const launchFeedback = useLaunchFeedback({ showBundledTags: false });
   const slot = useBrowserSave(version.game);
   const needsAccess = version.action.needsAccess;
-  const canContinue = slot !== undefined && slot !== null && !version.locate && !needsAccess;
+  const cloudSave = useCloudSave(version.game);
+  const canContinue = (slot != null || cloudSave) && !version.locate && !needsAccess;
   const updating = useSaveLaunchBlock(version.game, !version.locate && !needsAccess);
   const launch = (action) => {
     if (updating) return;

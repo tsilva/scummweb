@@ -6,7 +6,7 @@ import { connectDropbox, disconnectDropbox, dropboxConfigured, getDropboxState, 
 import { transferProgressDetails } from "../cloud/transfer-progress.mjs";
 
 const labels = {
-  disconnected: "Saves are stored on this device.", connecting: "Connecting…", disconnecting: "Disconnecting…",
+  disconnected: "New saves are stored on this device.", connecting: "Connecting…", disconnecting: "Disconnecting…",
   preparing: "Preparing saves…", syncing: "Syncing saves…", reconnect: "Dropbox needs to be reconnected",
   waiting: "Saves waiting to sync",
 };
@@ -45,7 +45,7 @@ export default function DropboxRow() {
   const upToDate = !offline && phase === "connected" && state.verified;
   const transfer = !offline && phase === "syncing" ? transferProgressDetails(state.transferProgress) : null;
   let label = labels[phase] || (state.checking ? "Checking saves…" : "Connected");
-  if (offline) label = "Offline · Saves stay on this device";
+  if (offline) label = "Offline · New saves stay on this device";
   if (upToDate) label = "Saves up to date";
 
   let description = "";

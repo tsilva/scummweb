@@ -14,7 +14,7 @@ async function operate(mode, action) {
       catch (error) { if (!(error instanceof TypeError)) throw error; tx = db.transaction("records", mode); }
       let request;
       tx.oncomplete = () => resolve(request?.result);
-      tx.onabort = tx.onerror = () => reject(new Error("Could not retain pending Dropbox saves on this device."));
+      tx.onabort = () => reject(tx.error || new Error("Could not retain pending Dropbox saves on this device."));
       request = action(tx.objectStore("records"));
     });
   } finally { db.close(); }
