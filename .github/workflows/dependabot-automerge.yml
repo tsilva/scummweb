@@ -54,4 +54,4 @@ jobs:
           if [[ "$APPLY" = true ]]; then
             args+=(--apply)
           fi
-          python3 -B scripts/queue_github_action_updates.py "${args[@]}"
+          python3 -B .github/scripts/queue_github_action_updates.py "${args[@]}"
