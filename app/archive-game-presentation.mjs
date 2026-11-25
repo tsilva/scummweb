@@ -22,10 +22,6 @@ const signatures = [
     files: [["bbloogie.000", 324764, 4022305622], ["bbloogie.exe", 393728, 1031631760]],
   },
   {
-    title: "Christmas Card 1986 (Demo)", target: "xmascard-demo", engineId: "agi", gameId: "xmascard",
-    files: [["logdir", 372, 3889777941], ["vol.0", 179887, 2654463609], ["picdir", 315, 2697741264]],
-  },
-  {
     title: "Slater & Charlie Go Camping (Demo)", target: "slater-demo", engineId: "sci", gameId: "slater",
     files: [["resource.map", 1409, 989309201], ["resource.000", 377394, 3589100655], ["resource.msg", 1364, 2314138439]],
   },
@@ -36,18 +32,6 @@ const signatures = [
   {
     title: "Fun Seeker's Guide to Eastern Madera County (Demo)", target: "funseeker-demo", engineId: "sci", gameId: "funseeker",
     files: [["resource.map", 282, 2832575178], ["resource.001", 40692, 3063887796], ["sciv.exe", 75075, 2912399413]],
-  },
-  {
-    title: "Christmas Card 1992 (Demo)", target: "christmas1992-demo", engineId: "sci", gameId: "christmas1992",
-    files: [["resource.map", 318, 1973929855], ["resource.000", 203396, 128637253], ["resource.aud", 31471, 114984518]],
-  },
-  {
-    title: "Christmas Card 1990: The Seasoned Professional (Demo)", target: "christmas1990-demo", engineId: "sci", gameId: "christmas1990",
-    files: [["resource.map", 600, 3274741109], ["resource.001", 272629, 2244616784], ["sciv.exe", 67675, 4177033435]],
-  },
-  {
-    title: "Christmas Card 1988 (Demo)", target: "christmas1988-demo", engineId: "sci", gameId: "christmas1988",
-    files: [["resource.map", 426, 760234491], ["resource.001", 129739, 2244372950], ["xmas.exe", 73823, 1932378603]],
   },
   {
     title: "Maniac Mansion (Demo)", target: "maniac-demo", engineId: "scumm", gameId: "maniac",

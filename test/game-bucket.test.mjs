@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { normalizeBucketUrl, normalizeGameZipUrl, readCatalogGameArchive, readRemoteGameArchive, readSavedBucket } from "../app/game-bucket.mjs";
+import { proxyToGamesOrigin } from "../app/games-proxy/shared.js";
 import { maxArchiveSize } from "../app/local-game-archive.mjs";
 import { installGameZipCache } from "./helpers/game-zip-cache.mjs";
 import { cacheGameZip, maxCachedGameZips, readCachedGameData } from "../app/game-zip-cache.mjs";
@@ -53,6 +54,19 @@ test("the catalog ZIP loader shares extraction and uses the games proxy on loopb
   location.hostname = "scummweb.tsilva.eu";
   await assert.rejects(readCatalogGameArchive(url, { expandedLimit: 2 }), /when unpacked/);
   assert.equal(fetch.mock.calls[1].arguments[0], url);
+});
+
+test("the game proxy drops retired Christmas Card downloads", async (t) => {
+  const request = new Request("https://scummweb.tsilva.eu/");
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response("sky"));
+  for (const archive of ["xmascard.zip", "christmas1988.zip", "christmas1990.zip", "christmas1992.zip"]) {
+    const response = await proxyToGamesOrigin(request, Promise.resolve({ path: [archive] }));
+    assert.equal(response.status, 404, archive);
+  }
+  assert.equal(fetch.mock.callCount(), 0);
+  const response = await proxyToGamesOrigin(request, Promise.resolve({ path: ["sky.zip"] }));
+  assert.equal(await response.text(), "sky");
+  assert.equal(fetch.mock.callCount(), 1);
 });
 
 test("saved targets are limited to the current catalog and bucket URLs exclude credentials", () => {

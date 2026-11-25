@@ -2,6 +2,13 @@ import { getGamesOrigin, getSiteUrl } from "../../lib/site-config.mjs";
 
 export const gamesOrigin = getGamesOrigin();
 
+const retiredArchives = new Set([
+  "/xmascard.zip",
+  "/christmas1988.zip",
+  "/christmas1990.zip",
+  "/christmas1992.zip",
+]);
+
 const passthroughHeaderNames = [
   "accept-ranges",
   "cache-control",
@@ -40,6 +47,10 @@ export async function proxyToGamesOrigin(request, params) {
 
   if (!upstreamUrl) {
     return new Response("Missing games path", { status: 400 });
+  }
+
+  if (retiredArchives.has(upstreamUrl.pathname)) {
+    return new Response("Game archive not found", { status: 404 });
   }
 
   const requestHeaders = new Headers(upstreamBaseHeaders);

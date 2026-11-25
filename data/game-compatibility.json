@@ -1721,66 +1721,6 @@
       "observation": "A game frame renders at startup."
     },
     {
-      "title": "Christmas Card 1986",
-      "status": "startup-verified",
-      "gameId": "agi:xmascard",
-      "edition": "Christmas Card 1986 (AGI).zip",
-      "observation": "A game frame renders at startup."
-    },
-    {
-      "title": "Christmas Card 1986 (Demo)",
-      "status": "startup-verified",
-      "gameId": "agi:xmascard",
-      "edition": "xmascard-dos-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS AGI card accepted a custom greeting, displayed multiple animated scenes, and looped without a missing-file warning. The official ZIP contains VOL.0; its directory tables also reference two volumes absent from the archive. Native F1 Help and F9 restart worked. The tested scene rejected saving."
-    },
-    {
-      "title": "Christmas Card 1988",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1988",
-      "edition": "Christmas Card 1988 (SCI).zip",
-      "observation": "A game frame renders at startup."
-    },
-    {
-      "title": "Christmas Card 1988 (Demo)",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1988",
-      "edition": "christmas1988-dos-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original 1988 Sierra DOS greeting card opened its message editor. A custom message scrolled on the ribbon and the fireplace scene rendered. ScummWEB rejected saving in the tested scene. Audible music and the optional text macros were unverified."
-    },
-    {
-      "title": "Christmas Card 1990: The Seasoned Professional",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1990",
-      "edition": "Christmas Card 1990 - The Seasoned Professional (SCI).zip",
-      "observation": "A game frame renders at startup."
-    },
-    {
-      "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1990",
-      "edition": "christmas1990-dos-ega-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS EGA card opened the animated stage. F9 opened the native Restart Card prompt and Restart returned to the opening act. ScummWEB rejected saving in the tested scene. Audible music was unverified."
-    },
-    {
-      "title": "Christmas Card 1992",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1992",
-      "edition": "Christmas Card 1992 (SCI).zip",
-      "observation": "A game frame renders at startup."
-    },
-    {
-      "title": "Christmas Card 1992 (Demo)",
-      "status": "startup-verified",
-      "gameId": "sci:christmas1992",
-      "edition": "christmas1992-dos-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS Christmas Card 1992 opened Sierra’s splash and animated forest and cottage scenes. Playback-speed controls and return to the library were checked. The tested scene rejected saving and audible music was unverified."
-    },
-    {
       "title": "Crazy Nick's Software Picks: King Graham's Board Game Challenge",
       "status": "startup-verified",
       "gameId": "sci:cnick-kq",

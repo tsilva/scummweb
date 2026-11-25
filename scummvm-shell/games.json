@@ -1048,16 +1048,6 @@
       "readmeHref": ""
     },
     {
-      "target": "christmas1988-demo",
-      "title": "Christmas Card 1988 (Demo)",
-      "path": "/games/christmas1988",
-      "engineId": "sci",
-      "gameId": "christmas1988",
-      "platform": "dos",
-      "extra": "Demo",
-      "readmeHref": ""
-    },
-    {
       "target": "funseeker-demo",
       "title": "Fun Seeker's Guide to Eastern Madera County (Demo)",
       "path": "/games/funseeker",
@@ -1086,16 +1076,6 @@
       "platform": "dos",
       "extra": "Demo",
       "readmeHref": "/launcher/notices/slater.txt"
-    },
-    {
-      "target": "xmascard-demo",
-      "title": "Christmas Card 1986 (Demo)",
-      "path": "/games/xmascard",
-      "engineId": "agi",
-      "gameId": "xmascard",
-      "platform": "dos",
-      "extra": "Demo",
-      "readmeHref": "/launcher/notices/xmascard.txt"
     },
     {
       "target": "bbvs-loogie-demo",

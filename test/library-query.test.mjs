@@ -195,7 +195,8 @@ test("the full artwork catalog has explicit categories and every game remains fi
   const games = Object.entries(artwork).map(([target, game]) => ({ ...game, target, displayTitle: game.title }));
   const all = libraryItems(games, []);
   const categories = libraryFacet(all, "genre");
-  assert.deepEqual(categories, libraryCategories);
+  const populatedCategories = new Set(games.map((game) => game.category));
+  assert.deepEqual(categories, libraryCategories.filter((category) => populatedCategories.has(category)));
   for (const game of games) assert.ok(libraryCategories.includes(game.category), game.target);
   const filtered = categories.flatMap((genre) => queryLibrary(all, { ...defaultLibraryQuery, genre }));
   assert.equal(filtered.length, all.length);
@@ -221,11 +222,13 @@ test("reviewed classifications survive catalog presentation and archive import",
     assert.equal(game.category, record.category, id);
     assert.equal(imported.category, record.category, id);
   }
+  for (const family of ["agi:xmascard", "sci:christmas1988", "sci:christmas1990", "sci:christmas1992"]) {
+    assert.ok(games.every(({ familyId }) => familyId !== family), family);
+  }
   const cases = {
     Sports: ["scumm:baseball", "scumm:baseball2001", "scumm:baseball2003", "scumm:basketball", "scumm:football", "scumm:football2002"],
     "Cards & board games": ["sci:hoyle1", "sci:hoyle2", "sci:hoyle3", "sci:cnick-kq", "sci:cnick-lsl", "sci:cnick-laurabow", "sci:cnick-longbow"],
     "Family & education": ["scumm:blues123time", "scumm:bluesabctime", "scumm:arttime", "scumm:bluesbirthday", "scumm:readtime", "scumm:airport", "scumm:farm", "scumm:jungle", "scumm:fbear", "scumm:fbpack", "scumm:pajama", "scumm:pajama2", "scumm:pajama3", "scumm:pjgames", "scumm:activity", "scumm:puttrace", "scumm:puttmoon", "scumm:puttcircus", "scumm:puttputt", "scumm:puttzoo", "scumm:putttime", "scumm:funpack", "scumm:puttsfunshop", "scumm:freddi4", "scumm:spyfox", "scumm:spyfox2", "scumm:spyozon", "mohawk:newkid"],
-    Animation: ["agi:xmascard", "sci:christmas1988", "sci:christmas1990", "sci:christmas1992"],
     "Science fiction": ["gob:inca2"],
     "Mystery & thriller": ["grim:grim"],
     Comedy: ["grim:monkey4"],

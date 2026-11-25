@@ -3,11 +3,9 @@ import { getVersionMetadata } from "../game-versions.mjs";
 const launchTagsByTarget = new Map([
   ["mage-demo", ["Adventure RPG", "Elemental magic"]],
   ["bbvs-loogie-demo", ["Arcade mini-game", "Mouse controls"]],
-  ["xmascard-demo", ["Keyboard", "Holiday animation"]],
   ["slater-demo", ["Interactive storybook", "Read-along"]],
   ["msastrochicken-demo", ["Arcade", "Mouse controls"]],
   ["funseeker-demo", ["Interactive guide", "Travel parody"]],
-  ["christmas1988-demo", ["Keyboard", "Holiday animation"]],
   ["maniac-demo", ["Point-and-click", "Horror comedy"]],
   ["newkid-demo", ["Point-and-click", "Interactive poetry"]],
   ["ruff-demo", ["Point-and-click", "Interactive storybook"]],

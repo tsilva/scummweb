@@ -25,17 +25,24 @@ test("fresh browser configuration preserves UTF-8 titles and records byte length
   assert.equal(config.size, Buffer.byteLength(ini));
 });
 
+test("retired Christmas Card archives have no curated presentation", () => {
+  for (const signature of [
+    [["LOGDIR", 372, 3889777941], ["VOL.0", 179887, 2654463609], ["PICDIR", 315, 2697741264]],
+    [["RESOURCE.MAP", 318, 1973929855], ["RESOURCE.000", 203396, 128637253], ["RESOURCE.AUD", 31471, 114984518]],
+    [["RESOURCE.MAP", 600, 3274741109], ["RESOURCE.001", 272629, 2244616784], ["SCIV.EXE", 67675, 4177033435]],
+    [["RESOURCE.MAP", 426, 760234491], ["RESOURCE.001", 129739, 2244372950], ["XMAS.EXE", 73823, 1932378603]],
+  ]) {
+    assert.equal(getArchiveGamePresentation(signature), null);
+  }
+});
+
 test("official classic archives are recognized by contents without relying on filenames", () => {
   for (const [target, files] of [
     ["mage-demo", [["Mages Demo.exe", 6638570, 4142230878], ["Mages Demo.002", 5841753, 340964810], ["Mages Demo.001", 109544095, 3764993321]]],
     ["bbvs-loogie-demo", [["BBLOOGIE.000", 324764, 4022305622], ["BBLOOGIE.EXE", 393728, 1031631760]]],
-    ["xmascard-demo", [["LOGDIR", 372, 3889777941], ["VOL.0", 179887, 2654463609], ["PICDIR", 315, 2697741264]]],
     ["slater-demo", [["RESOURCE.MAP", 1409, 989309201], ["RESOURCE.000", 377394, 3589100655], ["RESOURCE.MSG", 1364, 2314138439]]],
     ["msastrochicken-demo", [["RESOURCE.MAP", 1158, 3876752578], ["RESOURCE.001", 229737, 1211620517], ["SIERRA.EXE", 110353, 3803814439]]],
     ["funseeker-demo", [["RESOURCE.MAP", 282, 2832575178], ["RESOURCE.001", 40692, 3063887796], ["SCIV.EXE", 75075, 2912399413]]],
-    ["christmas1992-demo", [["RESOURCE.MAP", 318, 1973929855], ["RESOURCE.000", 203396, 128637253], ["RESOURCE.AUD", 31471, 114984518]]],
-    ["christmas1990-demo", [["RESOURCE.MAP", 600, 3274741109], ["RESOURCE.001", 272629, 2244616784], ["SCIV.EXE", 67675, 4177033435]]],
-    ["christmas1988-demo", [["RESOURCE.MAP", 426, 760234491], ["RESOURCE.001", 129739, 2244372950], ["XMAS.EXE", 73823, 1932378603]]],
     ["maniac-demo", [["maniacdemo.d64", 174848, 846994005]]],
     ["newkid-demo", [["NEWKID.512", 561, 3039353385], ["SHADONE.IBM", 1363607, 238202727], ["SHADTWO.IBM", 1468430, 3615371406]]],
     ["ruff-demo", [["P01EP.IBM", 2744050, 2588385377], ["P01SP.IBM", 2767560, 2980424538], ["RUFF.512", 693, 2000887134]]],

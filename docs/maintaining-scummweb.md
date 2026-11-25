@@ -489,17 +489,11 @@ The original Windows v1.1 demo of The New Kid on the Block includes one English 
 
 The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-Running Demo. F7 returns to the original menu. ScummWEB can save and restore progress in the hands-on mode.
 
-The original DOS Christmas Card 1988 opens a message editor. Type a greeting and press Enter to watch it scroll across the card before the holiday animation.
-
-The 1990 Christmas card, The Seasoned Professional, and Christmas Card 1992 are available through ZIP import. Both start their animations automatically.
-
 The original DOS guide opens at its instructions. Press Space to visit the next attraction.
 
 The original DOS game begins its scrolling arcade sequence after launch. Move the pointer over the playfield to guide Ms. Astro Chicken.
 
 The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. Dismiss the original instructions, click the picture to animate a character, or select the reading icon beside the sentence. The original stop sign opens Sierra’s end card.
-
-The original DOS Christmas Card 1986 opens at Sierra’s greeting. Press Enter and type up to two lines or leave them blank to begin the native animation. F1 opens the original Help and F9 restarts the card.
 
 The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
 
@@ -1113,9 +1107,8 @@ Keep its specific `genre` description and set an explicit `category` from
 `libraryCategories` in `app/home-shell/library-query.mjs` for library filtering
 and sorting. Preserve the category when sharing metadata with demos and imports.
 Use Sports for the Backyard sports games, Cards & board games for card and
-board collections, Family & education for children's activities and adventures,
-and Animation for Sierra’s Christmas cards. Genre inference remains
-a fallback for older imports without a category.
+board collections, and Family & education for children's activities and adventures.
+Genre inference remains a fallback for older imports without a category.
 Give every bundled target play-style and theme launch tags in
 `app/game-player/launch-tags.mjs`; year and platform come from edition metadata.
 Record unresolved credits in `metadataNote`. Keep remakes and demos distinct,
