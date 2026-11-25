@@ -20,8 +20,12 @@ export function getSourceGamePresentation(source, catalog, recognizedGames) {
   });
   const family = getGameFamilyKey(presentation);
   const route = family && recognizedGames.find((game) => getGameFamilyKey(game) === family);
-  return { ...presentation, href: route?.href, slug: route?.slug, playHref: route?.playHref,
-    saveVersionId: source.id, skipIntro: null };
+  return {
+    ...presentation,
+    ...(route?.summary && { summary: route.summary, mobileSummary: route.mobileSummary }),
+    href: route?.href, slug: route?.slug, playHref: route?.playHref,
+    saveVersionId: source.id, skipIntro: null,
+  };
 }
 
 export function getMatchingGameSources(game, sources, catalog) {

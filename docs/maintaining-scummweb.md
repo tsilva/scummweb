@@ -12,8 +12,9 @@ Choose a game from the library or Recently Played, then select **Play**.
 The version selector lists copies by known graphics quality, then favors disc
 editions and newer revisions. It defaults to the highest-ranked playable copy,
 with the included copy and browser language used to break ties. It remembers
-your choice while that copy is available. Demos have separate cards. **Game not
-included** means you need your own copy. Check the
+your choice while that copy is available. All versions on a card share the
+same description. Demos have separate cards. **Game not included** means you
+need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 
 Each Recently Played card shows the cover of the last played copy beside its

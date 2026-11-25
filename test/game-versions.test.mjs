@@ -75,12 +75,17 @@ test("version labels retain real metadata and distinguish identical copies", () 
   assert.doesNotMatch(groups[0].versions[0].label, /unknown|Local ZIP/i);
 });
 
-test("Beneath a Steel Sky labels show the bundled and imported CD revisions", () => {
+test("Beneath a Steel Sky CD revisions share the catalog description and keep distinct labels", () => {
   const catalog = getGamePresentation(bundled.games.find(({ target }) => target === "sky"));
   const local = imported("older-cd", "Beneath a Steel Sky (CD VGA).zip");
   local.archiveFiles = [["BASS/SKY.DNR", 40796, 1], ["BASS/SKY.DSK", 72429382, 2]];
   const [group] = libraryItems([catalog], [local]);
   assert.deepEqual(group.versions.map(({ label }) => label), ["DOS · CD · v0.0372", "DOS · CD · v0.0368"]);
+  for (const { key } of group.versions) {
+    const { game } = chooseGameVersion(group.versions, key);
+    assert.equal(game.summary, catalog.summary);
+    assert.equal(game.mobileSummary, catalog.mobileSummary);
+  }
   assert.equal(chooseGameVersion(group.versions, null), group.versions[0]);
   assert.equal(group.versions[1].source.id, "older-cd");
 });

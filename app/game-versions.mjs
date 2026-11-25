@@ -147,9 +147,12 @@ export function groupGameVersions(items) {
       const label = labels[index];
       const copy = labels.slice(0, index + 1).filter((value) => value === label).length;
       return { ...version,
-        game: { ...version.game, ...(!version.game.importRequired && {
-          badge: label || null, mobileBadge: label || null,
-        }) },
+        game: {
+          ...version.game,
+          summary: group.game.summary,
+          mobileSummary: group.game.mobileSummary,
+          ...(!version.game.importRequired && { badge: label || null, mobileBadge: label || null }),
+        },
         label: !label ? `Version ${index + 1}` : labels.filter((value) => value === label).length > 1
           ? `${label} · Copy ${copy}` : label,
       };
