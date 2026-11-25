@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import { getPrivacyRequestDelivery } from "../../lib/privacy-request-delivery.mjs";
 import { PrivacyChoicesButton } from "../../lib/privacy-consent/controls";
-import PrivacyRequestForm from "./privacy-request-form";
 import styles from "./privacy.module.css";
 
 export const metadata = {
@@ -13,21 +11,31 @@ export const metadata = {
 
 export default async function PrivacyPage() {
   await connection();
-  const intakeAvailable = Boolean(getPrivacyRequestDelivery());
+  const email = process.env.SCUMMWEB_PRIVACY_REQUEST_TO?.trim() ?? "";
+  const privacyEmail = /^[a-z0-9][a-z0-9._-]{0,63}@duck\.com$/i.test(email) ? email : null;
   return (
     <main className={styles.page}>
       <Link className={styles.back} href="/">Back to ScummWEB</Link>
       <h1>ScummWEB Privacy Policy</h1>
+      <p>Last reviewed <time dateTime="2026-11-25">25 November 2026</time></p>
       <a className={styles.controllerLink} href="#privacy-correspondence">Controller and privacy requests</a>
 
       <section aria-labelledby="local-data">
         <h2 id="local-data">Games and saves</h2>
         <p>
           ScummWEB stores your imported games, settings, saves, and Recently Played activity in your browser.
-          We use this storage to provide the gameplay and save features you request. Your browser keeps this
-          information until you remove it
-          or the browser clears it. You can export saves from Settings, under Saved games. Export any saves you
-          want to keep before clearing ScummWEB’s site data.
+          Your browser keeps this information until you remove it or the browser clears it. You can export saves
+          from Settings, under Saved games. Export any saves you want to keep before clearing ScummWEB’s site data.
+        </p>
+        <p>
+          We use browser storage to run the games and save features you request, remember your preferences,
+          and respect your privacy choices. We rely on our legitimate interests in providing these features
+          and respecting your choices where this involves personal data. Your privacy choices stay in your
+          browser with the date and notice version until you change them, clear site data, or we ask you to choose again.
+        </p>
+        <p>
+          If you open a game from an external ZIP link, your browser requests the file from that host. The host
+          can see technical request information such as your IP address and may use it under its own privacy terms.
         </p>
       </section>
 
@@ -52,8 +60,9 @@ export default async function PrivacyPage() {
       <section aria-labelledby="site-operation">
         <h2 id="site-operation">Hosting and security</h2>
         <p>
-          Vercel hosts ScummWEB and Cloudflare delivers game assets. They handle technical request information
-          to deliver and protect the site. This can include IP addresses, requested URLs, and browser information.
+          Cloudflare proxies and protects ScummWEB and delivers game assets. Vercel hosts the app. Both handle
+          technical request information such as IP addresses, requested URLs, and browser information.
+          We use the country code Cloudflare derives from your IP address to decide whether to show the privacy prompt.
           We rely on our legitimate interests in operating and securing ScummWEB. Request logs available to us
           expire under the providers’ logging settings. If we save an extract to investigate a problem, we keep
           it until the investigation and any necessary follow-up are complete, or longer when required by law.
@@ -66,35 +75,44 @@ export default async function PrivacyPage() {
       <section aria-labelledby="analytics">
         <h2 id="analytics">Analytics</h2>
         <p>
-          Optional analytics are off until you allow them. If you opt in, Google Analytics measures site
-          visits and catalog game launches using cookies and browser identifiers. We set Google’s event data
+          If you consent to analytics, Google Analytics receives visit and browser information, site pages you
+          visit, and details about catalog game launches, load times, and play milestones. We use these measurements
+          to understand how people use ScummWEB and where games are slow to start. We set Google’s event data
           retention to two months and user data retention to 14 months, with the user data period resetting
           on new activity. Google keeps standard aggregate reports separately.
           {" "}<a href="https://support.google.com/analytics/answer/7667196">Google Analytics retention</a>
         </p>
         <p>
-          With your permission, Vercel Web Analytics measures site traffic using an identifier derived from
-          the web request. Vercel discards that identifier after 24 hours. Reports follow its separate reporting window.
-          {" "}<a href="https://vercel.com/docs/analytics/privacy-policy">Vercel Web Analytics privacy</a>
-          {" · "}<a href="https://vercel.com/docs/analytics/limits-and-pricing#what-is-the-reporting-window">Reporting windows</a>
+          Google’s tag sets two ScummWEB cookies. <code>_ga</code> distinguishes browsers and the cookie whose
+          name starts with <code>_ga_</code> keeps track of the analytics session. The tag can read both cookies,
+          and each has a configured lifetime of 180 days from creation, or less if your browser removes it sooner.
+          {" "}<a href="https://support.google.com/analytics/answer/11397207">Google Analytics cookies</a>
         </p>
-        <p>Use <PrivacyChoicesButton className="privacy-choices-link" /> to change or withdraw your choices at any time.</p>
+        <p>
+          Open <strong>Settings → Privacy</strong> to manage analytics and error diagnostics separately.
+          Changes there save immediately. You can also use <PrivacyChoicesButton className="privacy-choices-link" /> here
+          to change or withdraw consent at any time. You can play with both options off. Withdrawal stops future
+          collection for the selected purpose and leaves the lawfulness of earlier processing unaffected.
+        </p>
       </section>
 
       <section aria-labelledby="diagnostics">
         <h2 id="diagnostics">Errors, bug reports, and voice commands</h2>
         <p>
-          With your consent, Sentry receives automatic browser diagnostics to help fix errors. Separately,
-          ScummWEB uses Sentry to diagnose server errors. If you submit an in-game bug report, Sentry receives
-          your description, technical details, and sometimes a copy of a game save. For server diagnostics and
-          reports you send, we rely on our legitimate interests in keeping ScummWEB reliable and investigating problems.
-          ScummWEB uses Sentry’s EU storage region. Sentry’s retention period for errors, feedback, and
-          attachments on the current plan is 30 days.
+          If you consent to error diagnostics, Sentry receives browser errors, logs, and performance measurements
+          with technical details such as browser type and page information. We also use Sentry to diagnose server errors. If you send an
+          in-game bug report, Sentry receives your description, game and browser details, and any game save you choose
+          to attach. Sending a report is optional. We rely on our legitimate interests in keeping ScummWEB reliable
+          and investigating problems for server diagnostics and bug reports. To prevent abuse, we use an
+          IP-derived rate limit that counts submissions in ten-minute windows.
+          ScummWEB uses Sentry’s EU storage region. On our current plan, Sentry retains errors, logs,
+          performance traces, feedback, and attachments for 30 days.
           {" "}<a href="https://docs.sentry.io/security-legal-pii/security/data-retention-periods/">Sentry retention</a>
         </p>
         <p>
-          If you use voice commands in a supported game, your browser’s speech recognition service may process
-          audio online. Your browser manages microphone permission and its speech service.
+          If you choose to use voice commands in a supported game, your browser’s speech recognition service may
+          process audio online under its own privacy terms. You can turn off microphone access in your browser.
+          ScummWEB uses the transcript to enter the command in the game running in your browser.
         </p>
       </section>
 
@@ -102,21 +120,20 @@ export default async function PrivacyPage() {
         <h2 id="privacy-correspondence">Controller and privacy requests</h2>
         <p>Tiago Silva is the data controller for ScummWEB.</p>
         <p>
-          Use the form at the end of this page for privacy requests. We use your reply address, message, and any
-          information needed to handle the request. We process requests about your privacy rights to comply with
-          our legal obligations. For other enquiries, we rely on our legitimate interest in responding. We keep
-          submissions and correspondence while the request is open. After closing it, we delete the contents
-          when no longer needed for follow-up, to document how we handled it, or to meet a legal obligation.
+          {privacyEmail
+            ? <>For privacy requests, email <a href={`mailto:${privacyEmail}`}>{privacyEmail}</a>.</>
+            : "The privacy email address is temporarily unavailable. Please check back later."}
         </p>
         <p>
-          When the form is available, Resend sends your request to a DuckDuckGo address, and DuckDuckGo Email
-          Protection forwards it to our private Gmail mailbox. Resend processes
-          your reply address, message, request type and reference in the United States and retains email
-          contents and delivery logs for 30 days on the plan we use. Its data processing agreement includes
-          the European Commission’s Standard Contractual Clauses for international transfers.
-          {" "}<a href="https://resend.com/security/gdpr">Resend storage and retention</a>
-          {" · "}<a href="https://resend.com/legal/dpa">Resend transfer terms</a>
-          {" · "}<a href="https://duckduckgo.com/duckduckgo-help-pages/email-protection/what-is-duckduckgo-email-protection/">DuckDuckGo forwarding</a>
+          We use your email address, message, and any information needed to handle the request. We process
+          requests about your privacy rights to comply with our legal obligations. For other enquiries, we rely
+          on our legitimate interest in responding. We keep correspondence while the request is open. After
+          closing it, we delete the contents when no longer needed for follow-up, to document how we handled
+          it, or to meet a legal obligation.
+        </p>
+        <p>
+          DuckDuckGo Email Protection forwards your message to the Gmail inbox where we handle privacy requests.
+          {" "}<a href="https://duckduckgo.com/duckduckgo-help-pages/email-protection/what-is-duckduckgo-email-protection">DuckDuckGo forwarding</a>
           {" · "}<a href="https://policies.google.com/privacy">Google privacy policy</a>
         </p>
       </section>
@@ -126,16 +143,17 @@ export default async function PrivacyPage() {
         <p>
           Vercel and Cloudflare can process request data outside the European Economic Area. Their data
           processing terms include the European Commission’s Standard Contractual Clauses for restricted
-          transfers. Sentry stores ScummWEB diagnostics in the EU and describes safeguards for international
-          access and processing in its transfer terms. Google describes the safeguards used for analytics data.
+          transfers. Sentry stores ScummWEB diagnostics in the EU. Sentry and Google describe their use of the
+          EU–U.S. Data Privacy Framework where applicable and Standard Contractual Clauses for other restricted transfers.
           {" "}<a href="https://vercel.com/legal/dpa">Vercel transfer terms</a>
           {" · "}<a href="https://www.cloudflare.com/cloudflare-customer-dpa/">Cloudflare transfer terms</a>
-          {" · "}<a href="https://sentry.io/trust/">Sentry transfer terms</a>
+          {" · "}<a href="https://sentry.io/legal/dpa/">Sentry transfer terms</a>
           {" · "}<a href="https://business.safety.google/adsdatatransfers/">Google transfer terms</a>
         </p>
         <p>
-          If you connect Dropbox, Dropbox explains where it processes data in your account and which safeguards
-          apply. Use the form below for more information or a copy of applicable safeguards.
+          Dropbox and the email providers may also process data outside the EEA. Their privacy notices describe
+          their processing. <a href="#privacy-correspondence">Contact us</a> for information about an applicable
+          transfer or for a copy of its safeguards.
           {" "}<a href="https://www.dropbox.com/privacy">Dropbox transfer information</a>
         </p>
       </section>
@@ -143,21 +161,21 @@ export default async function PrivacyPage() {
       <section aria-labelledby="privacy-rights">
         <h2 id="privacy-rights">Your privacy rights</h2>
         <p>
-          Where applicable, you can ask to access, correct, delete, restrict, or receive a copy of your personal
-          data. You can also object to processing, withdraw consent where it applies, or lodge a complaint
-          with your local data protection authority.
+          Where applicable, you can ask to access, correct, delete, or restrict the use of your personal data.
+          You can ask for data you provided in a portable format and request that it be sent to another controller
+          where technically feasible. You can withdraw consent at any time. You can also complain to a
+          supervisory authority, including Portugal’s
+          {" "}<a href="https://www.cnpd.pt/cidadaos/participacoes/">Comissão Nacional de Proteção de Dados (CNPD)</a>.
         </p>
+        <p><strong>You have the right to object to processing based on our legitimate interests.</strong></p>
         <p>
+          We respond to rights requests within one month. Where the law allows more time, we tell you why within
+          that month and may take up to two additional months.
           If we need more information to find a record or verify a request, we’ll ask for what’s needed. If we
-          can’t match a record to you, we’ll explain that where possible. If you reported a bug, the game and
-          approximate submission time can help us find the report. You manage ordinary save copies directly in
+          can’t match a record to you, we’ll explain that where possible. If you reported a bug, its report ID or
+          the game and approximate submission time can help us find it. You manage ordinary save copies directly in
           your browser and Dropbox.
         </p>
-      </section>
-
-      <section className={styles.request} aria-labelledby="submit-request">
-        <h2 id="submit-request">Submit a privacy request</h2>
-        {intakeAvailable ? <PrivacyRequestForm /> : <p>The privacy request form is temporarily unavailable.</p>}
       </section>
     </main>
   );

@@ -1,5 +1,5 @@
 import { getGamePresentation, getImportedGamePresentation } from "./game-presentation.js";
-import { getGameFamilyKey, getVersionMetadata, getVersionSaveNamespace } from "./game-versions.mjs";
+import { getGameFamilyKey, getVersionSaveNamespace } from "./game-versions.mjs";
 import { readRemoteGameArchive } from "./game-bucket.mjs";
 import { isLocalArchiveSource } from "./game-sources.mjs";
 import { openLocalGameArchive, validateLocalGameArchive } from "./local-game-archive.mjs";
@@ -20,8 +20,12 @@ export function getSourceGamePresentation(source, catalog, recognizedGames) {
   });
   const family = getGameFamilyKey(presentation);
   const route = family && recognizedGames.find((game) => getGameFamilyKey(game) === family);
-  return { ...presentation, href: route?.href, slug: route?.slug, playHref: route?.playHref,
-    saveVersionId: source.id, skipIntro: null };
+  return {
+    ...presentation,
+    ...(route?.summary && { summary: route.summary, mobileSummary: route.mobileSummary }),
+    href: route?.href, slug: route?.slug, playHref: route?.playHref,
+    saveVersionId: source.id, skipIntro: null,
+  };
 }
 
 export function getMatchingGameSources(game, sources, catalog) {
@@ -30,8 +34,8 @@ export function getMatchingGameSources(game, sources, catalog) {
   return sources.filter((source) => getGameFamilyKey(getSourceGamePresentation(source, catalog, [game])) === family);
 }
 
-export async function prepareGameSourcePlayer(source, game, { legacySaves = false } = {}) {
-  const presentation = { ...game, ...getVersionMetadata(game, source.name, source.archiveFiles),
+export async function prepareGameSourcePlayer(source, game, { legacySaves = false, validatedFile } = {}) {
+  const presentation = { ...game,
     recentGameId: `source:${source.id}`, saveVersionId: legacySaves ? undefined : source.id,
     saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
   return {
@@ -39,6 +43,8 @@ export async function prepareGameSourcePlayer(source, game, { legacySaves = fals
     loadArchive: async (signal, onProgress) => {
       signal.throwIfAborted();
       if (source.url) return readRemoteGameArchive(source.url, { signal, onProgress });
+      // Library launches have already checked the file while the launch controls are visible.
+      if (validatedFile) return openLocalGameArchive(validatedFile, signal, onProgress);
       if (!isLocalArchiveSource(source) || !source.handle) throw new Error("Locate the game ZIP or ISO to play again.");
       if (await source.handle.queryPermission({ mode: "read" }) !== "granted") {
         throw new Error("Allow file access to play this game.");

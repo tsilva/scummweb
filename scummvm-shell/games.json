@@ -1058,26 +1058,6 @@
       "readmeHref": ""
     },
     {
-      "target": "christmas1990-demo",
-      "title": "Christmas Card 1990: The Seasoned Professional (Demo)",
-      "path": "/games/christmas1990",
-      "engineId": "sci",
-      "gameId": "christmas1990",
-      "platform": "dos",
-      "extra": "16 Colors",
-      "readmeHref": ""
-    },
-    {
-      "target": "christmas1992-demo",
-      "title": "Christmas Card 1992 (Demo)",
-      "path": "/games/christmas1992",
-      "engineId": "sci",
-      "gameId": "christmas1992",
-      "platform": "dos",
-      "extra": "Demo",
-      "readmeHref": "/launcher/notices/christmas1992.txt"
-    },
-    {
       "target": "funseeker-demo",
       "title": "Fun Seeker's Guide to Eastern Madera County (Demo)",
       "path": "/games/funseeker",

@@ -57,34 +57,21 @@ assigning production domains, use **Stage prebuilt deployment** from
 
 ## Privacy request intake
 
-`/privacy` submits requests to `/api/privacy-requests`. The route sends a
-plain-text email using the Resend Emails API. The settings below are server-only
-runtime values in ScummWEB's pinned shared delivery allowlist. Store the
-Production values in ScummWEB's Infisical `prod` root and let the delivery
-workflow sync them to Vercel as Secrets. Coordinate provisioning with the
-release because adding or changing these values can dispatch Production delivery
-through the Infisical webhook.
+`/privacy` displays a direct email link to the existing DuckDuckGo Email
+Protection alias in `SCUMMWEB_PRIVACY_REQUEST_TO`. The page reads the value at
+runtime and displays it only if it is an `@duck.com` address. Use the public
+forwarding alias in this setting and keep the destination mailbox private.
 
-| Variable | Value |
-| --- | --- |
-| `SCUMMWEB_PRIVACY_REQUEST_RESEND_API_KEY` | Resend sending-only key scoped to the verified domain |
-| `SCUMMWEB_PRIVACY_REQUEST_FROM` | Sender address on the verified domain |
-| `SCUMMWEB_PRIVACY_REQUEST_TO` | Fixed address that reaches the monitored privacy inbox |
+Manage the Production value in ScummWEB's Infisical `prod` root and let the
+existing delivery workflow sync it to Vercel. A change can dispatch Production
+delivery through the Infisical webhook. Verify that the deployed policy shows
+the expected alias and that the alias forwards to the monitored inbox.
 
-Verify a sending subdomain in Resend and keep open and click tracking off.
-The subject identifies ScummWEB, and the visitor's address is the reply address.
-The route supplies a site-specific idempotency key derived from the submission
-reference. Resend uses it to suppress retries of the same submission for 24
-hours. The form shows a reference after Resend accepts the email. Verify inbox
-delivery separately, including that the forwarded message preserves the visitor's
-reply address. With delivery settings missing, the form is unavailable and the
-submission route returns 503.
-
-Review the data processing terms and retention for Resend, the forwarding
-service, and the receiving mailbox before enabling live intake. Use synthetic
-submissions to verify the authorized sender, receipt in the monitored inbox,
-and retry behavior. Keep production keys and mailbox addresses out of public
-client configuration and source control.
+Track the date each rights request arrives. Respond within one month. If a lawful
+extension is needed, explain the reason within that month and record the revised
+deadline. Verify the requester only to the extent needed to handle the request.
+Use the report ID, or the game and approximate submission time, to look for an
+in-game bug report in Sentry.
 
 ## Production performance audits
 

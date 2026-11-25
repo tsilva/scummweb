@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { preload } from "react-dom";
+import { HeroPrivacyControls } from "../../lib/privacy-consent/controls";
 import LaunchButton from "../launch-button";
 import SourceLaunchActions from "./source-launch-actions";
 import GameHeroScene from "../game-player/GameHeroScene";
@@ -44,8 +45,9 @@ export default function HeroStage({
     <div className="game-showcase">
       <section className={`hero-stage hero-stage-library ${featuredGame.tone}`} id="browse" {...carouselProps}>
         <GameHeroScene game={featuredGame} isInitialSlide={isInitialSlide} footer={
-          (hasScreenshots || controls) ? <div className="hero-footer">
+          (hasScreenshots || controls || isHomePage) ? <div className="hero-footer" data-consent={isHomePage || undefined}>
             {hasScreenshots && <HeroScrollCue />}
+            {isHomePage && <HeroPrivacyControls className="hero-privacy" />}
             {controls}
           </div> : null
         }>

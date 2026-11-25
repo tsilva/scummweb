@@ -190,10 +190,10 @@ test("the standalone head script runs without a React bundle or imported closure
   assert.equal(disconnected, true);
 });
 
-test("first-paint launch and restart preserve the opt-in before hydration", t => {
+test("first-paint launch and restart no longer carry the retired URL flag", t => {
   const f = fixture(t);
   window.location = new URL("https://example.test/beneath-a-steel-sky?dropbox=true");
   prepareInitialActions(f.container, () => ({ slot: 1 }));
-  assert.equal(f.primary.href, "/beneath-a-steel-sky/play?launch_from=game_detail&dropbox=true#continue");
-  assert.equal(f.restart.href, "/beneath-a-steel-sky/play?launch_from=game_detail&dropbox=true");
+  assert.equal(f.primary.href, "/beneath-a-steel-sky/play?launch_from=game_detail#continue");
+  assert.equal(f.restart.href, "/beneath-a-steel-sky/play?launch_from=game_detail");
 });

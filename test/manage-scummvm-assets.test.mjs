@@ -48,8 +48,9 @@ function runManager(...args) {
   });
 }
 
-test("asset manager sync replaces managed paths and removes stale ones", () => {
+test("asset manager sync reuses unchanged files, repairs changes and removes stale paths", (t) => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-sync-"));
+  t.after(() => fs.rmSync(tempDir, { recursive: true, force: true }));
   const sourceDir = path.join(tempDir, "dist");
   const targetDir = path.join(tempDir, "public");
 
@@ -63,6 +64,26 @@ test("asset manager sync replaces managed paths and removes stale ones", () => {
   assert.equal(fs.existsSync(path.join(targetDir, "launcher", "hero.jpg")), true);
   assert.equal(fs.readFileSync(path.join(targetDir, "doc/scummvm-source.zip"), "utf8"), "source");
   assert.equal(fs.existsSync(path.join(targetDir, "sw.js")), false);
+  assert.equal(fs.readFileSync(path.join(targetDir, "notes.txt"), "utf8"), "keep me");
+
+  const unchanged = path.join(targetDir, "scummvm.wasm");
+  const originalTime = new Date("2020-01-01T00:00:00Z");
+  fs.utimesSync(unchanged, originalTime, originalTime);
+  writeFile(path.join(targetDir, "launcher", "hero.jpg"), "fake"); // Same length as the source.
+  writeFile(path.join(targetDir, "launcher", ".DS_Store"));
+  writeFile(path.join(targetDir, "data", "obsolete.dat"));
+  writeFile(path.join(sourceDir, "data", "added.dat"), "new");
+  fs.unlinkSync(path.join(targetDir, "data", "asset.dat"));
+  fs.symlinkSync(path.join(targetDir, "notes.txt"), path.join(targetDir, "data", "asset.dat"));
+
+  runManager("sync", sourceDir, targetDir);
+  runManager("validate", targetDir);
+
+  assert.equal(fs.statSync(unchanged).mtimeMs, originalTime.getTime());
+  assert.equal(fs.readFileSync(path.join(targetDir, "launcher", "hero.jpg"), "utf8"), "hero");
+  assert.deepEqual(fs.readdirSync(path.join(targetDir, "data")).sort(), ["added.dat", "asset.dat", "plugins"]);
+  assert.equal(fs.lstatSync(path.join(targetDir, "data", "asset.dat")).isFile(), true);
+  assert.equal(fs.existsSync(path.join(targetDir, "launcher", ".DS_Store")), false);
   assert.equal(fs.readFileSync(path.join(targetDir, "notes.txt"), "utf8"), "keep me");
 });
 

@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 import { captureException } from "../../lib/browser-sentry.mjs";
 
 const dismissalKey = "scummweb.install-prompt-dismissed";
-const visitsKey = "scummweb.install-prompt-visits";
-const minimumVisits = 3;
 const appDisplayModes = "(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui), (display-mode: window-controls-overlay)";
 const instructions = {
   native: "Launch it like any other app.",
@@ -36,18 +34,10 @@ export default function InstallPrompt() {
     const displayMode = window.matchMedia(appDisplayModes);
     if (displayMode.matches || navigator.standalone) return;
     try {
+      window.localStorage.removeItem("scummweb.install-prompt-visits");
       if (window.localStorage.getItem(dismissalKey)) return;
-      // A document counts once, including effect replays and client-side remounts.
-      if (window.scummwebInstallVisitCount === undefined) {
-        const stored = Number(window.localStorage.getItem(visitsKey));
-        const previous = Number.isSafeInteger(stored) && stored >= 0 ? stored : 0;
-        const visits = Math.min(previous + 1, minimumVisits);
-        window.localStorage.setItem(visitsKey, String(visits));
-        window.scummwebInstallVisitCount = visits;
-      }
-      if (window.scummwebInstallVisitCount < minimumVisits) return;
     } catch {
-      // Stay quiet if visits and permanent dismissal cannot be remembered.
+      // Stay quiet if a prior dismissal cannot be remembered.
       return;
     }
 

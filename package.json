@@ -12,8 +12,8 @@
     "record:preview": "node ./scripts/record_preview_stream.mjs",
     "verify": "./scripts/verify_scummvm_web.sh",
     "sentry:issues": "node scripts/list_sentry_issues.mjs",
-    "lint": "find app lib scripts test -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 node scripts/check-js-syntax.mjs",
-    "test": "node --test test/*.test.mjs",
+    "lint": "find app lib scripts test -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 node scripts/check-js-syntax.mjs && pnpm run check:backbone",
+    "test": "node --test test/*.test.mjs agent-backbone/test/*.test.js",
     "dev": "pnpm run prepare && node scripts/dev-server.mjs next dev",
     "build": "pnpm run prepare && next build",
     "start": "pnpm run prepare && node scripts/dev-server.mjs next start",
@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@sentry/nextjs": "11.10.0",
-    "@vercel/analytics": "2.0.1",
     "@zip.js/zip.js": "2.24.0",
     "lucide-react": "1.66.0",
     "next": "16.4.5",

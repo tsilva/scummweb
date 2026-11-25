@@ -211,7 +211,7 @@ export default function GameMenuDrawer({ backupDestinationKey, frameRef, initial
                   </button>
                   <span className="game-menu-save-status" role="status">{busy ? "Saving game" : saved ? "Game saved" : ""}</span>
                   {saveBlockedHere && (
-                    <p className="game-menu-save-unavailable" id="game-menu-save-unavailable">You can’t save in this location.</p>
+                    <p className="game-menu-save-unavailable" id="game-menu-save-unavailable">You can’t save right now.</p>
                   )}
                 </div>
                 {error && <p className="game-menu-note" role="alert">{error}</p>}

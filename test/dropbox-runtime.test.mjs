@@ -30,7 +30,7 @@ async function setup(t, contents = "browser progress", catalog = [{ target: "sky
   const locks = { busy: false, async request(name, options, run) { if (typeof options === "function") run = options; return run(this.editionBusy === name || this.busy && name === "scummweb-saves" && !(this.busy === "shared" && options.mode === "shared") ? null : { name }); } };
   const browser = nativeCloudBrowser(server, storage);
   browser.window.indexedDB = idb;
-  browser.location.search = "?dropbox=true";
+  browser.location.search = "";
   const globals = { window: browser.window, document: browser.document, location: browser.location, localStorage: storage, sessionStorage: sessions, indexedDB: idb, navigator: { locks },
     IDBKeyRange: { bound: (lower, upper) => ({ lower, upper }) },
     fetch: async (url) => url === "/games.json" ? Response.json({ games: catalog })
@@ -95,50 +95,35 @@ test("Dropbox verifies downloaded bytes when the native listing rounds their siz
   } finally { transport.close(); }
 });
 
-for (const search of ["", "?other=true", "?dropbox=false", "?dropbox=1"]) {
-  test(`connected accounts do not sync or block launch with URL search ${JSON.stringify(search)}`, async (t) => {
-    const { storage, runtime, server, destinations } = await setup(t);
-    const set = (await activeSets(destinations)).sets[0];
-    await updateActive("scummweb.continue.v1:synthetic", { pending: ["SKY-VM.001"] });
-    const before = new Map(storage.values);
-    location.search = search;
-    let requests = 0;
-    server.onRequest = () => { requests++; };
-    assert.equal(dropboxEnabled(), false);
-    await prepareDropboxLaunch("catalog:sky");
-    reportDropboxSave(new Proxy({}, { get() { assert.fail("disabled sync must not capture the player"); } }), {});
-    await runtime.queuePlayerSave(set);
-    await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
-    const stop = runtime.startDropboxSync();
-    window.dispatchEvent(new Event("online"));
-    window.dispatchEvent(new Event("focus"));
-    window.dispatchEvent(new Event("scummweb:saves-changed"));
-    stop();
-    assert.equal(requests, 0);
-    assert.equal(server.files.size, 0);
-    assert.deepEqual(await syncStore.all(key("pending", "")), []);
-    assert.deepEqual(storage.values, before, "connection and local saves are retained");
-    location.search = "?dropbox=true";
-    assert.equal(dropboxEnabled(), true, "the existing connection resumes only on a flagged visit");
-  });
-}
-
-test("removing the URL flag cancels an active background sync without disconnecting", async (t) => {
-  const { storage, runtime, server } = await setup(t);
-  let started;
-  const ready = new Promise((resolve) => { started = resolve; });
-  server.onRequest = async () => { started(); await new Promise(() => {}); };
-  const stop = runtime.startDropboxSync();
-  try {
-    await ready;
-    const flight = runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
-    location.search = "";
-    stop();
-    await flight;
-  } finally { stop(); }
-  assert.equal(runtime.getDropboxState().checking, false);
-  assert.equal(JSON.parse(storage.getItem(connectionKey)).enabled, true);
+test("an unconnected browser never syncs or blocks launch", async (t) => {
+  const { storage, runtime, server, destinations } = await setup(t);
+  const set = (await activeSets(destinations)).sets[0];
+  storage.removeItem(connectionKey);
+  const before = new Map(storage.values);
+  server.onRequest = () => assert.fail("Dropbox requests require an existing connection");
+  assert.equal(dropboxEnabled(), false);
+  await prepareDropboxLaunch("catalog:sky");
+  reportDropboxSave(new Proxy({}, { get() { assert.fail("disconnected sync must not capture the player"); } }), {});
+  await runtime.queuePlayerSave(set);
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
   assert.equal(server.files.size, 0);
+  assert.deepEqual(await syncStore.all(key("pending", "")), []);
+  assert.deepEqual(storage.values, before);
+});
+
+test("an existing connection uploads on a plain URL and ignores old preview values", async (t) => {
+  const { runtime, server } = await setup(t);
+  assert.equal(location.search, "");
+  assert.equal(dropboxEnabled(), true);
+  await runtime.syncDropbox();
+  assert.equal(runtime.getDropboxState().verified, true);
+  assert.ok(server.uploads > 0);
+  for (const search of ["?dropbox=true", "?dropbox=false"]) {
+    location.search = search;
+    assert.equal(dropboxEnabled(), true);
+    await runtime.syncDropbox();
+    assert.equal(runtime.getDropboxState().verified, true);
+  }
 });
 
 test("activity uses the scoped Dropbox session without blocking play and disconnect cancels it", async (t) => {
@@ -1032,11 +1017,6 @@ test("Baseball recovery keeps both originals, restores verified history and comp
 
 test("Baseball recovery archives the empty file when no replacement exists and retries idempotently", async t => {
   const { runtime, server, destination, getWorking } = await baseballFixture(t);
-  location.search = "?dropbox=false";
-  await runtime.syncDropbox();
-  assert.equal((await getWorking()).files.find(file => file.path === baseballPath).data.length, 0);
-  assert.equal(server.uploads, 0);
-  location.search = "?dropbox=true";
   await runtime.syncDropbox({ beforeLaunch: true });
   assert.equal(runtime.getDropboxState().verified, true);
   assert.deepEqual((await getWorking()).files.map(file => file.path), ["baseball.s01"]);

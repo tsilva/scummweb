@@ -29,7 +29,7 @@ export async function validateGameArchiveResponse(response, archiveLimit = maxAr
   if (!response?.ok) {
     message = response
       ? `This ZIP link returned HTTP ${response.status}. Check the link and try again.`
-      : "Could not download the ZIP. Check that the direct link works and the host allows cross-origin downloads. You can also download the ZIP yourself and drop it on ScummWEB.";
+      : "Couldn't download the game. Try again in a moment.";
   } else if (/^(?:text\/html|application\/(?:xhtml\+xml|json|problem\+json)|text\/json)(?:;|$)/i.test(
     (response.headers.get("content-type") || "").trim()
   )) {

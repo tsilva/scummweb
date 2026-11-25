@@ -46,6 +46,19 @@ test("restored routes match game families and keep demos separate", () => {
   assert.deepEqual(playSources.getMatchingGameSources(tentacle, sources, catalog).map(({ id }) => id), [imported.id]);
   assert.deepEqual(playSources.getMatchingGameSources(full, sources, catalog).map(({ id }) => id), ["full"]);
   assert.deepEqual(playSources.getMatchingGameSources(demo, sources, catalog).map(({ id }) => id), ["demo"]);
+  assert.equal(playSources.getSourceGamePresentation(sources[1], catalog, recognizedGames).summary, full.summary);
+  assert.equal(playSources.getSourceGamePresentation(sources[2], catalog, recognizedGames).summary, demo.summary);
+  assert.notEqual(full.summary, demo.summary);
+});
+
+test("imported Sky copies use the canonical description when launched or reopened", () => {
+  const name = "Beneath a Steel Sky (CD DOS v0.0368).zip";
+  for (const url of [undefined, "https://example.test/sky.zip"]) {
+    const game = playSources.getSourceGamePresentation({ id: "older-cd", name, url }, catalog, recognizedGames);
+    assert.equal(game.summary, sky.summary);
+    assert.equal(game.mobileSummary, sky.mobileSummary);
+    assert.equal(game.saveVersionId, "older-cd");
+  }
 });
 
 test("full GrimE imports use their own play routes and leave the bundled demos available", () => {
@@ -71,8 +84,6 @@ test("reopened copies retain their save namespace and legacy saves remain explic
   assert.equal(refreshed.game.saveNamespace, first.game.saveNamespace);
   assert.equal(first.game.saveVersionId, imported.id);
   assert.equal(first.game.recentGameId, `source:${imported.id}`);
-  assert.equal(first.game.platform, "DOS");
-  assert.equal(first.game.language, "English");
   assert.equal(first.game.skipIntro, null);
   const legacy = await playSources.prepareGameSourcePlayer(source(), game, { legacySaves: true });
   assert.equal(legacy.game.saveNamespace, undefined);
@@ -153,6 +164,8 @@ test("refreshing an imported game restores the remembered accessible copy", asyn
   assert.equal(view.type, app.Archive);
   assert.equal(view.props.game.saveVersionId, second.id);
   assert.equal(view.props.game.playHref, tentacle.playHref);
+  assert.equal(view.props.game.platform, "DOS");
+  assert.equal(view.props.game.language, "English");
   app.cleanup();
 });
 

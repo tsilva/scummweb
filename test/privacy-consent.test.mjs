@@ -1,8 +1,24 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { GET as privacyPrompt } from "../app/api/privacy-prompt/route.js";
 import { createConsentStore } from "../lib/privacy-consent/store.mjs";
 import { setGoogleAnalyticsAllowed } from "../app/analytics-startup.mjs";
 import { DEFAULT_SITE_URL, GOOGLE_ANALYTICS_ID } from "../lib/site-config.mjs";
+
+test("the privacy prompt is regional, defaults to showing, and cannot be cached", async () => {
+  for (const [country, showPrompt, countryKnown] of [
+    ["US", false, true], ["PT", true, true], ["CA", false, true], ["GB", true, true], [" jp ", false, true],
+    ["IS", true, true], ["LI", true, true], ["NO", true, true], [null, true, false], ["XX", true, false],
+    ["T1", true, false], ["ZZ", true, false], ["US, PT", true, false],
+  ]) {
+    const request = new Request(`${DEFAULT_SITE_URL}/api/privacy-prompt`, {
+      headers: country === null ? {} : { "CF-IPCountry": country },
+    });
+    const response = privacyPrompt(request);
+    assert.equal(response.headers.get("cache-control"), "private, no-store");
+    assert.deepEqual(await response.json(), { showPrompt, countryKnown }, JSON.stringify(country));
+  }
+});
 
 test("saved preferences are site-specific and require the current notice version", () => {
   const values = new Map();

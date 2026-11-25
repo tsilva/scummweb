@@ -118,7 +118,7 @@ test("the paused engine reports scene save availability before a manual request"
   assert.equal(controls.read().canSave, true);
   assert.equal(controls.read().canLoad, true);
   assert.deepEqual(updates, [false]);
-  assert.match(controls.run("save", null).error, /can’t save in this location/);
+  assert.equal(controls.run("save", null).error, "You can’t save right now.");
   assert.equal(timers.size, 0);
 
   controls.setMenuOpen(false);
@@ -136,6 +136,52 @@ test("the paused engine reports scene save availability before a manual request"
   scope.__scummwebPlayerSaveWritten("game.001");
   scope.__scummwebAgentSaveResult(null);
   assert.deepEqual(await save, { slot: 1 });
+});
+
+test("exit captures an autosave in native slot 1 before the periodic save is due", async () => {
+  const { scope, controls, timers } = createPlayer();
+  const boundary = () => scope.__scummwebAgentBoundary(true, 99);
+  const capture = { status: "captured", files: [{ name: "SKY-VM.001" }] };
+  const saved = [];
+  scope.__scummwebAutosaves = {
+    canCapture: () => true, due: () => false, retry() {},
+    save: (result, slot) => saved.push({ result, slot }),
+  };
+  scope.__scummwebDiagnosticSaves = {
+    supported: () => true, backupSupported: () => false, begin: () => true, finish: () => capture,
+  };
+  scope.__scummwebPublishPlayerSaves([{ slot: 1, name: "SKY-VM.001", writable: true }], [1]);
+
+  assert.equal(boundary(), 0);
+  const exit = controls.saveOnExit();
+  assert.equal(boundary(), 1);
+  scope.__scummwebAgentSaveResult(null);
+  await exit;
+  assert.deepEqual(saved, [{ result: capture, slot: 1 }]);
+  assert.equal(controls.read().saves[0].writable, true);
+  assert.equal(timers.size, 0);
+});
+
+test("exit skips capture when the engine cannot save and times out without a native boundary", async () => {
+  const { scope, controls, timers } = createPlayer();
+  scope.__scummwebAutosaves = { canCapture: () => true, due: () => false };
+  scope.__scummwebDiagnosticSaves = { supported: () => true, begin: () => assert.fail("unexpected capture") };
+
+  const blocked = controls.saveOnExit();
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, false, true), 0);
+  await blocked;
+  controls.setMenuOpen(true);
+  scope.__scummwebPublishSaveAvailability(false);
+  await controls.saveOnExit();
+  assert.equal(timers.size, 0);
+
+  controls.setMenuOpen(false);
+  const stalled = controls.saveOnExit();
+  const [timer] = timers.values();
+  timer();
+  await stalled;
+  assert.equal(timers.size, 0);
+  assert.equal(scope.__scummwebAgentBoundary(true, 99), 0);
 });
 
 test("a timed-out dispatched load cannot complete a newer request", async () => {

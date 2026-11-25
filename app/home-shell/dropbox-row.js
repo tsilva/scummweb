@@ -52,7 +52,7 @@ export default function DropboxRow() {
   if (phase === "disconnected") {
     if (!configured) description = "Dropbox sync is unavailable.";
     else if (!online) description = "Go online to connect Dropbox.";
-    else description = "Connect to sync saves and Recently Played across devices.";
+    else description = "Connect to sync your saves and Recently Played activity to your Dropbox app folder.";
   } else if (offline) {
     description = "Sync resumes automatically when you’re back online.";
   } else if (reconnect && !online) {
@@ -84,7 +84,11 @@ export default function DropboxRow() {
           {upToDate && <Check size={16} className="dropbox-check" aria-hidden="true" />}
           {label}
         </p>
-        {description && <p>{description}</p>}
+        {description && <p>{description}
+          {phase === "disconnected" && configured && online && (
+            <> <a href="/privacy#dropbox-sync">Privacy details</a></>
+          )}
+        </p>}
         {message && <p className="dropbox-notice">{message}</p>}
       </div>
       {transfer && <p className="dropbox-progress" role="status">

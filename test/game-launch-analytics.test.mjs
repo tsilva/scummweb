@@ -19,7 +19,7 @@ function trafficWindow(url = DEFAULT_SITE_URL, navigator = {}) {
   };
 }
 
-test("analytics queues early events and redacts the direct ZIP link before the tag loads", () => {
+test("analytics queues early events without URL parameters, fragments, or ad features", () => {
   const frames = [];
   const scripts = [];
   let idle;
@@ -28,11 +28,17 @@ test("analytics queues early events and redacts the direct ZIP link before the t
     requestAnimationFrame: (callback) => frames.push(callback),
     requestIdleCallback: (callback) => { idle = callback; },
   });
-  const document = { readyState: "loading", createElement: () => ({}), head: { appendChild: (script) => scripts.push(script) } };
-  runInNewContext(analyticsStartupScript, { window, document, URLSearchParams, Event });
+  const document = { referrer: `${DEFAULT_SITE_URL}/?private=1#private`, readyState: "loading",
+    createElement: () => ({}), head: { appendChild: (script) => scripts.push(script) } };
+  runInNewContext(analyticsStartupScript, { window, document, URL, URLSearchParams, Event });
   window.gtag("event", "game_launch_attempt");
   const config = window.dataLayer.find(([command]) => command === "config");
-  assert.equal(config[2].page_location, `${DEFAULT_SITE_URL}/local/play?example=1`);
+  assert.equal(config[2].page_location, `${DEFAULT_SITE_URL}/local/play`);
+  assert.equal(config[2].page_referrer, `${DEFAULT_SITE_URL}/`);
+  assert.equal(config[2].cookie_expires, 180 * 86400);
+  assert.equal(config[2].cookie_update, false);
+  assert.equal(config[2].allow_google_signals, false);
+  assert.equal(config[2].allow_ad_personalization_signals, false);
   assert.equal(window.dataLayer.at(-1)[1], "game_launch_attempt");
   assert.equal(window.dataLayer[0][0], "set");
   assert.equal(window.dataLayer[0][1].traffic_type, "external");
@@ -76,7 +82,7 @@ test("explicit traffic tags survive navigation, can be cleared, and tolerate blo
 test("automatic page views are tagged before config even when analytics loads later", () => {
   const window = Object.assign(new EventTarget(), trafficWindow(`${DEFAULT_SITE_URL}/?analytics_traffic=automated`));
   const document = { readyState: "loading" };
-  runInNewContext(analyticsStartupScript, { window, document, URLSearchParams, Event });
+  runInNewContext(analyticsStartupScript, { window, document, URL, URLSearchParams, Event });
   assert.equal(window.dataLayer[0][0], "set");
   assert.equal(window.dataLayer[0][1].traffic_type, "automated");
   assert.equal(window.dataLayer[2][0], "config");

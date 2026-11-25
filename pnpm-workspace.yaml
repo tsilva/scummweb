@@ -1,4 +1,7 @@
-minimumReleaseAge: 10080
+packages:
+  - agent-backbone
+
+minimumReleaseAge: 2880
 blockExoticSubdeps: true
 allowBuilds:
   '@sentry/cli': set this to true or false
@@ -15,6 +18,8 @@ overrides:
   source-map-js: 1.2.2
   brace-expansion: 5.0.12
   # Patched callers use minimatch; fdir receives an explicit matcher.
+  # Keep CommonJS on the patched pluginutils when Dependabot refreshes Sentry.
+  '@rollup/plugin-commonjs@28.0.1>@rollup/pluginutils': 5.4.0
   '@rollup/plugin-commonjs@28.0.1>picomatch': '-'
   '@rollup/pluginutils@5.4.0>picomatch': '-'
   'fdir@6.5.0>picomatch': '-'
@@ -30,23 +35,3 @@ packageExtensions:
 patchedDependencies:
   '@rollup/plugin-commonjs@28.0.1': patches/dependencies/@rollup__plugin-commonjs@28.0.1.patch
   '@rollup/pluginutils@5.4.0': patches/dependencies/@rollup__pluginutils@5.4.0.patch
-
-# User-approved security patch exception; all other packages retain the age hold.
-minimumReleaseAgeExclude:
-  # Audited November 2026 Next.js security release. Remove after normal eligibility.
-  - '@next/env@16.4.5'
-  - '@next/swc-darwin-arm64@16.4.5'
-  - '@next/swc-darwin-x64@16.4.5'
-  - '@next/swc-linux-arm64-gnu@16.4.5'
-  - '@next/swc-linux-arm64-musl@16.4.5'
-  - '@next/swc-linux-x64-gnu@16.4.5'
-  - '@next/swc-linux-x64-musl@16.4.5'
-  - '@next/swc-win32-arm64-msvc@16.4.5'
-  - '@next/swc-win32-x64-msvc@16.4.5'
-  - 'next@16.4.5'
-  # Exact versions approved for the glob and minimatch security fixes.
-  - glob@14.0.2
-  - minimatch@11.0.1
-  - path-scurry@3.0.0
-  - '@isaacs/nonrecursive-glob-match@1.0.1'
-  - source-map-js@1.2.2

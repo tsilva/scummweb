@@ -7,13 +7,12 @@ import { buildGameExitHref } from "./hero-selection.mjs";
 import { useGameNavigation } from "./game-navigation";
 import { useArtworkDelivery } from "./artwork-delivery";
 import { preloadSelectedHero } from "./hero-preload.mjs";
-import { useDropboxPreviewHref } from "../dropbox/use-preview-href";
 
 export default function GameSelectionLink({ game, children, onPointerEnter, onPointerLeave,
   onPointerDown, onPointerCancel, onFocus, onBlur, ...props }) {
   const selectGame = useGameNavigation();
   const artwork = useArtworkDelivery();
-  const href = useDropboxPreviewHref(buildGameExitHref(game));
+  const href = buildGameExitHref(game);
   const cancelPreload = useRef(null);
   const warmHero = (committed = false) => {
     cancelPreload.current = preloadSelectedHero(game, artwork, committed);

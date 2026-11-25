@@ -11,9 +11,8 @@ import { fileNode, handleNode } from "../game-import-nodes.mjs";
 import { inspectLocalSourceFiles } from "../game-source-inspection.mjs";
 import { startArchiveRecovery } from "./archive-recovery.mjs";
 import LibraryView from "./library-view";
-import { catalogGameEntries, getGameFamilyKey, getVersionSaveNamespace, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
+import { catalogGameEntries, getGameFamilyKey, groupGameVersions, rememberGameVersion } from "../game-versions.mjs";
 import { buildGameExitHref, readHeroSelection } from "./hero-selection.mjs";
-import { withDropboxPreview } from "../dropbox/feature.mjs";
 import HomeHero from "./home-hero";
 import GameDropOverlay, { chooseArchiveHandles } from "./local-game";
 import RecentGamesRail from "../recent-games-rail";
@@ -382,16 +381,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         if (group) selectGame(group.game);
         return;
       }
-      game = { ...game, recentGameId: `source:${source.id}`, activityVersion: sourceActivityVersion(source),
-        saveFingerprint: source.fingerprint,
-        saveVersionId: legacySaves ? undefined : source.id,
-        saveNamespace: legacySaves ? undefined : await getVersionSaveNamespace(source.id), skipIntro: null };
-      if (source.url) {
-        selectGameArchive(async (signal, onProgress) => {
-          const { readRemoteGameArchive } = await import("../game-bucket.mjs");
-          return readRemoteGameArchive(source.url, { signal, onProgress });
-        }, game);
-      } else {
+      let validatedFile;
+      if (!source.url) {
         const data = sessionGames.get(source.id);
         if (!data && !source.handle) {
           updateStatus(source, "locate");
@@ -401,10 +392,7 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
         try {
           const file = data ?? await source.handle.getFile();
           validateLocalGameArchive(file);
-          selectGameArchive(async (signal, onProgress) => {
-            const { openLocalGameArchive } = await import("../local-game-archive.mjs");
-            return openLocalGameArchive(file, signal, onProgress);
-          }, game);
+          validatedFile = file;
         } catch (error) {
           const permission = ["NotAllowedError", "SecurityError"].includes(error?.name);
           updateStatus(source, permission ? "permission" : "missing");
@@ -413,9 +401,14 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
           return;
         }
       }
+      const player = await sourcePresentation.prepareGameSourcePlayer(source, {
+        ...game, activityVersion: sourceActivityVersion(source), saveFingerprint: source.fingerprint,
+      }, { legacySaves, validatedFile });
+      game = player.game;
+      selectGameArchive(player.loadArchive, game);
       rememberGameVersion(getGameFamilyKey(game) || `source:${source.id}`, `source:${source.id}`);
       if (!onPlayArchive?.(game, resume)) {
-        router.push(withDropboxPreview(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`, window.location.href));
+        router.push(`${sourcePresentation.getGamePlayHref(game)}${resume ? "#continue" : ""}`);
       }
       navigated = true;
     }).finally(() => { if (!navigated) void exitImmersiveMode(); }).then(() => navigated);
@@ -477,9 +470,8 @@ export default function SourceLibrary({ catalog, artwork, featuredGame: initialF
     // normal Next.js navigation, including direct links from compatibility.
     const group = groups.find((group) => buildGameExitHref(group.game) === path);
     if (!group) return false;
-    const href = withDropboxPreview(path, window.location.href);
-    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== href) {
-      window.history.pushState(null, "", href);
+    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== path) {
+      window.history.pushState(null, "", path);
     }
     // Next updates usePathname in a transition; select the hero immediately.
     setSelection(group.key);

@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { dropboxEnabled } from "./dropbox/bridge.mjs";
-import DropboxPreview from "./home-shell/dropbox-preview";
 
-function DropboxSyncContent() {
+export default function DropboxSaveSync() {
   const [state, setState] = useState(null);
   useEffect(() => {
     let stopped = false, cleanup, unsubscribe;
@@ -26,8 +25,4 @@ function DropboxSyncContent() {
     : state?.phase === "waiting" ? "Latest saves are on this device, waiting to sync."
     : state?.activityWaiting ? "Play activity is waiting to sync with Dropbox." : null;
   return warning ? <aside className="dropbox-sync-warning" role="status">{warning}</aside> : null;
-}
-
-export default function DropboxSaveSync() {
-  return <DropboxPreview><DropboxSyncContent /></DropboxPreview>;
 }

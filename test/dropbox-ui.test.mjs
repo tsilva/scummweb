@@ -6,7 +6,6 @@ import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import { connectionKey } from "../app/dropbox/client.mjs";
 import * as transfers from "../app/cloud/transfer-progress.mjs";
-import { dropboxPreviewEnabled } from "../app/dropbox/feature.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const nativeRequire = createRequire(import.meta.url);
@@ -31,42 +30,30 @@ const text = (node) => typeof node === "string" || typeof node === "number" ? St
 const button = (root, name) => nodes(root).find((node) => node.type === "button" && text(node) === name);
 
 for (const phase of ["waiting", "reconnect"]) {
-  test(`${phase} sync coordinator and warning require the Dropbox URL flag`, async () => {
-    let query = "", state = null, starts = 0, stops = 0, unsubscribes = 0;
+  test(`${phase} sync coordinator starts after a Dropbox connection on a plain URL`, async () => {
+    let connected = false, state = null, starts = 0, stops = 0, unsubscribes = 0;
     const effects = [], listeners = new Map();
-    const Preview = await component("../app/home-shell/dropbox-preview.js", {
-      "next/navigation": { useSearchParams: () => new URLSearchParams(query) },
-      "../dropbox/feature.mjs": { dropboxPreviewEnabled },
-    }, { Suspense: nativeRequire("react").Suspense });
     const Sync = await component("../app/dropbox-save-sync.js", {
-      "./home-shell/dropbox-preview": Preview,
-      "./dropbox/bridge.mjs": { dropboxEnabled: () => dropboxPreviewEnabled(query) },
+      "./dropbox/bridge.mjs": { dropboxEnabled: () => connected },
       "./dropbox/runtime.mjs": {
         getDropboxState: () => ({ phase }),
         subscribeDropbox: () => () => { unsubscribes++; },
         startDropboxSync: () => { starts++; return () => { stops++; }; },
       },
-      window: { addEventListener: (name, callback) => listeners.set(name, callback),
+      window: { location: new URL("https://example.test/"), addEventListener: (name, callback) => listeners.set(name, callback),
         removeEventListener: (name) => listeners.delete(name) },
     }, { useState: () => [state, (next) => { state = next; }], useEffect: (effect) => effects.push(effect) });
     const render = () => renderToStaticMarkup(Sync());
     assert.doesNotMatch(render(), /role="status"/);
-    assert.equal(effects.length, 0, "unflagged pages never mount the coordinator");
-    for (query of ["", "other=true", "dropbox=false", "dropbox=1"]) {
-      assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
-      assert.equal(effects.length, 0);
-    }
-    assert.equal(starts, 0);
-    query = "other=true&dropbox=true";
-    render();
     const cleanup = effects[0]();
+    assert.equal(starts, 0);
+    connected = true;
+    listeners.get("scummweb:dropbox-connection")();
     await new Promise(setImmediate);
     assert.equal(starts, 1);
     assert.match(render(), /class="dropbox-sync-warning" role="status"/);
     assert.match(render(), phase === "waiting" ? /waiting to sync/ : /Reconnect Dropbox/);
-    query = "";
-    assert.doesNotMatch(render(), /dropbox-sync-warning|role="status"/);
-    cleanup(); // React unmounts the gated child when the flag is removed.
+    cleanup();
     assert.equal(stops, 1);
     assert.equal(unsubscribes, 1);
     assert.equal(listeners.size, 0);
@@ -181,9 +168,10 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     getActiveSaveSets: async () => ({ sets: [currentActive], revision: currentRevision, hasRoot: true }), readStoredSets: async () => copies,
     withSaveLock: run => run(), applyImport: async options => { writes++; calls.push(options); } };
   const View = await component("../app/home-shell/settings-content.js", {
-    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Upload"].map(name => [name, () => null])),
+    "lucide-react": Object.fromEntries(["ArrowDownUp", "Check", "ChevronDown", "Download", "Info", "Save", "Shield", "Upload"].map(name => [name, () => null])),
+    "../../lib/privacy-consent/controls": { PrivacySettingsSwitches: () => null },
     "../styles/settings-details.css": {}, "../game-sources.mjs": { readGameSources: readSources || (async () => []) },
-    "./dropbox-row": { default: () => null }, "./dropbox-preview": { default: () => null },
+    "./dropbox-row": { __esModule: true, default: "dropbox-row" },
     "../save-backups/backups.mjs": backups, "../../web-shell/save-storage.mjs": { openSaveStorage: async () => ({}) },
     "../dropbox/save-merge.mjs": { preferredSaveMerge: async (sets) => { merges.push(sets); return { set: markMerged ? { ...sets[0], hash: "merged-for-review" } : sets[0] }; } },
     "../save-backups/scummvm-transfer.mjs": { exportScummvmSaves: async () => new Blob(["export"]), readSaveImport: async (files, destinations, game) => {
@@ -197,26 +185,38 @@ async function settingsFixture({ needsGame = false, markMerged = false, readSour
     return [state[index], value => { state[index] = typeof value === "function" ? value(state[index]) : value; }];
   } }, browserGlobals);
   const props = { catalog: [], officialUrl: "https://example.test", working: { current: false }, busy: false,
-    setBusy(busy) { props.busy = busy; }, loadingIndicator: "settings spinner" };
+    setBusy(busy) { props.busy = busy; } };
   return { calls, copies, effects, imports, merges, setCurrent(set) { currentActive = set; currentRevision = "newer-revision"; }, writes: () => writes, render() { cursor = 0; refCursor = 0; return View(props); } };
 }
 
-test("Settings keeps the spinner until the initial save read settles", async () => {
+test("Saved games includes the Dropbox row without a preview wrapper", async () => {
+  const fixture = await settingsFixture();
+  assert.ok(nodes(fixture.render()).some(node => node.type === "dropbox-row"));
+});
+
+test("Settings sections are usable while save transfer actions wait for the initial read", async () => {
   for (const fail of [false, true]) {
     const sources = Promise.withResolvers();
     let reads = 0;
     const fixture = await settingsFixture({ readSources: () => { reads++; return sources.promise; } });
-    assert.equal(fixture.render(), "settings spinner");
+    fixture.render();
     fixture.effects[0]();
     fixture.effects[0]();
     assert.equal(reads, 1);
-    assert.equal(fixture.render(), "settings spinner");
+    const pending = fixture.render();
+    assert.equal(button(pending, "Saved games").props.disabled, undefined);
+    assert.equal(button(pending, "About").props.disabled, undefined);
+    assert.equal(button(pending, "Export saves").props.disabled, true);
+    assert.equal(button(pending, "Import saves").props.disabled, true);
+    button(pending, "About").props.onClick();
+    assert.equal(button(fixture.render(), "About").props["aria-expanded"], true);
     if (fail) sources.reject(new Error("Could not read saves."));
     else sources.resolve([]);
     await new Promise(setImmediate);
     const tree = fixture.render();
-    assert.equal(button(tree, "Saved games").props.disabled, undefined);
-    assert.equal(button(tree, "About").props.disabled, undefined);
+    assert.equal(button(tree, "About").props["aria-expanded"], true);
+    assert.equal(button(tree, "Export saves").props.disabled, fail);
+    assert.equal(button(tree, "Import saves").props.disabled, false);
     if (fail) assert.match(text(tree), /Could not read saves/);
   }
 });

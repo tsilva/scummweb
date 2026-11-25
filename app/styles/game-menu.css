@@ -254,6 +254,7 @@
 .game-menu-report { margin-top: .5rem; }
 .game-bug-report { display: grid; gap: 1rem; padding-top: 1.75rem; }
 .game-bug-report label { font-weight: 700; }
+.game-bug-report a { text-decoration: underline; text-underline-offset: 0.15em; }
 .game-bug-report textarea {
   box-sizing: border-box;
   width: 100%;

@@ -12,15 +12,16 @@ Choose a game from the library or Recently Played, then select **Play**.
 The version selector lists copies by known graphics quality, then favors disc
 editions and newer revisions. It defaults to the highest-ranked playable copy,
 with the included copy and browser language used to break ties. It remembers
-your choice while that copy is available. Demos have separate cards. **Game not
-included** means you need your own copy. Check the
+your choice while that copy is available. All versions on a card share the
+same description. Demos have separate cards. **Game not included** means you
+need your own copy. Check the
 [compatibility results](game-testing.md) for tested editions.
 
-Recently Played shows the last played copy of each game, its recorded **Played**
-time and **Last played** date, and a direct **Continue** button when a compatible
-save exists (otherwise **Play**). Imported copies retain their file-access and
-locate actions. Supported editions also show verified story progress; see
-[progress tracking](game-progress.md#recently-played).
+Each Recently Played card shows the cover of the last played copy beside its
+stacked **Played** and **Last played** stats. The full-width button below shows
+**Continue** when a compatible save exists and **Play** otherwise. Imported
+copies retain their file-access and locate actions. Supported editions also
+show verified story progress. See [progress tracking](game-progress.md#recently-played).
 Use the arrow buttons beside Recently Played to scroll through the cards with
 a mouse or keyboard. They appear when the row overflows; touch and trackpad
 scrolling also remain available.
@@ -142,8 +143,8 @@ each axis to preserve symmetric spacing around cutouts.
   choose a manual save to overwrite after confirmation. **Load Game** opens the
   saved-game list. Expand **Backed-up saves** to load a slot from an earlier
   copy for the current edition. Loading preserves active save files. When the
-  engine blocks saves in the current scene, **Save Game** is disabled and the
-  menu shows “You can’t save in this location.” Games can also deny loading during
+  engine temporarily blocks saving, **Save Game** is disabled and the menu
+  shows “You can’t save right now.” Games can also deny loading during
   cutscenes. Unsupported actions offer the native menu. Maintain verified
   shortcuts in [`game-menu.mjs`](../app/game-player/game-menu.mjs).
 - Personal Nightmare uses its original numbered slots and can save at the text
@@ -225,15 +226,14 @@ hidden. They return to their normal visibility when the action disappears.
 
 ### Continue and native saves
 
-In the Dropbox preview (`?dropbox=true`), **Continue** loads the latest intact ScummWEB autosave for the selected
-edition. It skips damaged checkpoints and can fall back to older checkpoints
-or an eligible native save. Supported games keep up to three checkpoints,
-updated about every two minutes and at the first safe moment after loading.
+**Continue** loads the latest intact ScummWEB autosave or eligible native save
+for the selected edition. It skips damaged checkpoints. Supported games keep up
+to three checkpoints, updated about every two minutes, at the first safe moment
+after loading, and when you select **Exit game** in a scene that allows saving.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. Saved story progress uses checkpoint data where a
-compatible story map is available. Outside the preview, **Continue** uses the
-latest eligible native save. In the game hero, the version picker appears beside
+compatible story map is available. In the game hero, the version picker appears beside
 **Play** or **Continue** when several versions are available. For a single
 version, **Start from beginning** appears beside **Continue** and keeps your saves.
 Games without compatible save and startup-load support use their in-game menu.
@@ -483,9 +483,7 @@ The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-
 
 The original DOS Christmas Card 1988 opens a message editor. Type a greeting and press Enter to watch it scroll across the card before the holiday animation.
 
-The original DOS EGA edition of The Seasoned Professional plays Sierra’s animated holiday short. Press F9 and choose Restart to replay it. The title opens directly into the original animation.
-
-The original DOS Christmas Card 1992 starts its animated holiday greeting when launched. Use the ScummWEB game menu for playback speed or to return to the library.
+The 1990 Christmas card, The Seasoned Professional, and Christmas Card 1992 are available through ZIP import. Both start their animations automatically.
 
 The original DOS guide opens at its instructions. Press Space to visit the next attraction.
 
@@ -606,22 +604,24 @@ Follow the [README quickstart](../README.md#run-locally) for a credential-free
 server. Development needs no private service credentials. `pnpm secrets:check` verifies credential absence without
 retrieving source values.
 
-The pinned patches in `patches/dependencies/` replace Rollup's vulnerable
-`picomatch` calls with the already pinned `minimatch` implementation. Package
+The pinned patches in `patches/dependencies/` replace Rollup's `picomatch`
+calls with the already pinned `minimatch` implementation. Package
 extensions supply the replacement; overrides remove both direct dependencies
-and fdir's unused optional peer. Both CommonJS and ES module entry points are
-patched. This covers Sentry's current filters and wrapping, plus ordinary
+and fdir's unused optional peer. An override keeps the patched CommonJS plugin
+on the patched `@rollup/pluginutils` version during Sentry dependency refreshes.
+Both CommonJS and ES module entry points are patched. This covers Sentry's
+current filters and wrapping, plus ordinary
 dynamic target globs, rather than promising identical semantics for every
 picomatch-specific glob form. `test/dependency-security.test.mjs` checks bounded
 ReDoS inputs, both entry points, CommonJS wrapping, source maps, dotfiles and
 ordered dynamic target exclusions. Remove the patches, extensions and removal
 overrides together once an audited upstream release replaces the affected
-dependency. Keep the full dependency audit and supply-chain holds enabled.
+dependency. Keep the full dependency audit and the 48-hour dependency release hold enabled.
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm lint` | Check JavaScript and JSX syntax. |
-| `pnpm test` | Run the Node tests. |
+| `pnpm lint` | Check JavaScript and JSX syntax, including the agent backbone. |
+| `pnpm test` | Run the app and agent backbone Node test suites. |
 | `pnpm build` | Stage assets and build the app. |
 | `pnpm run dev` | Develop at `http://localhost:47831`. |
 | `pnpm run start` | Serve the production build at `http://localhost:47831`. |
@@ -634,6 +634,8 @@ checkout, `pnpm run prepare:scummvm` builds the matching runtime and source
 archive from the pinned ScummVM checkout and Emscripten SDK. The build needs
 Bash, Git, curl, make, CMake, Python 3 with Pillow, and standard archive tools.
 `pnpm prepare` runs this check and reuses an existing validated bundle.
+Staging keeps unchanged managed files in `public/`, updates changed files and
+clears stale managed files before validating the staged bundle.
 Edit `web-shell/` for browser-runtime changes. Set the same project-relative
 `SCUMMWEB_DIST_DIR` for build and start when an audit must coexist with another server.
 
@@ -677,7 +679,7 @@ iOS devices before claiming device coverage.
 
 The initial library renders complete HTML on the server. Its interactive bundle loads after the hero decodes and receives two animation frames, or immediately on keyboard, pointer or drag input. A one-second deadline releases a stalled image. File drops capture handles during the original event and hand them to the importer once it is ready. This uses Turbopack's `import.meta.env.SSR` branch elimination; keep the server-rendered markup intact when changing the loading boundary.
 
-Browser error listeners start before hydration. The full Sentry SDK loads after the initial hero decodes and has a paint opportunity; an early error, explicit report or router transition loads it immediately. Errors retain their original objects and unhandled mechanisms until initialization completes. Global errors, install-prompt failures and private startup reports use this shared loader. SDK options and server-side reporting remain unchanged. Automatic breadcrumbs, logs and request instrumentation begin when the SDK initializes.
+Automatic browser Sentry reporting requires the Diagnostics choice. With permission, the SDK waits for the hero to paint unless an error or a router transition needs it sooner. Events that occurred before permission are not buffered. Turning Diagnostics off blocks new browser events and drops queued application reports. Server diagnostics and reports a player explicitly submits from the game menu use their existing server path.
 
 ### Sentry issue reads
 
@@ -686,10 +688,12 @@ Sentry credentials, organization and project. It never opens dotenv files. Faile
 
 ### Bug report collection
 
-`POST /api/bug-report` accepts the game menu's description and diagnostic save
-attachments. It uses the existing server Sentry configuration and sends a
-Feedback event only after explicit submission. Delivery failures retain the
-description for retry. Success requires a successful Sentry ingestion response.
+`POST /api/bug-report` accepts the game menu's description and any diagnostic
+save the player has chosen to attach. The form explains what it sends before
+submission and starts with the save option off. The route uses the existing
+server Sentry configuration and sends a Feedback event only after submission.
+Delivery failures retain the description for retry. After confirmed ingestion,
+the form displays the report ID. Find it in Sentry using the `report_id` tag.
 The route returns 503 when reporting is disabled or unconfigured.
 
 Each report includes `reproduction.json` with the catalog identity or detected
@@ -821,9 +825,9 @@ title, edition metadata, summary, artwork source, crop and viewport geometry
 stay fixed during launch. The homepage also shows the selected game's title.
 The reserved action area changes from Play/Continue to **Loading game…**.
 During a network transfer it shows **Downloading game…** with the amount
-received and the total when available. The title and artwork keep their size
-and position. The hero toolbar keeps the original logo and consistent
-navigation links on the left, with Settings at
+received and the total when available, each in MB with one decimal place. The
+title and artwork keep their size and position. The hero toolbar keeps the
+original logo and consistent navigation links on the left, with Settings at
 the right edge. Loading shows only the same exit control used during play,
 including while the route is being prepared. The spinner and progress accent are
 indeterminate and stop animating with reduced motion enabled. Startup failures
@@ -894,7 +898,36 @@ Point `SCUMMVM_GAMES_ORIGIN` at that server and start
 `pnpm run dev`. Publish and verify each ZIP before deploying
 its catalog entry. See [game-library publishing](production-delivery.md#game-library-publishing).
 
+## Privacy choices
+
+The framework-independent store and the React controls in `lib/privacy-consent/`
+take a site key, notice version, purpose definitions, and prompt eligibility.
+ScummWEB supplies those values in `app/privacy/consent-config.mjs` and
+`app/privacy/site-consent.js`. On the homepage, visitors without a current choice
+see the prompt if they are in the EEA or UK, or if their location is unknown.
+`/api/privacy-prompt` reads Cloudflare's `CF-IPCountry` header. Its uncached
+response includes the prompt decision and `countryKnown`, which indicates
+whether the header contained a usable country code. Enable IP Geolocation on the
+Cloudflare zone to supply that header. A missing header or failed lookup defaults
+to showing the prompt. Settings → Privacy and the privacy policy offer the
+controls worldwide. Analytics and browser diagnostics require opt-in
+everywhere.
+Gameplay never waits for a choice. Decisions stay in the site's browser storage
+with the notice version and timestamp. A notice version change requires a fresh
+choice. No central consent receipts are sent.
+
+Keep provider-specific code outside the shared controls. Each adapter checks
+the latest choice before starting and before sending after a withdrawal. Run
+`node --test test/privacy-consent.test.mjs test/game-launch-analytics.test.mjs test/browser-sentry.test.mjs`
+after changing the store or its integrations.
+
 ## Game launch analytics
+
+Google Analytics loads only after the visitor allows
+Analytics. Changing this choice stops new events, including in another open tab.
+The Google tag runs on the canonical site origin and uses host-only cookies.
+The tag config sets a 180-day cookie lifetime without refreshing it on subsequent
+visits. The tag config disables Google signals and ads personalization.
 
 The catalog funnel emits each event at most once per play page visit. It
 excludes local imports, direct ZIP links, and saved external launches.
@@ -918,9 +951,10 @@ while hidden or controls are unavailable, and fire once per threshold. They do
 not establish active input or puzzle progress. The existing five-minute event
 retains its meaning; shorter milestones have distinct names.
 
-Page locations sent to GA4 omit URL fragments; Vercel Analytics redacts direct
-ZIP fragments. Do not include ZIP URLs, file names, saves, or input contents in
-analytics fields.
+The app strips query strings and fragments from page locations and referrers in
+the tag configuration. Keep Google Analytics enhanced-measurement settings from
+collecting query values or private links. Keep ZIP URLs, file names, saves, and
+input contents out of analytics fields.
 
 ### GA4 custom definitions
 
@@ -1062,7 +1096,7 @@ Keep its specific `genre` description and set an explicit `category` from
 and sorting. Preserve the category when sharing metadata with demos and imports.
 Use Sports for the Backyard sports games, Cards & board games for card and
 board collections, Family & education for children's activities and adventures,
-and Animation for the non-interactive Christmas cards. Genre inference remains
+and Animation for Sierra’s Christmas cards. Genre inference remains
 a fallback for older imports without a category.
 Give every bundled target play-style and theme launch tags in
 `app/game-player/launch-tags.mjs`; year and platform come from edition metadata.

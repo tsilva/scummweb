@@ -5,7 +5,6 @@ import { runInNewContext } from "node:vm";
 import test from "node:test";
 import swc from "next/dist/build/swc/index.js";
 import * as skipIntroConfig from "../app/skip-intro-config.mjs";
-import * as preview from "../app/dropbox/feature.mjs";
 import * as telemetry from "../app/game-player/telemetry.mjs";
 import { getStoryProgressRevision } from "../app/game-player/story-progress.mjs";
 import * as startupDiagnostics from "../app/game-player/startup-diagnostics.mjs";
@@ -28,10 +27,22 @@ const bootUrl = new URL("../app/game-player/useBootState.js", import.meta.url);
 const { code: bootCode } = await swc.transform(await readFile(bootUrl, "utf8"), {
   filename: bootUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
 });
+const archiveStartupUrl = new URL("../app/game-player/archive-startup.mjs", import.meta.url);
+const { code: archiveStartupCode } = await swc.transform(await readFile(archiveStartupUrl, "utf8"), {
+  filename: archiveStartupUrl.pathname, swcrc: false, configFile: false, module: { type: "commonjs" },
+});
+
+function loadArchiveStartup(window, sendZipGameFiles) {
+  const module = { exports: {} };
+  runInNewContext(archiveStartupCode, {
+    module, exports: module.exports, window, require: () => ({ sendZipGameFiles }),
+  });
+  return module.exports;
+}
 
 for (const [message, mobile, installed] of [
   ["This ZIP link returned HTTP 404.", false, false],
-  ["Could not download the ZIP.", true, false],
+  ["Couldn't download the game. Try again in a moment.", true, false],
   ["This ZIP link returned HTTP 404.", false, true],
 ]) {
   test(`Exit remains usable after an intro-enabled game's archive fails in ${installed ? "installed" : mobile ? "mobile" : "desktop browser"} mode`, async () => {
@@ -43,14 +54,14 @@ for (const [message, mobile, installed] of [
     function Controls() {}
     function Overlay() {}
     const compiled = { exports: {} };
+    const window = { matchMedia: (query) => ({ matches: installed && query.includes("display-mode: standalone") }), location: {
+      href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
+      hash: "", search: "", replace: (href) => navigations.push(href),
+    } };
     runInNewContext(code, {
-      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator,
-      window: { matchMedia: (query) => ({ matches: installed && query.includes("display-mode: standalone") }), location: {
-        href: "https://example.test/beneath-a-steel-sky/play", origin: "https://example.test",
-        hash: "", search: "", replace: (href) => navigations.push(href),
-      } },
+      module: compiled, exports: compiled.exports, URL, URLSearchParams, AbortController, navigator, window,
       require(name) {
-        if (name === "./dropbox/feature.mjs") return preview;
+        if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup(window);
         if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
         if (name === "react") return {
           useState(initial) {
@@ -196,12 +207,13 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
   function Overlay() {}
   const module = { exports: {} };
   const bootModule = { exports: {} };
+  const archiveStartup = loadArchiveStartup(window, (receiver, files) => deliveries.push({ receiver, files }));
   runInNewContext(code, {
     module, exports: module.exports, window, URL, URLSearchParams, AbortController,
     navigator: { virtualKeyboard }, HTMLElement: class {},
     fetch: fetchShell,
     require: function require(name) {
-      if (name === "./dropbox/feature.mjs") return preview;
+      if (name.endsWith("/archive-startup.mjs")) return archiveStartup;
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {
@@ -280,7 +292,6 @@ function pendingArchivePlayer({ stalledNavigation = false, queryTelemetry = fals
       }) };
       if (name.endsWith("/startup-diagnostics.mjs")) return startupDiagnostics;
       if (name === "./recent-games") return { recordRecentGameTarget() {} };
-      if (name.endsWith("/zip-game-player")) return { sendZipGameFiles: (receiver, files) => deliveries.push({ receiver, files }) };
       return {};
     },
   });
@@ -808,6 +819,8 @@ test("catalog and imported launches retain distinct compatibility warnings from 
     const player = pendingArchivePlayer({ catalog });
     player.render();
     assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("hostCompatibilityWarning"), "1");
+    assert.equal(new URL(player.frame.contentDocument.URL).searchParams.get("dropbox"), "true",
+      "a plain player route enables the shell's rotating save checkpoints");
     assert.equal(player.controls.compatibilityWarnings.length, 0);
     player.compatibilityWarning("Other origin", { origin: "https://untrusted.test" });
     player.compatibilityWarning("Other frame", { source: {} });
@@ -840,17 +853,30 @@ test("save-lock contention returns to the launcher only for the active player fr
   player.unmount();
 });
 
-test("exit waits for the save flush before removing the player frame or navigating", async () => {
+test("exit waits for a checkpoint and then the save flush before removing the frame or navigating", async () => {
   const player = pendingArchivePlayer();
   player.render();
+  const checkpoint = Promise.withResolvers();
   const flush = Promise.withResolvers();
-  player.frame.contentWindow.__scummwebFlushSaveStorage = () => flush.promise;
+  const saves = [];
+  player.frame.contentWindow.scummwebPlayerControls = {
+    saveOnExit() { saves.push("checkpoint"); return checkpoint.promise; },
+  };
+  player.frame.contentWindow.__scummwebFlushSaveStorage = () => {
+    saves.push("flush");
+    return flush.promise;
+  };
   const exit = player.controls.onExit();
   await new Promise(setImmediate);
   assert.ok(player.children.some(({ type }) => type === "iframe"));
   assert.equal(player.overlay.showBootOverlay, true);
   assert.equal(player.overlay.bootStatusText, "Exiting game…");
   assert.equal(player.overlay.archiveBytes, undefined);
+  assert.deepEqual(player.exits, []);
+  assert.deepEqual(saves, ["checkpoint"]);
+  checkpoint.resolve();
+  await new Promise(setImmediate);
+  assert.deepEqual(saves, ["checkpoint", "flush"]);
   assert.deepEqual(player.exits, []);
   flush.resolve();
   await exit;
@@ -871,7 +897,7 @@ test("a slow archive keeps the fallback frame identity through the first-frame m
   await new Promise(setImmediate);
   player.render();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&dropbox=true&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1, "the parent accepts the actual fallback frame's ready message");
   player.unmount();
 });
@@ -897,7 +923,7 @@ test("finishing archive preparation cannot interrupt an in-flight shell recovery
   assert.match(player.children.find(({ type }) => type === "iframe").props.srcDoc, /launchRetry=inline/);
   player.ready();
   assert.equal(player.deliveries.length, 1);
-  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&launchRetry=inline#sky");
+  player.gameReady("/scummvm.html?localGame=1&catalogSaveTarget=sky&hostCompatibilityWarning=1&hostPlayer=1&dropbox=true&launchRetry=inline#sky");
   assert.equal(player.confirmations, 1);
   player.unmount();
 });
@@ -982,8 +1008,8 @@ for (const runtimeFirst of [true, false]) {
 }
 
 for (const [downloadDetails, label] of [
-  [{ downloading: true, loaded: 12_000_000, total: null }, "Downloading game… 12 MB"],
-  [{ downloading: true, loaded: 0, total: 85_000_000 }, "Downloading game… 0 of 85 MB"],
+  [{ downloading: true, loaded: 12_000_000, total: null }, "Downloading game… 12.0 MB"],
+  [{ downloading: true, loaded: 0, total: 85_000_000 }, "Downloading game… 0.0 of 85.0 MB"],
   [{ downloading: true, loaded: 0, total: null }, "Downloading game…"],
   [{ cached: true }, "Loading game…"],
   [{ loaded: 12_000_000, total: 85_000_000 }, "Loading game…"],
@@ -1036,7 +1062,7 @@ function readyPlayer(game, { ready = true, failed = false, mobile = false, lands
       requestAnimationFrame: (callback) => callback(),
     },
     require(name) {
-      if (name === "./dropbox/feature.mjs") return preview;
+      if (name.endsWith("/archive-startup.mjs")) return loadArchiveStartup();
       if (name === "./dropbox/bridge.mjs") return { dropboxEnabled: () => false, reportDropboxSave() {} };
       if (name === "react") return {
         useState(initial) {

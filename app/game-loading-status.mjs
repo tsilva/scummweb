@@ -1,7 +1,10 @@
 export const GAME_LOADING_STATUS = "Loading game…";
 
 const downloadStatus = "Downloading game…";
-const megabytes = new Intl.NumberFormat("en", { maximumFractionDigits: 1 });
+const megabytes = new Intl.NumberFormat("en", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
 
 export function gameLoadingStatus({ downloading, loaded, total } = {}) {
   if (!downloading) return GAME_LOADING_STATUS;

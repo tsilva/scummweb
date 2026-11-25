@@ -7,8 +7,6 @@ const launchTagsByTarget = new Map([
   ["slater-demo", ["Interactive storybook", "Read-along"]],
   ["msastrochicken-demo", ["Arcade", "Mouse controls"]],
   ["funseeker-demo", ["Interactive guide", "Travel parody"]],
-  ["christmas1992-demo", ["Animated short", "Winter"]],
-  ["christmas1990-demo", ["Keyboard", "Holiday animation"]],
   ["christmas1988-demo", ["Keyboard", "Holiday animation"]],
   ["maniac-demo", ["Point-and-click", "Horror comedy"]],
   ["newkid-demo", ["Point-and-click", "Interactive poetry"]],
