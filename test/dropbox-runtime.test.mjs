@@ -1270,3 +1270,110 @@ test("a different pre-release storage layout cannot supply baselines to the save
   assert.deepEqual(await syncStore.get(legacy.id), legacy, "other layouts remain untouched");
   assert.ok(server.files.size > 0);
 });
+
+async function changedSet(set, contents) {
+  const changed = { ...set, files: set.files.map(file => ({ ...file, data: bytes(contents), modifiedAt: 500 })) };
+  changed.hash = await identifySet(changed);
+  return changed;
+}
+
+test("offline startup restores newer pending bytes and passive scans cannot replace them", async t => {
+  const game = { target: "sky", engineId: "sky", gameId: "sky", displayTitle: "Beneath a Steel Sky" };
+  const { runtime, destinations, server } = await setup(t, "old committed save", [game]);
+  await runtime.syncDropbox();
+  const old = (await activeSets(destinations)).sets[0];
+  const profile = await saveProfileId(old);
+  const latest = await changedSet(old, "only durable copy of new progress");
+  const id = key("pending", profile);
+  await syncStore.put({ id, profile, set: latest });
+  await updateActive("scummweb.continue.v1:catalog:sky", {
+    schemaVersion: 1, target: "sky", engineId: "sky", gameId: "sky", supported: true,
+    saves: [{ slot: 1, name: old.files[0].path, size: old.files[0].data.length, modifiedAt: old.files[0].modifiedAt }],
+  });
+  navigator.onLine = false;
+  server.offline = true;
+  await prepareDropboxLaunch("catalog:sky", game);
+  const coordinator = await import("../app/dropbox/runtime.mjs");
+  const native = {
+    location: { href: "https://example.test/scummvm.html?hostPlayer=1&catalogSaveTarget=sky" },
+    __scummwebSaveStatus: { target: "sky" },
+    __scummwebSaveStorage: await openSaveStorage(),
+    FS: {
+      readdir: () => [old.files[0].path],
+      lstat: () => ({ mode: 0x8000, size: old.files[0].data.length, mtime: old.files[0].modifiedAt }),
+      isDir: () => false,
+      isFile: () => true,
+      readFile: () => old.files[0].data,
+    },
+  };
+  assert.equal(native.__scummwebSaveStorage.isCommitted(), true);
+  const restored = (await activeSets(destinations)).sets[0];
+  await reportDropboxSave(native, game);
+  await coordinator.syncDropbox();
+  assert.equal((await syncStore.get(id))?.set.hash, latest.hash);
+  assert.equal(restored.hash, latest.hash);
+  navigator.onLine = true;
+  server.offline = false;
+  await coordinator.syncDropbox();
+  assert.equal(await syncStore.get(id), undefined);
+  const cloud = await createSaveCollection(server);
+  assert.equal(cloud.head(profile).active, latest.hash);
+  assert.ok(cloud.head(profile).snapshots.includes(old.hash));
+  assert.equal((await activeSets(destinations)).sets[0].hash, latest.hash);
+});
+
+test("damaged cloud history restores the durable working copy ahead of older cloud history", async t => {
+  const { runtime, destinations, server } = await setup(t, null);
+  const set = { destination: destinations[0], files: [{ path: "SKY-VM.001", data: bytes("old cloud progress"), modifiedAt: 100 }] };
+  set.hash = await identifySet(set);
+  const profile = await saveProfileId(set);
+  const verified = await writeSnapshot(server, await makeSnapshot(set));
+  const damaged = await makeSnapshot(await changedSet(set, "different cloud progress"), [verified.id]);
+  server.files.set(damaged.id + ".zip", new Blob(["unreadable"]));
+  const latest = await changedSet(set, "newer local-only progress");
+  await syncStore.put({ id: key("pending", profile), profile, set: latest });
+  await runtime.syncDropbox({ beforeLaunch: true, launchDestinationKey: "catalog:sky" });
+  assert.equal((await activeSets(destinations)).sets[0].hash, latest.hash);
+  assert.equal((await syncStore.get(key("pending", profile))).set.hash, latest.hash);
+  assert.equal(runtime.getDropboxState().phase, "connected");
+});
+
+test("a committed deletion of the final slot syncs and cannot resurrect on launch", async t => {
+  const { runtime, destinations, server } = await setup(t);
+  await runtime.syncDropbox();
+  const [initial] = (await activeSets(destinations)).sets;
+  const profile = await saveProfileId(initial);
+  const storage = await openSaveStorage();
+  const empty = { ...initial, files: [] };
+  empty.hash = await identifySet(empty);
+  await applyImport({ storage, revision: storage.revision, destinations, preserve: () => {},
+    rows: [{ set: empty, destinationKey: initial.destination.key, choice: "imported" }] });
+  await updateActive("scummweb.continue.v1:catalog:sky", {
+    schemaVersion: 1, target: "sky", destinationKey: "catalog:sky", emptyAfterDelete: true, saves: [], pending: [],
+  });
+  assert.deepEqual((await activeSets(destinations)).sets, []);
+  await launchAndWait(runtime);
+  const head = (await createSaveCollection(server)).head(profile);
+  assert.equal(head.active, empty.hash);
+  assert.ok(head.snapshots.includes(initial.hash));
+  assert.deepEqual((await activeSets(destinations)).sets, []);
+});
+
+test("Dropbox keeps the verified cloud head when IndexedDB returns truncated save bytes", async t => {
+  const { runtime, destinations, server } = await setup(t, "the original complete save");
+  await runtime.syncDropbox();
+  const old = (await activeSets(destinations)).sets[0];
+  const profile = await saveProfileId(old);
+  const storage = await openSaveStorage();
+  const tree = readSaveTree(storage, "");
+  const inode = tree.inode(tree.files[old.files[0].path]);
+  assert.equal(inode.size, old.files[0].data.length);
+  storage.setValue(inode.dataKey, bytes("torn"));
+  await storage.commit();
+  await runtime.syncDropbox();
+  const cloud = await createSaveCollection(server);
+  const head = cloud.head(profile);
+  assert.equal(head.active, old.hash);
+  assert.deepEqual((await readSnapshot(cloud, profile, head.active)).files[0].data, old.files[0].data);
+  assert.equal(await syncStore.get(key("pending", profile)), undefined);
+});

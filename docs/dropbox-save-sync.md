@@ -98,8 +98,10 @@ copy. A failed migration leaves the original storage intact. Legacy files whose
 bytes are missing or truncated stay out of the active collection, and the
 migration archive retains their original records. Pending native writes and isolated agent
 runs are excluded. Files remaining in the game's save folder are retained even
-when absent from the native save list or named like a skip-intro checkpoint;
-only the shell's exact-byte checkpoint cleanup can identify bundled copies.
+when absent from the native save list or named like a skip-intro checkpoint.
+The shell removes exact copies of bundled checkpoints during legacy cleanup.
+An explicitly imported or restored save remains available to Continue, even
+when its bytes match a bundled checkpoint.
 For Backyard Baseball, Dropbox sync automatically recovers an interrupted
 write that left an empty `baseball-records.bbl`. ScummWEB keeps the empty
 file in the recovery export and uses the newest intact copy from that game
@@ -255,15 +257,17 @@ outbox is acknowledged. Readback checks ZIP integrity, file hashes, profile and
 snapshot identity. Retrying a lost response reuses the same logical identity.
 Concurrent writers publish independent immutable nodes; neither can overwrite
 the other's progress. Automatic reconciliation creates a new node referencing every observed
-tip. If an archive fails verification, an empty browser edition can recover
-from its latest verified active archive. Existing local progress takes
-precedence while cloud writes wait for verifiable history. There is no mutable
+tip. If an archive fails verification, the browser can restore a complete
+pending save before falling back to the latest verified active archive.
+Existing local progress takes precedence while cloud writes wait for
+verifiable history. There is no mutable
 cloud index or dependency on provider-specific
 conditional writes, and no automatic history deletion. Automatic file merges
 also reference every merged tip and are read back before restoration. A fresh
 listing after publication incorporates arrivals during the merge; a continually
 changing collection waits for a later pass. A cloud snapshot can contain no files
-when compatible deletions remove the last saves.
+when compatible deletions remove the last saves. The browser records a confirmed
+native deletion so a later launch does not restore an older active set.
 
 The outbox requests strict IndexedDB durability where supported. An older
 BrowserFS working copy cannot replace a newer durable pending set after restart.

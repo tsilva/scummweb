@@ -274,7 +274,7 @@ test("player capture retains an unlisted save sharing a skip-intro filename", ()
   const player = { location: { href: "https://example.test/scummvm.html?hostPlayer=1&catalogSaveTarget=sky" },
     __scummwebSaveStatus: { target: "sky" }, localStorage: { getItem: (name) => name === key ? index : null },
     FS: { readdir: () => [".", "..", "SKY-VM.000", "SKY-VM.001", "SKY-VM.SAV"],
-      lstat: () => ({ mode: 1, size: original.length, mtime: 100 }), isDir: () => false, isFile: () => true,
+      lstat: (path) => ({ mode: 1, size: path.endsWith(".000") ? original.length : bytes(path).length, mtime: 100 }), isDir: () => false, isFile: () => true,
       readFile: (path) => path.endsWith(".000") ? original : bytes(path) } };
   const captured = capturePlayerSaveSet(player, { displayTitle: "Sky", skipIntro: { saveFiles: ["SKY-VM.000"] } });
   assert.deepEqual(captured.files.map(({ path }) => path), ["SKY-VM.000", "SKY-VM.001", "SKY-VM.SAV"]);

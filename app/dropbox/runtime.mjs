@@ -79,29 +79,55 @@ export function listDropboxBackups(destination, signal) {
 export function downloadDropboxBackup(destination, hash, signal) {
   return withBackupCollection(destination, (client, profile) => client.snapshot(profile, hash), signal);
 }
-export async function restorePendingForLaunch(destinationKey) {
-  const account = connection()?.accountId;
-  if (!account || !destinationKey) return false;
-  const pending = destinationKey.startsWith("catalog:")
-    ? await syncStore.get(recordKey(account, "pending", await saveProfileId({ destination: { key: destinationKey } })))
-    : (await syncStore.all(recordKey(account, "pending", ""))).find(item => item.set.destination.key === destinationKey);
-  if (!pending?.set.files?.length || await identifySet(pending.set) !== pending.set.hash) return false;
+async function pendingSave(account, destinationKey) {
+  if (!account || !destinationKey) return;
+  if (destinationKey.startsWith("catalog:")) {
+    const profile = await saveProfileId({ destination: { key: destinationKey } });
+    return syncStore.get(recordKey(account, "pending", profile));
+  }
+  return (await syncStore.all(recordKey(account, "pending", ""))).find(item => item.set.destination.key === destinationKey);
+}
+
+export async function hasPendingSave(destinationKey) {
+  return Boolean(await pendingSave(connection()?.accountId, destinationKey));
+}
+
+export async function restorePendingForLaunch(destinationKey, { signal, check = () => {} } = {}) {
+  const auth = connection();
+  const account = auth?.accountId;
+  const pending = await pendingSave(account, destinationKey);
+  if (!Array.isArray(pending?.set.files) || pending.set.destination.key !== destinationKey
+    || await identifySet(pending.set) !== pending.set.hash) return false;
   const { destination } = pending.set;
   const destinations = [destination];
+  const guard = () => {
+    signal?.throwIfAborted();
+    check();
+    const current = connection();
+    if (current?.accountId !== account || current?.connectionId !== auth.connectionId) {
+      throw new DropboxError("Dropbox disconnected.", "cancelled");
+    }
+  };
   return await lockedSaves(async (storage, scoped) => {
-    const active = await getActiveSaveSets(storage, destinations);
-    if (active.sets.some(set => matchDestination(set, [destination]))) return true;
-    if (readIncompleteSaveWrites(storage, destinations, active.sets).length) return false;
-    const latest = await syncStore.get(pending.id);
-    if (latest?.set.hash !== pending.set.hash) return false;
+    guard();
+    const active = await getActiveSaveSets(storage, destinations, { includeDeleted: true });
+    if (readIncompleteSaveWrites(storage, destinations, active.sets)
+      .some(entry => entry.destinationKey === destinationKey)) return false;
+    const local = active.sets.filter(set => matchDestination(set, destinations));
+    if (local[0]?.hash === pending.set.hash) return true;
+    const baseline = await syncStore.get(recordKey(account, "base", pending.profile));
+    if (local.some(set => set.hash !== baseline?.hash)) return false;
     let initialConfig;
     if (!active.hasRoot) {
       const response = await fetch("/scummvm.ini", { signal: AbortSignal.timeout(15000) });
       if (!response.ok) return false;
       initialConfig = await response.text();
     }
+    const latest = await syncStore.get(pending.id);
+    if (latest?.set.hash !== pending.set.hash) return false;
     await applyImport({ storage, destinations, revision: active.revision, initialConfig, scoped: scoped ? destinationKey : undefined,
-      rows: [{ set: pending.set, destinationKey, choice: "imported" }], preserve: () => {} });
+      rows: [{ set: pending.set, destinationKey, choice: "imported" }], preserve: () => {}, check: guard });
+    window.dispatchEvent(new Event("scummweb:saves-changed"));
     return true;
   }, { destination }) === true;
 }
@@ -212,6 +238,7 @@ async function evictColdSaves({ account, client, destinations, scanned, protecte
   if (excess <= 0) return false;
   const candidates = [];
   for (const set of scanned.active.sets) {
+    if (!set.files.length) continue;
     const destinationKey = matchDestination(set, destinations);
     if (set.destination.key !== destinationKey || destinationKey === "shared") continue;
     const profile = await saveProfileId(set);
@@ -277,7 +304,7 @@ function baseballRepairs(storage, destinations, active, incomplete) {
 }
 
 async function recoverInterruptedBaseballRecords(storage, destinations, client, check) {
-  let active = await getActiveSaveSets(storage, destinations);
+  let active = await getActiveSaveSets(storage, destinations, { includeDeleted: true });
   const incomplete = readIncompleteSaveWrites(storage, destinations, active.sets);
   for (const { entry, destination, index, editionSets, damaged } of baseballRepairs(storage, destinations, active, incomplete)) {
     const copy = { destination: damaged.destination, files: damaged.files.filter(file => file.path === baseballRecordsPath && !file.data.length) };
@@ -296,7 +323,7 @@ async function recoverInterruptedBaseballRecords(storage, destinations, client, 
     await storage.commit();
     // The updated tree and cleared marker are one IndexedDB transaction.
     window.dispatchEvent(new Event("scummweb:saves-changed"));
-    active = await getActiveSaveSets(storage, destinations);
+    active = await getActiveSaveSets(storage, destinations, { includeDeleted: true });
   }
   return active;
 }
@@ -307,7 +334,7 @@ async function scanLocalSaves(destinations, client, check) {
   const snapshot = await lockedSaves(storage => storage, { readOnly: true });
   if (snapshot.busy) return snapshot;
   check();
-  const active = await getActiveSaveSets(snapshot, destinations);
+  const active = await getActiveSaveSets(snapshot, destinations, { includeDeleted: true });
   const incomplete = readIncompleteSaveWrites(snapshot, destinations, active.sets);
   if (baseballRepairs(snapshot, destinations, active, incomplete).length) {
     const repaired = await lockedSaves(async storage => {
@@ -327,15 +354,19 @@ async function withoutEmptyRecords(set) {
   return { ...clean, hash: await identifySet(clean) };
 }
 
-async function enqueue(account, set) {
+async function enqueue(account, set, passive) {
   const original = { ...set, hash: await identifySet(set) };
   const usable = await withoutEmptyRecords(original);
   if (usable !== original) await preserveSets([original]);
   if (!usable) return;
   const profile = await saveProfileId(usable);
-  await syncStore.put({ id: recordKey(account, "pending", profile), set: usable, profile });
+  const record = { id: recordKey(account, "pending", profile), set: usable, profile };
+  if (!passive) await syncStore.put(record);
+  else if (usable.hash !== (await syncStore.get(recordKey(account, "base", profile)))?.hash) {
+    await syncStore.putIfAbsent(record);
+  }
 }
-export function queuePlayerSave(set) {
+export function queuePlayerSave(set, { passive = false } = {}) {
   const account = session()?.accountId;
   if (!account) return Promise.resolve();
   localGeneration++;
@@ -345,7 +376,7 @@ export function queuePlayerSave(set) {
     const destination = destinations.find(({ key }) => key === set.destination.key);
     if (destination) set.destination = { ...destination, ...(set.destination.isolated && { isolated: true }) };
     // Preserve the last complete bytes in IndexedDB before attempting network IO.
-    await enqueue(account, set);
+    await enqueue(account, set, passive);
   }).catch((error) => { failure(error); throw error; });
   void queue.then(async () => {
     if (playing?.destination === set.destination.key && flight && !flightPriority?.waiting
@@ -411,7 +442,8 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         ...active.sets.map(set => set.destination.key), ...incomplete.map(entry => entry.destinationKey),
       ]);
       const isUnmatched = entry => !destinations.some(({ key }) => key === entry.destinationKey);
-      if (launchProfile && !scanned.busy && !scanned.incomplete.some(isUnmatched)) {
+      if (launchProfile && !scanned.busy && !scanned.incomplete.some(isUnmatched)
+        && !await restorePendingForLaunch(priority.destination, { check })) {
         const occupied = occupiedEditions(scanned.active, scanned.incomplete);
         const rows = [];
         for await (const snapshot of client.verifiedFallbacks(launchProfile)) {
@@ -425,7 +457,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
         }
         if (rows.length) await lockedSaves(async storage => {
           check();
-          const active = await getActiveSaveSets(storage, destinations);
+          const active = await getActiveSaveSets(storage, destinations, { includeDeleted: true });
           const incomplete = readIncompleteSaveWrites(storage, destinations);
           if (incomplete.some(isUnmatched)) return;
           const occupied = occupiedEditions(active, incomplete);
@@ -649,7 +681,7 @@ async function syncAccount(auth, epoch, signal, progress, priority, playback) {
             const destination = destinations.find(({ key }) => key === entry.destinationKey && key !== "shared");
             if (!destination || await saveProfileId({ destination }) === profile) return { changed: true };
           }
-          const current = await getActiveSaveSets(storage, destinations);
+          const current = await getActiveSaveSets(storage, destinations, { includeDeleted: true });
           restoreRevision = current.revision;
           const local = current.sets.find((set) => matchDestination(remote, [set.destination]));
           const usable = local && await withoutEmptyRecords(local);

@@ -27,15 +27,15 @@ export async function prepareDropboxLaunch(launchDestinationKey = null, resumeGa
   });
   const unavailable = "Connect to Dropbox to restore this game’s saves.";
   if (!auth?.enabled || navigator.onLine === false) {
-    if (!local && !await sync.restorePendingForLaunch(launchDestinationKey) && needsRestore) throw new Error(unavailable);
+    if (!await sync.restorePendingForLaunch(launchDestinationKey, { signal }) && !local && needsRestore) throw new Error(unavailable);
     return;
   }
-  if (resumeGame && (await sync.waitForDownloadedSave(launchDestinationKey) || local && !needsRestore)) return;
+  if (resumeGame && await sync.waitForDownloadedSave(launchDestinationKey)) return;
+  if (resumeGame && local && !needsRestore && !await sync.hasPendingSave(launchDestinationKey)) return;
   try {
     await sync.syncDropbox({ beforeLaunch: true, launchDestinationKey });
   } catch (error) {
-    if (local) return;
-    if (await sync.restorePendingForLaunch(launchDestinationKey)) return;
+    if (await sync.restorePendingForLaunch(launchDestinationKey, { signal }) || local) return;
     throw error;
   }
   if (!local && await sync.requiresDropboxRestore(launchDestinationKey)) {
@@ -52,12 +52,15 @@ export function prioritizeDropboxGameplay(destination) {
   return () => { ended = true; cleanup?.(); };
 }
 
-export function reportDropboxSave(player, game) {
+export function reportDropboxSave(player, game, change) {
   if (!dropboxEnabled()) return;
   // Copy in this task, before any async hashing/import/network work.
   try {
-    const set = capturePlayerSaveSet(player, game);
-    if (set) void import("./runtime.mjs").then((sync) => sync.queuePlayerSave(set)).catch(() => {});
+    const set = capturePlayerSaveSet(player, game, change);
+    if (set) {
+      const { changed, ...snapshot } = set;
+      return import("./runtime.mjs").then(sync => sync.queuePlayerSave(snapshot, { passive: !changed })).catch(() => {});
+    }
   } catch { void import("./runtime.mjs").then((sync) => sync.markWaiting()); }
 }
 import { capturePlayerSaveSet } from "./player-snapshot.mjs";

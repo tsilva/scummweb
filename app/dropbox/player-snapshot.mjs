@@ -3,7 +3,7 @@ import { safePath } from "../save-backups/filesystem.mjs";
 
 // Called synchronously from the host's save-list message. Same-origin frames
 // share this thread; the native writer cannot interleave another task here.
-export function capturePlayerSaveSet(player, game) {
+export function capturePlayerSaveSet(player, game, change) {
   const url = new URL(player.location.href);
   const params = url.searchParams;
   if (params.has("agentSaveScope") || params.has("saveQuery") || params.get("hostPlayer") !== "1") return null;
@@ -37,12 +37,16 @@ export function capturePlayerSaveSet(player, game) {
       // removes legacy checkpoints only after comparing their exact bytes.
       total += stat.size;
       if (total > 63 * 1024 * 1024 || files.length >= 4096) throw new Error("These saves exceed the backup limit.");
-      files.push({ path: relative, modifiedAt: Number(stat.mtime), data: new Uint8Array(FS.readFile(full)) });
+      const data = new Uint8Array(FS.readFile(full));
+      if (data.length !== stat.size) throw new Error("Browser save storage contains an incomplete file.");
+      files.push({ path: relative, modifiedAt: Number(stat.mtime), data });
     }
   }
   walk(path);
   if (storage.getItem(saveIndexKey(namespace, status.target)) !== index) return null;
-  return files.length ? { destination: namespace
+  if (!files.length && parsed.emptyAfterDelete !== true) return null;
+  const changed = Number.isSafeInteger(change) && status.saveChange === change && parsed.saveChange === change;
+  return { ...(changed && { changed }), destination: namespace
     ? { key: namespace, namespace, title: game?.displayTitle || status.target, fingerprint: null }
-    : { key: `catalog:${target}`, namespace: "", family: target, title: game?.displayTitle || target, isolated: true }, files } : null;
+    : { key: `catalog:${target}`, namespace: "", family: target, title: game?.displayTitle || target, isolated: true }, files };
 }

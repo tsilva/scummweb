@@ -115,6 +115,7 @@ export function installPlayerControls(scope, requestMenu) {
             : { error: "The game did not respond. Resume playing and try again." });
           // A late acknowledgment belongs to this request, never to a retry.
           if (!pending.dispatched) pending = undefined;
+          else pending.timedOut = true;
         }, 5000);
         pending = { operation, slot, isNew, entry, isolated, timer, resolve, dispatched: false, written: new Set() };
       });
@@ -169,7 +170,16 @@ export function installPlayerControls(scope, requestMenu) {
     return true;
   };
 
-  function boundary(max, reserved, save, load) {
+  function boundary(completedFrame, max, reserved, save, load) {
+    // The native adapters report deferred results before their next completed
+    // frame. While held or still loading, keep the original request in place.
+    if (completedFrame && pending?.timedOut) {
+      const expired = pending;
+      pending = undefined;
+      scope.clearTimeout(expired.timer);
+      if (expired.isolated) scope.__scummwebDiagnosticSaves.finishRestore();
+      if (expired.operation === "report") scope.__scummwebDiagnosticSaves.finish("Save timed out.");
+    }
     maxSlot = max;
     reservedSlot = reserved;
     canSave = save;
@@ -208,9 +218,9 @@ export function installPlayerControls(scope, requestMenu) {
     return menuOpen ? -1 : 0;
   }
 
-  scope.__scummwebAgentBoundary = (_tick, max, reserved = 0) => boundary(max, reserved, true, true);
-  scope.__scummwebAgentFrameBoundary = (_frame, max, reserved, save, load) =>
-    boundary(max, reserved, Boolean(save), Boolean(load));
+  scope.__scummwebAgentBoundary = (tick, max, reserved = 0) => boundary(tick, max, reserved, true, true);
+  scope.__scummwebAgentFrameBoundary = (frame, max, reserved, save, load) =>
+    boundary(frame, max, reserved, Boolean(save), Boolean(load));
   scope.__scummwebAgentSaveResult = (error) => {
     if (!pending?.dispatched) return;
     const { operation, slot, timer, resolve, written, isolated, exitSave: exitRequest } = pending;

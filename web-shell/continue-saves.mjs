@@ -3,6 +3,7 @@ import { installRotatingAutosaves } from "./rotating-autosaves.mjs";
 // Shared by the player shell and the library. Only native-listed, nonempty
 // files enter this index; an index never substitutes for the files themselves.
 export const saveIndexPrefix = "scummweb.continue.v1:";
+export const introCleanupPrefix = saveIndexPrefix + "intro-cleanup:";
 export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
 const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
 const livingBooksDemos = new Set(["tortoise", "arthurbday", "grandma", "arthur", "ruff", "newkid"]);
@@ -90,14 +91,19 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   let occupiedSlots;
   let resumeReported = false;
   let legacyIndexKey;
+  let change = 0;
+  let publishedChange = 0;
+  let removedSave = false;
+  let emptyAfterDelete = false;
+  let completedWrite = false;
 
-  function files() {
+  function files(strict = false) {
     try {
       return FS.readdir(savePath).filter((name) => name !== "." && name !== "..").flatMap((name) => {
         const stat = FS.stat(`${savePath}/${name}`);
         return FS.isFile(stat.mode) ? [{ name, size: stat.size, modifiedAt: Number(stat.mtime) }] : [];
       });
-    } catch { return []; }
+    } catch (error) { if (strict) throw error; return []; }
   }
 
   const validName = (name) => typeof name === "string" && name.length > 0 && !/[\\/\x00-\x1f]/.test(name);
@@ -105,6 +111,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   function persist() {
     if (!snapshot) return false;
     snapshot.pending = [...pending];
+    if (change > publishedChange) snapshot.saveChange = change;
+    else delete snapshot.saveChange;
+    if (emptyAfterDelete) snapshot.emptyAfterDelete = true;
+    else delete snapshot.emptyAfterDelete;
     snapshot.revision = saveRevision(files());
     try {
       storage.setItem(indexKey(), JSON.stringify(snapshot));
@@ -138,10 +148,13 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   scope.__scummwebBeginSaveWrite = (name) => {
     if (scope.__scummwebDiagnosticSaves?.active) return scope.__scummwebDiagnosticSaves.beginWrite(name);
     if (!snapshot || !validName(name) || writers.has(name)) return false;
-    if (storage.checkpoint && !writers.size) {
-      writeCheckpoint = storage.checkpoint();
-      pendingBeforeWrite = [...pending];
+    if (!writers.size) {
       writeFailed = false;
+      completedWrite = false;
+      if (storage.checkpoint) {
+        writeCheckpoint = storage.checkpoint();
+        pendingBeforeWrite = [...pending];
+      }
     }
     const wasPending = pending.has(name);
     pending.add(name);
@@ -169,6 +182,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (!writers.delete(name)) return false;
     if (success && !ioFailures.has(name)) {
       pending.delete(name);
+      completedWrite = true;
       scope.__scummwebPlayerSaveWritten?.(name);
     } else writeFailed = true;
     if (!writers.size && writeCheckpoint) {
@@ -180,6 +194,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       writeCheckpoint = undefined;
       pendingBeforeWrite = undefined;
     }
+    if (!writers.size && completedWrite && !writeFailed) change++;
     needsPublish = true;
     // Native code calls refresh only after the last output stream has closed.
     return writers.size === 0;
@@ -187,6 +202,10 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
   scope.__scummwebSaveDeleted = (name) => {
     if (scope.__scummwebDiagnosticSaves?.active) return false;
     pending.delete(name);
+    if (validName(name) && name !== "timestamps") {
+      removedSave = true;
+      change++;
+    }
     needsPublish = true;
     return writers.size === 0;
   };
@@ -195,6 +214,8 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     scope.__scummwebScanningSaves = true;
     scannedFiles = new Map(files().map((file) => [file.name, file]));
     snapshot = { schemaVersion: 1, engineId, gameId, target, extra, supported: Boolean(supported), saves: [] };
+    const catalogTarget = params.get("catalogSaveTarget") || target;
+    snapshot.destinationKey = storageNamespace || `catalog:${catalogTarget}`;
     if (params.has("saveQuery") && params.get("v")) snapshot.checkedByRuntime = params.get("v");
     if (scope.__scummwebPublishPlayerSaves) {
       playerSaves = [];
@@ -205,6 +226,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
       try {
         const previous = JSON.parse(storage.getItem(indexKey()));
         for (const name of previous?.pending || []) if (validName(name)) pending.add(name);
+        emptyAfterDelete = previous?.emptyAfterDelete === true && previous.destinationKey === snapshot.destinationKey;
       } catch { /* Missing or invalid cache. */ }
       const archiveId = params.get("catalogGame") || params.get("saveGameId");
       if (!storageNamespace && archiveId && archiveId !== target) {
@@ -233,6 +255,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     scope.__scummwebScanningSaves = false;
     if (!snapshot) return -1;
     const listing = files();
+    if (!writers.size && !pending.size) {
+      try {
+        const hasFiles = files(true).some(({ name }) => name !== "timestamps");
+        if (hasFiles) emptyAfterDelete = false;
+        else if (removedSave) emptyAfterDelete = true;
+        removedSave = false;
+      } catch { /* A failed read cannot confirm an empty save folder. */ }
+    }
     const persisted = persist();
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
@@ -253,6 +283,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     scope.__scummwebSaveStatus = { ...snapshot, latestSlot };
     const publish = () => {
       if (agentSaveScope) return;
+      if (persisted && snapshot.saveChange) publishedChange = snapshot.saveChange;
       scope.parent.postMessage({ type: "scummweb:saves-listed", query: params.get("saveQuery"),
         ...snapshot, persisted, latestSlot }, launchUrl.origin);
     };
@@ -290,11 +321,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     // Remove legacy copies before the native save manager caches the directory.
     // Match exact bytes, including retired assets; the same slot may hold a
     // player's save. New checkpoints never enter this directory.
-    if (!namespace) {
+    const target = params.get("saveTarget")
+      || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
+    const editionTarget = params.get("catalogSaveTarget") || target;
+    const key = introCleanupPrefix + `catalog:${editionTarget}`;
+    if (!storageNamespace && /^[a-z0-9][a-z0-9_-]{0,79}$/i.test(editionTarget || "") && storage.getItem(key) !== "1") {
       const library = await (await scope.fetch(assetUrl("games.json"))).json();
-      const target = params.get("saveTarget")
-        || decodeURIComponent(launchUrl.hash.slice(1)).trim().split(/\s+/).at(-1);
       const intro = library.games?.find((game) => game.target === target)?.skipIntro;
+      let cleaned = true;
       const existingNames = new Set(files().map(({ name }) => name));
       await Promise.all((intro?.saveFiles || []).filter((name) => existingNames.has(name)).map(async (name) => {
         const path = `${savePath}/${name}`;
@@ -306,13 +340,19 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
           if (await isRetiredIntroCheckpoint(target, name, existing)) checkpoint = existing;
           checkpoints.set(name, checkpoint);
           if (equalBytes(FS.readFile(path), checkpoint)) {
-            try { FS.unlink(path); } catch { /* Keep it excluded from the web index. */ }
+            FS.unlink(path);
           }
         } catch {
           // Keep an unverified legacy candidate out of Continue.
           checkpoints.set(name, null);
+          cleaned = false;
         }
       }));
+      if (cleaned && intro?.saveFiles?.length) {
+        // Future checkpoints are staged outside the save directory. Once the
+        // legacy pass is complete, an identical file can be an intentional save.
+        try { storage.setItem(key, "1"); } catch { /* Retry legacy cleanup later. */ }
+      }
     }
     // Repair missed external mutations and retry metadata quota failures. Saves
     // themselves publish synchronously at native stream completion, not on exit.

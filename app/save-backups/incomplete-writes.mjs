@@ -9,7 +9,8 @@ export function readIncompleteSaveWrites(storage, destinations = [], sets = []) 
     let record;
     try { record = JSON.parse(storage.getItem(key)); } catch { continue; }
     if (!Array.isArray(record?.pending) || !record.pending.length) continue;
-    const destinationKey = key.slice(saveIndexPrefix.length);
+    const indexedKey = key.slice(saveIndexPrefix.length);
+    const destinationKey = destinations.some(item => item.key === record.destinationKey) ? record.destinationKey : indexedKey;
     const destination = destinations.find((item) => item.key === destinationKey);
     const files = sets.filter((set) => set.destination.key === destinationKey).flatMap((set) => set.files);
     result.push({ key, destinationKey, target: record.target || "", engineId: record.engineId || "", gameId: record.gameId || "",

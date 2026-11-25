@@ -43,7 +43,7 @@ export function captureFilesystem(storage, skipEditionContents = false) {
     seen.add(key);
     const bytes = value(key);
     if (bytes.length <= 30) throw new Error("Browser save storage contains an invalid file.");
-    const meta = new DataView(bytes.buffer);
+    const meta = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
     const mode = meta.getUint16(4, true);
     const dataKey = decoder.decode(bytes.subarray(30));
     const data = value(dataKey);
@@ -57,8 +57,10 @@ export function captureFilesystem(storage, skipEditionContents = false) {
         node.children.set(childName, skipEditionContents && depth === 1 && name === editionDirectory
           ? { key: child } : read(child, depth + 1, childName));
       }
-    } else if ((mode & 0xf000) === 0x8000) node.data = data;
-    else throw new Error("Unsupported file type in browser save storage.");
+    } else if ((mode & 0xf000) === 0x8000) {
+      if (data.length !== meta.getUint32(0, true)) throw new Error("Browser save storage contains an incomplete file.");
+      node.data = data;
+    } else throw new Error("Unsupported file type in browser save storage.");
     return node;
   }
   const rootValue = raw("/");

@@ -515,7 +515,7 @@ export default function GameRouteFrame({
         return;
       }
       if (event.data?.type === "scummweb:saves-listed" && event.source === frameRef.current?.contentWindow) {
-        reportDropboxSave(event.source, game);
+        void reportDropboxSave(event.source, game, event.data.persisted ? event.data.saveChange : undefined);
         if (new URL(frameSrc, window.location.href).searchParams.get("continue") === "1") {
           setIsResuming(Number.isInteger(event.data.latestSlot));
         }

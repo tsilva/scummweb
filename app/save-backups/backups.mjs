@@ -1,6 +1,6 @@
 import { captureFilesystem, restoreSaveGroups, safePath } from "./filesystem.mjs";
 import { getVersionSaveNamespace } from "../game-versions.mjs";
-import { saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
+import { introCleanupPrefix, saveIndexPrefix } from "../../web-shell/continue-saves.mjs";
 import { editionKey, saveLockName } from "../../web-shell/save-editions.mjs";
 import { ensureSaveStorage, openLegacyRecoveryStorage } from "../../web-shell/save-storage.mjs";
 import { readIncompleteSaveWrites } from "./incomplete-writes.mjs";
@@ -38,7 +38,7 @@ export async function getSaveDestinations(catalog, sources) {
   return [...included, ...imported, { key: "shared", title: "Other shared saves", namespace: "", family: "shared" }];
 }
 
-export async function getActiveSaveSets(storage, destinations) {
+export async function getActiveSaveSets(storage, destinations, { includeDeleted = false } = {}) {
   const snapshot = captureFilesystem(storage);
   const groups = new Map();
   for (const file of snapshot.files) {
@@ -61,6 +61,18 @@ export async function getActiveSaveSets(storage, destinations) {
     const destination = destinations.find((item) => item.key === key)
       || { key, family, namespace: catalog ? "" : edition, title: family || "Unmatched imported game" };
     isolatedSets.push({ destination: catalog ? { ...destination, isolated: true } : destination, files });
+  }
+  if (includeDeleted) {
+    const keys = storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
+    for (const key of keys) {
+      if (!key?.startsWith(saveIndexPrefix)) continue;
+      let index;
+      try { index = JSON.parse(storage.getItem(key)); } catch { continue; }
+      if (index?.schemaVersion !== 1 || index.emptyAfterDelete !== true || index.pending?.length) continue;
+      const destination = destinations.find(item => item.key === index.destinationKey && item.key !== "shared");
+      if (!destination || groups.has(destination.key) || isolatedSets.some(set => set.destination.key === destination.key)) continue;
+      isolatedSets.push({ destination: destination.namespace ? destination : { ...destination, isolated: true }, files: [] });
+    }
   }
   const sets = await Promise.all([...isolatedSets, ...groups.values()].map(async (set) => ({ ...set, hash: await identifySet(set) })));
   return { sets, editionKeys: new Set(snapshot.editions.keys()), revision: snapshot.revision, hasRoot: Boolean(snapshot.root.key) };
@@ -261,6 +273,7 @@ export async function applyImport({ storage, rows, destinations, revision, initi
   const archived = [];
   const updates = [];
   const updated = new Set();
+  const confirmedCatalogSaves = new Set();
   for (const row of rows) {
     const destination = destinations.find(({ key }) => key === row.destinationKey);
     const isolated = row.set.destination.isolated === true;
@@ -268,6 +281,8 @@ export async function applyImport({ storage, rows, destinations, revision, initi
     if (!destination) { archived.push(imported); continue; }
     const activeSets = current.sets.filter((set) => set.destination.key === destination.key);
     const [active] = activeSets;
+    if (imported.files.length && destination.key.startsWith("catalog:") && row.choice !== "stored"
+      && (!active || active.hash === imported.hash || row.choice === "imported")) confirmedCatalogSaves.add(destination.key);
     if (active?.hash === imported.hash) continue;
     archived.push(imported);
     archived.push(...activeSets);
@@ -293,21 +308,23 @@ export async function applyImport({ storage, rows, destinations, revision, initi
       // Native save metadata belongs to the old bytes, even if sizes/times match.
       // Invalidate before the root swap so interruption cannot leave a positive
       // record attached to replacement bytes. Keep unfinished-write markers.
-      const keys = scoped ? [saveIndexPrefix + scoped]
-        : storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
+      const keys = storage.keys?.() || Array.from({ length: storage.length }, (_, index) => storage.key(index));
       for (const key of keys) {
-        if (!key?.startsWith(saveIndexPrefix)) continue;
+        if (!key?.startsWith(saveIndexPrefix) || key.startsWith(introCleanupPrefix)) continue;
         const value = storage.getItem(key);
         if (value === null) continue;
-        invalidated.set(key, value);
         let index;
         try { index = JSON.parse(value); } catch { /* Invalid metadata has no usable index. */ }
+        if (scoped && key !== saveIndexPrefix + scoped && index?.destinationKey !== scoped) continue;
+        if (index?.emptyAfterDelete === true && !updated.has(index.destinationKey)) continue;
+        invalidated.set(key, value);
         if (Array.isArray(index?.pending) && index.pending.length) {
           storage.setItem(key, JSON.stringify({ ...index, saves: [], revision: null }));
         } else storage.removeItem(key);
       }
     }
     restoreSaveGroups(storage, updates, revision, initialConfig);
+    for (const key of confirmedCatalogSaves) storage.setItem(introCleanupPrefix + key, "1");
     await storage.commit?.();
   } catch (error) {
     // A staged restore that never swapped the root left the old save index valid.

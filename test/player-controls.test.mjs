@@ -311,3 +311,26 @@ test("native load-menu requests hold the engine before opening the requested dra
   scope.__scummwebRequestPlayerMenu("untrusted-page");
   assert.deepEqual(pages, ["load", "menu"]);
 });
+
+test("a dispatched timeout releases the operation only after a fresh native boundary", async () => {
+  const { scope, timers, controls } = createPlayer();
+  const boundary = (frame) => scope.__scummwebAgentFrameBoundary(frame, 9, 0, true, true);
+  scope.__scummwebPublishPlayerSaves([{ slot: 1, name: "game.001", writable: true }], [1]);
+  boundary(true);
+  controls.setMenuOpen(true);
+  const old = controls.run("load", 1);
+  assert.equal(boundary(false), 10);
+  timers.values().next().value();
+  assert.match((await old).error, /did not respond/);
+  assert.match(controls.run("load", 1).error, /Another save or load/);
+  assert.equal(boundary(false), -1);
+
+  controls.setMenuOpen(false);
+  assert.equal(boundary(true), 0);
+  controls.setMenuOpen(true);
+  const retry = controls.run("load", 1);
+  scope.__scummwebAgentSaveResult("stale result before retry dispatch");
+  assert.equal(boundary(false), 10);
+  scope.__scummwebAgentSaveResult(null);
+  assert.deepEqual(await retry, { slot: 1 });
+});

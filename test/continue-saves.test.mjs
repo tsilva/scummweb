@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { installContinueSaves, latestPlayerSave, saveIndexKey, saveRevision, supportsContinue } from "../web-shell/continue-saves.mjs";
+import { applyImport, getActiveSaveSets, getSaveDestinations, identifySet } from "../app/save-backups/backups.mjs";
+import { browserSaveStorage } from "./helpers/dropbox-fixtures.mjs";
 import { encodeAutosave } from "../web-shell/rotating-autosaves.mjs";
 
 function shell({ namespace = "", agentSaveScope, resume = false, seed = false, query = false, preview = false,
-  target = "sky", catalogGame, storage = new Map(), files = new Map(), engineId = "sky", gameId = "sky", extra = "" } = {}) {
+  target = "sky", catalogGame, catalogSaveTarget, storage = new Map(), files = new Map(), engineId = "sky", gameId = "sky", extra = "",
+  introName = "SKY-VM.000", introBytes = "checkpoint" } = {}) {
   const normal = "/home/web_user/.local/share/scummvm/saves";
   const base = agentSaveScope ? `${normal}-agent/${agentSaveScope}` : normal + (namespace ? `/${namespace}` : "");
   function put(name, contents, modifiedAt) { files.set(`${base}/${name}`, { bytes: new TextEncoder().encode(contents), modifiedAt }); }
@@ -27,12 +30,13 @@ function shell({ namespace = "", agentSaveScope, resume = false, seed = false, q
       removeItem: (key) => storage.delete(key) },
     parent: { postMessage: (message) => messages.push(message) },
     fetch: async (url) => url.endsWith("games.json")
-      ? new Response(JSON.stringify({ games: [{ target, skipIntro: { saveFiles: ["SKY-VM.000"] } }] }))
-      : new Response("checkpoint"),
+      ? new Response(JSON.stringify({ games: [{ target, skipIntro: { saveFiles: [introName] } }] }))
+      : new Response(introBytes),
     setInterval: (callback) => { poll = callback; return 1; }, clearInterval() {}, addEventListener() {},
   };
   const launchUrl = new URL(`https://example.test/scummvm.html#${target}`);
   if (catalogGame) launchUrl.searchParams.set("catalogGame", catalogGame);
+  if (catalogSaveTarget) launchUrl.searchParams.set("catalogSaveTarget", catalogSaveTarget);
   if (namespace) launchUrl.searchParams.set("saveNamespace", namespace);
   if (agentSaveScope) launchUrl.searchParams.set("agentSaveScope", agentSaveScope);
   if (resume) launchUrl.searchParams.set("continue", "1");
@@ -289,3 +293,65 @@ test("multiple open outputs defer refresh until all close; deletion clears pendi
   f.scan([]);
   assert.deepEqual(JSON.parse(f.storage.get(saveIndexKey("", "sky"))).pending, []);
 });
+
+test("the shell persists an intentional final deletion across startup scans", async () => {
+  const f = shell({ resume: true, target: "sky-cd", catalogSaveTarget: "sky" });
+  const key = saveIndexKey("", "sky-cd");
+  await f.start();
+  f.scan([]);
+  assert.equal(JSON.parse(f.storage.get(key)).emptyAfterDelete, undefined);
+  assert.equal(f.messages.at(-1).saveChange, undefined);
+
+  const saved = "SKY-VM.007";
+  assert.equal(f.scope.__scummwebBeginSaveWrite(saved), true);
+  f.put(saved, "player", 700);
+  f.scope.__scummwebEndSaveWrite(saved, true);
+  f.scan([[7, saved]]);
+  const written = f.messages.at(-1);
+  assert.ok(written.saveChange);
+  f.scan([[7, saved]]);
+  assert.equal(f.messages.at(-1).saveChange, undefined);
+
+  f.FS.unlink("/home/web_user/.local/share/scummvm/saves/" + saved);
+  f.scope.__scummwebSaveDeleted(saved);
+  assert.equal(f.scan([]), -1);
+  const deleted = JSON.parse(f.storage.get(key));
+  assert.equal(deleted.emptyAfterDelete, true);
+  assert.equal(deleted.destinationKey, "catalog:sky");
+  assert.ok(deleted.saveChange > written.saveChange);
+
+  const reopened = shell({ target: "sky-cd", catalogSaveTarget: "sky", storage: f.storage, files: f.files, resume: true });
+  await reopened.start();
+  assert.equal(reopened.scan([]), -1);
+  assert.equal(JSON.parse(f.storage.get(key)).emptyAfterDelete, true);
+  assert.equal(reopened.messages.at(-1).saveChange, undefined);
+  reopened.put(saved, "new player save", 900);
+  reopened.scan([[7, saved]]);
+  assert.equal(JSON.parse(f.storage.get(key)).emptyAfterDelete, undefined);
+});
+
+for (const [target, engineId, introName, slot] of [
+  ["soltys", "cge", "soltys.001", 1],
+  ["hires1", "adl", "hires1.s00", 0],
+]) {
+  test(`Continue preserves an imported or cloud-restored ${target} save identical to the bundled intro`, async () => {
+    const introBytes = await readFile(new URL(`../scummvm-shell/launcher/skip-intro/${target}/${introName}`, import.meta.url));
+    const destinations = await getSaveDestinations([{ target, displayTitle: target }], []);
+    const storage = browserSaveStorage();
+    const [destination] = destinations;
+    const set = { destination: { ...destination, isolated: true },
+      files: [{ path: introName, data: introBytes, modifiedAt: 100 }] };
+    set.hash = await identifySet(set);
+    const { revision } = await getActiveSaveSets(storage, destinations);
+    await applyImport({ storage, destinations, revision, preserve: () => {},
+      rows: [{ set, destinationKey: destination.key, choice: "imported" }] });
+    const [restored] = (await getActiveSaveSets(storage, destinations)).sets;
+    const f = shell({ target, engineId, gameId: target, introName, introBytes, storage: storage.values, resume: true });
+    const path = "/home/web_user/.local/share/scummvm/saves/" + introName;
+    const [{ data: bytes, modifiedAt }] = restored.files;
+    f.files.set(path, { bytes: Buffer.from(bytes), modifiedAt });
+    await f.start();
+    assert.deepEqual(f.FS.readFile(path), introBytes);
+    assert.equal(f.scan([[slot, introName]]), slot);
+  });
+}
