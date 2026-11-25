@@ -55,6 +55,19 @@ workflow → main**. To stage a Production-configured artifact without
 assigning production domains, use **Stage prebuilt deployment** from
 `main`. Its run summary links to the staged deployment.
 
+## GitHub-maintained action updates
+
+The [Dependabot auto-merge workflow](../.github/workflows/dependabot-automerge.yml)
+uses a GitHub App installation token scoped to ScummWEB. The
+`dependabot-automerge` GitHub environment supplies the app client ID and
+private key. The workflow runs its checked-in review script from `main` and
+requires the existing application CI and dependency review rules.
+
+Run the workflow manually without **Queue eligible Dependabot PRs for auto-merge**
+to preview candidates. The schedule runs only when the repository variable
+`DEPENDABOT_AUTOMERGE_ENABLED` is `true`. A merged update follows the same
+main-push CI and Production delivery path as any other merge.
+
 ## Privacy request intake
 
 `/privacy` displays a direct email link to the existing DuckDuckGo Email
