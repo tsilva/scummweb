@@ -253,7 +253,9 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   Migrate older `estcarcer` entries while reading the same save layout. A
   newly visited prison still shows its native introduction. Tinsel
   reconstructs scenes over several updates, so hold the restore acknowledgment
-  until that reconstruction finishes.
+  until that reconstruction finishes. The Discworld I DOS CD demo uses the
+  Tinsel V1 scene serializer. Use the native detection fields to identify it
+  and keep the existing control, cursor, movie and restore checks.
 - Composer saves contain one palette index per sprite pixel. Set the format
   when rebuilding surfaces and retain the restore's dirty rectangles until the
   next draw. Sword25 uses its original persistence dispatch for load handlers.

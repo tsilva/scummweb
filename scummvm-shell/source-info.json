@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-20T20:58:11.300272Z",
+  "generated_at_utc": "2026-11-25T16:52:42.451497Z",
   "scummvm": {
     "version": "v2026.4.0",
     "commit": "7d2709da5136866589f7602f5f5a7b17de03420e",
@@ -8,9 +8,9 @@
   "corresponding_source": {
     "page": "/doc/scummvm-source.html",
     "archive": "/doc/scummvm-source.zip",
-    "archive_sha256": "57898cd38347f28d3ea3d01df781ca897e5f005050e5c433cf3a6b0ff53e9fc9",
+    "archive_sha256": "c530f92facefa0d6a0448edf053e57cdb5576f7c40765addc447b8917fb55826",
     "runtime_sha256": {
-      "scummvm.wasm": "266e4885864f937bd1899dc3d59e97baccea4b64d6a97db2a850ce5dfe5c3963",
+      "scummvm.wasm": "5c20d83fc7003a6600c35eadb85506476cd8a98af326a558047d968a5aae07f9",
       "scummvm.js": "2159c0b7c65922e2e9986f1402b6a0bb5733732c31d520c4677a0e7b41427ce3",
       "data/plugins/libaccess.so": "1f094a7e9d6b686c3dd58f900ab8b348b995c008a994c1d285952a7d7d49b182",
       "data/plugins/libadl.so": "82b18d9b3a8c589fbbd74a3a62ca31e34ff83142d5d6c79cb331ecdbe317c803",
@@ -57,7 +57,7 @@
       "data/plugins/libsword2.so": "92940ee7656beab81ec39c84deb6cdc6bcd661aa7014ccfd0278b875f80166bd",
       "data/plugins/libsword25.so": "174d47fbf94aa281a99edac30dd37d2aeacdae8abae99f7dba9ee42c5c651e8e",
       "data/plugins/libteenagent.so": "b0bbd71f825deee552386edce37a15c8f719715e07a18803d60bfd5f91ce308d",
-      "data/plugins/libtinsel.so": "eab86889516b8e23f30b9e70b317472b9161dcfefd5e8baa374bf9554d8565ed",
+      "data/plugins/libtinsel.so": "ef5d8dc866f8130f35293b77de6c99e85d91dc4d8f59ee76660da0a7864c11f1",
       "data/plugins/libtitanic.so": "1c64e170decae46286555ebb664ecdf98fad882ea06acc1734dd4a45015c5f40",
       "data/plugins/libtoltecs.so": "a94b515d30b9a0a796ee518a1220f3fd18112280de16502652291ef50cdb2974",
       "data/plugins/libtony.so": "44855b65fd3d2db9b480584639ee29be248bed0ceb4713af9b2f37a841ed14b1",

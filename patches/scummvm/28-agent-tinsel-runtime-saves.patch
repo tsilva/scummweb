@@ -35,18 +35,22 @@ diff --git a/engines/tinsel/metaengine.cpp b/engines/tinsel/metaengine.cpp
  #include "tinsel/tinsel.h"
  #include "tinsel/savescn.h"	// needed by TinselMetaEngine::
  
-@@ -117,6 +120,10 @@
+@@ -117,6 +120,14 @@
  }
  
  bool Tinsel::TinselEngine::hasFeature(EngineFeature f) const {
 +#ifdef __EMSCRIPTEN__
-+	if (f == kSupportsSavingDuringRuntime)
-+		return !getIsADGFDemo() && scummweb_agent_game_loop_enabled();
++	if (f == kSupportsSavingDuringRuntime) {
++		// The DOS CD demo uses the Discworld I scene serializer.
++		const bool discworldDosCdDemo = getGameID() == Tinsel::GID_DW1 &&
++			getVersion() == Tinsel::TINSEL_V1 && getPlatform() == Common::kPlatformDOS && isV1CD();
++		return scummweb_agent_game_loop_enabled() && (!getIsADGFDemo() || discworldDosCdDemo);
++	}
 +#endif
  	return
  		(f == kSupportsReturnToLauncher) ||
  		(f == kSupportsLoadingDuringRuntime);
-@@ -420,21 +427,23 @@
+@@ -420,21 +431,23 @@
  	return Common::kNoError;	// TODO: return success/failure
  }
  
@@ -68,7 +72,7 @@ diff --git a/engines/tinsel/metaengine.cpp b/engines/tinsel/metaengine.cpp
 +}
 +
 +bool TinselEngine::canSaveGameStateCurrently(Common::U32String *) {
-+	return scummweb_agent_game_loop_enabled() && !getIsADGFDemo() && !_bmv->MoviePlaying()
++	return hasFeature(kSupportsSavingDuringRuntime) && !_bmv->MoviePlaying()
 +		&& ControlIsOn() && _cursor->isCursorShown() && !_dialogs->inventoryOrNotebookActive()
 +		&& !IsSceneRestorePending();
  }
