@@ -325,6 +325,18 @@ conflict dialogs and activity convergence after a lost upload response.
 Native changes require a full runtime rebuild
 with `--enable-cloud` through the maintained build script.
 
+For the low-storage browser test, run this command and open its printed
+loopback URL in Brave. The test exits when the page reports its result.
+
+```sh
+SCUMMWEB_RUN_BROWSER_INTEGRATION=1 node --test scripts/test/dropbox-storage-pressure.integration.test.mjs
+```
+
+The page uses real IndexedDB and Web Locks. Its fixture provider and storage
+estimate exercise the production sync coordinator below the working-save limit.
+It checks exact cloud verification before eviction, protection for a running
+edition and a racing pending save, and byte-identical on-demand restoration.
+
 Before rollout, verify real Dropbox authorization, renewal and two-device
 save/restore with a configured application on supported desktop, mobile,
 installed-app and TV browsers. Synthetic provider tests do not establish
