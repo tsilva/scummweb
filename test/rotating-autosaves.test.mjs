@@ -68,3 +68,29 @@ test("ordinary game launches neither load nor replace preview checkpoints", () =
   }
   assert.deepEqual(files, before);
 });
+
+test("SCUMM continues reading the rotating checkpoint after its early ready frame", () => {
+  const filename = "atlantis-demo.s01";
+  const scumm = { engineId: "scumm", gameId: "atlantis", target: "atlantis-demo", extra: "Demo", supported: true };
+  const manualPath = `${path}/${filename}`;
+  const temporaryPath = `/tmp/scummweb-intro/${filename}`;
+  const original = player(new Map([[manualPath, "older manual position"]]));
+  original.scope.__scummwebSaveStatus = scumm;
+  assert.equal(original.checkpoint.save({ status: "captured", files: [
+    { name: filename, data: data.encode("newer exit position") },
+  ] }, 1), true);
+
+  const resumed = player(original.files, preview + "&continue=1");
+  resumed.scope.__scummwebSaveStatus = scumm;
+  assert.equal(resumed.checkpoint.startup(scumm), 1);
+  assert.equal(resumed.checkpoint.due(), false);
+  assert.equal(resumed.checkpoint.canCapture(), false);
+  assert.equal(resumed.scope.__scummwebHasIntroCheckpoint(filename), true);
+  assert.equal(Buffer.from(resumed.files.get(temporaryPath)).toString(), "newer exit position");
+
+  resumed.checkpoint.finishScummStartup();
+  assert.equal(resumed.scope.__scummwebHasIntroCheckpoint, undefined);
+  assert.equal(resumed.files.has(temporaryPath), false);
+  assert.equal(resumed.files.get(manualPath), "older manual position");
+  assert.equal(resumed.checkpoint.due(), true);
+});

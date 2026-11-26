@@ -10,15 +10,35 @@ const livingBooksDemos = new Set(["tortoise", "arthurbday", "grandma", "arthur",
 const deferredDemoContinue = new Map([
   ["agos:simon1", "cd demo"],
   ["bbvs:bbvs", "loogie demo"],
+  ["gob:gob1", "interactive demo (v2.0)"],
   ["gob:gob2", "interactive demo (v1.01)"],
   ["gob:gob3", "interactive demo 3 (v0.02)"],
   ["made:rtz", "v1.2, 9/8/94, demo cd"],
   ["mads:nebular", "demo"],
   ["mohawk:myst", "demo"],
   ["scumm:samnmax", "demo"],
+  ["scumm:freddi", "demo"],
+  ["scumm:freddi2", "demo"],
   ["scumm:freddi3", "demo"],
+  ["scumm:freddi4", "demo"],
   ["scumm:puttzoo", "demo"],
+  ["scumm:puttrace", "demo"],
   ["scumm:thinker1", "demo"],
+  ["scumm:thinkerk", "demo"],
+  ["scumm:football", "demo"],
+  ["scumm:bluesabctime", "demo"],
+  ["scumm:bluesbirthday", "demo"],
+  ["scumm:airport", "demo"],
+  ["scumm:farm", "demo"],
+  ["scumm:pajama", "demo"],
+  ["scumm:pajama2", "demo"],
+  ["scumm:pajama3", "demo"],
+  ["scumm:putttime", "demo"],
+  ["scumm:spyfox", "demo"],
+  ["scumm:spyozon", "demo"],
+  ["scumm:fbear", "demo"],
+  ["scumm:puttmoon", "demo"],
+  ["scumm:puttputt", "demo"],
 ]);
 const retiredIntroCheckpoints = new Map([
   ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
@@ -33,9 +53,14 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
   const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
   return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
 }
+function usesDeferredDemoContinue(engineId, gameId, edition) {
+  return typeof gameId === "string" &&
+    deferredDemoContinue.get(`${engineId}:${gameId.toLowerCase()}`) === edition;
+}
+
 export function supportsContinue(engineId, gameId, extra = "") {
   const edition = typeof extra === "string" ? extra.toLowerCase() : "";
-  if (deferredDemoContinue.get(`${engineId}:${gameId}`) === edition) return true;
+  if (usesDeferredDemoContinue(engineId, gameId, edition)) return true;
   if (engineId === "grim") {
     return (gameId === "grim" && edition === "demo")
       || (gameId === "monkey4" && edition === "web demo");
@@ -279,13 +304,14 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
     const deferred = params.get("continue") === "1" &&
-      deferredDemoContinue.get(`${snapshot.engineId}:${snapshot.gameId}`) === snapshot.extra.toLowerCase();
+      usesDeferredDemoContinue(snapshot.engineId, snapshot.gameId, snapshot.extra.toLowerCase());
     const schedule = deferred ? scope.__scummwebQueueStartupLoad : undefined;
     const autoSlot = !deferred || schedule ? scope.__scummwebAutosaves?.startup(snapshot, save, schedule) ?? -1 : -1;
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
     if (!resumeReported && deferred) {
       const queued = autoSlot >= 0 || (save && schedule?.(save.slot));
-      if (queued && snapshot.engineId === "scumm") {
+      if (queued && (snapshot.engineId === "scumm" ||
+          (snapshot.engineId === "gob" && snapshot.gameId === "gob1"))) {
         // Drive the engine’s native intro skip while an exact demo restore is pending.
         scope.__scummwebUpdateIntroSkip = available => available && scope.__scummwebIsStartupLoad?.() === true;
       }

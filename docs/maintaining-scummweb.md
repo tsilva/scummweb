@@ -234,7 +234,8 @@ to three checkpoints, updated about every two minutes, at the first safe moment
 after loading, and when you select **Exit game** in a scene that allows saving.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
-overwriting any manual slot. Saved story progress uses checkpoint data where a
+overwriting any manual slot. SCUMM keeps the selected checkpoint available
+through the engine's native startup load. Saved story progress uses checkpoint data where a
 compatible story map is available. In the game hero, the version picker appears beside
 **Play** or **Continue** when several versions are available. For a single
 version, **Start from beginning** appears beside **Continue** and keeps your saves.
@@ -257,7 +258,7 @@ Run the save and menu regressions after changing either bridge.
 node --test test/browser-saves.test.mjs test/continue-saves.test.mjs \
   test/native-save-completion.test.mjs test/hero-launch-actions.test.mjs \
   test/save-backups.test.mjs test/game-menu.test.mjs test/game-route-frame.test.mjs \
-  test/player-controls.test.mjs
+  test/player-controls.test.mjs test/rotating-autosaves.test.mjs
 ```
 
 ### Backing up and transferring saved progress
@@ -356,11 +357,16 @@ to the original New Game, Load and See Intro menu. Chivalry is Not Dead retains
 its instructions dialog, then can skip its title sequence through the original
 scene initializer, preserving its first story choice. Iceman’s opening includes its credits and Tahiti
 prologue, ending when the beach accepts player input. Myst closes the action
-permanently at its original linking book or demo preview menu.
-Gobliiins’ bundled interactive DOS demo uses the native
-intro action and retains its original character controls; saving through the
-ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
-demo starts at its original clickable title and uses British English (`gb`) for
+permanently at its original linking book or demo preview menu. The EGA Secret
+of Monkey Island and Fate of Atlantis demos use their bundled intro checkpoints
+for Skip intro. Save and Load are available while the original scene accepts
+input. Continue opens the latest player checkpoint. Castle Master’s DOS demo
+continues directly into the saved 3D area.
+Gobliiins’ bundled interactive DOS v2.0 demo uses the native intro action.
+ScummWEB saves during puzzle play preserve the scene, characters and puzzle
+objects. Continue advances through the original intro to restore the latest
+checkpoint. Gobliins 2’s interactive DOS demo starts at its original
+clickable title and uses British English (`gb`) for
 exact engine detection. Open the ScummWEB menu during gameplay to save or load
 the current scene. Continue opens the latest checkpoint directly.
 Goblins Quest 3’s English DOS interactive demo starts from its original clickable
@@ -380,6 +386,11 @@ playable town scene after the original narration, before any player action.
 Space Quest 6’s voiced interactive demo retains its original title, instructions
 and opening scenes. The ScummWEB menu saves the active scene once gameplay
 accepts input. Continue restores the latest checkpoint.
+
+The Macintosh Pegasus Prime demo uses numbered ScummWEB saves in the
+prehistoric area. Load restores the saved view, and Continue can resume the
+latest checkpoint directly from the library. Fresh Play opens the original
+demo menu.
 
 Myst’s Windows CD demo retains its original preview menu and interactive library.
 Native Skip intro advances past the publisher opening while preserving the
@@ -402,11 +413,11 @@ Lands of Lore’s English DOS interactive CD demo preserves the complete unchang
 
 Putt-Putt Saves the Zoo’s English Windows HE72 demo keeps its complete unchanged official ZIP, including original executable, W32 runtime and compiled Help. Native intro skip reaches the original raft scene. ScummWEB Save, Load and Continue preserve the state of the raft and the repair log in inventory.
 
-Putt-Putt Travels Through Time’s English US Windows HE90 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip retains the four-era portal choice; selecting the dinosaur portal enters its original scene. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
+Putt-Putt Travels Through Time’s English US Windows HE90 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip retains the four-era portal choice; selecting the dinosaur portal enters its original scene. Save, Load and Continue restore the interactive portal choice.
 
-Freddi Fish 2’s English Windows HE80 demo keeps the complete unchanged official ZIP, including original runtime libraries, executable, settings and compiled Help. Native intro skip reaches the original turtle scene; clicking the pipe triggers Tucker’s dialogue and animation. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
+Freddi Fish 2’s English Windows HE80 demo keeps the complete unchanged official ZIP, including original runtime libraries, executable, settings and compiled Help. Native intro skip reaches the original turtle scene; clicking the pipe triggers Tucker’s dialogue and animation. Save, Load and Continue reopen the playable pipe scene.
 
-Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original storeroom; interacting with the vacuum cleaner triggers its character animation. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
+Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original storeroom; interacting with the vacuum cleaner triggers its character animation. Save, Load and Continue restore the storeroom.
 
 Freddi Fish 3’s full English Windows CD edition shares its twelve save slots
 between the ScummWEB Game Menu and the original save and load screens. The
@@ -447,33 +458,33 @@ Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complet
 
 Freddi Fish 3’s English Windows HE90 mini demo keeps the complete unchanged official ZIP, including original runtime libraries, promotional bitmap, settings and compiled Help. Native intro skip reaches Pelican Sam’s landing, and buoy navigation opens the net scene. ScummWEB Save, Load and Continue preserve both views and the active room objects.
 
-Freddi Fish 4’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and canyon navigation reach Gill Barker’s wheel-nut stall. ScummWEB saving is unavailable and the original demo computer opens only Quit; no browser checkpoint is seeded.
+Freddi Fish 4’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and canyon navigation reach Gill Barker’s wheel-nut stall. The ScummWEB menu can save and load the canyon, and Continue restores the checkpoint. The original demo computer opens only Quit.
 
-Pajama Sam 3’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip reaches the sweets’ jail with Florette; inspecting the key triggers Sam’s original response. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+Pajama Sam 3’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip reaches the sweets’ jail with Florette; inspecting the key triggers Sam’s original response. Save, Load and Continue reopen the sweets’ jail with Florette.
 
-Putt-Putt Enters the Race’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and road navigation reach the apple-tree scene. Original demo Save/Load are greyed out and ScummWEB saving is unavailable; no browser checkpoint is seeded.
+Putt-Putt Enters the Race’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and road navigation reach the apple-tree scene. ScummWEB Save, Load and Continue restore the playable driveway.
 
-Putt-Putt Goes to the Moon’s English Windows HE70 demo keeps its complete unchanged official ZIP, including original launcher/runtime, HE data and compiled Help. Native intro skip reaches the lunar crater scene, where hotspot animation and movement work. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+Putt-Putt Goes to the Moon’s English Windows HE70 demo keeps its complete unchanged official ZIP, including original launcher/runtime, HE data and compiled Help. Native intro skip reaches the lunar crater scene, where hotspot animation and movement work. ScummWEB Save, Load and Continue reopen the playable crater scene.
 
-Spy Fox 3: Operation Ozone’s English US Windows demo keeps its complete unchanged official ZIP, including original launcher, runtime and game data. Native intro skip reaches the courtyard; entering the bowling alley pro shop works. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+Spy Fox 3: Operation Ozone’s English US Windows demo keeps its complete unchanged official ZIP, including original launcher, runtime and game data. Native intro skip reaches the courtyard; entering the bowling alley pro shop works. Save, Load and Continue reopen the courtyard.
 
-The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its complete unchanged official ZIP, including original launcher/runtime and all game data. Native intro skip reaches the front yard, where skateboarding and movement work. ScummWEB saving is unavailable in the tested scene; no browser checkpoint is seeded.
+The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its complete unchanged official ZIP, including original launcher/runtime and all game data. Native intro skip reaches the front yard, where skateboarding and movement work. Save, Load and Continue reopen the front yard.
 
-Backyard Football’s English Windows demo preserves its original mode selection and bundled two-player controls note. The one-player matchup and kick return work. The original note specifies mouse input for the 49ers and a joystick or gamepad for the Melonheads in two-player mode. ScummWEB saving was unavailable in the tested play.
+Backyard Football’s English Windows demo preserves its original mode selection and bundled two-player controls note. The one-player matchup and kick return work. The original note specifies mouse input for the 49ers and a joystick or gamepad for the Melonheads in two-player mode. ScummWEB Load restored kickoff selection, and Continue reopened the newer first-down play selection.
 
 Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon flying minigame. The ScummVM downloads page lists it as a demo. Press Space to pause or resume flight. The original level prompts display passcodes. Open the ScummWEB menu during active flight to save or load the aircraft position, fuel and balloon progress. Continue resumes the latest checkpoint.
 
 Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky’s activity room. The native Skip Intro action works. Select the puzzle box to start the jigsaw and move pieces from the tray to the board. ScummWEB Save, Load and Continue preserve the jigsaw board and the arrangement of the loose pieces.
 
-Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch Math, Hide ’n’ Seek, and Mealtime Mazes. The native Skip Intro action reaches the original backyard. Choose the fence to play Bird Perch Math, then select the number that matches the birds. ScummWEB saving was unavailable in the tested activity. The complete original Windows Help file remains inside the download.
+Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch Math, Hide ’n’ Seek, and Mealtime Mazes. The native Skip Intro action reaches the original backyard. Choose the fence to play Bird Perch Math, then select the number that matches the birds. ScummWEB Save, Load and Continue restore the backyard. The complete original Windows Help file remains inside the download.
 
-Blue’s ABC Time Activities’ English Windows Sneak Peek demo includes Bathtime Rhymes. Native Skip Intro reaches the bathtub. Choose a picture bubble, then choose a picture whose word rhymes with the first. The original Windows Help and rights notices remain in the download. ScummWEB saving was unavailable during the activity.
+Blue’s ABC Time Activities’ English Windows Sneak Peek demo includes Bathtime Rhymes. Native Skip Intro reaches the bathtub. Choose a picture bubble, then choose a picture whose word rhymes with the first. The original Windows Help and rights notices remain in the download. Load and Continue restore the selected Bathtime Rhymes prompt.
 
-Blue’s Birthday Adventure’s English Windows Sneak Peek demo includes the toy room, farm, and one clue. Click the farm picture, follow the garden sign, and give the watering can to the chick to reveal the clue. The complete archive retains its original live-action clips and Windows Help. The original Help says this demo does not save game progress.
+Blue’s Birthday Adventure’s English Windows Sneak Peek demo includes the toy room, farm, and one clue. Click the farm picture, follow the garden sign, and give the watering can to the chick to reveal the clue. The complete archive retains its original live-action clips and Windows Help. ScummWEB Save, Load and Continue restore the playable toy room.
 
-The English Windows demo of Let’s Explore the Airport opens at an airplane boarding gate. The native Skip Intro action works. Select the open airplane door to enter the passenger cabin, and use the green arrow to go back. ScummWEB saving was unavailable in the tested cabin scene.
+The English Windows demo of Let’s Explore the Airport opens at an airplane boarding gate. The native Skip Intro action works. Select the open airplane door to enter the passenger cabin, and use the green arrow to go back. ScummWEB Load restored the boarding gate, and Continue opened the newer cabin checkpoint.
 
-The English Windows demo of Let’s Explore the Farm opens in the barn. The native Skip Intro action works. Select the book to open the glossary and choose a word to see its illustrated entry. The original demo does not support saving.
+The English Windows demo of Let’s Explore the Farm opens in the barn. The native Skip Intro action works. Select the book to open the glossary and choose a word to see its illustrated entry. ScummWEB Save, Load and Continue preserve the barn and the glossary view.
 
 The six bundled Living Books demos below can save a story page through the
 ScummWEB Game Menu. Load Game and Continue reopen the saved page from its
@@ -516,26 +527,26 @@ including executable libraries, audio, original Windows Help and settings.
 No express rehosting grant or redistribution ban was found in the inspected
 notices; official promotional hosting supports the cautious assessment recorded
 in the catalog. The original opening, native intro action and phone-booth keypad
-work. Saving is unavailable in the tested first playable scene; no checkpoint
-is supplied. The demo shares its existing published hero and box art.
+work. Save, Load and Continue reopen the Greek Cantina village scene. The
+demo shares its existing published hero and box art.
 
 Pajama Sam’s English Windows demo retains its complete unchanged package,
 including its compiled Help, configuration and notices. Native intro skip
 reaches the original treehouse scene, and clicking its path enters the next
-room. Saving is unavailable in the tested first scene, so no intro checkpoint
-is bundled. The existing shared hero and box art are reused.
+room. ScummWEB Save and Load restore the treehouse, and Continue can reopen
+the newer mine checkpoint. The existing shared hero and box art are reused.
 
 Freddi Fish and the Case of the Missing Kelp Seeds’ English Windows demo
 retains its unchanged original package, including its Help file and notices.
 Native intro skip reaches the shipwreck scene, which accepts object-click input.
-Saving is unavailable in that tested scene; no intro checkpoint is bundled.
-The existing shared hero and box art are reused.
+Save, Load and Continue reopen the interactive shipwreck scene. The
+existing shared hero and box art are reused.
 
 Putt-Putt Joins the Parade’s English Windows demo retains its complete original
 Windows package, including the compiled Help file. Native intro skip advances
-the opening, and the first road scene accepts click-point input. Saving is
-unavailable in the tested opening and first playable scene; no intro checkpoint
-is bundled. Its existing shared artwork is reused.
+the opening, and the first road scene accepts click-point input. ScummWEB Save, Load and
+Continue restore the road scene once the introduction reaches player control.
+Its existing shared artwork is reused.
 
 Technobabylon’s English Windows demo preserves its original Start menu and
 opening. Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,

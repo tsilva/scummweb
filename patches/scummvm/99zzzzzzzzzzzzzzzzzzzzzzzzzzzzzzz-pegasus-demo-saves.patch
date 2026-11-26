@@ -1,0 +1,164 @@
+diff --git a/engines/pegasus/pegasus.h b/engines/pegasus/pegasus.h
+--- a/engines/pegasus/pegasus.h
++++ b/engines/pegasus/pegasus.h
+@@ -101,6 +101,10 @@
+ 	bool isDVD() const;
+ 	bool isDVDDemo() const;
+ 	bool isOldDemo() const;
++#ifdef __EMSCRIPTEN__
++	bool supportsScummWebDemoSaves() const;
++	static bool isDemoSaveHeader(Common::SeekableReadStream &stream);
++#endif
+ 	bool isWindows() const;
+ 	bool isLinux() const;
+ 	void addIdler(Idler *idler);
+diff --git a/engines/pegasus/pegasus.cpp b/engines/pegasus/pegasus.cpp
+--- a/engines/pegasus/pegasus.cpp
++++ b/engines/pegasus/pegasus.cpp
+@@ -23,6 +23,8 @@
+  */
+ 
+ #include "engines/scummweb-telemetry.h"
++
++#include "pegasus/detection.h"
+ 
+ #include "common/config-manager.h"
+ #include "common/error.h"
+@@ -242,11 +244,38 @@
+ 	return Common::kNoError;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool PegasusEngine::supportsScummWebDemoSaves() const {
++	return _targetName == "pegasus-demo" && isOldDemo() &&
++		_gameDescription->desc.platform == Common::kPlatformMacintosh &&
++		_gameDescription->desc.filesDescriptions[0].fileSize == 359873;
++}
++
++bool PegasusEngine::isDemoSaveHeader(Common::SeekableReadStream &stream) {
++	if (stream.size() <= 12)
++		return false;
++	const uint32 creator = stream.readUint32BE();
++	const uint32 type = stream.readUint32BE();
++	const uint32 version = stream.readUint32BE();
++	return creator == kPegasusPrimeCreator &&
++		type >= kPegasusPrimeDisk1GameType && type <= kPegasusPrimeDisk4GameType &&
++		version == kPegasusPrimeVersion && stream.seek(0);
++}
++#endif
++
+ bool PegasusEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary && supportsScummWebDemoSaves())
++		return _loadAllowed && g_neighborhood && g_interface;
++#endif
+ 	return _loadAllowed && !isDemo();
+ }
+ 
+ bool PegasusEngine::canSaveGameStateCurrently(Common::U32String *msg) {
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary && supportsScummWebDemoSaves())
++		return _saveAllowed && g_neighborhood && g_interface;
++#endif
+ 	return _saveAllowed && !isDemo() && g_neighborhood;
+ }
+ 
+@@ -760,6 +789,8 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ Common::String PegasusEngine::getSaveStateName(int slot) const {
++	if (supportsScummWebDemoSaves())
++		return getMetaEngine()->getSavegameFile(slot, _targetName.c_str());
+ 	if (_agentControlBoundary)
+ 		return Common::String::format("pegasus-AgentSCUMM %d.sav", slot);
+ 	return Engine::getSaveStateName(slot);
+@@ -769,7 +800,9 @@
+ Common::Error PegasusEngine::loadGameState(int slot) {
+ 	Common::String filename;
+ #ifdef __EMSCRIPTEN__
+-	if (_agentControlBoundary) {
++	if (supportsScummWebDemoSaves() && (slot < 0 || slot > getMetaEngine()->getMaximumSaveSlot()))
++		return Common::kReadingFailed;
++	if (supportsScummWebDemoSaves() || _agentControlBoundary) {
+ 		filename = getSaveStateName(slot);
+ 	} else
+ #endif
+@@ -783,7 +816,12 @@
+ 	if (!loadFile)
+ 		return Common::kUnknownError;
+ 
+-	bool valid = loadFromStream(loadFile);
++	bool valid = true;
++#ifdef __EMSCRIPTEN__
++	if (supportsScummWebDemoSaves())
++		valid = isDemoSaveHeader(*loadFile);
++#endif
++	valid = valid && loadFromStream(loadFile);
+ 	delete loadFile;
+ 
+ 	return valid ? Common::kNoError : Common::kUnknownError;
+diff --git a/engines/pegasus/metaengine.cpp b/engines/pegasus/metaengine.cpp
+--- a/engines/pegasus/metaengine.cpp
++++ b/engines/pegasus/metaengine.cpp
+@@ -64,6 +64,12 @@
+ 
+ } // End of namespace Pegasus
+ 
++#ifdef __EMSCRIPTEN__
++static bool isScummWebPegasusDemoTarget(const char *target) {
++	return target && strcmp(target, "pegasus-demo") == 0;
++}
++#endif
++
+ class PegasusMetaEngine : public AdvancedMetaEngine<Pegasus::PegasusGameDescription> {
+ public:
+ 	const char *getName() const override {
+@@ -78,6 +84,13 @@
+ 	bool removeSaveState(const char *target, int slot) const override;
+ 	Common::KeymapArray initKeymaps(const char *target) const override;
+ 	Common::String getSavegameFile(int saveGameIdx, const char *target) const override {
++#ifdef __EMSCRIPTEN__
++		if (isScummWebPegasusDemoTarget(target)) {
++			if (saveGameIdx == kSavegameFilePattern)
++				return "pegasus-demo.###";
++			return Common::String::format("pegasus-demo.%03d", saveGameIdx);
++		}
++#endif
+ 		if (saveGameIdx == kSavegameFilePattern)
+ 			return Common::String::format("pegasus-*.sav");
+ 		Common::StringArray fileNames = Pegasus::PegasusEngine::listSaveFiles();
+@@ -99,6 +112,22 @@
+ }
+ 
+ SaveStateList PegasusMetaEngine::listSaves(const char *target) const {
++#ifdef __EMSCRIPTEN__
++	if (isScummWebPegasusDemoTarget(target)) {
++		SaveStateList saves;
++		auto *manager = g_system->getSavefileManager();
++		const auto files = manager->listSavefiles(getSavegameFile(kSavegameFilePattern, target));
++		for (const auto &name : files) {
++			const uint index = name.size() - 3;
++			const int slot = (name[index] - '0') * 100 + (name[index + 1] - '0') * 10 + name[index + 2] - '0';
++			Common::InSaveFile *file = manager->openForLoading(name);
++			if (file && Pegasus::PegasusEngine::isDemoSaveHeader(*file))
++				saves.push_back(SaveStateDescriptor(this, slot, Common::String::format("Save %d", slot)));
++			delete file;
++		}
++		return saves;
++	}
++#endif
+ 	// The original had no pattern, so the user must rename theirs
+ 	// Note that we ignore the target because saves are compatible between
+ 	// all versions
+@@ -118,6 +147,11 @@
+ }
+ 
+ bool PegasusMetaEngine::removeSaveState(const char *target, int slot) const {
++#ifdef __EMSCRIPTEN__
++	if (isScummWebPegasusDemoTarget(target))
++		return slot >= 0 && slot <= getMaximumSaveSlot() &&
++			g_system->getSavefileManager()->removeSavefile(getSavegameFile(slot, target));
++#endif
+ 	// See listSaves() for info on the pattern
+ 	Common::StringArray fileNames = Pegasus::PegasusEngine::listSaveFiles();
+ 	return g_system->getSavefileManager()->removeSavefile(fileNames[slot].c_str());

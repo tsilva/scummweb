@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "recordedOn": "2026-11-18",
+  "recordedOn": "2026-11-26",
   "scope": "Startup verification by edition; warnings and failures describe ScummVM or ScummWEB limitations, excluding problems specific to supplied game files. Not full-game compatibility.",
   "upstreamReference": {
     "version": "2026.4.0",
@@ -96,8 +96,8 @@
       "status": "startup-verified",
       "gameId": "scumm:thinkerk",
       "edition": "thinkerk-win-demo-us.zip",
-      "recordedOn": "2026-11-18",
-      "observation": "American English Windows demo. The original introduction, native Skip Intro, backyard, and an answered Bird Perch Math round were verified. ScummWEB saving was unavailable in the tested activity. The other activities and independent audible output were unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "American English Windows demo. Native Skip Intro reaches the original backyard and Bird Perch Math responds. ScummWEB Save, Load and Continue reopen the backyard."
     },
     {
       "title": "Blue Force",
@@ -167,7 +167,8 @@
       "status": "startup-verified",
       "gameId": "freescape:castlemaster",
       "edition": "castle-dos-demo.zip",
-      "observation": "The DOS web demo automatically selects the prince on both Play and Skip intro, reaching the first 3D level without character-selection input; keyboard movement is verified."
+      "recordedOn": "2026-11-26",
+      "observation": "The DOS web demo selects the prince on Play and Skip intro. ScummWEB Save, Load and Continue restore the original 3D area and native controls."
     },
     {
       "title": "Castle of Dr. Brain",
@@ -392,8 +393,8 @@
       "status": "startup-verified",
       "gameId": "sci:funseeker",
       "edition": "funseeker-dos-demo-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS guide opened its instructions and advanced to the Talking Bear and Bass Lake with Space. The tested scene rejected saving. The catalog year follows the dated 1989 resource files in this build."
+      "recordedOn": "2026-11-26",
+      "observation": "The original English DOS guide opens its instructions and the Talking Bear. Load restored Bass Lake with its complete text. Continue restored the later Yosemite view, including its text. The catalog year follows the dated 1989 resource files."
     },
     {
       "title": "Future Wars: Adventures in Time",
@@ -492,7 +493,8 @@
       "status": "startup-verified",
       "gameId": "hugo:hugo2",
       "edition": "hugo2-dos-2.1-demo-en.zip",
-      "observation": "The English DOS v2.1 shareware release renders its opening screen."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS v2.1 shareware release opens at the mansion. ScummWEB Save, Load and Continue restore the opening scene."
     },
     {
       "title": "Hugo III: Jungle of Doom",
@@ -506,7 +508,8 @@
       "status": "startup-verified",
       "gameId": "hugo:hugo3",
       "edition": "hugo3-dos-2.1-demo-en.zip",
-      "observation": "The English DOS v2.1 shareware release renders its opening sequence."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS v2.1 shareware release opens near the crash site. ScummWEB Save, Load and Continue restore the opening scene."
     },
     {
       "title": "Hugo's House of Horrors",
@@ -520,7 +523,8 @@
       "status": "startup-verified",
       "gameId": "hugo:hugo1",
       "edition": "hugo1-dos-2.1-demo-en.zip",
-      "observation": "The English DOS v2.1 shareware release renders its opening screen."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS v2.1 shareware release opens at the house. ScummWEB Save, Load and Continue restore the opening scene."
     },
     {
       "title": "Indiana Jones and the Fate of Atlantis",
@@ -797,8 +801,8 @@
       "status": "startup-verified",
       "gameId": "sci:msastrochicken",
       "edition": "msastrochicken-dos-demo-en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS arcade game opened its scrolling playfield, responded to pointer movement, and reached Game Over. The initial personal launch hit a native assertion, followed by three successful launches. The tested scene rejected saving."
+      "recordedOn": "2026-11-26",
+      "observation": "The original English DOS arcade demo responds to pointer movement. Save, Load and Continue restore the active stage with its egg, score and lives displays."
     },
     {
       "title": "MTV's Beavis and Butt-Head in Virtual Stupidity",
@@ -812,8 +816,8 @@
       "status": "startup-verified",
       "gameId": "bbvs:bbvs",
       "edition": "bbvs-demo-loogie-2.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The separately distributed English Windows Hock-A-Loogie promotion reached its character menu, opened the rooftop round with both characters, and incremented the original hit counter after mouse input. The round rejected saving."
+      "recordedOn": "2026-11-26",
+      "observation": "The separately distributed English Windows demo opens its original character choice. Load restored Beavis at zero hits and Continue restored Butt-Head’s later round at one hit."
     },
     {
       "title": "Myst (Demo)",
@@ -982,7 +986,8 @@
       "status": "startup-verified",
       "gameId": "ags:qfi",
       "edition": "quest_for_infamy-demo.zip",
-      "observation": "The English Windows Demo 2.0 renders its main menu."
+      "recordedOn": "2026-11-26",
+      "observation": "The English Windows Demo 2.0 renders its original main menu. Save, Load and Continue reopen the original Volksville path."
     },
     {
       "title": "RAMA",
@@ -1070,7 +1075,8 @@
       "status": "startup-verified",
       "gameId": "scumm:samnmax",
       "edition": "samnmax-dos-cd-demo-en.zip",
-      "observation": "The voiced English CD demo renders its opening credits and office. Native Skip intro reaches the office, and mouse input moves Sam and Max. Its original readme says this demo is not designed to save games."
+      "recordedOn": "2026-11-26",
+      "observation": "The voiced English CD demo renders its opening credits and office. Native Skip intro reaches the office. Load restored Sam’s earlier position, and Continue restored his later position across the room."
     },
     {
       "title": "Shivers",
@@ -1220,7 +1226,8 @@
       "status": "startup-verified",
       "gameId": "teenagent:teenagent",
       "edition": "teen-dos-union-demo-en.zip",
-      "observation": "The English DOS Union shareware demo renders the Metropolis startup screen."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS Union shareware demo opens the original training camp. ScummWEB Save, Load and Continue restore the camp scene."
     },
     {
       "title": "The 7th Guest",
@@ -1270,7 +1277,8 @@
       "status": "startup-verified",
       "gameId": "scumm:comi",
       "edition": "comi-win-small-demo-en.zip",
-      "observation": "The small English Windows demo renders the ship’s hold on both first and cached launches. The original web archive omits the intro video and music."
+      "recordedOn": "2026-11-26",
+      "observation": "The small English Windows demo renders the ship’s hold on both first and cached launches. ScummWEB Save, Load and Continue restore the playable hold. The original web archive omits the intro video and music."
     },
     {
       "title": "The Dig",
@@ -1320,7 +1328,8 @@
       "status": "startup-verified",
       "gameId": "pegasus:pegasus",
       "edition": "pegasus-mac-demo-en-nonmac-format.zip",
-      "observation": "The Macintosh interactive demo renders its opening screen from the archive’s PP Data folder."
+      "recordedOn": "2026-11-26",
+      "observation": "The Macintosh interactive demo renders from its original PP Data folder. ScummWEB Load restored the earlier prehistoric landing-pad view. Fresh Continue restored the newer canyon view."
     },
     {
       "title": "The Labyrinth of Time",
@@ -1408,6 +1417,14 @@
       "gameId": "scumm:monkey",
       "edition": "The Secret of Monkey Island (CD DOS VGA).zip",
       "observation": "Startup screen, publisher splash, intro, menu, or game scene rendered."
+    },
+    {
+      "title": "The Secret of Monkey Island (Demo)",
+      "status": "startup-verified",
+      "gameId": "scumm:monkey",
+      "edition": "Bundled English DOS EGA demo (monkey.zip)",
+      "recordedOn": "2026-11-26",
+      "observation": "Skip intro opens the original EGA pier. ScummWEB Save, Load and Continue restore Guybrush’s position in the playable scene."
     },
     {
       "title": "Tony Tough and the Night of Roasted Moths",
@@ -1640,8 +1657,8 @@
       "status": "startup-verified",
       "gameId": "scumm:football",
       "edition": "football-win-demo-us.zip",
-      "recordedOn": "2026-11-18",
-      "observation": "English Windows demo. The native demo menu, one-player matchup, kick return selection and original on-field action were verified. ScummWEB saving was unavailable during the tested play. No seeded checkpoint or verified Continue save. Two-player input, a full match and audible output were not independently verified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows demo. The original mode selection, one-player match and kick return work. ScummWEB Load restored kickoff selection, and Continue reopened the newer first-down play selection. The two-player mode was not independently verified."
     },
     {
       "title": "Backyard Football 2002",
@@ -1681,8 +1698,8 @@
       "status": "startup-verified",
       "gameId": "scumm:bluesabctime",
       "edition": "BluesABCTime-win-demo1-us.zip",
-      "recordedOn": "2026-11-18",
-      "observation": "English Windows Sneak Peek demo. Native Skip Intro reaches Bathtime Rhymes. Picture selection, a completed rhyme and its letter reward were verified. ScummWEB saving was unavailable while playing. Independent audible output was unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows Sneak Peek demo. Native Skip Intro reaches Bathtime Rhymes. Load restored the first prompt and fresh Continue restored the later rhyme choices."
     },
     {
       "title": "Blue's Clues: Blue's Art Time Activities",
@@ -1703,8 +1720,8 @@
       "status": "startup-verified",
       "gameId": "scumm:bluesbirthday",
       "edition": "BluesBirthday-win-demo1-us.zip",
-      "recordedOn": "2026-11-18",
-      "observation": "English Windows Sneak Peek demo. Original live-action video, native Skip Intro, farm and garden, picking up and using the watering can, and opening the notebook clue were verified. The demo’s original Help says progress is not saved, and ScummWEB Save was unavailable in the tested scene. The pasture activity, ending and independent audible output were unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows Sneak Peek demo. The original live-action video and native intro skip remain available. ScummWEB Save, Load and Continue reopen the interactive toy room. The garden clue and notebook also respond to input."
     },
     {
       "title": "Blue's Clues: Blue's Birthday Adventure",
@@ -1774,8 +1791,8 @@
       "status": "startup-verified",
       "gameId": "scumm:fbear",
       "edition": "fbear-win-demo-us.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English Windows HE70 demo. Exact native Demo/Windows/English detection, original front-yard scene, native intro skip, skateboard animation and movement toward the tree swing verified. ScummWEB Save unavailable in the tested scene; no verified Load or Continue save and no seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows HE70 demo. Native intro skip reaches the original front yard. Save, Load and Continue restore the playable front yard."
     },
     {
       "title": "Fatty Bear's FunPack",
@@ -1796,8 +1813,8 @@
       "status": "startup-verified",
       "gameId": "scumm:freddi2",
       "edition": "freddi2-win-demo-us.zip",
-      "recordedOn": "2026-11-15",
-      "observation": "English Windows HE80 demo: correct native detector/selected game, cold and cached bucket starts, original turtle scene, native intro skip and pipe interaction triggering Tucker dialogue/animation verified. Personal and hosted native saving rejected in that tested scene, including before hosted input; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows HE80 demo. Native intro skip reaches the pipe and Tucker scene. ScummWEB Save, Load and Continue reopen the playable pipe scene."
     },
     {
       "title": "Freddi Fish 3: The Case of the Stolen Conch Shell",
@@ -1827,8 +1844,8 @@
       "status": "startup-verified",
       "gameId": "scumm:freddi4",
       "edition": "freddi4-win-demo-uk.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English UK Windows HE99 demo. Exact native Demo/Windows/EnglishGB detector, cold and cached bucket starts, original introduction, native intro skip and canyon navigation to Gill Barker verified. ScummWEB saving unavailable, Load empty; original demo computer opens only Quit. No verified Continue save or seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English UK Windows HE99 demo. The original intro skip and road navigation reach Gill Barker. Save, Load and Continue reopen the original canyon area. The native demo computer offers Quit."
     },
     {
       "title": "Freddi Fish 5: The Case of the Creature of Coral Cove",
@@ -1863,8 +1880,8 @@
       "status": "startup-verified",
       "gameId": "scumm:freddi",
       "edition": "freddi-win-demo-us.zip",
-      "recordedOn": "2026-11-14",
-      "observation": "English Windows demo renders its original voiced opening and shipwreck scene. Native intro skip and wheel animation input work. Saving is unavailable in the tested first playable scene."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows demo with the original voiced opening and native intro skip. Save, Load and Continue reopen the playable shipwreck scene."
     },
     {
       "title": "Green Eggs and Ham",
@@ -1963,8 +1980,8 @@
       "status": "startup-verified",
       "gameId": "scumm:airport",
       "edition": "airport-win-demo-us.zip",
-      "recordedOn": "2026-11-18",
-      "observation": "English Windows demo. Native Skip Intro, the boarding gate and airplane cabin navigation were verified. ScummWEB saving was unavailable in the tested cabin scene. Full activity coverage and audible output were unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows demo. Native Skip Intro reaches the original boarding gate. ScummWEB Load restored the gate, and Continue reopened the newer passenger-cabin checkpoint."
     },
     {
       "title": "Let's Explore the Farm",
@@ -1978,8 +1995,8 @@
       "status": "startup-verified",
       "gameId": "scumm:farm",
       "edition": "farm-win-demo-us.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "English Windows demo. Native Skip Intro, barn exploration, the illustrated glossary and its Cow entry were verified. The original demo does not support saving. Full activity coverage and audible output were unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows demo. Native Skip Intro opens the barn. ScummWEB Load restored the barn, and Continue reopened the illustrated glossary index with its text."
     },
     {
       "title": "Let's Explore the Jungle",
@@ -2070,8 +2087,8 @@
       "status": "startup-verified",
       "gameId": "scumm:pajama2",
       "edition": "pajama2-win-demo-us.zip",
-      "recordedOn": "2026-11-15",
-      "observation": "English Windows HE95 demo: correct native detector/selected game, cold and cached bucket starts, original storeroom, native intro skip and vacuum character interaction/animation verified. Personal and hosted native saving rejected in that tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows HE95 demo. Native intro skip reaches the original storeroom. ScummWEB Load reopened the storeroom from the promotional tour, and fresh Continue restored the playable storeroom."
     },
     {
       "title": "Pajama Sam 3: You Are What You Eat From Your Head To Your Feet",
@@ -2085,8 +2102,8 @@
       "status": "startup-verified",
       "gameId": "scumm:pajama3",
       "edition": "pajama3-win-demo-uk.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English UK Windows HE99 demo. Exact native Demo/Windows/EnglishGB detection, original sweets jail, native intro skip and key inspection dialogue/character response verified. ScummWEB saving unavailable in the tested scene; no verified Load or Continue save and no seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English UK Windows HE99 demo. The original intro skip and key inspection work. Save, Load and Continue reopen the sweets’ jail with Florette."
     },
     {
       "title": "Pajama Sam: Games to Play on Any Day",
@@ -2107,8 +2124,8 @@
       "status": "startup-verified",
       "gameId": "scumm:pajama",
       "edition": "pajama-win-demo-us.zip",
-      "recordedOn": "2026-11-14",
-      "observation": "English Windows demo renders its original opening and treehouse scene. Native intro skip works, and clicking the treehouse path reaches the next room. Saving is unavailable in the tested first playable scene."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows demo with the original voiced opening. Manual Load restored the treehouse, and Continue reopened the newer mine checkpoint without input."
     },
     {
       "title": "Pajama Sam's Lost & Found",
@@ -2192,8 +2209,8 @@
       "status": "startup-verified",
       "gameId": "scumm:puttrace",
       "edition": "puttrace-win-demo-uk.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English UK Windows HE99 demo. Exact native Demo/Windows/EnglishGB detection, original driveway, native intro skip and road navigation to the apple-tree scene verified. Original demo Save/Load are greyed out; ScummWEB Save unavailable and no verified Continue save or seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English UK Windows HE99 demo. Native intro skip and road navigation reach the apple-tree scene. The ScummWEB menu can save and load, and Continue reopens the playable driveway."
     },
     {
       "title": "Putt-Putt Goes to the Moon",
@@ -2207,8 +2224,8 @@
       "status": "startup-verified",
       "gameId": "scumm:puttmoon",
       "edition": "puttmoon-win-demo-us.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English Windows HE70 demo. Exact native Demo/Windows/English detection, original title/lunar crater scene, native intro skip, crater animation and Putt-Putt movement verified. ScummWEB Save unavailable in the tested scene; no verified Load or Continue save and no seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English Windows HE70 demo. Native intro skip and the original crater interaction and vehicle controls work. ScummWEB Save, Load and Continue reopen the playable crater scene."
     },
     {
       "title": "Putt-Putt Joins the Circus",
@@ -2229,7 +2246,7 @@
       "status": "startup-verified",
       "gameId": "scumm:puttputt",
       "edition": "puttputt-win-demo-us.zip",
-      "observation": "English Windows demo renders its original voiced opening and first road scene. Native intro skip and flower animation input work. Saving is unavailable in the tested opening and first playable scene.",
+      "observation": "English Windows demo with the original voiced opening and native intro skip. Save, Load and Continue reopen the first road scene once the introduction reaches player control.",
       "recordedOn": "2026-11-14"
     },
     {
@@ -2259,8 +2276,8 @@
       "status": "startup-verified",
       "gameId": "scumm:putttime",
       "edition": "putttime-win-demo-us.zip",
-      "recordedOn": "2026-11-15",
-      "observation": "English US Windows HE90 demo: correct native detector/selected game, cold and cached bucket starts, original four-era portal choice, native intro skip and entering the dinosaur era verified. Personal and hosted native saving rejected in that tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+      "recordedOn": "2026-11-26",
+      "observation": "English US Windows HE90 demo. Native intro skip preserves the four-era portal choice. Save, Load and Continue restore the interactive portal choice."
     },
     {
       "title": "Putt-Putt's Fun Pack",
@@ -2310,8 +2327,8 @@
       "status": "startup-verified",
       "gameId": "sci:slater",
       "edition": "slater-dos-demo.en.zip",
-      "recordedOn": "2026-11-19",
-      "observation": "The original English DOS demo opened Sierra’s introduction and the sporting-goods shop story page. A dinosaur hotspot animated and the reading control highlighted the sentence. The stop sign reached the original promotional end card. The tested page rejected saving."
+      "recordedOn": "2026-11-26",
+      "observation": "The original English DOS demo opens Sierra’s introduction and the illustrated story. Save, Load and Continue reopen the saved page from its beginning."
     },
     {
       "title": "Spy Fox 2: \"Some Assembly Required\"",
@@ -2339,8 +2356,8 @@
       "status": "startup-verified",
       "gameId": "scumm:spyfox",
       "edition": "spyfox-win-demo1-us.zip",
-      "recordedOn": "2026-11-14",
-      "observation": "English US Windows demo renders its original opening and village scene. Native intro skip works; clicking the phone booth opens a responsive keypad. Saving is unavailable in the tested first playable scene."
+      "recordedOn": "2026-11-26",
+      "observation": "English US Windows demo. Native intro skip opens the village and the phone booth keypad responds. Save, Load and Continue reopen the village scene outside the Greek Cantina."
     },
     {
       "title": "Spy Fox in \"Hold the Mustard\"",
@@ -2361,8 +2378,8 @@
       "status": "startup-verified",
       "gameId": "scumm:spyozon",
       "edition": "spyozon-win-demo-us.zip",
-      "recordedOn": "2026-11-17",
-      "observation": "English US Windows demo. Exact native Demo/English (US) detection, original courtyard scene, native intro skip and navigation into the bowling alley pro shop verified. ScummWEB Save unavailable in the tested scene; no verified Load or Continue save and no seeded checkpoint. Full playthrough and independent audible output unverified."
+      "recordedOn": "2026-11-26",
+      "observation": "English US Windows demo. Native intro skip reaches the courtyard near the bowling alley. Save, Load and Continue restore the courtyard."
     },
     {
       "title": "Stellaluna",
@@ -2490,7 +2507,8 @@
       "status": "startup-verified",
       "gameId": "scumm:atlantis",
       "edition": "atlantis-dos-demo1-en.zip",
-      "observation": "The original English interactive DOS demo rendered its title screen."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS interactive demo opens at the original dock after Skip intro. Load restored the earlier dock position, and Continue reopened the newer position from the exit checkpoint."
     },
     {
       "title": "Zork I: The Great Underground Empire",
@@ -4846,7 +4864,8 @@
       "status": "startup-verified",
       "gameId": "gob:gob1",
       "edition": "Official English DOS interactive demo v2.0 (gob1-dos-demo1-en.zip)",
-      "observation": "The original opening and village scenes render. Native Skip intro advances into the demo; goblin selection and walking work. This demo does not offer saving through the game menu."
+      "recordedOn": "2026-11-26",
+      "observation": "The English DOS v2.0 interactive demo preserves goblin selection, position and scene objects. Load restored the tree and house puzzle after visiting the laboratory. Fresh Continue advanced the original intro and reopened the saved puzzle."
     },
     {
       "title": "Gobliins 2: The Prince Buffoon (Demo)",

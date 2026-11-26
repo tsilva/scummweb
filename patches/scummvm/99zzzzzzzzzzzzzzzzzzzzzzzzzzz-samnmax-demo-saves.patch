@@ -1,7 +1,7 @@
 diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
 --- a/engines/scumm/saveload.cpp
 +++ b/engines/scumm/saveload.cpp
-@@ -196,13 +196,17 @@
+@@ -196,13 +196,23 @@
  		maskBytes <= kMaxHeRoomBufferBytes && screenBytes == uint32(getResourceSize(rtBuffer, kMainVirtScreen + 5));
  }
  
@@ -20,12 +20,18 @@ diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
 -		scummwebIsPlayerControl();
 +	static constexpr byte samAndMax[] = {0x04, 0x25, 0x95, 0x4a, 0x9d, 0xb5, 0xc3, 0x40,
 +		0x86, 0x16, 0x72, 0x89, 0x2c, 0x3e, 0x67, 0x8d};
++	static constexpr byte fateOfAtlantis[] = {0x03, 0x5d, 0xea, 0xb5, 0x3b, 0x47, 0xbc, 0x43,
++		0xab, 0xc7, 0x63, 0x56, 0x0d, 0x0f, 0x8d, 0x4b};
++	static constexpr byte monkeyIsland[] = {0x71, 0x52, 0x3b, 0x53, 0x94, 0x91, 0x52, 0x7d,
++		0x98, 0x60, 0xf4, 0x40, 0x7f, 0xaf, 0x04, 0x11};
 +	return (game.id == GID_FT && (game.features & GF_DEMO) && memcmp(md5, fullThrottle, sizeof(fullThrottle)) == 0) ||
-+		(game.id == GID_SAMNMAX && memcmp(md5, samAndMax, sizeof(samAndMax)) == 0);
++		(game.id == GID_SAMNMAX && memcmp(md5, samAndMax, sizeof(samAndMax)) == 0) ||
++		(game.id == GID_INDY4 && memcmp(md5, fateOfAtlantis, sizeof(fateOfAtlantis)) == 0) ||
++		(game.id == GID_MONKEY_EGA && memcmp(md5, monkeyIsland, sizeof(monkeyIsland)) == 0);
  }
  
  void ScummEngine::setFreddi3SaveSlot(int slot) {
-@@ -273,11 +277,11 @@
+@@ -273,11 +283,11 @@
  	if (!_setupIsComplete)
  		return false;
  
@@ -40,7 +46,7 @@ diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
  #endif
  
  #ifdef ENABLE_SCUMM_7_8
-@@ -395,11 +399,11 @@
+@@ -395,11 +405,11 @@
  	if (!_setupIsComplete)
  		return false;
  

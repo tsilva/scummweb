@@ -1,0 +1,474 @@
+diff --git a/engines/gob/gob.h b/engines/gob/gob.h
+--- a/engines/gob/gob.h
++++ b/engines/gob/gob.h
+@@ -266,6 +266,7 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	Common::String getSaveStateName(int slot) const override;
++	bool matchesGob1CheckpointTarget(const char *target) const;
+ 	bool matchesGob2CheckpointTarget(const char *target) const;
+ 	bool matchesGob3CheckpointTarget(const char *target) const;
+ 	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override;
+diff --git a/engines/gob/game.h b/engines/gob/game.h
+--- a/engines/gob/game.h
++++ b/engines/gob/game.h
+@@ -221,6 +221,10 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	bool isCheckpointInput() const;
++	static constexpr int kGob1DemoMaximumSlot = 31;
++	static bool validGob1CheckpointHeader(Common::SeekableReadStream &file);
++	bool saveGob1Checkpoint(int slot);
++	bool loadGob1Checkpoint(int slot);
+ 	bool hasGob2CheckpointScript() const;
+ 	bool isGob2CheckpointRestorePending() const;
+ 	const Gob3SaveLayout *getGob3SaveLayout() const;
+@@ -258,6 +262,10 @@
+ 	TotFunctions _totFunctions;
+ 
+ #ifdef __EMSCRIPTEN__
++	int getGob1CheckpointRoom() const;
++	bool hasGob1CheckpointSurface() const;
++	void applyGob1Checkpoint();
++	Common::Array<byte> _gob1Checkpoint;
+ 	bool _agentControlBoundary = false;
+ 	bool _agentSaving = false;
+ 	bool _agentSaveFailed = false;
+diff --git a/engines/gob/game.cpp b/engines/gob/game.cpp
+--- a/engines/gob/game.cpp
++++ b/engines/gob/game.cpp
+@@ -45,6 +45,10 @@
+ #include "gob/sound/sound.h"
+ #ifdef __EMSCRIPTEN__
+ #include <emscripten/em_asm.h>
++#include "common/savefile.h"
++#include "gob/goblin.h"
++#include "gob/map.h"
++#include "gob/surface.h"
+ #include "gob/save/saveload.h"
+ #endif
+ 
+@@ -661,7 +665,12 @@
+ 					WRITE_VAR(59, 0);
+ 			}
+ 
+-			_vm->_inter->callSub(2);
++			{
++#ifdef __EMSCRIPTEN__
++				ScummWebAgentLoop gob1Loop(getGob1CheckpointRoom() >= 0);
++#endif
++				_vm->_inter->callSub(2);
++			}
+ 
+ 			if (!_totToLoad.empty())
+ 				_vm->_inter->_terminate = 0;
+@@ -876,7 +885,10 @@
+ 		MouseButtons *pButtons, char handleMouse, bool checkpointInput) {
+ 
+ #ifdef __EMSCRIPTEN__
+-	const bool gob = _vm->getGameType() == kGameTypeGob2 || _vm->getGameType() == kGameTypeGob3;
++	const bool gob1 = _vm->matchesGob1CheckpointTarget("gob1-demo");
++	const bool gob = gob1 || _vm->getGameType() == kGameTypeGob2 || _vm->getGameType() == kGameTypeGob3;
++	if (gob1 && checkpointInput && !_gob1Checkpoint.empty())
++		applyGob1Checkpoint();
+ 	if (!_agentControlBoundary && (!gob || checkpointInput) && hasAgentCheckpointScript()) {
+ 		_agentControlBoundary = true;
+ 		scummweb_agent_game_loop();
+@@ -1102,6 +1114,271 @@
+ }
+ 
+ #ifdef __EMSCRIPTEN__
++// The interactive DOS demo does not contain a save script. Its five original
++// puzzle scenes share a single interpreter-variable and object layout.
++static constexpr uint32 kGob1DemoVars = 759 * 4;
++static constexpr int kGob1MapWidth = 26;
++static constexpr int kGob1MapHeight = 28;
++static constexpr int kGob1Width = 320;
++static constexpr int kGob1Height = 200;
++static constexpr uint32 kGob1Magic = MKTAG('G', '1', 'S', '1');
++static constexpr struct {
++	const char *name;
++	uint32 texts;
++	int32 input;
++} kGob1DemoRooms[] = {
++	{"avt00.tot", 15590, 10969}, {"avt002.tot", 11296, 6675},
++	{"avt003.tot", 12962, 8341}, {"avt004.tot", 11728, 7107},
++	{"avt005.tot", 13670, 9909},
++};
++
++namespace {
++
++using Object = Goblin::Gob_Object;
++
++struct Gob1Actor {
++	byte present;
++	byte stateMachine;
++	byte motion[offsetof(Object, stateMach)];
++	byte flags[sizeof(Object) - offsetof(Object, doAnim)];
++};
++
++struct Gob1Scene {
++	byte room;
++	byte variables[kGob1DemoVars];
++	Gob1Actor actors[24];
++	int16 current, action, destinationX, destinationY, pressedX, pressedY;
++	int16 stateLayer, positioned, pocketIndex, pocketId, destinationId;
++	int16 destinationAction, destinationType, destinationState, activeObject;
++	char goesAtTarget, readyToAct, pathExistence, itemByteFlag, boredom, noPick;
++	Goblin::Gob_Pos positions[3];
++	int16 itemToObject[20], forceNextState[10];
++	int16 mapX, mapY, mapDestinationX, mapDestinationY, waypoint, nearestDestination;
++	ItemPos itemPositions[40];
++	int8 pass[kGob1MapHeight][kGob1MapWidth];
++	int16 items[kGob1MapHeight][kGob1MapWidth];
++	Video::Color palette[256];
++	byte pixels[2][kGob1Width * kGob1Height];
++};
++
++Object *checkpointActor(Goblin &goblin, int index) {
++	return index < 4 ? goblin._goblins[index] : goblin._objects[index - 4];
++}
++
++bool syncGob1Actors(Goblin &goblin, Gob1Scene &scene, bool load) {
++	for (int index = 0; index < ARRAYSIZE(scene.actors); ++index) {
++		Object *actor = checkpointActor(goblin, index);
++		Gob1Actor &record = scene.actors[index];
++		if (load && record.present != !!actor)
++			return false;
++		if (!actor)
++			continue;
++		if (!load) {
++			record.present = true;
++			if (actor->stateMach != actor->realStateMach) {
++				for (int n = 0; n < ARRAYSIZE(goblin._goblins); ++n)
++					if (goblin._goblins[n] && actor->stateMach == goblin._goblins[n]->realStateMach)
++						record.stateMachine = n + 1;
++				if (!record.stateMachine)
++					return false;
++			}
++			memcpy(record.motion, actor, sizeof(record.motion));
++			memcpy(record.flags, &actor->doAnim, sizeof(record.flags));
++		} else {
++			if (record.stateMachine > ARRAYSIZE(goblin._goblins) ||
++					(record.stateMachine && !goblin._goblins[record.stateMachine - 1]))
++				return false;
++			Object check = *actor;
++			memcpy(&check, record.motion, sizeof(record.motion));
++			memcpy(&check.doAnim, record.flags, sizeof(record.flags));
++			const int stateCount = index == 3 || record.stateMachine == 4 ? 70 : 40;
++			if (check.state < -1 || check.state >= stateCount ||
++					check.stateColumn < 0 || check.stateColumn >= 6 ||
++					check.curFrame < 0 || check.curFrame >= 2048 ||
++					check.multObjIndex < -1 || check.multObjIndex >= ARRAYSIZE(goblin._goblins))
++				return false;
++		}
++	}
++	if (load) {
++		for (int index = 0; index < ARRAYSIZE(scene.actors); ++index) {
++			const Gob1Actor &record = scene.actors[index];
++			if (!record.present)
++				continue;
++			Object &actor = *checkpointActor(goblin, index);
++			memcpy(&actor, record.motion, sizeof(record.motion));
++			memcpy(&actor.doAnim, record.flags, sizeof(record.flags));
++			actor.stateMach = record.stateMachine
++				? goblin._goblins[record.stateMachine - 1]->realStateMach : actor.realStateMach;
++		}
++	}
++	return true;
++}
++
++template<class Saved, class Current>
++void transferGob1Field(Saved &saved, Current &current, bool load) {
++	static_assert(sizeof(saved) == sizeof(current), "Checkpoint field width changed");
++	if (load)
++		memcpy(&current, &saved, sizeof(saved));
++	else
++		memcpy(&saved, &current, sizeof(saved));
++}
++
++void syncGob1Scene(GobEngine &vm, Gob1Scene &scene, bool load) {
++	auto &goblin = *vm._goblin;
++	auto &map = *vm._map;
++	auto &draw = *vm._draw;
++	transferGob1Field(scene.current, goblin._currentGoblin, load);
++	transferGob1Field(scene.action, goblin._gobAction, load);
++	transferGob1Field(scene.destinationX, goblin._gobDestX, load);
++	transferGob1Field(scene.destinationY, goblin._gobDestY, load);
++	transferGob1Field(scene.pressedX, goblin._pressedMapX, load);
++	transferGob1Field(scene.pressedY, goblin._pressedMapY, load);
++	transferGob1Field(scene.stateLayer, goblin._gobStateLayer, load);
++	transferGob1Field(scene.positioned, goblin._positionedGob, load);
++	transferGob1Field(scene.pocketIndex, goblin._itemIndInPocket, load);
++	transferGob1Field(scene.pocketId, goblin._itemIdInPocket, load);
++	transferGob1Field(scene.destinationId, goblin._destItemId, load);
++	transferGob1Field(scene.destinationAction, goblin._destActionItem, load);
++	transferGob1Field(scene.destinationType, goblin._destItemType, load);
++	transferGob1Field(scene.destinationState, goblin._destItemState, load);
++	transferGob1Field(scene.goesAtTarget, goblin._goesAtTarget, load);
++	transferGob1Field(scene.readyToAct, goblin._readyToAct, load);
++	transferGob1Field(scene.pathExistence, goblin._pathExistence, load);
++	transferGob1Field(scene.itemByteFlag, goblin._itemByteFlag, load);
++	transferGob1Field(scene.boredom, goblin._boreCounter, load);
++	transferGob1Field(scene.noPick, goblin._noPick, load);
++	transferGob1Field(scene.positions, goblin._gobPositions, load);
++	transferGob1Field(scene.itemToObject, goblin._itemToObject, load);
++	transferGob1Field(scene.forceNextState, goblin._forceNextState, load);
++	transferGob1Field(scene.itemPositions, map._itemPoses, load);
++	transferGob1Field(scene.mapX, map._curGoblinX, load);
++	transferGob1Field(scene.mapY, map._curGoblinY, load);
++	transferGob1Field(scene.mapDestinationX, map._destX, load);
++	transferGob1Field(scene.mapDestinationY, map._destY, load);
++	transferGob1Field(scene.waypoint, map._nearestWayPoint, load);
++	transferGob1Field(scene.nearestDestination, map._nearestDest, load);
++	transferGob1Field(scene.palette, draw._vgaPalette, load);
++	for (int y = 0; y < kGob1MapHeight; ++y) {
++		for (int x = 0; x < kGob1MapWidth; ++x) {
++			if (load) {
++				map.setPass(x, y, scene.pass[y][x]);
++				map.setItem(x, y, scene.items[y][x]);
++			} else {
++				scene.pass[y][x] = map.getPass(x, y);
++				scene.items[y][x] = map.getItem(x, y);
++			}
++		}
++	}
++	if (load) {
++		goblin._actDestItemDesc = scene.activeObject < 0 ? nullptr : goblin._objects[scene.activeObject];
++		vm._inter->_variables->copyFrom(0, scene.variables, kGob1DemoVars);
++		memcpy(draw._frontSurface->getData(), scene.pixels[0], sizeof(scene.pixels[0]));
++		memcpy(draw._backSurface->getData(), scene.pixels[1], sizeof(scene.pixels[1]));
++		vm._video->setFullPalette(vm._global->_pPaletteDesc);
++		draw.invalidateRect(0, 0, kGob1Width - 1, kGob1Height - 1);
++	} else {
++		scene.activeObject = -1;
++		for (int index = 0; index < ARRAYSIZE(goblin._objects); ++index) {
++			if (goblin._objects[index] && goblin._objects[index] == goblin._actDestItemDesc)
++				scene.activeObject = index;
++		}
++		vm._inter->_variables->copyTo(0, scene.variables, kGob1DemoVars);
++		memcpy(scene.pixels[0], draw._frontSurface->getData(), sizeof(scene.pixels[0]));
++		memcpy(scene.pixels[1], draw._backSurface->getData(), sizeof(scene.pixels[1]));
++	}
++}
++
++} // namespace
++
++int Game::getGob1CheckpointRoom() const {
++	if (!_vm->matchesGob1CheckpointTarget("gob1-demo"))
++		return -1;
++
++	static constexpr byte input[] = {2, 15, 2, 8, 0, 1, 0, 0, 2, 64, 1, 200, 0, 1, 0, 1};
++	for (int index = 0; index < ARRAYSIZE(kGob1DemoRooms); ++index) {
++		const auto &room = kGob1DemoRooms[index];
++		if (_vm->isCurrentTot(room.name) && _script->getTextsOffset() == room.texts &&
++				_script->getData(room.input + sizeof(input) - 1) &&
++				!memcmp(_script->getData(room.input), input, sizeof(input)))
++			return index;
++	}
++	return -1;
++}
++
++bool Game::hasGob1CheckpointSurface() const {
++	for (const auto &surface : {_vm->_draw->_frontSurface, _vm->_draw->_backSurface}) {
++		if (!surface || surface->getWidth() != kGob1Width ||
++				surface->getHeight() != kGob1Height || surface->getBPP() != 1)
++			return false;
++	}
++	return _vm->_map->getMapWidth() == kGob1MapWidth && _vm->_map->getMapHeight() == kGob1MapHeight;
++}
++
++bool Game::validGob1CheckpointHeader(Common::SeekableReadStream &file) {
++	if (file.size() != 4 + sizeof(Gob1Scene) || file.readUint32BE() != kGob1Magic)
++		return false;
++	return file.readByte() < ARRAYSIZE(kGob1DemoRooms) && file.seek(4);
++}
++
++bool Game::saveGob1Checkpoint(int slot) {
++	Common::Array<Gob1Scene> data(1);
++	Gob1Scene &scene = data[0];
++	memset(&scene, 0, sizeof(scene));
++	scene.room = getGob1CheckpointRoom();
++	if (!syncGob1Actors(*_vm->_goblin, scene, false))
++		return false;
++	syncGob1Scene(*_vm, scene, false);
++
++	Common::OutSaveFile *file = _vm->getSaveFileManager()->openForSaving(_vm->getSaveStateName(slot));
++	if (!file)
++		return false;
++	file->writeUint32BE(kGob1Magic);
++	const bool complete = file->write(&scene, sizeof(scene)) == sizeof(scene);
++	file->finalize();
++	const bool success = complete && !file->err();
++	delete file;
++	return success;
++}
++
++bool Game::loadGob1Checkpoint(int slot) {
++	if (!_gob1Checkpoint.empty())
++		return false;
++	Common::InSaveFile *file = _vm->getSaveFileManager()->openForLoading(_vm->getSaveStateName(slot));
++	if (!file)
++		return false;
++	Common::Array<byte> state;
++	if (validGob1CheckpointHeader(*file)) {
++		state.resize(sizeof(Gob1Scene));
++		if (file->read(state.data(), state.size()) != state.size())
++			state.clear();
++	}
++	delete file;
++	if (state.empty())
++		return false;
++
++	_gob1Checkpoint.swap(state);
++	_totToLoad = kGob1DemoRooms[_gob1Checkpoint[0]].name;
++	_vm->_inter->_terminate = 1;
++	return true;
++}
++
++void Game::applyGob1Checkpoint() {
++	if (getGob1CheckpointRoom() != _gob1Checkpoint[0])
++		return;
++
++	Common::Array<Gob1Scene> data(1);
++	Gob1Scene &scene = data[0];
++	memcpy(&scene, _gob1Checkpoint.data(), sizeof(scene));
++	_gob1Checkpoint.clear();
++	if (scene.current < 0 || scene.current >= 3 || scene.activeObject < -1 ||
++			scene.activeObject >= 20 || !hasGob1CheckpointSurface() ||
++			!syncGob1Actors(*_vm->_goblin, scene, true)) {
++		EM_ASM({ globalThis.__scummwebAgentSaveResult?.("The Gobliiins checkpoint could not be restored."); });
++		return;
++	}
++	syncGob1Scene(*_vm, scene, true);
++}
++
+ // Callbacks in the original Woodruff MENU.TOT. The first writes CAT.INF and
+ // copies the scene properties. The second asks the parent script to restore.
+ static constexpr int kWoodruffSaveCallback = 39193;
+@@ -1185,6 +1462,9 @@
+ }
+ 
+ bool Game::isCheckpointInput() const {
++	const int room = getGob1CheckpointRoom();
++	if (room >= 0)
++		return _script->pos() == kGob1DemoRooms[room].input;
+ 	if (hasGob2CheckpointScript()) {
+ 		// Only the primary gameplay hotspot blocks in the four demo scenes.
+ 		static constexpr struct {
+@@ -1222,6 +1502,8 @@
+ }
+ 
+ bool Game::hasAgentCheckpointScript() const {
++	if (_vm->matchesGob1CheckpointTarget("gob1-demo"))
++		return getGob1CheckpointRoom() >= 0;
+ 	if (_vm->getGameType() == kGameTypeGob2)
+ 		return hasGob2CheckpointScript();
+ 
+@@ -1258,6 +1540,10 @@
+ 	const Variables *vars = _vm->_inter->_variables;
+ 	if (!_agentControlBoundary || !vars || _vm->_inter->_terminate)
+ 		return false;
++
++	if (_vm->matchesGob1CheckpointTarget("gob1-demo"))
++		return getGob1CheckpointRoom() >= 0 && _captureCount == 0 &&
++			vars->getSize() == kGob1DemoVars && hasGob1CheckpointSurface();
+ 
+ 	if (_vm->getGameType() == kGameTypeGob2) {
+ 		return hasGob2CheckpointScript() && vars->getSize() == kGob2SaveVarBytes &&
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -92,12 +92,15 @@
+ 	bool hasFeature(MetaEngineFeature f) const override;
+ #ifdef __EMSCRIPTEN__
+ 	int getMaximumSaveSlot() const override {
++		if (isGob1CheckpointTarget(ConfMan.getActiveDomainName()))
++			return Gob::Game::kGob1DemoMaximumSlot;
+ 		if (isGob2CheckpointTarget(ConfMan.getActiveDomainName()))
+ 			return Gob::SaveLoad_v2::kSlotCount - 1;
+ 		return (isGob3CheckpointTarget(ConfMan.getActiveDomainName()) ?
+ 			Gob::SaveLoad_v3::kSlotCount : Gob::SaveLoad_v4::kSlotCount) - 1;
+ 	}
+ 	SaveStateList listSaves(const char *target) const override;
++	bool isGob1CheckpointTarget(const Common::String &target) const;
+ 	bool isGob2CheckpointTarget(const Common::String &target) const;
+ 	bool isGob3CheckpointTarget(const Common::String &target) const;
+ #endif
+@@ -112,6 +115,7 @@
+ bool GobMetaEngine::hasFeature(MetaEngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+ 	if (f == kSupportsListSaves && (scummweb_agent_game_loop_enabled() ||
++			isGob1CheckpointTarget(ConfMan.getActiveDomainName()) ||
+ 			isGob2CheckpointTarget(ConfMan.getActiveDomainName()) ||
+ 			isGob3CheckpointTarget(ConfMan.getActiveDomainName())))
+ 		return true;
+@@ -120,6 +124,19 @@
+ }
+ 
+ #ifdef __EMSCRIPTEN__
++bool GobMetaEngine::isGob1CheckpointTarget(const Common::String &target) const {
++	return target == "gob1-demo" && ConfMan.hasGameDomain(target) &&
++		ConfMan.get("gameid", target) == "gob1" &&
++		ConfMan.get("extra", target).equalsIgnoreCase("Interactive Demo (v2.0)") &&
++		Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformDOS;
++}
++
++bool Gob::GobEngine::matchesGob1CheckpointTarget(const char *target) const {
++	return _targetName == target && _targetName == "gob1-demo" && getGameType() == kGameTypeGob1 &&
++		getPlatform() == Common::kPlatformDOS && _extra &&
++		Common::String(_extra).equalsIgnoreCase("Interactive Demo (v2.0)");
++}
++
+ bool GobMetaEngine::isGob2CheckpointTarget(const Common::String &target) const {
+ 	if (g_engine && g_engine->getMetaEngine() == this &&
+ 			static_cast<const Gob::GobEngine *>(g_engine)->matchesGob2CheckpointTarget(target.c_str()))
+@@ -144,6 +161,16 @@
+ 	SaveStateList saves;
+ 	if (!target || !hasFeature(kSupportsListSaves))
+ 		return saves;
++
++	if (isGob1CheckpointTarget(target)) {
++		for (int slot = 1; slot <= Gob::Game::kGob1DemoMaximumSlot; ++slot) {
++			Common::InSaveFile *file = g_system->getSavefileManager()->openForLoading(getSavegameFile(slot, target));
++			if (file && Gob::Game::validGob1CheckpointHeader(*file))
++				saves.push_back(SaveStateDescriptor(this, slot, Common::String::format("Save %d", slot)));
++			delete file;
++		}
++		return saves;
++	}
+ 
+ 	const bool gob2 = isGob2CheckpointTarget(target);
+ 	const bool gob3 = isGob3CheckpointTarget(target);
+@@ -189,12 +216,17 @@
+ 	if (slot < 0 || slot > getMetaEngine()->getMaximumSaveSlot() || !canSaveGameStateCurrently())
+ 		return Common::kWritingFailed;
+ 
+-	return _game->saveAgentCheckpoint(slot, desc) ? Common::kNoError : Common::kWritingFailed;
++	const bool saved = matchesGob1CheckpointTarget("gob1-demo")
++		? _game->saveGob1Checkpoint(slot) : _game->saveAgentCheckpoint(slot, desc);
++	return saved ? Common::kNoError : Common::kWritingFailed;
+ }
+ 
+ Common::Error Gob::GobEngine::loadGameState(int slot) {
+ 	if (slot < 0 || slot > getMetaEngine()->getMaximumSaveSlot() || !canLoadGameStateCurrently())
+ 		return Common::kReadingFailed;
++
++	if (matchesGob1CheckpointTarget("gob1-demo"))
++		return _game->loadGob1Checkpoint(slot) ? Common::kNoError : Common::kReadingFailed;
+ 
+ 	const bool gob2 = getGameType() == kGameTypeGob2;
+ 	const bool gob3 = getGameType() == kGameTypeGob3;
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -234,7 +234,8 @@
+ 		supported = false;
+ 	if (engineId == "agos" && (gameId == "simon1" || gameId == "simon2") && extra == "cd demo")
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+-	if ((engineId == "gob" && gameId == "gob2" && extra == "interactive demo (v1.01)") ||
++	if ((engineId == "gob" && gameId == "gob1" && target == "gob1-demo" && extra == "interactive demo (v2.0)") ||
++			(engineId == "gob" && gameId == "gob2" && extra == "interactive demo (v1.01)") ||
+ 			(engineId == "gob" && gameId == "gob3" && extra == "interactive demo 3 (v0.02)") ||
+ 			(engineId == "made" && gameId == "rtz" && extra == "v1.2, 9/8/94, demo cd"))
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);

@@ -427,3 +427,30 @@ Do not apply this exception to compressed DIG/COMI bundles or lossy FT formats.
   the script’s native checkpoint and scene-restart callbacks at the primary
   gameplay hotspots. Revalidate the menu layout, room input blocks, and
   deferred Continue after changes to the Gob interpreter.
+
+- The original Macintosh Pegasus Prime preview can use the original
+  prehistoric checkpoint stream. Use numbered files under its demo target
+  so the saved slot number remains stable across scans and deferred browser
+  writes. Keep the older named files for the full game and retain the demo’s
+  original title menu on fresh Play.
+
+- Gobliiins DOS v2.0 has no native save script. Capture its variables,
+  actors, walk tiles and indexed surfaces within a fingerprinted puzzle input
+  block. Recreate the scene resources before applying the saved data. The
+  top-level Gobliiins scene loop must own the browser gameplay boundary or the
+  renderer can hold the engine outside the save window.
+
+- Engine detection can return the native Humongous game ID with mixed case.
+  Compare IDs case-insensitively when selecting deferred Continue. Preserve
+  the recorded native identity for existing save metadata.
+
+Castle Master’s cold Continue can capture a rotating checkpoint before the
+native pause dialog creates Freescape’s cached screenshot. Verify the complete
+fresh Continue lifecycle with checkpoint capture enabled when changing the
+Freescape thumbnail path. An in-session manual save can succeed while this
+startup capture still aborts.
+
+SCUMM can present an early frame before it calls the native startup loader.
+Keep the selected rotating checkpoint mounted until the native loader
+completes, including when a manual save uses the same numbered slot. Verify
+with distinct positions so an older same-slot save cannot pass the check.

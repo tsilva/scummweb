@@ -1,0 +1,14 @@
+diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -2805,6 +2805,10 @@ Common::Error ScummEngine::go() {
+ 		_saveLoadFlag = 0;
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	EM_ASM({ globalThis.__scummwebAutosaves?.finishScummStartup(); });
++#endif
++
+ 	// In ScummVM 2.7.0, original GUI support was added.
+ 	// Unfortunately it came with an issue: in v4-7 games users could
+ 	// overwrite autosaves (slot 0). Why? Because I forgot about autosaves :-)
