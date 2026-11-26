@@ -68,18 +68,16 @@ jobs:
       - name: Build production application
         run: pnpm build
 
+  review-dependencies:
+    uses: tsilva/.github/.github/workflows/dependency-review.yml@main
+
   dependency-review:
     name: Dependency review
+    needs: review-dependencies
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Review dependency changes
-        uses: actions/dependency-review-action@bbc44d14a204704ccc493733616cd1e93a0321ec # v5.0.1
-        with:
-          fail-on-severity: high
-          fail-on-scopes: runtime, development, unknown
-          retry-on-snapshot-warnings: true
-          base-ref: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
-          head-ref: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
+      - name: Require successful dependency review
+        env:
+          REVIEW_RESULT: ${{ needs.review-dependencies.result }}
+        run: test "$REVIEW_RESULT" = success

@@ -4,7 +4,9 @@ Use the [build and release skill](../.codex/skills/scummweb_build-release/SKILL.
 for agent-operated builds, deployments and production verification.
 
 [CI](../.github/workflows/ci.yml) runs the application gates and Dependency
-Review in parallel. Both jobs must pass on the current `main` push before
+Review in parallel. CI calls the shared dependency review on `tsilva/.github`
+`main` and reports its result under the required `Dependency review` check.
+Both checks must pass on the current `main` push before
 [Production delivery](../.github/workflows/production-delivery.yml) can proceed.
 Delivery scans for committed secrets, then calls a pinned shared workflow that
 rechecks completed CI on that exact commit and syncs the Production allowlist
@@ -14,8 +16,8 @@ and its function inventory, and rechecks the head of `main` before promotion.
 Vercel's automatic Git deployments are disabled.
 
 The standalone [secret-scanning workflow](../.github/workflows/secret-scanning.yml)
-scans every branch push for commits reachable from the pushed tip and absent
-from the previous tip.
+calls the shared scanner on `tsilva/.github` `main` for every branch push. It
+scans commits reachable from the pushed tip and absent from the previous tip.
 If a history rewrite leaves the previous tip unavailable at checkout, it scans
 all history reachable from the new tip. Production delivery scans the checked-out
 files by default.
