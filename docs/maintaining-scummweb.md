@@ -1050,6 +1050,14 @@ Desktop hero titles shrink to preserve whole words; mobile titles wrap naturally
 The hero slideshow uses the catalogue's Featured order, including imported games
 and demos, regardless of the catalogue's current sort or genre filter.
 
+Featured lists full games before demos. Bundled demos use a
+[curated popularity order](../app/home-shell/featured-demo-order.mjs) informed by
+[a poll of adventure game players and industry experts](https://www.adventureclassicgaming.com/index.php/site/features/142/).
+
+Keep installments together in series order when adding a bundled demo. Family
+and educational demos appear later, followed by unranked bundled demos and
+demos that require an import. Each unranked group uses title order.
+
 Generate heroes from original promotional references. Faithfully restore
 original box fronts for card covers. Keep gameplay screenshots as original
 captures, with delivery resizing or lossless encoding only.

@@ -5,6 +5,7 @@ import { libraryItems } from "../app/home-shell/library-items.mjs";
 import { orderHeroGroups } from "../app/home-shell/hero-order.mjs";
 import { defaultLibraryQuery, libraryCategories, libraryFacet, libraryGenre, queryLibrary } from "../app/home-shell/library-query.mjs";
 import { getImportedGamePresentation } from "../app/game-presentation.js";
+import { isDemoGame } from "../app/game-versions.mjs";
 import { getBundledGameLibrary } from "../lib/catalog.mjs";
 import { getRecognizedGames } from "../app/recognized-games.mjs";
 
@@ -17,7 +18,7 @@ const remote = { source: { id: "link", url: "https://example.com/game.zip" }, ti
 const items = libraryItems(catalog, [local, remote]);
 const titles = (query = {}) => queryLibrary(items, { ...defaultLibraryQuery, ...query }).map(({ title }) => title);
 
-test("Featured keeps the five picks first, then sorts full games and demos by series", async () => {
+test("Featured keeps full games first and shares the bundled demo order with the slideshow", async () => {
   const { games } = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   const catalog = libraryItems(getRecognizedGames(getBundledGameLibrary({ games }).games), [
     { source: { id: "full" }, title: "A Local Game", game: { displayTitle: "A Local Game" } },
@@ -28,20 +29,42 @@ test("Featured keeps the five picks first, then sorts full games and demos by se
     "the slideshow follows the catalogue Featured order, including imports and demos");
   const alphabetical = queryLibrary(catalog, { ...defaultLibraryQuery, sort: "name-asc" });
   const first = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
-  const isDemo = ({ source, title }) => source?.id === "demo" || title.endsWith(" (Demo)");
-  const targets = featured.map(({ game }) => game.target);
+  const isDemo = ({ game }) => isDemoGame(game);
 
-  assert.deepEqual(targets.slice(0, first.length), first);
-  assert.deepEqual(targets.filter((target) => /^hugo[123](-demo)?$/.test(target)), [
-    "hugo1", "hugo2", "hugo3", "hugo1-demo", "hugo2-demo", "hugo3-demo",
-  ]);
-  assert.deepEqual(targets.filter((target) => /^zork[123]$/.test(target)), ["zork1", "zork2", "zork3"]);
-  assert.equal(featured.findLast((item) => !isDemo(item)).game.target, "hires1");
-  assert.deepEqual(featured.slice(first.length).map(({ key }) => key), [
+  assert.deepEqual(featured.slice(0, first.length).map(({ game }) => game.target), first);
+  const fullGames = featured.filter((item) => !isDemo(item));
+  assert.deepEqual(fullGames.slice(first.length).map(({ key }) => key), [
     ...alphabetical.filter((item) => !isDemo(item) && item.game.target !== "hires1" && !first.includes(item.game.target)),
     catalog.find(({ game }) => game.target === "hires1"),
-    ...alphabetical.filter(isDemo),
   ].map(({ key }) => key));
+  assert.deepEqual(featured.slice(0, fullGames.length), fullGames);
+
+  const demos = featured.slice(fullGames.length);
+  const bundled = demos.filter(({ game, source }) => !game.importRequired && !source);
+  const targets = bundled.map(({ game }) => game.target);
+  assert.deepEqual(targets.slice(0, 10), [
+    "monkey-demo", "comi-demo", "monkey4-demo", "grim-demo", "myst-demo",
+    "sword1-demo", "sword2-demo", "samnmax-demo", "atlantis-demo", "ft-demo",
+  ]);
+  assert.ok(targets.indexOf("neverhood-demo") < targets.indexOf("pajama-demo"));
+  assert.equal(alphabetical.find(isDemo).source.id, "demo", "name sorting still uses title order");
+  assert.deepEqual(demos.slice(bundled.length).map(({ key }) => key), alphabetical
+    .filter((item) => isDemo(item) && (item.source || item.game.importRequired)).map(({ key }) => key));
+
+  for (const series of [
+    ["simon1-demo", "simon2"],
+    ["gob1-demo", "gob2-demo", "gob3-demo"],
+    ["hugo1-demo", "hugo2-demo", "hugo3-demo"],
+    ["pajama-demo", "pajama2-demo", "pajama3-demo"],
+    ["puttputt-demo", "puttmoon-demo", "puttzoo-demo", "putttime-demo", "puttrace-demo"],
+    ["freddi-demo", "freddi2-demo", "freddi3-demo", "freddi4-demo"],
+    ["spyfox-demo", "spyozon-demo"],
+    ["arthur-demo", "arthurbday-demo"],
+    ["thinkerk-demo", "thinker1-demo"],
+  ]) {
+    assert.ok(targets.includes(series[0]), `${series[0]} is a bundled demo`);
+    assert.deepEqual(targets.slice(targets.indexOf(series[0]), targets.indexOf(series[0]) + series.length), series);
+  }
 });
 
 test("catalog and imported Space Quest installments sort together in both directions", () => {
