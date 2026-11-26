@@ -1,0 +1,49 @@
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -129,10 +129,12 @@
+ static constexpr uint32 kMaxHeRoomBufferBytes = 2 * 1024 * 1024;
+ 
+ static bool supportsHeDemoRoomSaves(const GameSettings &game, const byte *md5) {
+-	if (game.heversion < 70 || !scummwebIsPlayerControl())
++	if (game.heversion < 62 || !scummwebIsPlayerControl())
+ 		return false;
+ 
+ 	static constexpr byte demoIndexes[][16] = {
++		{0x07, 0xa1, 0xee, 0xfd, 0x8c, 0xa9, 0x5d, 0x77,
++		  0x31, 0x03, 0x11, 0x44, 0x6c, 0x0f, 0x53, 0xd0}, // Bear Stormin' (DOS)
+ 		{0xcb, 0x15, 0x59, 0xe8, 0x40, 0x5d, 0x17, 0xa5,
+ 		 0xa2, 0x78, 0xa6, 0xb5, 0xad, 0x93, 0x38, 0xd1}, // Freddi Fish 3
+ 		{0xde, 0x4e, 0xfb, 0x91, 0x02, 0x10, 0x73, 0x68,
+@@ -271,10 +273,13 @@
+ #ifdef __EMSCRIPTEN__
+ 		if (supportsFreddi3PlayerSaves())
+ 			return canUseFreddi3PlayerSlot();
+-		if (supportsHeDemoRoomSaves(_game, _gameMD5))
++		if (supportsHeDemoRoomSaves(_game, _gameMD5)) {
++			// The standalone flight controls use the mouse without showing a cursor.
++			const bool hasCursorInput = _cursor.state > 0 || _game.heversion == 62;
+ 			return _agentControlBoundary && _roomResource && _currentRoom &&
+-				_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++				_userPut > 0 && hasCursorInput && vm.cutSceneStackPointer == 0 &&
+ 				vm.cutScenePtr[0] == 0 && !_saveLoadFlag;
++		}
+ #endif
+ 		if (msg)
+ 			*msg = _("This game does not support loading from the menu. Use in-game interface");
+@@ -402,10 +407,13 @@
+ #ifdef __EMSCRIPTEN__
+ 		if (supportsFreddi3PlayerSaves())
+ 			return canUseFreddi3PlayerSlot();
+-		if (supportsHeDemoRoomSaves(_game, _gameMD5))
++		if (supportsHeDemoRoomSaves(_game, _gameMD5)) {
++			// The standalone flight controls use the mouse without showing a cursor.
++			const bool hasCursorInput = _cursor.state > 0 || _game.heversion == 62;
+ 			return _agentControlBoundary && _roomResource && _currentRoom &&
+-				_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++				_userPut > 0 && hasCursorInput && vm.cutSceneStackPointer == 0 &&
+ 				vm.cutScenePtr[0] == 0 && !_saveLoadFlag;
++		}
+ #endif
+ 		if (msg)
+ 			*msg = _("This game does not support saving from the menu. Use in-game interface");

@@ -154,6 +154,7 @@ export function installPlayerControls(scope, requestMenu) {
     startupLoad = { slot, files };
     return true;
   };
+  scope.__scummwebIsStartupLoad = () => Boolean(startupLoad || pending?.startup);
   scope.__scummwebPeekStartupLoad = () => !menuOpen && !exitSave && !pending ? startupLoad?.slot ?? -1 : -1;
   scope.__scummwebTakeStartupLoad = () => {
     if (!startupLoad || menuOpen || exitSave || pending || scope.__scummwebSaveWriteInProgress?.()) return false;
@@ -166,7 +167,7 @@ export function installPlayerControls(scope, requestMenu) {
       resolve({ error: true });
       return false;
     }
-    pending = { operation: "load", slot, resolve, isolated: Boolean(files), dispatched: true };
+    pending = { operation: "load", slot, resolve, isolated: Boolean(files), dispatched: true, startup: true };
     return true;
   };
 

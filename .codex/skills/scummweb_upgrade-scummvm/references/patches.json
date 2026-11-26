@@ -1882,6 +1882,180 @@
         "Save in the original office, load through the drawer and continue into the saved scrapbook. Verify the original native startup and menu remain intact on Play."
       ],
       "retire_when": "Upstream supports direct browser save and restore in this demo."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzz-myst-demo-saves.patch",
+      "status": "active",
+      "purpose": "Save the exact English Windows Myst library preview in isolated browser slots.",
+      "invariants": [
+        "Keep retail Myst and Riven formats and fresh demo startup behavior.",
+        "Save active card, return card, open book page, held and inserted pages, tower angle, bookcase and fireplace puzzle."
+      ],
+      "verification": [
+        "Verify cross-card Load and Continue after changing the open book page and fireplace grid."
+      ],
+      "retire_when": "Upstream supports native saves in the pinned interactive Myst preview with equivalent state.",
+      "sha256": "e7ab9f3d91e9cd6ec633b6da061888b21ed91f382d99a2b2f14f1e93991f0421"
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzz-sci32-interactive-demo-saves.patch",
+      "status": "active",
+      "sha256": "1470e732adbbce290f65db720271350f71c191c5bd71b66871d2474ed74e3737",
+      "purpose": "Expose SCI32 Save, Load and Continue in the tested interactive demo editions.",
+      "invariants": [
+        "Use detected demo resource signatures and the hosted event boundary. Preserve native execution-stack, user-control and delayed-restore checks.",
+        "Map the missing input and controls selectors in the exact bundled Torin demo and use its standard SRDialog restore interface."
+      ],
+      "verification": [
+        "Exercise Save, Load and Continue in every matched edition from a playable scene, then verify interaction after restoration."
+      ],
+      "retire_when": "Upstream supports hosted native saves in the covered interactive demos."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzz-simon1-demo-continue.patch",
+      "status": "active",
+      "sha256": "324ce4dac97d0cdb13dae1baf3dccec5f53c0dbbf5f6c819ae2792eaf13c057a",
+      "purpose": "Publish native Simon I CD demo save slots to the hosted Continue action.",
+      "invariants": [
+        "Keep the native save filenames and ordinary runtime checks. A requested DOS CD Continue uses the native loader after the original verb panel appears and the first prison scene is copied."
+      ],
+      "verification": [
+        "Save in the prison, walk to another position, load the saved slot, and relaunch through Continue. Verify a fresh start still opens the prison at its original position."
+      ],
+      "retire_when": "Upstream advertises loading during startup in the Simon the Sorcerer CD demo."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzz-full-throttle-demo-saves.patch",
+      "status": "active",
+      "sha256": "106fc258c50f9c043d39f550120dee83dd95c31dfa168235d2333172547fa719",
+      "purpose": "Expose SCUMM saves when the English DOS Full Throttle demo accepts gameplay input.",
+      "invariants": [
+        "Only the detected DOS demo may bypass its disabled original menu. Keep cutscene, room, cursor and frame-boundary checks."
+      ],
+      "verification": [
+        "Save after exiting the dumpster, move or change rooms, load and relaunch through Continue. Verify movies still disable saves."
+      ],
+      "retire_when": "Upstream exposes the native save path during interactive play in the DOS demo."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzz-he-demo-room-saves.patch",
+      "status": "active",
+      "sha256": "d43499cd94317d4e0c65b223fbe7fcd04e139e2096bb533e4f2131d6ef7c439e",
+      "purpose": "Preserve script-painted room buffers in the verified Freddi Fish 3, Putt-Putt Saves the Zoo and Big Thinkers! 1st Grade demos.",
+      "invariants": [
+        "Keep the native SCUMM state and add bounded graphics buffers. Preserve the saved room’s front, background and depth buffers across the first redraw."
+      ],
+      "verification": [
+        "Save after changing an interactive object. Compare the saved scene after a manual load and a fresh Continue, then interact with the same objects and move to a different room."
+      ],
+      "retire_when": "Upstream preserves the same HE room state when saving and restoring outside the game scripts."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzz-legacy-sci-demo-saves.patch",
+      "status": "active",
+      "sha256": "b103eb8e405462d7173508ca5e691cc02a020637e4a7872702afd407d1b9e6f2",
+      "purpose": "Expose the SCI16 snapshot to the hosted menu for the bundled DOS story and arcade previews.",
+      "invariants": [
+        "Require an exact game data signature and the native SCI16 event boundary. Preserve the regular exclusions for all other copies."
+      ],
+      "verification": [
+        "Move to another scene or change the original story or puzzle state. Compare the exact frame and continue original interaction after Save, Load and fresh Continue."
+      ],
+      "retire_when": "Upstream supports equivalent persistent state for these bundled releases."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzz-samnmax-demo-saves.patch",
+      "status": "active",
+      "sha256": "36c777ef3be1296ec473749658e31b2b4fa1a8868405cc5c0e098b8fbee64497",
+      "purpose": "Enable native SCUMM saves in the English voiced Sam & Max Hit the Road demo.",
+      "invariants": [
+        "Use the pinned demo data signature. Share the stable input guard with Full Throttle and preserve native save files."
+      ],
+      "verification": [
+        "Save and load in the office, then reopen a save after moving. Check that both demos still reject saving during the original opening."
+      ],
+      "retire_when": "Upstream supports the hosted menu for this edition with equivalent input gating."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzz-loogie-demo-saves.patch",
+      "status": "active",
+      "sha256": "e861c96696c25531178c60c96fb7dc14dd8852c5a6f798536a3ff558a6fea456",
+      "purpose": "Save and resume an active rooftop round in the pinned alternate Windows Hock-A-Loogie demo.",
+      "invariants": [
+        "Keep the native adventure format and demo title menu. Store rooftop objects with animation indices derived from the original object kinds."
+      ],
+      "verification": [
+        "Select a character, land a hit, save, and then change the hit count. Verify Load and Continue restore the saved hit count and continue the same round."
+      ],
+      "retire_when": "Upstream has an equivalent active round save for the alternate demo."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-sci-demo-display-and-phantasmagoria.patch",
+      "status": "active",
+      "sha256": "902becdf0f1a00695ff2b0fccd812c5d9013bc6552fa8d5f22210907f45aa934",
+      "purpose": "Preserve script-painted displays for Fun Seeker and Ms. Astro Chicken, and expose saves in the pinned Phantasmagoria demo.",
+      "invariants": [
+        "Keep the original SCI16 snapshot and append dimension-checked screen maps. Apply the maps at the first input boundary after the SCI replay. Leave original Phantasmagoria bookmarks and other editions on their established paths."
+      ],
+      "verification": [
+        "Save and restore different guide pages, then repeat with a fresh Continue. Check the arcade HUD and counters after Load and Continue. Save the Phantasmagoria kitchen, enter the pantry, then restore and verify the original bookmark still works."
+      ],
+      "retire_when": "Upstream native state preserves the same script-painted screen and exposes the pinned interactive SCI32 demo to the hosted menu."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-grim-catalog-demo-saves.patch",
+      "status": "active",
+      "sha256": "c84e9e8c538569d686353b3bc5277c454929fd3ddb114550fdb15c3f0fd0ce48",
+      "purpose": "Discover and continue original save files for the bundled Windows Grim Fandango and Escape from Monkey Island demos.",
+      "invariants": [
+        "Use the native grimNN.gsv and efmiNNN.gsv names. Keep embedded restart checkpoints distinct from manual saves. Preserve the stable scene save boundary, and validate hosted descriptions before reading them."
+      ],
+      "verification": [
+        "Save after moving, verify Load restores the actor, and relaunch through Continue with a newer exit save. Existing Skip intro and fresh Play must still work."
+      ],
+      "retire_when": "Upstream lists these demo saves using their normal on-disk names and restores them via the hosted startup path."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-demo-input-save-boundaries.patch",
+      "status": "active",
+      "sha256": "2e7ae7516c7233329a2ab89ee7b49f22ebc2eee2ca9cdc76e700d9952934f19b",
+      "purpose": "Preserve safe hosted save and restore boundaries for the Grim Fandango and Escape from Monkey Island Windows demos and the Phantasmagoria DOS demo.",
+      "invariants": [
+        "Match the exact demo editions. Keep Grim saves confined to the native gameplay input boundary.",
+        "Use SCI VM checkpoints at Phantasmagoria's idle chapter event boundaries and leave the original bookmark API intact."
+      ],
+      "verification": [
+        "Restore the original Grim engine scene from Load and Continue for each of the two supported demos.",
+        "Save the seated kitchen view, move to the standing view, and verify manual Load and fresh Continue select their respective scenes."
+      ],
+      "retire_when": "Upstream exposes stable saves through the demo event boundaries."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-bear-stormin-flight-saves.patch",
+      "status": "active",
+      "sha256": "1ff248e39acc6ea7c4575bff845819cc7956070299d285f43023fee8b0be1260",
+      "purpose": "Expose the original SCUMM snapshot during Bear Stormin’ mouse-driven flight despite the hidden cursor.",
+      "invariants": [
+        "Match the exact DOS HE62 index before bypassing the cursor check. Preserve the native input boundary and the saved flight graphics."
+      ],
+      "verification": [
+        "Save during flight and change the altitude and fuel. Verify Load and fresh Continue restore flight without reselecting a stage."
+      ],
+      "retire_when": "Upstream provides equivalent save support during Bear Stormin’ flight."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-gobliins2-demo-saves.patch",
+      "status": "active",
+      "sha256": "86eb974c918999fec33a438bd5d0d7e835dc0c465510ee687456ed40d23d3afa",
+      "purpose": "Provide hosted Save, Load and deferred Continue for the Gobliins 2 DOS interactive demo using its original menu checkpoint callbacks.",
+      "invariants": [
+        "Match the original parent save and restore script and primary room input blocks. Keep native .sNN filenames, save layout and room reinitialization.",
+        "Copy current goblin coordinates into the base script variables before serializing. Yield directly back to the native room script when a restore has set the leave state."
+      ],
+      "verification": [
+        "Save after changing the selected character or its position, change it again, then verify manual Load and a newer exit autosave through fresh Continue."
+      ],
+      "retire_when": "Upstream supports equivalent hosted save listing, save, and restore for the DOS interactive demo."
     }
   ]
 }

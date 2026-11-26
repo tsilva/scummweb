@@ -60,7 +60,7 @@
       "gameId": "scumm:brstorm",
       "edition": "brstorm-dos-demo-us.zip",
       "recordedOn": "2026-11-18",
-      "observation": "English DOS package listed as a demo by ScummVM. The native detector labels it Bear Stormin’ (English). Flight starts immediately. The original pause and resume controls and the Level 2 prompt were verified. ScummWEB saving was unavailable in the tested scene. A complete run and audible output were unverified."
+      "observation": "English DOS package listed as a demo by ScummVM. The native detector labels it Bear Stormin’ (English). Flight starts immediately. The original pause and resume controls and the Level 2 prompt were verified. ScummWEB Save, Load and Continue restore active flight, including altitude, fuel and balloon progress."
     },
     {
       "title": "Beneath a Steel Sky",
@@ -82,7 +82,7 @@
       "gameId": "scumm:thinker1",
       "edition": "thinker1-win-demo-us.zip",
       "recordedOn": "2026-11-18",
-      "observation": "American English Windows demo. The original introduction, native Skip Intro, interactive room and jigsaw piece placement were verified. ScummWEB saving was unavailable in the tested puzzle. A full activity inventory and audible output were unverified."
+      "observation": "American English Windows demo. The original introduction, native Skip Intro, interactive room and jigsaw piece placement were verified. ScummWEB Save and Load restore the jigsaw layout, and Continue reopens the newer board and tray from the latest checkpoint."
     },
     {
       "title": "Big Thinkers! Kindergarten",
@@ -378,7 +378,7 @@
       "status": "startup-verified",
       "gameId": "scumm:ft",
       "edition": "ft-dos-demo-en.zip",
-      "observation": "The English DOS demo renders its opening movie and the Kickstand scene. Native Skip intro works, and mouse interaction opens the dumpster. Manual saving is unavailable in the tested opening scenes."
+      "observation": "The English DOS demo renders its opening movie and the Kickstand scene. Native Skip intro works, and mouse interaction opens the dumpster. ScummWEB Save, Load, and Continue restore Ben’s position in the alley after he leaves the dumpster."
     },
     {
       "title": "Fun Seeker's Guide to Eastern Madera County",
@@ -676,7 +676,7 @@
       "gameId": "sci:lsl7",
       "edition": "lsl7-dos-demo-en.zip",
       "recordedOn": "2026-11-17",
-      "observation": "English DOS v1.0 interactive demo using SCI2.1. Original menu offers the promotional tour or a direct jump into Liar's Dice; the tutorial and dice quantity selector respond. Saving rejected in the tested dice scene; no verified Load or Continue save. No seeded browser checkpoint. Full round, full playthrough and independent audible output not verified."
+      "observation": "English DOS v1.0 interactive demo using SCI2.1. Original menu offers the promotional tour or a direct jump into Liar's Dice; the tutorial and dice quantity selector respond. ScummWEB Save, Load and Continue preserve the current dice selection and roll once the introductory dialogue ends."
     },
     {
       "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
@@ -698,7 +698,7 @@
       "gameId": "sci:lighthouse",
       "edition": "lighthouse-win-demo-en.zip",
       "recordedOn": "2026-11-16",
-      "observation": "English interactive demo from the official Windows package; pinned native edition identifies DOS/English. Original menu and Island Fortress prompt preserved without a seeded browser checkpoint. Forward scene navigation works. Saving rejected in the tested reached scene; Load and Continue have no verified player save. Full playthrough and independent audible output not verified."
+      "observation": "English interactive demo from the official Windows package; pinned native edition identifies DOS/English. Original menu and Island Fortress prompt preserved without a seeded browser checkpoint. Forward scene navigation works. ScummWEB Save, Load and Continue restore the saved Island Fortress view."
     },
     {
       "title": "Loom",
@@ -820,7 +820,7 @@
       "status": "startup-verified",
       "gameId": "mohawk:myst",
       "edition": "myst-win-cd-demo-en.zip",
-      "observation": "English Windows CD demo reaches its original preview menu and interactive library. Native intro skip, library navigation and cold/cached starts work. This demo disables saving and loading, so Continue and startup checkpoints are unavailable."
+      "observation": "English Windows CD demo reaches its original preview menu and interactive library. Native intro skip and library navigation work. ScummWEB Save, Load and Continue reopen the original library view and the saved book page."
     },
     {
       "title": "Myst",
@@ -891,7 +891,7 @@
       "gameId": "sci:phantasmagoria",
       "edition": "phantasmagoria-dos-win-demo-en.zip",
       "recordedOn": "2026-11-17",
-      "observation": "English DOS v1.100.000 interactive demo. Original menu, game naming and chapter selection preserved without a seeded browser checkpoint. Movies render, native Shift+Escape skips them, and doorway navigation responds. Original P-panel Save/Restore bookmark and native Continue Old Game work. ScummWEB Save is rejected and Load remains empty even after a native bookmark; reopen with Play and use the original game controls. Full playthrough and independent audible output not verified."
+      "observation": "English DOS v1.100.000 interactive demo. Original menu, game naming and chapter selection preserved without a seeded browser checkpoint. Movies render, native Shift+Escape skips them, and doorway navigation responds. ScummWEB Load restored the seated view, and Continue opened the newer standing view. The original P-panel bookmark and native Continue Old Game work inside the demo. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Phantasmagoria 2: A Puzzle of Flesh",
@@ -1100,7 +1100,7 @@
       "gameId": "agos:simon1",
       "edition": "simon1-dos-cd-demo-en.zip",
       "recordedOn": "2026-11-14",
-      "observation": "English DOS CD demo: native edition detection, original prison scene, movement into the adjoining torture room, and verb selection verified. A short original publisher splash leads directly to play. ScummWEB Save/Load and native quick-save were rejected at the tested opening scenes; launcher Continue is unavailable for this engine. No checkpoint. Full playthrough and independent audible output not verified."
+      "observation": "English DOS CD demo: native edition detection, original prison scene, movement into the adjoining torture room, and verb selection verified. A short original publisher splash leads directly to play. ScummWEB Save and Load restore the prison position, and Continue restores the latest saved room with the original verb and inventory panels. No checkpoint. Full playthrough and independent audible output not verified."
     },
     {
       "title": "Simon the Sorcerer II: The Lion, the Wizard and the Wardrobe",
@@ -1150,7 +1150,7 @@
       "status": "startup-verified",
       "gameId": "sci:sq6",
       "edition": "sq6-dos-demo-en.zip",
-      "observation": "The English voiced interactive demo renders its original title, instructions, ship and hangar scenes. Walking and the original controls respond. The original demo explicitly disables saving and restoring; its original startup is preserved without an intro checkpoint or Continue."
+      "observation": "The English voiced interactive demo renders its original title, instructions, ship and hangar scenes. Walking and the original controls respond. ScummWEB Save, Load and Continue restore Roger Wilco’s saved position in the hangar. Fresh Play preserves the original opening."
     },
     {
       "title": "Space Quest II: Chapter II - Vohaul's Revenge",
@@ -1452,7 +1452,7 @@
       "gameId": "sci:torin",
       "edition": "torin-dos-win-demo-en.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English DOS/Windows interactive demo: correct native Windows/English edition, original preview menu and Escarpa start prompt preserved without a seeded browser checkpoint. Movement, scene navigation and native pause work. Saving rejected in both tested Escarpa views; no saved game was available for Load or Continue. Full playthrough and independent audible output not verified."
+      "observation": "English DOS/Windows interactive demo: correct native Windows/English edition, original preview menu and Escarpa start prompt preserved without a seeded browser checkpoint. Movement, scene navigation and native pause work. ScummWEB Save, Load and Continue restore Torin’s location on the Escarpa ledge."
     },
     {
       "title": "Touché: The Adventures of the Fifth Musketeer",
@@ -1813,7 +1813,7 @@
       "gameId": "scumm:freddi3",
       "edition": "freddi3-win-demo-us.zip",
       "recordedOn": "2026-11-20",
-      "observation": "English Windows HE90 mini demo. Correct native detector, original pelican landing, native intro skip and buoy navigation to the net scene verified. This edition omits the original save and load scripts. Full playthrough and independent audible output unverified."
+      "observation": "English Windows HE90 mini demo. Correct native detector, original pelican landing, native intro skip and buoy navigation to the net scene verified. ScummWEB Save and Load preserve both scenes. Continue restores the newest dock or underwater save, including a newer exit autosave that shares a manual slot."
     },
     {
       "title": "Freddi Fish 4: The Case of the Hogfish Rustlers of Briny Gulch",
@@ -2245,7 +2245,7 @@
       "gameId": "scumm:puttzoo",
       "edition": "puttzoo-win-demo-us.zip",
       "recordedOn": "2026-11-15",
-      "observation": "English Windows HE72 demo: correct native edition, cold and cached bucket starts, original raft scene, native intro skip and inventory selection verified. Personal and hosted native saving rejected in the tested scene; no save or Continue checkpoint seeded. Full playthrough and independent audible output not verified."
+      "observation": "English Windows HE72 demo: correct native edition, cold and cached bucket starts, original raft scene, native intro skip and inventory selection verified. ScummWEB Save and Load restore the earlier raft and log, and Continue restores the latest raft and inventory state. Full playthrough and independent audible output were not verified."
     },
     {
       "title": "Putt-Putt Travels Through Time",
@@ -2475,7 +2475,7 @@
       "status": "startup-warning",
       "gameId": "grim:monkey4",
       "edition": "emi-win-demo-en.zip",
-      "observation": "The English Windows web demo rendered its opening scene after accepting ScummVM’s unsupported-game warning.",
+      "observation": "The English Windows web demo renders its opening scene after accepting ScummVM’s unsupported-game warning. Save, Load and Continue restore Guybrush’s position and the catapult view.",
       "issueScope": "scummvm"
     },
     {
@@ -2483,7 +2483,7 @@
       "status": "startup-verified",
       "gameId": "grim:grim",
       "edition": "grim-win-demo1-en.zip",
-      "observation": "The small English Windows demo rendered its opening scene."
+      "observation": "The small English Windows demo renders its opening scene. Save, Load and Continue restore Manny’s position in his office."
     },
     {
       "title": "Indiana Jones and the Fate of Atlantis (Demo)",
@@ -4839,7 +4839,7 @@
       "status": "startup-verified",
       "gameId": "tinsel:dw",
       "edition": "Official English DOS CD demo (dw-dos-cd-demo-en.zip)",
-      "observation": "The original logos, title and Rincewind room render. Native Skip intro advances through the opening while preserving the title screen; click the title to begin. Walking works. This demo does not offer saving through the game menu."
+      "observation": "The original logos, title and Rincewind room render. Native Skip intro preserves the title screen. ScummWEB Save, Load and Continue restore Rincewind to the saved position in the bedroom."
     },
     {
       "title": "Gobliiins (Demo)",
@@ -4853,7 +4853,7 @@
       "status": "startup-verified",
       "gameId": "gob:gob2",
       "edition": "Official English (GB) DOS interactive demo v1.01 (gob2-dos-demo-en.zip)",
-      "observation": "The original title and village scene render. Click the title to enter the playable demo. Character selection and walking work. This demo does not offer saving through the game menu."
+      "observation": "The original title and village scene render. Click the title to enter the playable demo. Manual Load restored Fingus’s earlier position, and fresh Continue opened directly at his newer position from the exit autosave."
     },
     {
       "title": "Goblins Quest 3 (Demo)",

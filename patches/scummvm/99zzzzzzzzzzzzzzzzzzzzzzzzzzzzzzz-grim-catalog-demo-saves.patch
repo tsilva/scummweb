@@ -1,0 +1,129 @@
+diff --git a/engines/grim/metaengine.cpp b/engines/grim/metaengine.cpp
+--- a/engines/grim/metaengine.cpp
++++ b/engines/grim/metaengine.cpp
+@@ -20,6 +20,9 @@
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ #include "engines/grim/grim.h"
+ #include "engines/scummweb-agent-loop.h"
+ #include "engines/grim/savegame.h"
+ #include "engines/grim/emi/emi.h"
+@@ -77,6 +80,7 @@
+ 	SaveStateList listSaves(const char *target) const override;
+ #ifdef __EMSCRIPTEN__
+ 	int getMaximumSaveSlot() const override { return scummweb_agent_game_loop_enabled() ? 99 : 0; }
++	Common::String getSavegameFile(int slot, const char *target = nullptr) const override;
+ #endif
+ 
+ };
+@@ -124,6 +128,23 @@
+ 
+ 	return AdvancedMetaEngine::initKeymaps(target);
+ }
++
++#ifdef __EMSCRIPTEN__
++Common::String GrimMetaEngine::getSavegameFile(int slot, const char *target) const {
++	if (target && ConfMan.hasGameDomain(target)) {
++		const Common::String gameId = ConfMan.get("gameid", target);
++		const bool ps2 = Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformPS2;
++		if (gameId == "monkey4") {
++			if (slot == kSavegameFilePattern)
++				return ps2 ? "efmi###.ps2" : "efmi###.gsv";
++			return Common::String::format(ps2 ? "efmi%03d.ps2" : "efmi%03d.gsv", slot);
++		}
++		if (gameId == "grim")
++			return slot == kSavegameFilePattern ? "grim##.gsv" : Common::String::format("grim%02d.gsv", slot);
++	}
++	return MetaEngine::getSavegameFile(slot, target);
++}
++#endif
+ 
+ SaveStateList GrimMetaEngine::listSaves(const char *target) const {
+ 	Common::String gameId = ConfMan.get("gameid", target);
+@@ -142,10 +163,13 @@
+ 
+ #ifdef __EMSCRIPTEN__
+ 	const bool scopedEmi = scummweb_agent_game_loop_enabled() && gameId == "monkey4" && platform == Common::kPlatformWindows;
++	const bool hostedDemo = scummwebIsPlayerControl() && platform == Common::kPlatformWindows &&
++		((gameId == "grim" && extra == "Demo") || (gameId == "monkey4" && extra == "Web Demo"));
+ #else
+ 	const bool scopedEmi = false;
+-#endif
+-	if (isDemo && !scopedEmi)
++	const bool hostedDemo = false;
++#endif
++	if (isDemo && !scopedEmi && !hostedDemo)
+ 		return saveList;
+ 
+ 	filenames = saveFileMan->listSavefiles(pattern);
+@@ -156,6 +180,15 @@
+ 
+ 		if (slotNum >= 0) {
+ 			SaveGame *savedState = SaveGame::openForLoading(*file);
++#ifdef __EMSCRIPTEN__
++			if (hostedDemo) {
++				Common::String description;
++				if (savedState && savedState->readHostedDescription(description))
++					saveList.push_back(SaveStateDescriptor(this, slotNum, description));
++				delete savedState;
++				continue;
++			}
++#endif
+ 			if (savedState && savedState->isCompatible()) {
+ 				if (platform == Common::kPlatformPS2)
+ 					savedState->beginSection('PS2S');
+diff --git a/engines/grim/savegame.h b/engines/grim/savegame.h
+--- a/engines/grim/savegame.h
++++ b/engines/grim/savegame.h
+@@ -51,6 +51,9 @@
+ 	static uint SAVEGAME_MINOR_VERSION;
+ 
+ 	bool isCompatible() const;
++#ifdef __EMSCRIPTEN__
++	bool readHostedDescription(Common::String &description);
++#endif
+ 
+ 	uint saveMajorVersion() const;
+ 	uint saveMinorVersion() const;
+diff --git a/engines/grim/savegame.cpp b/engines/grim/savegame.cpp
+--- a/engines/grim/savegame.cpp
++++ b/engines/grim/savegame.cpp
+@@ -105,6 +105,35 @@
+ 	return _majorVersion == SAVEGAME_MAJOR_VERSION && _minorVersion <= SAVEGAME_MINOR_VERSION;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++bool SaveGame::readHostedDescription(Common::String &description) {
++	if (!isCompatible())
++		return false;
++
++	while (!_inSaveFile->err() && _inSaveFile->size() - _inSaveFile->pos() >= 8) {
++		const uint32 tag = _inSaveFile->readUint32BE();
++		const uint32 size = _inSaveFile->readUint32BE();
++		if (tag == SAVEGAME_FOOTERTAG || size > _inSaveFile->size() - _inSaveFile->pos())
++			return false;
++		if (tag == MKTAG('S', 'U', 'B', 'S')) {
++			if (size < 4)
++				return false;
++			const uint32 length = _inSaveFile->readUint32LE();
++			char text[256];
++			if (length == 0 || length >= sizeof(text) || length > size - 4 ||
++				_inSaveFile->read(text, length) != length)
++				return false;
++			text[length] = 0;
++			description = text;
++			return !_inSaveFile->err();
++		}
++		if (!_inSaveFile->seek(size, SEEK_CUR))
++			return false;
++	}
++	return false;
++}
++#endif
++
+ uint SaveGame::saveMajorVersion() const {
+ 	return _majorVersion;
+ }

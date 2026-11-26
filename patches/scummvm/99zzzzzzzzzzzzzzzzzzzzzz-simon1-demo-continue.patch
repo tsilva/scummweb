@@ -1,0 +1,92 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -232,7 +232,7 @@
+ 	extra.toLowercase();
+ 	if (engineId == "mohawk" && extra.contains("demo") && !meta.hasFeature(MetaEngine::kSavesUseExtendedFormat))
+ 		supported = false;
+-	if (engineId == "agos" && gameId == "simon2" && extra == "cd demo")
++	if (engineId == "agos" && (gameId == "simon1" || gameId == "simon2") && extra == "cd demo")
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	if ((engineId == "gob" && gameId == "gob3" && extra == "interactive demo 3 (v0.02)") ||
+ 			(engineId == "made" && gameId == "rtz" && extra == "v1.2, 9/8/94, demo cd"))
+diff --git a/engines/agos/agos.h b/engines/agos/agos.h
+--- a/engines/agos/agos.h
++++ b/engines/agos/agos.h
+@@ -269,6 +269,7 @@
+ 	Common::Error loadGameState(int slot) override;
+ 	Common::String getSaveStateName(int slot) const override { return genSaveName(slot); }
+ 	bool _scummWebAgentIdle = false;
++	bool _simon1OpeningSceneDrawn = false;
+ #endif
+ 	void syncSoundSettings() override;
+ #ifdef __EMSCRIPTEN__
+diff --git a/engines/agos/gfx.cpp b/engines/agos/gfx.cpp
+--- a/engines/agos/gfx.cpp
++++ b/engines/agos/gfx.cpp
+@@ -1511,6 +1511,13 @@
+ 
+ 	setImage(vgaSpriteId, specialCase);
+ 
++#ifdef __EMSCRIPTEN__
++	// In the DOS CD demo, the prison is the first scene with the verb panel
++	// and its hit areas installed. The publisher splash also uses window 4.
++	if (getGameType() == GType_SIMON1 && mode == 4 && vgaSpriteId == 12300)
++		_simon1OpeningSceneDrawn = true;
++#endif
++
+ 	if (getGameType() == GType_FF || getGameType() == GType_PP) {
+ 		fillBackGroundFromBack();
+ 		_syncFlag2 = true;
+diff --git a/engines/agos/saveload.cpp b/engines/agos/saveload.cpp
+--- a/engines/agos/saveload.cpp
++++ b/engines/agos/saveload.cpp
+@@ -28,6 +28,9 @@
+ 
+ #include "agos/agos.h"
+ #include "agos/intern.h"
++#ifdef __EMSCRIPTEN__
++#include <emscripten/em_asm.h>
++#endif
+ 
+ namespace AGOS {
+ 
+@@ -337,11 +340,23 @@
+ #ifdef __EMSCRIPTEN__
+ bool AGOSEngine::canSaveGameStateCurrently(Common::U32String *) {
+ 	const bool simon = getGameType() == GType_SIMON1 || getGameType() == GType_SIMON2;
++	if (getGameType() == GType_SIMON1 && getPlatform() == Common::kPlatformDOS &&
++		ConfMan.get("extra").equalsIgnoreCase("CD Demo") && (!_simon1OpeningSceneDrawn || _copyScnFlag))
++		return false;
+ 	return _scummWebAgentIdle && !_videoLockOut && !_mouseHideCount && !_showPreposition && !_dragMode &&
+ 		!(getGameType() == GType_SIMON2 && _boxStarHeight == 200) && !(simon && getBitFlag(11));
+ }
+ 
+ bool AGOSEngine::canLoadGameStateCurrently(Common::U32String *msg) {
++	if (getGameType() == GType_SIMON1 && getPlatform() == Common::kPlatformDOS &&
++		ConfMan.get("extra").equalsIgnoreCase("CD Demo") &&
++		EM_ASM_INT({ return Boolean(globalThis.__scummwebIsStartupLoad?.()); })) {
++		// The demo holds its cursor during the first prison scene. A saved
++		// game has already passed that opening, so wait for the original
++		// interface to render without requiring mouse input.
++		return _simon1OpeningSceneDrawn && _scummWebAgentIdle && !_copyScnFlag &&
++			!_videoLockOut && !_showPreposition && !_dragMode;
++	}
+ 	return canSaveGameStateCurrently(msg);
+ }
+ 
+@@ -356,7 +371,13 @@
+ Common::Error AGOSEngine::loadGameState(int slot) {
+ 	if (!hasFeature(kSupportsLoadingDuringRuntime) || !canLoadGameStateCurrently())
+ 		return Common::kReadingFailed;
+-	return quickRestoreGame(slot) ? Common::kNoError : Common::kReadingFailed;
++	const bool unlockCursorAfterRestore = getGameType() == GType_SIMON1 && _mouseHideCount != 0 &&
++		EM_ASM_INT({ return Boolean(globalThis.__scummwebIsStartupLoad?.()); });
++	if (!quickRestoreGame(slot))
++		return Common::kReadingFailed;
++	if (unlockCursorAfterRestore)
++		vc33_setMouseOn();
++	return Common::kNoError;
+ }
+ #endif
+ 

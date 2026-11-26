@@ -1,0 +1,121 @@
+diff --git a/engines/sci/scummweb-demo-saves.h b/engines/sci/scummweb-demo-saves.h
+--- a/engines/sci/scummweb-demo-saves.h
++++ b/engines/sci/scummweb-demo-saves.h
+@@ -7,10 +7,7 @@
+ 
+ namespace Sci {
+ 
+-inline bool scummwebSupportsSci32DemoSaves(const SciEngine &engine) {
+-	return engine.getGameId() == GID_SHIVERS && engine.isDemo() &&
+-		ConfMan.get("extra").equalsIgnoreCase("Demo") && scummweb_agent_game_loop_enabled();
+-}
++bool scummwebSupportsSci32DemoSaves(const SciEngine &engine);
+ 
+ } // End of namespace Sci
+ 
+diff --git a/engines/sci/sci.h b/engines/sci/sci.h
+--- a/engines/sci/sci.h
++++ b/engines/sci/sci.h
+@@ -134,6 +134,9 @@
+ 
+ class SciEngine : public Engine {
+ 	friend class Console;
++#ifdef __EMSCRIPTEN__
++	friend bool scummwebSupportsSci32DemoSaves(const SciEngine &engine);
++#endif
+ public:
+ 	SciEngine(OSystem *syst, const ADGameDescription *desc, SciGameId gameId);
+ 	~SciEngine() override;
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -903,6 +903,30 @@
+ bool SciEngine::isDemo() const {
+ 	return _gameDescription->flags & ADGF_DEMO;
+ }
++
++#ifdef __EMSCRIPTEN__
++bool scummwebSupportsSci32DemoSaves(const SciEngine &engine) {
++	if (!engine.isDemo() || !scummweb_agent_game_loop_enabled())
++		return false;
++
++	const ADGameFileDescription &signature = engine._gameDescription->filesDescriptions[0];
++	switch (engine.getGameId()) {
++	case GID_SHIVERS:
++		return ConfMan.get("extra").equalsIgnoreCase("Demo");
++	case GID_SQ6:
++		return signature.md5 && strcmp(signature.md5, "368f07b07433db3f819fa3fa0e5efee5") == 0;
++	case GID_TORIN:
++		return signature.md5 && strcmp(signature.md5, "9a3e172cde9963d0a969f26469318cec") == 0;
++	case GID_LIGHTHOUSE:
++		return signature.md5 && strcmp(signature.md5, "3bdee7a16926975a4729f75cf6b80a92") == 0;
++	case GID_LSL7:
++		return signature.md5 && strcmp(signature.md5, "5cc6159688b2dc03790a67c90ccc67f9") == 0 &&
++			signature.fileSize == 10195878;
++	default:
++		return false;
++	}
++}
++#endif
+ 
+ bool SciEngine::isCD() const {
+ 	return _gameDescription->flags & ADGF_CD;
+diff --git a/engines/sci/engine/static_selectors.cpp b/engines/sci/engine/static_selectors.cpp
+--- a/engines/sci/engine/static_selectors.cpp
++++ b/engines/sci/engine/static_selectors.cpp
+@@ -23,6 +23,9 @@
+ // them. This includes the King's Quest IV Demo and LSL3 Demo.
+ 
+ #include "sci/engine/kernel.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/scummweb-demo-saves.h"
++#endif
+ #include "sci/engine/seg_manager.h"
+ #include "sci/engine/vm.h"
+ 
+@@ -208,6 +211,19 @@
+ 
+ 	findSpecificSelectors(names);
+ 
++#ifdef __EMSCRIPTEN__
++	// This Torin demo omits vocab.997. These IDs come from its
++	// User.canInput and User.canControl implementations.
++	if (g_sci->getGameId() == GID_TORIN && scummwebSupportsSci32DemoSaves(*g_sci)) {
++		constexpr uint kInputSelector = 503;
++		constexpr uint kControlsSelector = 504;
++		if (names.size() <= kControlsSelector)
++			names.resize(kControlsSelector + 1);
++		names[kInputSelector] = "input";
++		names[kControlsSelector] = "controls";
++	}
++#endif
++
+ 	// HACK for LB2 floppy, for saving via GMM
+ 	if (g_sci->getGameId() == GID_LAURABOW2) {
+ 		names[342] = "input";
+diff --git a/engines/sci/engine/guest_additions.cpp b/engines/sci/engine/guest_additions.cpp
+--- a/engines/sci/engine/guest_additions.cpp
++++ b/engines/sci/engine/guest_additions.cpp
+@@ -28,6 +28,9 @@
+ #include "sci/engine/guest_additions.h"
+ #include "sci/engine/kernel.h"
+ #include "sci/engine/savegame.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/scummweb-demo-saves.h"
++#endif
+ #include "sci/engine/state.h"
+ #include "sci/engine/vm.h"
+ #ifdef ENABLE_SCI32
+@@ -567,6 +570,12 @@
+ 		return promptSaveRestorePhant2(s, argc, argv);
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	// The bundled Torin demo uses SRDialog, not the retail picker in
++	// script 64866. Its locals do not hold the retail string object.
++	if (g_sci->getGameId() == GID_TORIN && scummwebSupportsSci32DemoSaves(*g_sci))
++		return promptSaveRestoreDefault(s, argc, argv);
++#endif
+ 	if (g_sci->getGameId() == GID_LSL7 || g_sci->getGameId() == GID_TORIN) {
+ 		return promptSaveRestoreTorin(s, argc, argv);
+ 	}

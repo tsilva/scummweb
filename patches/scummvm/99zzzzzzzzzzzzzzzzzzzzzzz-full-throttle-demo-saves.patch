@@ -1,0 +1,47 @@
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -125,6 +125,15 @@
+ 	return makeSavegameName(slot, false);
+ }
+ 
++// The English DOS demo leaves its original menu disabled during play.
++static bool hasFullThrottleDemoPlayerSaves(const GameSettings &game, const byte *md5) {
++	static const byte demoIndex[] = {0x32, 0xa4, 0x33, 0xde, 0xa5, 0x6b, 0x86, 0xa5,
++		0x5b, 0x59, 0xe4, 0xff, 0x7d, 0x75, 0x57, 0x11};
++	return game.id == GID_FT && game.platform == Common::kPlatformDOS &&
++		(game.features & GF_DEMO) && memcmp(md5, demoIndex, sizeof(demoIndex)) == 0 &&
++		scummwebIsPlayerControl();
++}
++
+ void ScummEngine::setFreddi3SaveSlot(int slot) {
+ 	// This is the same name-based operation used by the original HE scripts.
+ 	_saveLoadFileName = Common::String::format("freddi3.sg%c", freddi3SlotSuffix(slot));
+@@ -192,6 +201,13 @@
+ bool ScummEngine::canLoadGameStateCurrently(Common::U32String *msg) {
+ 	if (!_setupIsComplete)
+ 		return false;
++
++#if defined(__EMSCRIPTEN__) && defined(ENABLE_SCUMM_7_8)
++	if (hasFullThrottleDemoPlayerSaves(_game, _gameMD5))
++		return _agentControlBoundary && _roomResource && _currentRoom &&
++			_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++			vm.cutScenePtr[0] == 0 && !_saveLoadFlag && !((ScummEngine_v7 *)this)->isSmushActive();
++#endif
+ 
+ #ifdef ENABLE_SCUMM_7_8
+ 	if (_game.id == GID_REBEL1) {
+@@ -303,6 +319,13 @@
+ bool ScummEngine::canSaveGameStateCurrently(Common::U32String *msg) {
+ 	if (!_setupIsComplete)
+ 		return false;
++
++#if defined(__EMSCRIPTEN__) && defined(ENABLE_SCUMM_7_8)
++	if (hasFullThrottleDemoPlayerSaves(_game, _gameMD5))
++		return _agentControlBoundary && _roomResource && _currentRoom &&
++			_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++			vm.cutScenePtr[0] == 0 && !_saveLoadFlag && !((ScummEngine_v7 *)this)->isSmushActive();
++#endif
+ 
+ #ifdef ENABLE_SCUMM_7_8
+ 	if (_game.id == GID_REBEL1) {

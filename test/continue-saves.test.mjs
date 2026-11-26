@@ -111,7 +111,8 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   assert.equal(f.scan([[0, "missing"], [1, "SKY-VM.001"]]), -1);
   f.put("SKY-VM.001", "player", 200);
   assert.equal(f.scan([[1, "SKY-VM.001"]], false), -1);
-  assert.equal(supportsContinue("mohawk", "myst", "Demo"), false);
+  assert.equal(supportsContinue("mohawk", "myst", "Demo"), true);
+  assert.equal(supportsContinue("mohawk", "myst", "Non-Interactive Demo"), false);
   assert.equal(supportsContinue("mohawk", "myst", null), true);
   for (const game of ["tortoise", "arthurbday", "grandma", "arthur", "ruff", "newkid"]) {
     assert.equal(supportsContinue("mohawk", game, "Demo v1.0"), true);
@@ -121,24 +122,41 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   assert.equal(supportsContinue("mads", "nebular"), true);
   assert.equal(supportsContinue("mads", "phantom", "Demo"), true);
   assert.equal(supportsContinue("agos", "simon2", "CD Demo"), true);
+  assert.equal(supportsContinue("gob", "gob2", "Interactive Demo (v1.01)"), true);
+  assert.equal(supportsContinue("gob", "gob2", "CD"), false);
   assert.equal(supportsContinue("agos", "simon2", "CD Non-Interactive Demo"), false);
-  assert.equal(supportsContinue("agos", "simon1", "CD Demo"), false);
+  assert.equal(supportsContinue("agos", "simon1", "CD Demo"), true);
+  assert.equal(supportsContinue("agos", "simon1", "Demo"), false);
   assert.equal(supportsContinue("agos", "pn"), false);
 });
 
 test("demos with deferred Continue queue the newest slot without a native startup slot", async () => {
-  const identity = { engineId: "mads", gameId: "nebular", target: "nebular-demo", extra: "demo" };
-  for (const autosave of [false, true]) {
-    const f = shell({ ...identity, preview: true, resume: true });
-    const actions = [];
-    f.scope.__scummwebQueueStartupLoad = (...args) => { actions.push(args); return true; };
-    f.put("nebular-demo.002", "manual", 10);
-    if (autosave) f.put(".scummweb-autosave.0", encodeAutosave({ ...identity, slot: 1, savedAt: 20,
-      files: [{ name: "nebular-demo.001", data: Uint8Array.of(42) }] }), 20);
-    await f.start();
-    assert.equal(f.scan([[2, "nebular-demo.002"]]), -1);
-    assert.equal(f.scan([[2, "nebular-demo.002"]]), -1);
-    assert.deepEqual(actions, autosave ? [[1, [{ name: "nebular-demo.001", contents: "Kg==" }]]] : [[2]]);
+  for (const { name, ...identity } of [
+    { engineId: "mads", gameId: "nebular", target: "nebular-demo", extra: "demo", name: "nebular-demo.001" },
+    { engineId: "scumm", gameId: "freddi3", target: "freddi3-demo", extra: "demo", name: "freddi3-demo.s01" },
+    { engineId: "agos", gameId: "simon1", target: "simon1-demo", extra: "CD Demo", name: "simon1-demo.001" },
+    { engineId: "mohawk", gameId: "myst", target: "myst-demo", extra: "Demo", name: "myst-demo.001" },
+  ]) {
+    for (const autosave of [false, true]) {
+      const f = shell({ ...identity, preview: true, resume: true });
+      const actions = [];
+      f.scope.__scummwebQueueStartupLoad = (...args) => { actions.push(args); return true; };
+      let restoring = true;
+      f.scope.__scummwebIsStartupLoad = () => restoring;
+      f.put(name, "manual", 10);
+      if (autosave) f.put(".scummweb-autosave.0", encodeAutosave({ ...identity, slot: 1, savedAt: 20,
+        files: [{ name, data: Uint8Array.of(42) }] }), 20);
+      await f.start();
+      assert.equal(f.scan([[1, name]]), -1);
+      assert.equal(f.scan([[1, name]]), -1);
+      assert.deepEqual(actions, autosave ? [[1, [{ name, contents: "Kg==" }]]] : [[1]]);
+      if (identity.engineId === "scumm") {
+        assert.equal(f.scope.__scummwebUpdateIntroSkip(false), false);
+        assert.equal(f.scope.__scummwebUpdateIntroSkip(true), true);
+        restoring = false;
+        assert.equal(f.scope.__scummwebUpdateIntroSkip(true), false);
+      }
+    }
   }
 });
 

@@ -8,9 +8,17 @@ export const defaultSavePath = "/home/web_user/.local/share/scummvm/saves";
 const supportedEngines = new Set("access adl agi ags bbvs cge cge2 cine cruise draci drascula dreamweb freescape glk gnap got groovie hopkins hugo kyra lab lure mads mortevielle neverhood ngi pegasus queen saga sci scumm sherlock sky sword1 sword2 teenagent tinsel titanic toltecs tony toon touche tsage tucker voyeur wintermute zvision".split(" "));
 const livingBooksDemos = new Set(["tortoise", "arthurbday", "grandma", "arthur", "ruff", "newkid"]);
 const deferredDemoContinue = new Map([
+  ["agos:simon1", "cd demo"],
+  ["bbvs:bbvs", "loogie demo"],
+  ["gob:gob2", "interactive demo (v1.01)"],
   ["gob:gob3", "interactive demo 3 (v0.02)"],
   ["made:rtz", "v1.2, 9/8/94, demo cd"],
   ["mads:nebular", "demo"],
+  ["mohawk:myst", "demo"],
+  ["scumm:samnmax", "demo"],
+  ["scumm:freddi3", "demo"],
+  ["scumm:puttzoo", "demo"],
+  ["scumm:thinker1", "demo"],
 ]);
 const retiredIntroCheckpoints = new Map([
   ["monkey4-demo/efmi090.gsv", "bd8aa04ec9ebe0745830124ddd6cc50c67aa7c2dd18166c0e6cdee7c3a958dad"],
@@ -28,6 +36,10 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
 export function supportsContinue(engineId, gameId, extra = "") {
   const edition = typeof extra === "string" ? extra.toLowerCase() : "";
   if (deferredDemoContinue.get(`${engineId}:${gameId}`) === edition) return true;
+  if (engineId === "grim") {
+    return (gameId === "grim" && edition === "demo")
+      || (gameId === "monkey4" && edition === "web demo");
+  }
   if (engineId === "agos") {
     return gameId === "simon2" && edition === "cd demo";
   }
@@ -271,7 +283,13 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     const schedule = deferred ? scope.__scummwebQueueStartupLoad : undefined;
     const autoSlot = !deferred || schedule ? scope.__scummwebAutosaves?.startup(snapshot, save, schedule) ?? -1 : -1;
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;
-    if (!resumeReported && deferred && autoSlot < 0 && save) schedule?.(save.slot);
+    if (!resumeReported && deferred) {
+      const queued = autoSlot >= 0 || (save && schedule?.(save.slot));
+      if (queued && snapshot.engineId === "scumm") {
+        // Drive the engine’s native intro skip while an exact demo restore is pending.
+        scope.__scummwebUpdateIntroSkip = available => available && scope.__scummwebIsStartupLoad?.() === true;
+      }
+    }
     if (!resumeReported && (!deferred && latestSlot !== null && params.get("continue") === "1"
       || /^#-x(?:%20| )/i.test(launchUrl.hash) && !params.has("skipIntroTarget"))) {
       scope.__scummwebAutosaves?.afterLoad();

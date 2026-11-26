@@ -111,6 +111,7 @@ test("deferred Continue restores once and keeps autosave files isolated until th
     finishRestore: () => events.push("restore finished") };
   scope.__scummwebAutosaves = { due: () => true, afterLoad: () => events.push("resumed") };
   assert.equal(scope.__scummwebQueueStartupLoad(1, files), true);
+  assert.equal(scope.__scummwebIsStartupLoad(), true);
   assert.equal(scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true), 0);
   controls.setMenuOpen(true);
   assert.equal(scope.__scummwebPeekStartupLoad(), -1);
@@ -118,10 +119,12 @@ test("deferred Continue restores once and keeps autosave files isolated until th
   controls.setMenuOpen(false);
   assert.equal(scope.__scummwebPeekStartupLoad(), 1);
   assert.equal(scope.__scummwebTakeStartupLoad(), true);
+  assert.equal(scope.__scummwebIsStartupLoad(), true);
   assert.equal(scope.__scummwebTakeStartupLoad(), false);
   assert.deepEqual(events, [files]);
   scope.__scummwebAgentSaveResult(null);
   assert.deepEqual(events, [files, "restore finished", "resumed"]);
+  assert.equal(scope.__scummwebIsStartupLoad(), false);
 });
 
 test("the paused engine reports scene save availability before a manual request", async () => {

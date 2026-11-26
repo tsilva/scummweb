@@ -1,0 +1,83 @@
+diff --git a/engines/grim/grim.cpp b/engines/grim/grim.cpp
+--- a/engines/grim/grim.cpp
++++ b/engines/grim/grim.cpp
+@@ -25,6 +25,9 @@
+ #define FORBIDDEN_SYMBOL_EXCEPTION_stdin
+ #define FORBIDDEN_SYMBOL_EXCEPTION_FILE
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ #include "engines/scummweb-telemetry.h"
+ #ifdef __EMSCRIPTEN__
+ #include "common/md5.h"
+@@ -1862,7 +1865,9 @@
+ #ifdef __EMSCRIPTEN__
+ 	if (f == kSupportsSavingDuringRuntime)
+ 		return scummweb_agent_game_loop_enabled() && _gamePlatform != Common::kPlatformPS2
+-			&& (!(_gameFlags & ADGF_DEMO) || _gameType == GType_MONKEY4);
++			&& (!(_gameFlags & ADGF_DEMO) || _gameType == GType_MONKEY4 ||
++				(_gameType == GType_GRIM && _gamePlatform == Common::kPlatformWindows &&
++					scummwebIsPlayerControl() && ConfMan.get("extra") == "Demo"));
+ #endif
+ 	return
+ 		(f == kSupportsReturnToLauncher) ||
+diff --git a/engines/sci/engine/guest_additions.cpp b/engines/sci/engine/guest_additions.cpp
+--- a/engines/sci/engine/guest_additions.cpp
++++ b/engines/sci/engine/guest_additions.cpp
+@@ -824,6 +824,19 @@
+ 		// for one frame if the user clicked during startup)
+ 		g_sci->getEventManager()->flushEvents();
+ 
++#ifdef __EMSCRIPTEN__
++		if (g_sci->getGameId() == GID_PHANTASMAGORIA && scummwebSupportsSci32DemoSaves(*g_sci)) {
++			// This demo's native restore selector reads bookmark data and takes
++			// different arguments. Read the hosted SCI checkpoint directly.
++			const int slot = _state->_delayedRestoreGameId;
++			SavegameDesc descriptor;
++			const bool restored = fillSavegameDesc(g_sci->getSavegameName(slot), descriptor) &&
++				gamestate_restore(_state, slot) && _state->abortScriptProcessing == kAbortLoadGame;
++			_state->_delayedRestoreGameId = -1;
++			_restoring = false;
++			return restored;
++		}
++#endif
+ 		if (g_sci->getGameId() == GID_PHANTASMAGORIA2) {
+ 			// Phantasmagoria 2 moves the function that actually restores
+ 			// a game, and uses a property of the main game object when picking
+diff --git a/engines/sci/metaengine.cpp b/engines/sci/metaengine.cpp
+--- a/engines/sci/metaengine.cpp
++++ b/engines/sci/metaengine.cpp
+@@ -26,6 +26,9 @@
+ #include "engines/scummweb-agent-loop.h"
+ #ifdef __EMSCRIPTEN__
+ #include "sci/scummweb-demo-saves.h"
++#ifdef ENABLE_SCI32
++#include "sci/graphics/video32.h"
++#endif
+ #endif
+ #include "base/plugins.h"
+ #include "common/config-manager.h"
+@@ -425,6 +428,22 @@
+ 	if (supportsHostedSci16DemoSave(getGameId(), *_gameDescription))
+ 		return !_gamestate->executionStackBase && _gamestate->_delayedRestoreGameId < 0 &&
+ 			_gamestate->variables[VAR_GLOBAL] && !getGameObject().isNull();
++
++#ifdef ENABLE_SCI32
++	if (getGameId() == GID_PHANTASMAGORIA && scummwebIsPlayerControl() &&
++			scummwebSupportsSci32DemoSaves(*this)) {
++		const auto movie = _video32->getVMDPlayer().getStatus();
++		const auto *globals = _gamestate->variables[VAR_GLOBAL];
++		const bool boundary = !_gamestate->executionStackBase && _gamestate->_delayedRestoreGameId < 0;
++		if (globals && _gamestate->variablesMax[VAR_GLOBAL] > kGlobalVarNewRoomNo &&
++			globals[kGlobalVarCurrentRoomNo].isNumber()) {
++			// The native main-menu and control screens use rooms below 1000.
++			const uint16 room = _gamestate->currentRoomNumber();
++			return boundary && room >= 1000 && (movie == VMDPlayer::kVMDNotOpen || movie == VMDPlayer::kVMDFinished);
++		}
++		return false;
++	}
++#endif
+ 
+ 	// The hosted providers call at an event boundary. Keep the
+ 	// engine's game exclusions, stack checks and user-control restrictions.

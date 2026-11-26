@@ -1,0 +1,375 @@
+diff --git a/engines/mohawk/myst.h b/engines/mohawk/myst.h
+--- a/engines/mohawk/myst.h
++++ b/engines/mohawk/myst.h
+@@ -126,6 +126,26 @@
+ typedef Common::SharedPtr<MystCard> MystCardPtr;
+ typedef Common::SharedPtr<MystScriptParser> MystScriptParserPtr;
+ 
++#ifdef __EMSCRIPTEN__
++// The preview has its own state and card IDs. Keep it out of retail Myst slots.
++struct MystDemoSave {
++	uint16 card = 0;
++	uint16 returnCard = 0;
++	uint16 bookPage = 0;
++	uint16 towerAngle = 0;
++	byte bookcaseDoor = 0;
++	byte redPages = 0;
++	byte bluePages = 0;
++	byte heldPage = 0;
++	byte fireplaceRows[6] = {};
++
++	static bool supports(const Common::String &gameId, const Common::String &extra);
++	static uint16 maxBookPages(uint16 card);
++	bool read(Common::SeekableReadStream &stream);
++	bool write(Common::WriteStream &stream) const;
++};
++#endif
++
+ class MohawkEngine_Myst : public MohawkEngine {
+ protected:
+ 	Common::Error run() override;
+@@ -193,8 +213,17 @@
+ 	Common::Error loadGameState(int slot) override;
+ 	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave = false) override;
+ 	Common::String getSaveStateName(int slot) const override {
++#ifdef __EMSCRIPTEN__
++		if (hasDemoSaveSupport())
++			return Engine::getSaveStateName(slot);
++#endif
+ 		return Common::String::format("myst-%03d.mys", slot);
+ 	}
++#ifdef __EMSCRIPTEN__
++	bool hasDemoSaveSupport() const;
++	Common::Error saveGameStream(Common::WriteStream *stream, bool isAutosave) override;
++	Common::Error loadGameStream(Common::SeekableReadStream *stream) override;
++#endif
+ 
+ 	bool hasFeature(EngineFeature f) const override;
+ 
+diff --git a/engines/mohawk/myst_stacks/preview.h b/engines/mohawk/myst_stacks/preview.h
+--- a/engines/mohawk/myst_stacks/preview.h
++++ b/engines/mohawk/myst_stacks/preview.h
+@@ -32,6 +32,10 @@
+ 
+ struct MystScriptEntry;
+ 
++#ifdef __EMSCRIPTEN__
++struct MystDemoSave;
++#endif
++
+ namespace MystStacks {
+ 
+ #define DECLARE_OPCODE(x) void x(uint16 var, const ArgumentsArray &args)
+@@ -43,6 +47,11 @@
+ 
+ 	void disablePersistentScripts() override;
+ 	void runPersistentScripts() override;
++#ifdef __EMSCRIPTEN__
++	bool canSavePreview() const;
++	void fillDemoSave(MystDemoSave &save) const;
++	void restoreDemoSave(const MystDemoSave &save);
++#endif
+ 
+ private:
+ 	void setupOpcodes();
+diff --git a/engines/mohawk/myst_stacks/preview.cpp b/engines/mohawk/myst_stacks/preview.cpp
+--- a/engines/mohawk/myst_stacks/preview.cpp
++++ b/engines/mohawk/myst_stacks/preview.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "mohawk/cursors.h"
+ #include "mohawk/myst.h"
++#include "mohawk/myst_card.h"
+ #include "mohawk/myst_areas.h"
+ #include "mohawk/myst_graphics.h"
+ #include "mohawk/myst_sound.h"
+@@ -74,6 +75,51 @@
+ 	if (_speechRunning)
+ 		speech_run();
+ }
++
++#ifdef __EMSCRIPTEN__
++bool Preview::canSavePreview() const {
++	return !_speechRunning && !_libraryBookcaseMoving && !_libraryBookcaseChanged &&
++		!_libraryBookPagesTurning && !_libraryCombinationBookPagesTurning &&
++		!_towerRotationMapClicked;
++}
++
++void Preview::fillDemoSave(MystDemoSave &save) const {
++	save.card = _vm->getCard()->getId();
++	save.returnCard = _savedCardId;
++	if (MystDemoSave::maxBookPages(save.card))
++		save.bookPage = _libraryBookPage;
++	if (save.card == 4162) {
++		for (uint i = 0; i < ARRAYSIZE(_fireplaceLines); ++i)
++			save.fireplaceRows[i] = _fireplaceLines[i];
++	}
++	save.bookcaseDoor = _state.libraryBookcaseDoor;
++	save.towerAngle = _state.towerRotationAngle;
++	save.redPages = _globals.redPagesInBook;
++	save.bluePages = _globals.bluePagesInBook;
++	save.heldPage = _globals.heldPage;
++}
++
++void Preview::restoreDemoSave(const MystDemoSave &save) {
++	_savedCardId = save.returnCard;
++	if (save.bookPage) {
++		_libraryBookPage = save.bookPage;
++		_vm->_gfx->copyImageToScreen(_libraryBookBaseImage + _libraryBookPage, Common::Rect(544, 333));
++	}
++	if (save.card == 4162) {
++		// The fireplace buttons overlay the original grid image.
++		for (uint row = 0; row < ARRAYSIZE(_fireplaceLines); ++row) {
++			_fireplaceLines[row] = save.fireplaceRows[row];
++			for (uint column = 0; column < 8; ++column) {
++				if (!(_fireplaceLines[row] & (0x80 >> column)))
++					continue;
++				int x = 173 + 26 * column;
++				int y = 168 + 25 * row;
++				_vm->_gfx->copyImageToScreen(4795, Common::Rect(x, y, x + 26, y + (row == 4 ? 26 : 27)));
++			}
++		}
++	}
++}
++#endif
+ 
+ void Preview::o_fadeToBlack(uint16 var, const ArgumentsArray &args) {
+ 	_vm->_gfx->fadeToBlack();
+diff --git a/engines/mohawk/myst.cpp b/engines/mohawk/myst.cpp
+--- a/engines/mohawk/myst.cpp
++++ b/engines/mohawk/myst.cpp
+@@ -20,6 +20,9 @@
+  */
+ 
+ #include "engines/scummweb-telemetry.h"
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ 
+ #include "backends/keymapper/action.h"
+ #include "backends/keymapper/keymap.h"
+@@ -1069,7 +1072,110 @@
+ 	return resource;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static constexpr uint32 kMystDemoSaveTag = MKTAG('M', 'Y', 'D', '1');
++
++bool MystDemoSave::supports(const Common::String &gameId, const Common::String &extra) {
++	return gameId == "myst" && extra.equalsIgnoreCase("Demo");
++}
++
++uint16 MystDemoSave::maxBookPages(uint16 card) {
++	switch (card) {
++	case 4047: return 12;
++	case 4059: return 150;
++	case 4060: return 8;
++	case 4068: return 13;
++	case 4080: return 14;
++	default: return 0;
++	}
++}
++
++bool MystDemoSave::read(Common::SeekableReadStream &stream) {
++	if (stream.readUint32BE() != kMystDemoSaveTag)
++		return false;
++	card = stream.readUint16LE();
++	returnCard = stream.readUint16LE();
++	bookPage = stream.readUint16LE();
++	towerAngle = stream.readUint16LE();
++	bookcaseDoor = stream.readByte();
++	redPages = stream.readByte();
++	bluePages = stream.readByte();
++	heldPage = stream.readByte();
++	const uint16 pageCount = maxBookPages(card);
++	return stream.read(fireplaceRows, sizeof(fireplaceRows)) == sizeof(fireplaceRows) &&
++		!stream.err() && !stream.eos() && card >= 4035 && card <= 4396 &&
++		returnCard >= 4035 && returnCard <= 4396 && towerAngle < 360 &&
++		bookcaseDoor <= 1 && redPages <= 127 && bluePages <= 127 &&
++		heldPage <= kWhitePage && (pageCount ? bookPage < pageCount : bookPage == 0);
++}
++
++bool MystDemoSave::write(Common::WriteStream &stream) const {
++	stream.writeUint32BE(kMystDemoSaveTag);
++	stream.writeUint16LE(card);
++	stream.writeUint16LE(returnCard);
++	stream.writeUint16LE(bookPage);
++	stream.writeUint16LE(towerAngle);
++	stream.writeByte(bookcaseDoor);
++	stream.writeByte(redPages);
++	stream.writeByte(bluePages);
++	stream.writeByte(heldPage);
++	return stream.write(fireplaceRows, sizeof(fireplaceRows)) == sizeof(fireplaceRows) && !stream.err();
++}
++
++bool MohawkEngine_Myst::hasDemoSaveSupport() const {
++	const char *signature = _gameDescription->desc.filesDescriptions[0].md5;
++	return scummwebIsPlayerControl() && isGameVariant(GF_DEMO) &&
++		MystDemoSave::supports(getGameId(), ConfMan.get("extra")) &&
++		signature && strcmp(signature, "8ff8ae264f759ea4a79cc915757f17c4") == 0;
++}
++
++Common::Error MohawkEngine_Myst::saveGameStream(Common::WriteStream *stream, bool isAutosave) {
++	if (!hasDemoSaveSupport() || !canSaveGameStateCurrently())
++		return Common::kWritingFailed;
++	MystDemoSave save;
++	static_cast<const MystStacks::Preview *>(_stack.get())->fillDemoSave(save);
++	return save.write(*stream) ? Common::kNoError : Common::kWritingFailed;
++}
++
++Common::Error MohawkEngine_Myst::loadGameStream(Common::SeekableReadStream *stream) {
++	MystDemoSave save;
++	MohawkArchive library;
++	if (!hasDemoSaveSupport() || !save.read(*stream) ||
++		!library.openFile(Common::Path("sneak.dat")) || !library.hasResource(ID_VIEW, save.card) ||
++		!library.hasResource(ID_VIEW, save.returnCard))
++		return Common::kReadingFailed;
++
++	if (_card) {
++		_card->leave();
++		_card.reset();
++	}
++	_gameState->_globals.currentAge = kMystLibrary;
++	_gameState->_globals.heldPage = static_cast<HeldPage>(save.heldPage);
++	_gameState->_globals.bluePagesInBook = save.bluePages;
++	_gameState->_globals.redPagesInBook = save.redPages;
++	_gameState->_myst.libraryBookcaseDoor = save.bookcaseDoor;
++	_gameState->_myst.towerRotationAngle = save.towerAngle;
++	changeToStack(kDemoPreviewStack, save.card, 0, 0);
++	static_cast<MystStacks::Preview *>(_stack.get())->restoreDemoSave(save);
++
++	uint16 cursor = kDefaultMystCursor;
++	if (save.heldPage >= kBlueLibraryPage && save.heldPage <= kBlueFirePlacePage)
++		cursor = kBluePageCursor;
++	else if (save.heldPage >= kRedLibraryPage && save.heldPage <= kRedFirePlacePage)
++		cursor = kRedPageCursor;
++	else if (save.heldPage == kWhitePage)
++		cursor = kWhitePageCursor;
++	setMainCursor(cursor);
++	_cursor->showCursor();
++	return Common::kNoError;
++}
++#endif
++
+ Common::Error MohawkEngine_Myst::loadGameState(int slot) {
++#ifdef __EMSCRIPTEN__
++	if (hasDemoSaveSupport())
++		return Engine::loadGameState(slot);
++#endif
+ 	if (_gameState->load(slot))
+ 		return Common::kNoError;
+ 
+@@ -1077,6 +1183,10 @@
+ }
+ 
+ Common::Error MohawkEngine_Myst::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
++#ifdef __EMSCRIPTEN__
++	if (hasDemoSaveSupport())
++		return canSaveGameStateCurrently() ? Engine::saveGameState(slot, desc, isAutosave) : Common::kWritingFailed;
++#endif
+ 	const Graphics::Surface *thumbnail = nullptr;
+ 	if (_stack->getStackId() == kMenuStack) {
+ 		thumbnail = _gfx->getThumbnailForMainMenu();
+@@ -1094,6 +1204,16 @@
+ }
+ 
+ bool MohawkEngine_Myst::canLoadGameStateCurrently(Common::U32String *msg) {
++#ifdef __EMSCRIPTEN__
++	if (hasDemoSaveSupport()) {
++		if (!_stack || !_card || !isInteractive() || _mouseClicked || _card->isDraggingResource())
++			return false;
++		if (_stack->getStackId() == kDemoStack)
++			return true;
++		return _stack->getStackId() == kDemoPreviewStack &&
++			static_cast<const MystStacks::Preview *>(_stack.get())->canSavePreview() && !_video->isVideoPlaying();
++	}
++#endif
+ 	bool isInMenu = _stack->getStackId() == kMenuStack;
+ 
+ 	if (!isInMenu) {
+@@ -1119,6 +1239,10 @@
+ 		return false;
+ 	}
+ 
++#ifdef __EMSCRIPTEN__
++	if (hasDemoSaveSupport())
++		return _stack->getStackId() == kDemoPreviewStack && _card->getId() >= 4035;
++#endif
+ 	// There's a limited number of stacks the game can save in
+ 	switch (_stack->getStackId()) {
+ 	case kChannelwoodStack:
+diff --git a/engines/mohawk/metaengine.cpp b/engines/mohawk/metaengine.cpp
+--- a/engines/mohawk/metaengine.cpp
++++ b/engines/mohawk/metaengine.cpp
+@@ -122,6 +122,16 @@
+ 
+ } // End of Namespace Mohawk
+ 
++#ifdef __EMSCRIPTEN__
++static bool isMystDemoSaveTarget(const Common::String &gameId, const Common::String &extra) {
++#ifdef ENABLE_MYST
++	return Mohawk::MystDemoSave::supports(gameId, extra);
++#else
++	return false;
++#endif
++}
++#endif
++
+ class MohawkMetaEngine : public AdvancedMetaEngine<Mohawk::MohawkGameDescription> {
+ public:
+ 	const char *getName() const override {
+@@ -146,6 +156,10 @@
+ 		if (!target)
+ 			target = getName();
+ 		Common::String gameId = ConfMan.get("gameid", target);
++#ifdef __EMSCRIPTEN__
++		if (isMystDemoSaveTarget(gameId, ConfMan.get("extra", target)))
++			return MetaEngine::getSavegameFile(saveGameIdx, target);
++#endif
+ 		const char *suffix;
+ 		// Saved games are only supported in Myst/Riven currently.
+ 		if (gameId == "myst")
+@@ -165,7 +179,8 @@
+ bool MohawkMetaEngine::hasFeature(MetaEngineFeature f) const {
+ #ifdef __EMSCRIPTEN__
+ 	if (f == kSavesUseExtendedFormat || f == kSimpleSavesNames)
+-		return Mohawk::LivingBooksPageSave::supports(ConfMan.get("gameid"), ConfMan.get("extra"));
++		return Mohawk::LivingBooksPageSave::supports(ConfMan.get("gameid"), ConfMan.get("extra")) ||
++			isMystDemoSaveTarget(ConfMan.get("gameid"), ConfMan.get("extra"));
+ #endif
+ 	return
+ 		(f == kSupportsListSaves)
+@@ -205,7 +220,8 @@
+ 	Common::String gameId = ConfMan.get("gameid", target);
+ 	SaveStateList saveList;
+ #ifdef __EMSCRIPTEN__
+-	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)))
++	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)) ||
++		isMystDemoSaveTarget(gameId, ConfMan.get("extra", target)))
+ 		return MetaEngine::listSaves(target);
+ #endif
+ 
+@@ -242,7 +258,8 @@
+ 	Common::String gameId = ConfMan.get("gameid", target);
+ 
+ #ifdef __EMSCRIPTEN__
+-	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)))
++	if (Mohawk::LivingBooksPageSave::supports(gameId, ConfMan.get("extra", target)) ||
++		isMystDemoSaveTarget(gameId, ConfMan.get("extra", target)))
+ 		return MetaEngine::removeSaveState(target, slot);
+ #endif
+ #ifdef ENABLE_MYST
+@@ -268,6 +285,13 @@
+ 			return SaveStateDescriptor();
+ 		return MetaEngine::querySaveMetaInfos(target, slot);
+ 	}
++#ifdef ENABLE_MYST
++	if (isMystDemoSaveTarget(gameId, ConfMan.get("extra", target))) {
++		Common::ScopedPtr<Common::InSaveFile> file(g_system->getSavefileManager()->openForLoading(getSavegameFile(slot, target)));
++		Mohawk::MystDemoSave saved;
++		return file && saved.read(*file) ? MetaEngine::querySaveMetaInfos(target, slot) : SaveStateDescriptor();
++	}
++#endif
+ #endif
+ 
+ #ifdef ENABLE_MYST
