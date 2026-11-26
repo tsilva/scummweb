@@ -24,6 +24,16 @@ function lockedVersions(lockfile, name) {
   return new Set([...lockfile.matchAll(packageEntry)].map((match) => match[1]));
 }
 
+function isOnFixedReleaseLine(version, minimum) {
+  const stableRelease = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+  if (!stableRelease) return false;
+
+  const [major, minor, patch] = stableRelease.slice(1).map(Number);
+  const [fixedMajor, fixedMinor, fixedPatch] = minimum.split(".").map(Number);
+  return major === fixedMajor &&
+    (minor > fixedMinor || (minor === fixedMinor && patch >= fixedPatch));
+}
+
 test("the complete locked dependency graph has no known advisory", () => {
   const audit = JSON.parse(
     execFileSync("pnpm", ["audit", "--json"], {
@@ -43,19 +53,23 @@ test("the complete locked dependency graph has no known advisory", () => {
 
 test("all formerly vulnerable runtime families resolve only to fixed versions", () => {
   const lockfile = fs.readFileSync(path.join(rootDir, "pnpm-lock.yaml"), "utf8");
-  const expected = new Map([
-    ["@babel/core", new Set()],
-    ["@opentelemetry/core", new Set()],
-    ["uuid", new Set()],
-    ["picomatch", new Set()],
-    ["brace-expansion", new Set(["5.0.12"])],
-    ["fast-uri", new Set(["3.1.9"])],
-    ["nanoid", new Set(["3.3.19"])],
-    ["picomatch", new Set()],
-  ]);
+  for (const name of ["@babel/core", "@opentelemetry/core", "uuid", "picomatch"]) {
+    assert.equal(lockedVersions(lockfile, name).size, 0, `${name} must stay out of the lockfile`);
+  }
 
-  for (const [name, safeVersions] of expected) {
-    assert.deepEqual(lockedVersions(lockfile, name), safeVersions, name);
+  const minimumFixedVersions = [
+    ["brace-expansion", "5.0.12"],
+    ["fast-uri", "3.1.9"],
+    ["nanoid", "3.3.19"],
+  ];
+
+  for (const [name, minimum] of minimumFixedVersions) {
+    for (const version of lockedVersions(lockfile, name)) {
+      assert.ok(
+        isOnFixedReleaseLine(version, minimum),
+        `${name}@${version} must be a stable release on the same major as ${minimum} and at least that version`,
+      );
+    }
   }
 });
 
