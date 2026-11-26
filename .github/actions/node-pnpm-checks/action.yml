@@ -1,0 +1,34 @@
+name: ScummWEB application checks
+description: Audit dependencies, prepare ScummVM and artwork, and test and build ScummWEB.
+
+runs:
+  using: composite
+  steps:
+    - name: Audit dependency graph
+      shell: bash
+      run: pnpm audit --audit-level=low
+
+    - name: Check JavaScript syntax
+      shell: bash
+      run: pnpm lint
+
+    - name: Prepare the ScummVM runtime
+      uses: ./.github/actions/prepare-scummvm
+
+    - name: Restore verified artwork
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .cache/artwork
+        key: artwork-${{ runner.os }}-v1-${{ hashFiles('data/artwork-storage.json') }}
+        restore-keys: artwork-${{ runner.os }}-v1-
+
+    - name: Test
+      shell: bash
+      run: |
+        pnpm test
+        pnpm test:backbone
+        pnpm test:browser-tools
+
+    - name: Build production application
+      shell: bash
+      run: pnpm build

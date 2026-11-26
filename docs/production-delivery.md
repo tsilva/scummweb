@@ -4,8 +4,11 @@ Use the [build and release skill](../.codex/skills/scummweb_build-release/SKILL.
 for agent-operated builds, deployments and production verification.
 
 [CI](../.github/workflows/ci.yml) runs the application gates and Dependency
-Review in parallel. CI calls the shared dependency review on `tsilva/.github`
-`main` and reports its result under the required `Dependency review` check.
+Review in parallel. CI calls `tsilva/.github` on `main` for Dependency Review
+and the Node and pnpm setup. The shared setup installs from ScummWEB's lockfile
+and runs the [local application checks](../.github/actions/node-pnpm-checks/action.yml).
+CI reports the results under the required `Dependency security and application
+gates` and `Dependency review` checks.
 Both checks must pass on the current `main` push before
 [Production delivery](../.github/workflows/production-delivery.yml) can proceed.
 Delivery scans for committed secrets, then calls a pinned shared workflow that

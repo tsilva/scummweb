@@ -20,53 +20,26 @@ concurrency:
 
 jobs:
   application:
+    uses: tsilva/.github/.github/workflows/node-pnpm-ci.yml@main
+    with:
+      node-version: "22"
+      workspace-filters: |
+        scummweb
+        scummweb-agent-backbone
+        scummweb-browser-tools
+      timeout-minutes: 90
+
+  application-check:
     name: Dependency security and application gates
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
-
+    needs: application
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Set up Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6.3.0
-        with:
-          node-version: 22
-
-      - name: Enable pnpm
-        run: corepack enable && corepack prepare pnpm@10.27.0 --activate
-
-      - name: Install from lockfile
-        run: >-
-          pnpm install --filter scummweb --filter scummweb-agent-backbone
-          --filter scummweb-browser-tools --frozen-lockfile --ignore-scripts
-
-      - name: Audit dependency graph
-        run: pnpm audit --audit-level=low
-
-      - name: Check JavaScript syntax
-        run: pnpm lint
-
-      - name: Prepare the ScummVM runtime
-        uses: ./.github/actions/prepare-scummvm
-
-      - name: Restore verified artwork
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .cache/artwork
-          key: artwork-${{ runner.os }}-v1-${{ hashFiles('data/artwork-storage.json') }}
-          restore-keys: artwork-${{ runner.os }}-v1-
-
-      - name: Test
-        run: |
-          pnpm test
-          pnpm test:backbone
-          pnpm test:browser-tools
-
-      - name: Build production application
-        run: pnpm build
+      - name: Require successful application checks
+        env:
+          APPLICATION_RESULT: ${{ needs.application.result }}
+        run: test "$APPLICATION_RESULT" = success
 
   review-dependencies:
     uses: tsilva/.github/.github/workflows/dependency-review.yml@main
