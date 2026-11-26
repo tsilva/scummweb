@@ -67,3 +67,17 @@ jobs:
 
       - name: Build production application
         run: pnpm build
+
+  review-dependencies:
+    uses: tsilva/.github/.github/workflows/dependency-review.yml@main
+
+  dependency-review:
+    name: Dependency review
+    needs: review-dependencies
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful dependency review
+        env:
+          REVIEW_RESULT: ${{ needs.review-dependencies.result }}
+        run: test "$REVIEW_RESULT" = success
