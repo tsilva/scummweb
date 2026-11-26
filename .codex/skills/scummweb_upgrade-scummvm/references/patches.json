@@ -1940,8 +1940,8 @@
     {
       "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzz-he-demo-room-saves.patch",
       "status": "active",
-      "sha256": "d43499cd94317d4e0c65b223fbe7fcd04e139e2096bb533e4f2131d6ef7c439e",
-      "purpose": "Preserve script-painted room buffers in the verified Freddi Fish 3, Putt-Putt Saves the Zoo and Big Thinkers! 1st Grade demos.",
+      "sha256": "36046dbd90e3fb59c67987ee9731a0d2673f1c3b264c62b3e81bff01ba6e4eb7",
+      "purpose": "Preserve script-painted room buffers in hosted saves from the pinned interactive Humongous Entertainment demos.",
       "invariants": [
         "Keep the native SCUMM state and add bounded graphics buffers. Preserve the saved room’s front, background and depth buffers across the first redraw."
       ],
@@ -1966,15 +1966,15 @@
     {
       "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzz-samnmax-demo-saves.patch",
       "status": "active",
-      "sha256": "36c777ef3be1296ec473749658e31b2b4fa1a8868405cc5c0e098b8fbee64497",
-      "purpose": "Enable native SCUMM saves in the English voiced Sam & Max Hit the Road demo.",
+      "sha256": "5881d605752d8a3fb5f0fd859d026b75d72c0544d0f0ebef84363970a85828eb",
+      "purpose": "Enable native SCUMM saves in the bundled English Sam & Max Hit the Road, Fate of Atlantis and EGA Secret of Monkey Island demos.",
       "invariants": [
-        "Use the pinned demo data signature. Share the stable input guard with Full Throttle and preserve native save files."
+        "Require the pinned demo signatures. Share the safe gameplay boundary with Full Throttle and preserve the native save format."
       ],
       "verification": [
-        "Save and load in the office, then reopen a save after moving. Check that both demos still reject saving during the original opening."
+        "Change position in the playable scene, then restore it from Load and a fresh Continue in all three demos. Check that the bundled intro checkpoints stay out of the saved-game list."
       ],
-      "retire_when": "Upstream supports the hosted menu for this edition with equivalent input gating."
+      "retire_when": "Upstream supports equivalent save and restore from the web menu in these exact playable demos."
     },
     {
       "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzz-loogie-demo-saves.patch",
@@ -2033,7 +2033,7 @@
     {
       "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-bear-stormin-flight-saves.patch",
       "status": "active",
-      "sha256": "1ff248e39acc6ea7c4575bff845819cc7956070299d285f43023fee8b0be1260",
+      "sha256": "1d75b3ae6f3a1362c8d1e7e5e337cd2559ab02efb94a8322d84437b9db879cdc",
       "purpose": "Expose the original SCUMM snapshot during Bear Stormin’ mouse-driven flight despite the hidden cursor.",
       "invariants": [
         "Match the exact DOS HE62 index before bypassing the cursor check. Preserve the native input boundary and the saved flight graphics."
@@ -2056,6 +2056,61 @@
         "Save after changing the selected character or its position, change it again, then verify manual Load and a newer exit autosave through fresh Continue."
       ],
       "retire_when": "Upstream supports equivalent hosted save listing, save, and restore for the DOS interactive demo."
+    },
+    {
+      "path": "patches/scummvm/99-scumm-startup-autosave-overlay.patch",
+      "status": "active",
+      "sha256": "36056a5becbb9d2eb6685fc9f1c08d76f322db0726767b352afa342ce37dd4ad",
+      "purpose": "Keep a rotating SCUMM checkpoint available until the native cold-load attempt completes.",
+      "invariants": [
+        "Initial frame presentation can precede SCUMM startup save reads. Release the temporary overlay after native startup and preserve older manual saves in the same slot."
+      ],
+      "verification": [
+        "Save an earlier position manually, exit from a later position, and Continue in Fate of Atlantis and the EGA Secret of Monkey Island. Verify the later position and the older manual slot."
+      ],
+      "retire_when": "Upstream supplies a native startup completion signal and a reliable way to mount checkpoint bytes through it."
+    },
+    {
+      "path": "patches/scummvm/99-freescape-browser-save-thumbnail.patch",
+      "status": "active",
+      "sha256": "8ed507d1ab2bb90cbe0aa5e4484510415d9ddfd5eb88b7110f1bbb05e7a6c0c2",
+      "purpose": "Let Freescape browser checkpoints capture a thumbnail even when the native pause dialog has never captured the screen.",
+      "invariants": [
+        "Retain the original scaled thumbnail when the native pause screenshot is available. Use the engine base thumbnail path for browser captures without it."
+      ],
+      "verification": [
+        "In Castle Master, save from the browser drawer, exit, Continue from the library and verify the gameplay view and subsequent saves without opening a native dialog."
+      ],
+      "retire_when": "Upstream supports save thumbnail capture before the native pause dialog has taken a screenshot."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-pegasus-demo-saves.patch",
+      "status": "active",
+      "sha256": "ca4735a80388f1615de4bab6de6169a141e9e84e2531fef657b822f5853fe0bb",
+      "purpose": "Expose the original Pegasus Prime Macintosh preview checkpoint stream in numbered browser slots.",
+      "invariants": [
+        "Match the catalog Macintosh demo resource size and preserve the full editions’ named native saves.",
+        "Use the native state stream and retain the original demo interface and launch menus."
+      ],
+      "verification": [
+        "Save in the interactive prehistoric area, change view, and verify both in-session Load and fresh Continue."
+      ],
+      "retire_when": "Upstream supports and lists reliable numbered saves for this interactive demo."
+    },
+    {
+      "path": "patches/scummvm/99zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz-gobliiins-demo-checkpoint.patch",
+      "status": "active",
+      "sha256": "3cce4f0b273cca4c02962ce0b8ac5f7ecd316be319908350d6b425f63982fa3b",
+      "purpose": "Save the original scene, puzzle objects, interpreter variables and walk map in the DOS Gobliiins v2.0 demo.",
+      "invariants": [
+        "Capture only recognized input blocks after the original scene and resources exist.",
+        "Recreate resources through the original scene transition and restore serialized data with no process pointers."
+      ],
+      "verification": [
+        "Switch the active goblin and change its position before resuming an older checkpoint through Load and fresh Continue.",
+        "Check a changed puzzle object and the third room. Reject other Gob editions and invalid checkpoint headers."
+      ],
+      "retire_when": "Upstream provides a reliable native checkpoint path for the pinned DOS Gobliiins demo."
     }
   ]
 }

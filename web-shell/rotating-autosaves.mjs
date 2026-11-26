@@ -57,7 +57,8 @@ export function readAutosaveRing(read, match, excluded = new Set()) {
 export function installRotatingAutosaves(scope, FS, savePath, params) {
   const enabled = params.get("dropbox") === "true" && params.get("hostPlayer") === "1"
     && !params.has("agentSaveScope") && !params.has("saveQuery");
-  const canCapture = () => enabled && scope.__scummwebSaveStatus?.supported === true
+  let waitingForScummStartup = false;
+  const canCapture = () => enabled && !waitingForScummStartup && scope.__scummwebSaveStatus?.supported === true
     && scope.__scummwebReadyState?.state === "ready";
   const matches = (data, identity) => ["engineId", "gameId", "target", "extra"].every(key => data[key] === identity[key]);
   const read = name => FS.readFile(`${savePath}/${name}`, { encoding: "utf8" });
@@ -78,6 +79,7 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
       try { FS.unlink(`/tmp/scummweb-intro/${name}`); } catch { /* Temporary files die with the frame. */ }
     }
     overlay = null;
+    waitingForScummStartup = false;
     delete scope.__scummwebHasIntroCheckpoint;
   }
   return {
@@ -89,8 +91,11 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
     find(name) { return available().find(entry => entry.name === name)?.record; },
     canCapture,
     due() {
-      if (scope.__scummwebReadyState?.state === "ready") clearOverlay();
+      if (!waitingForScummStartup && scope.__scummwebReadyState?.state === "ready") clearOverlay();
       return canCapture() && Date.now() >= due;
+    },
+    finishScummStartup() {
+      if (waitingForScummStartup) clearOverlay();
     },
     retry() { due = Date.now() + 5000; },
     afterLoad() { due = 0; },
@@ -116,6 +121,8 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
           }
           scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) &&
             !scope.__scummwebScanningSaves && !scope.__scummwebDiagnosticSaves?.active;
+          // SCUMM can present a frame during setup, before reading the selected slot.
+          waitingForScummStartup = identity.engineId === "scumm";
           scope.__scummwebStartupAutosave = name;
           due = 0;
           return record.slot;

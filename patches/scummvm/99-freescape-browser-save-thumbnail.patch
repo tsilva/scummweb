@@ -1,0 +1,17 @@
+diff --git a/engines/freescape/metaengine.cpp b/engines/freescape/metaengine.cpp
+--- a/engines/freescape/metaengine.cpp
++++ b/engines/freescape/metaengine.cpp
+@@ -240,6 +240,13 @@ Common::KeymapArray FreescapeMetaEngine::initKeymaps(const char *target) const {
+ 
+ void FreescapeMetaEngine::getSavegameThumbnail(Graphics::Surface &thumb) {
+ 	Freescape::FreescapeEngine *engine = (Freescape::FreescapeEngine *)g_engine;
++#ifdef __EMSCRIPTEN__
++	// Browser checkpoints can run without first opening a native dialog.
++	if (!engine->_savedScreen) {
++		MetaEngine::getSavegameThumbnail(thumb);
++		return;
++	}
++#endif
+ 	assert(engine->_savedScreen);
+ 	Graphics::Surface *scaledSavedScreen = engine->_savedScreen->scale(kThumbnailWidth, kThumbnailHeight2);
+ 	assert(scaledSavedScreen);

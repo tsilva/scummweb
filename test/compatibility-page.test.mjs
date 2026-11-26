@@ -21,7 +21,9 @@ test("compatibility links cover every recognized game without changing recorded 
     const { href, ...record } = entries[index];
     assert.deepEqual(record, entry);
   }
-  assert.equal(entries.find((entry) => entry.href === "/the-secret-of-monkey-island-demo").status, "not-tested");
+  const demo = entries.find((entry) => entry.href === "/the-secret-of-monkey-island-demo");
+  assert.equal(demo.status, "startup-verified");
+  assert.match(demo.edition, /DOS EGA demo/);
   assert.equal(entries.find((entry) => entry.href === "/the-secret-of-monkey-island").status, "startup-verified");
 });
 

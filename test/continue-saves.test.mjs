@@ -134,6 +134,8 @@ test("demos with deferred Continue queue the newest slot without a native startu
   for (const { name, ...identity } of [
     { engineId: "mads", gameId: "nebular", target: "nebular-demo", extra: "demo", name: "nebular-demo.001" },
     { engineId: "scumm", gameId: "freddi3", target: "freddi3-demo", extra: "demo", name: "freddi3-demo.s01" },
+    { engineId: "scumm", gameId: "BluesABCTime", target: "bluesabctime-demo", extra: "Demo", name: "bluesabctime-demo.s01" },
+    { engineId: "gob", gameId: "gob1", target: "gob1-demo", extra: "Interactive Demo (v2.0)", name: "gob1-demo.001" },
     { engineId: "agos", gameId: "simon1", target: "simon1-demo", extra: "CD Demo", name: "simon1-demo.001" },
     { engineId: "mohawk", gameId: "myst", target: "myst-demo", extra: "Demo", name: "myst-demo.001" },
   ]) {
@@ -150,7 +152,7 @@ test("demos with deferred Continue queue the newest slot without a native startu
       assert.equal(f.scan([[1, name]]), -1);
       assert.equal(f.scan([[1, name]]), -1);
       assert.deepEqual(actions, autosave ? [[1, [{ name, contents: "Kg==" }]]] : [[1]]);
-      if (identity.engineId === "scumm") {
+      if (identity.engineId === "scumm" || identity.gameId === "gob1") {
         assert.equal(f.scope.__scummwebUpdateIntroSkip(false), false);
         assert.equal(f.scope.__scummwebUpdateIntroSkip(true), true);
         restoring = false;
