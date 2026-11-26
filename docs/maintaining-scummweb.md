@@ -361,7 +361,8 @@ Gobliiins’ bundled interactive DOS demo uses the native
 intro action and retains its original character controls; saving through the
 ScummWEB game menu is unavailable for this edition. Gobliins 2’s interactive DOS
 demo starts at its original clickable title and uses British English (`gb`) for
-exact engine detection; it also has no saving through the ScummWEB game menu.
+exact engine detection. Open the ScummWEB menu during gameplay to save or load
+the current scene. Continue opens the latest checkpoint directly.
 Goblins Quest 3’s English DOS interactive demo starts from its original clickable
 title. Once the ship accepts input, the ScummWEB Game Menu can save and load the
 game’s original slots. Continue waits until the ship can load the selected save.
@@ -377,17 +378,17 @@ are supported in this edition. Its bundled intro checkpoint starts at the first
 playable town scene after the original narration, before any player action.
 
 Space Quest 6’s voiced interactive demo retains its original title, instructions
-and opening scenes. This edition explicitly disables saving and restoring, so
-it has no intro checkpoint or Continue.
+and opening scenes. The ScummWEB menu saves the active scene once gameplay
+accepts input. Continue restores the latest checkpoint.
 
 Myst’s Windows CD demo retains its original preview menu and interactive library.
 Native Skip intro advances past the publisher opening while preserving the
-Sneak Preview, Scenes from Myst and Making of Myst choices. Saving and loading
-are disabled for this demo, so it has no checkpoint or Continue.
+Sneak Preview, Scenes from Myst and Making of Myst choices. The ScummWEB menu
+can save and restore the interactive library from Sneak Preview.
 
 Toonstruck’s English DOS demo uses the complete unchanged official ZIP and shares the original game’s artwork. Native intro skip preserves the opening Zanydu scene. Walking, Save/Load and Continue are verified; the original demo content and choices remain intact.
 
-Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save/Load and the original quick-save command are rejected at the tested opening scenes. No checkpoint or Continue save is available for this demo.
+Simon the Sorcerer’s English DOS CD demo keeps its complete unchanged official ZIP, including installer files and notices. Its brief publisher splash leads directly to the original prison scene. Movement and verb selection work. ScummWEB Save, Load and Continue preserve Simon’s location and restore the original verb and inventory panels.
 
 Simon the Sorcerer II’s English DOS CD demo preserves the complete unchanged official ZIP, including its compressed setup bundle and notices. The original intro can be skipped with the supported native action. Movement and in-session Save/Load work. Continue skips the opening and restores the saved position with the original quick-load routine. No checkpoint is seeded. Its catalog target follows the original fixed simon2 save prefix.
 
@@ -399,7 +400,7 @@ screen, or from the ScummWEB menu once the playable scene accepts input.
 
 Lands of Lore’s English DOS interactive CD demo preserves the complete unchanged official ZIP and its original notices. Native intro skip reaches the original Gladstone dungeon. Turning, personal-import and bucket-backed Save/Load and cached Continue restored the tested direction. Let movement settle before loading; an immediate post-turn request was rejected. No checkpoint is seeded.
 
-Putt-Putt Saves the Zoo’s English Windows HE72 demo keeps its complete unchanged official ZIP, including original executable, W32 runtime and compiled Help. Native intro skip reaches the original raft scene, and selecting the inventory log works. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
+Putt-Putt Saves the Zoo’s English Windows HE72 demo keeps its complete unchanged official ZIP, including original executable, W32 runtime and compiled Help. Native intro skip reaches the original raft scene. ScummWEB Save, Load and Continue preserve the state of the raft and the repair log in inventory.
 
 Putt-Putt Travels Through Time’s English US Windows HE90 demo preserves the complete unchanged official ZIP and its original notices. Native intro skip retains the four-era portal choice; selecting the dinosaur portal enters its original scene. Personal and hosted saving is rejected in that tested scene; no Continue checkpoint is seeded.
 
@@ -410,7 +411,7 @@ Pajama Sam 2’s English Windows HE95 demo preserves the complete unchanged offi
 Freddi Fish 3’s full English Windows CD edition shares its twelve save slots
 between the ScummWEB Game Menu and the original save and load screens. The
 original picker shows ScummWEB save captions with its generic preview. The
-English Windows mini demo omits the scripts for saving and loading.
+English Windows mini demo uses separate browser saves.
 
 Touché’s English DOS demo preserves the complete unchanged official ZIP, including its DATABASE directory and root speech files. The native intro action reaches the original street without a seeded checkpoint. Movement, Save/Load and Continue restore the tested character position.
 
@@ -430,17 +431,21 @@ Bud Tucker’s English DOS interactive demo keeps the complete unchanged officia
 
 Rex Nebular’s English DOS three-room interactive demo keeps the complete unchanged official ZIP, including its original intro, executables and sound drivers. It preserves the original opening and native Skip intro without a seeded checkpoint. Movement, in-session Save/Load and Continue restore the tested cabin position. Continue initializes the original first room before loading.
 
-Torin’s Passage’s English DOS/Windows interactive demo keeps its complete unchanged official ZIP, including the original packed setup, Help, drivers, documents and audio. Its original preview menu and Escarpa start prompt are preserved without a seeded browser checkpoint. Movement, scene navigation and native pause are verified. Saving was rejected in both tested Escarpa views; Load and Continue have no verified player save. Its original Windows Write README is delivered as readable UTF-8 text; the source ZIP remains unchanged.
+Torin’s Passage’s English DOS/Windows interactive demo keeps its complete unchanged official ZIP, including the original packed setup, Help, drivers, documents and audio. Its original preview menu and Escarpa start prompt are preserved without a seeded browser checkpoint. Movement, scene navigation and native pause are verified. ScummWEB Save, Load and Continue restore Torin’s location on the Escarpa ledge. Its original Windows Write README is delivered as readable UTF-8 text; the source ZIP remains unchanged.
+
+The English Windows Myst preview uses its own ScummWEB save slots. Save, Load and Continue preserve the current library view and the open page of a book. Fresh Play opens the original preview menu.
 
 Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. The original menu, New Game movie and office start prompt are preserved without a seeded browser checkpoint. Scrapbook interaction and page navigation work. ScummWEB saves use the native SCI32 format. Load Game can restore the office from the scrapbook, and Continue can reopen the saved office or scrapbook.
 
-Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. Saving was rejected in the tested reached scene; Load and Continue have no verified player save. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
+The interactive English demos of Space Quest 6, Lighthouse, Leisure Suit Larry 7 and Torin’s Passage also use native SCI32 saves. Use the ScummWEB menu when gameplay is active. Continue restores the saved game, and Play from the beginning opens the original demo menu or introduction. The English DOS Full Throttle demo uses its native SCUMM format once gameplay input is available.
 
-Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. Its original menu, game naming and chapter selection are preserved without a seeded browser checkpoint. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. Movies and kitchen navigation work; the original P control-panel Save/Restore bookmark and native Continue Old Game work. ScummWEB’s separate Save is rejected and Load remains empty even after a native bookmark; reopen with Play and use the original game controls. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
+Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. ScummWEB Save, Load and Continue restore the saved Island Fortress view. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
 
-Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complete unchanged official ZIP, including original drivers, PKLITE-packed installer, DOS Help, audio/music and README. The pinned demo uses SCI2.1, while the full edition uses SCI3. Its original menu offers a promotional tour and a playable Liar’s Dice scene; tutorial and dice quantity selection work. Saving was rejected in the tested dice scene, with no verified Load or Continue save. No browser checkpoint is seeded.
+Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. Its original menu, game naming and chapter selection are preserved without a seeded browser checkpoint. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. ScummWEB Save, Load and Continue restore the kitchen state between movies. The original P control-panel bookmark and Continue Old Game remain available inside the demo. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
 
-Freddi Fish 3’s English Windows HE90 mini demo keeps the complete unchanged official ZIP, including original runtime libraries, promotional bitmap, settings and compiled Help. Native intro skip reaches Pelican Sam’s landing; buoy navigation opens the net scene. Saving was rejected in that tested scene; no browser checkpoint is seeded.
+Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complete unchanged official ZIP, including original drivers, PKLITE-packed installer, DOS Help, audio/music and README. The pinned demo uses SCI2.1, while the full edition uses SCI3. Its original menu offers a promotional tour and a playable Liar’s Dice scene; tutorial and dice quantity selection work. ScummWEB Save, Load and Continue preserve the current dice selection and roll once the introductory dialogue ends.
+
+Freddi Fish 3’s English Windows HE90 mini demo keeps the complete unchanged official ZIP, including original runtime libraries, promotional bitmap, settings and compiled Help. Native intro skip reaches Pelican Sam’s landing, and buoy navigation opens the net scene. ScummWEB Save, Load and Continue preserve both views and the active room objects.
 
 Freddi Fish 4’s English UK Windows HE99 demo keeps the complete unchanged official ZIP, including original executable/runtime library, settings, compiled Help and icon. Native intro skip and canyon navigation reach Gill Barker’s wheel-nut stall. ScummWEB saving is unavailable and the original demo computer opens only Quit; no browser checkpoint is seeded.
 
@@ -456,9 +461,9 @@ The English Windows HE70 demo of Fatty Bear’s Birthday Surprise keeps its comp
 
 Backyard Football’s English Windows demo preserves its original mode selection and bundled two-player controls note. The one-player matchup and kick return work. The original note specifies mouse input for the 49ers and a joystick or gamepad for the Melonheads in two-player mode. ScummWEB saving was unavailable in the tested play.
 
-Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon flying minigame. The ScummVM downloads page lists it as a demo. Press Space to pause or resume flight. The original level prompts display passcodes. ScummWEB saving was unavailable during the tested flight.
+Bear Stormin’ is the standalone DOS version of the Putt-Putt Goes to the Moon flying minigame. The ScummVM downloads page lists it as a demo. Press Space to pause or resume flight. The original level prompts display passcodes. Open the ScummWEB menu during active flight to save or load the aircraft position, fuel and balloon progress. Continue resumes the latest checkpoint.
 
-Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky’s activity room. The native Skip Intro action works. Select the puzzle box to start the jigsaw and move pieces from the tray to the board. ScummWEB saving was unavailable in the tested puzzle.
+Big Thinkers! 1st Grade’s American English Windows demo opens in Ben and Becky’s activity room. The native Skip Intro action works. Select the puzzle box to start the jigsaw and move pieces from the tray to the board. ScummWEB Save, Load and Continue preserve the jigsaw board and the arrangement of the loose pieces.
 
 Big Thinkers! Kindergarten’s American English Windows demo includes Bird Perch Math, Hide ’n’ Seek, and Mealtime Mazes. The native Skip Intro action reaches the original backyard. Choose the fence to play Bird Perch Math, then select the number that matches the birds. ScummWEB saving was unavailable in the tested activity. The complete original Windows Help file remains inside the download.
 
@@ -489,13 +494,13 @@ The original Windows v1.1 demo of The New Kid on the Block includes one English 
 
 The original Commodore 64 Maniac Mansion demo offers a Hands-On Demo and a Self-Running Demo. F7 returns to the original menu. ScummWEB can save and restore progress in the hands-on mode.
 
-The original DOS guide opens at its instructions. Press Space to visit the next attraction.
+Fun Seeker’s Guide to Eastern Madera County opens at its original instructions. Press Space to visit the next attraction. Save, Load and Continue restore the selected page and its text.
 
-The original DOS game begins its scrolling arcade sequence after launch. Move the pointer over the playfield to guide Ms. Astro Chicken.
+Ms. Astro Chicken begins its scrolling arcade sequence after launch. Move the pointer over the playfield to guide the chicken. Save, Load and Continue restore the active stage and its counters.
 
-The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. Dismiss the original instructions, click the picture to animate a character, or select the reading icon beside the sentence. The original stop sign opens Sierra’s end card.
+The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. Dismiss the original instructions, click the picture to animate a character, or select the reading icon beside the sentence. Save, Load and Continue reopen the story page. The original stop sign opens Sierra’s end card.
 
-The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
+The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Save, Load and Continue restore the selected character and the current rooftop round, including the hit counter. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
 
 Mage’s Initiation’s early Kickstarter demo starts with two original instruction screens. Click each to enter the Reading Hall as the Fire Mage. Click a walkable spot to move and press Tab to open the original spellbook. This edition has no speech pack. The gallery shows screenshots supplied by Himalaya Studios for the game.
 

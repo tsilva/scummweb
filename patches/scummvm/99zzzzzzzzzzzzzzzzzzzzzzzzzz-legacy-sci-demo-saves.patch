@@ -1,0 +1,52 @@
+diff --git a/engines/sci/metaengine.cpp b/engines/sci/metaengine.cpp
+--- a/engines/sci/metaengine.cpp
++++ b/engines/sci/metaengine.cpp
+@@ -19,6 +19,9 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ #include "engines/advancedDetector.h"
+ #include "engines/scummweb-agent-loop.h"
+ #ifdef __EMSCRIPTEN__
+@@ -391,9 +394,38 @@
+ 	return !_gamestate->executionStackBase;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++static bool supportsHostedSci16DemoSave(SciGameId id, const ADGameDescription &description) {
++	if (getSciVersion() >= SCI_VERSION_2 || description.platform != Common::kPlatformDOS ||
++		!scummwebIsPlayerControl())
++		return false;
++
++	const char *signature = description.filesDescriptions[0].md5;
++	if (!signature)
++		return false;
++
++	switch (id) {
++	case GID_SLATER:
++		return strcmp(signature, "61b4f74039399e5aa1e737b16d0fc023") == 0;
++	case GID_FUNSEEKER:
++		return strcmp(signature, "7ee6859ef74314f6d91938c3595348a9") == 0;
++	case GID_MSASTROCHICKEN:
++		return strcmp(signature, "5b457cbe5042f557e5b610148171f6c0") == 0;
++	default:
++		return false;
++	}
++}
++#endif
++
+ bool SciEngine::canSaveGameStateCurrently(Common::U32String *msg) {
+ 	bool requireMenuOption = true;
+ #ifdef __EMSCRIPTEN__
++	// These demos omit the original save action or the adventure User object.
++	// The hosted menu runs at the top-level SCI16 event boundary.
++	if (supportsHostedSci16DemoSave(getGameId(), *_gameDescription))
++		return !_gamestate->executionStackBase && _gamestate->_delayedRestoreGameId < 0 &&
++			_gamestate->variables[VAR_GLOBAL] && !getGameObject().isNull();
++
+ 	// The hosted providers call at an event boundary. Keep the
+ 	// engine's game exclusions, stack checks and user-control restrictions.
+ 	requireMenuOption = !scummwebSupportsSci32DemoSaves(*this) &&

@@ -1,0 +1,210 @@
+diff --git a/engines/sci/graphics/screen.h b/engines/sci/graphics/screen.h
+--- a/engines/sci/graphics/screen.h
++++ b/engines/sci/graphics/screen.h
+@@ -82,6 +82,11 @@
+ 	byte getColorDefaultVectorData() { return _colorDefaultVectorData; }
+ 
+ 	void clearForRestoreGame();
++#ifdef __EMSCRIPTEN__
++	void saveHostedDemoScreen(Common::WriteStream &stream) const;
++	void queueHostedDemoScreen(Common::SeekableReadStream &stream);
++	void restoreHostedDemoScreen();
++#endif
+ 	void copyToScreen();
+ 	void kernelSyncWithFramebuffer();
+ 	void copyRectToScreen(const Common::Rect &rect);
+@@ -215,6 +220,9 @@
+ 	bool _paletteModsEnabled;
+ 
+ 	byte *_backupScreen; // for bak* functions
++#ifdef __EMSCRIPTEN__
++	Common::Array<byte> _hostedDemoScreen;
++#endif
+ 
+ 	void displayRect(const Common::Rect &rect, int x, int y);
+ 
+diff --git a/engines/sci/graphics/screen.cpp b/engines/sci/graphics/screen.cpp
+--- a/engines/sci/graphics/screen.cpp
++++ b/engines/sci/graphics/screen.cpp
+@@ -22,6 +22,9 @@
+ #include "common/config-manager.h"
+ #include "common/util.h"
+ #include "common/system.h"
++#ifdef __EMSCRIPTEN__
++#include "common/stream.h"
++#endif
+ #include "common/timer.h"
+ #include "graphics/surface.h"
+ #include "graphics/paletteman.h"
+@@ -223,6 +226,9 @@
+ 
+ // should not be used regularly; only meant for restore game
+ void GfxScreen::clearForRestoreGame() {
++#ifdef __EMSCRIPTEN__
++	_hostedDemoScreen.clear();
++#endif
+ 	// reset all screen data
+ 	memset(_visualScreen, 0, _pixels);
+ 	memset(_priorityScreen, 0, _pixels);
+@@ -232,6 +238,50 @@
+ 	_fontIsUpscaled = false;
+ 	copyToScreen();
+ }
++
++#ifdef __EMSCRIPTEN__
++static constexpr uint32 kHostedSci16ScreenTag = MKTAG('S', 'W', '1', '6');
++
++void GfxScreen::saveHostedDemoScreen(Common::WriteStream &stream) const {
++	stream.writeUint32BE(kHostedSci16ScreenTag);
++	stream.writeUint16LE(_width);
++	stream.writeUint16LE(_height);
++	stream.writeUint16LE(_displayWidth);
++	stream.writeUint16LE(_displayHeight);
++	stream.write(_visualScreen, _pixels);
++	stream.write(_priorityScreen, _pixels);
++	stream.write(_controlScreen, _pixels);
++	stream.write(_displayScreen, _displayPixels);
++}
++
++void GfxScreen::queueHostedDemoScreen(Common::SeekableReadStream &stream) {
++	const uint32 bytes = 3 * _pixels + _displayPixels;
++	if (stream.size() - stream.pos() != 12 + bytes ||
++		stream.readUint32BE() != kHostedSci16ScreenTag ||
++		stream.readUint16LE() != _width || stream.readUint16LE() != _height ||
++		stream.readUint16LE() != _displayWidth || stream.readUint16LE() != _displayHeight)
++		return;
++
++	_hostedDemoScreen.resize(bytes);
++	if (stream.read(_hostedDemoScreen.data(), bytes) != bytes || stream.err())
++		_hostedDemoScreen.clear();
++}
++
++void GfxScreen::restoreHostedDemoScreen() {
++	if (_hostedDemoScreen.empty())
++		return;
++
++	// SCI replays the saved room before polling for its first event. Restore
++	// script-painted labels after the room has rebuilt its resources.
++	const byte *data = _hostedDemoScreen.data();
++	memcpy(_visualScreen, data, _pixels);
++	memcpy(_priorityScreen, data + _pixels, _pixels);
++	memcpy(_controlScreen, data + 2 * _pixels, _pixels);
++	memcpy(_displayScreen, data + 3 * _pixels, _displayPixels);
++	_hostedDemoScreen.clear();
++	copyToScreen();
++}
++#endif
+ 
+ void GfxScreen::copyToScreen() {
+ 	Common::Rect r(0, 0, _displayWidth, _displayHeight);
+diff --git a/engines/sci/engine/savegame.cpp b/engines/sci/engine/savegame.cpp
+--- a/engines/sci/engine/savegame.cpp
++++ b/engines/sci/engine/savegame.cpp
+@@ -19,6 +19,9 @@
+  *
+  */
+ 
++#ifdef __EMSCRIPTEN__
++#include "engines/scummweb-player.h"
++#endif
+ #include "common/savefile.h"
+ #include "common/stream.h"
+ #include "common/system.h"
+@@ -59,6 +62,13 @@
+ #endif
+ 
+ namespace Sci {
++
++#ifdef __EMSCRIPTEN__
++static bool needsHostedSci16Screen() {
++	return g_sci->_gfxScreen && scummwebIsPlayerControl() &&
++		(g_sci->getGameId() == GID_FUNSEEKER || g_sci->getGameId() == GID_MSASTROCHICKEN);
++}
++#endif
+ 
+ // These are serialization functions for various objects.
+ 
+@@ -1265,6 +1275,11 @@
+ 	if (voc)
+ 		voc->saveLoadWithSerializer(ser);
+ 
++#ifdef __EMSCRIPTEN__
++	if (needsHostedSci16Screen())
++		g_sci->_gfxScreen->saveHostedDemoScreen(*fh);
++#endif
++
+ 	// TODO: SSCI (at least JonesCD, presumably more) also stores the Menu state
+ 
+ 	return true;
+@@ -1522,6 +1537,11 @@
+ 	if (ser.getVersion() >= 30 && voc)
+ 		voc->saveLoadWithSerializer(ser);
+ 
++#ifdef __EMSCRIPTEN__
++	if (needsHostedSci16Screen())
++		g_sci->_gfxScreen->queueHostedDemoScreen(*fh);
++#endif
++
+ 	g_sci->_soundCmd->reconstructPlayList();
+ 
+ 	// Message state:
+diff --git a/engines/sci/engine/kevent.cpp b/engines/sci/engine/kevent.cpp
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -34,6 +34,9 @@
+ #include "sci/engine/savegame.h"
+ #include "sci/engine/selector.h"
+ #include "sci/engine/state.h"
++#ifdef __EMSCRIPTEN__
++#include "sci/graphics/screen.h"
++#endif
+ #include "sci/console.h"
+ #include "sci/debug.h"	// for g_debug_simulated_key
+ #include "sci/event.h"
+@@ -241,6 +244,8 @@
+ 	}
+ 
+ #ifdef __EMSCRIPTEN__
++	if (g_sci->_gfxScreen)
++		g_sci->_gfxScreen->restoreHostedDemoScreen();
+ 	// Let the original guest restore handler finish before holding the
+ 	// interpreter again. A renderer callback may be inside a kernel call.
+ 	if ((getSciVersion() < SCI_VERSION_2 || scummwebSupportsSci32DemoSaves(*g_sci)) &&
+diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -922,6 +922,9 @@
+ 	case GID_LSL7:
+ 		return signature.md5 && strcmp(signature.md5, "5cc6159688b2dc03790a67c90ccc67f9") == 0 &&
+ 			signature.fileSize == 10195878;
++	case GID_PHANTASMAGORIA:
++		return engine.getPlatform() == Common::kPlatformDOS && signature.md5 &&
++			strcmp(signature.md5, "416138651ea828219ca454cae18341a3") == 0;
+ 	default:
+ 		return false;
+ 	}
+diff --git a/engines/sci/engine/features.cpp b/engines/sci/engine/features.cpp
+--- a/engines/sci/engine/features.cpp
++++ b/engines/sci/engine/features.cpp
+@@ -30,6 +30,9 @@
+ #include "common/gui_options.h"
+ 
+ namespace Sci {
++#ifdef __EMSCRIPTEN__
++bool scummwebSupportsSci32DemoSaves(const SciEngine &engine);
++#endif
+ 
+ GameFeatures::GameFeatures(SegManager *segMan, Kernel *kernel) : _segMan(segMan), _kernel(kernel) {
+ 	_setCursorType = SCI_VERSION_NONE;
+@@ -895,6 +898,11 @@
+ 	case GID_MOTHERGOOSE256:
+ 	case GID_MOTHERGOOSEHIRES:
+ 	case GID_PHANTASMAGORIA:
++#ifdef __EMSCRIPTEN__
++		return scummwebSupportsSci32DemoSaves(*g_sci);
++#else
++		return false;
++#endif
+ 	case GID_RAMA:
+ 	case GID_SLATER:
+ 		return false;

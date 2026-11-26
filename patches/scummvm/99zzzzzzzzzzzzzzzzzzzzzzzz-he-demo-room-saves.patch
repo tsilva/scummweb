@@ -1,0 +1,206 @@
+diff --git a/engines/scumm/saveload.cpp b/engines/scumm/saveload.cpp
+--- a/engines/scumm/saveload.cpp
++++ b/engines/scumm/saveload.cpp
+@@ -125,6 +125,39 @@
+ 	return makeSavegameName(slot, false);
+ }
+ 
++static constexpr uint32 kHeRoomBuffersTag = MKTAG('H', 'E', 'B', '1');
++static constexpr uint32 kMaxHeRoomBufferBytes = 2 * 1024 * 1024;
++
++static bool supportsHeDemoRoomSaves(const GameSettings &game, const byte *md5) {
++	if (game.heversion < 70 || !scummwebIsPlayerControl())
++		return false;
++
++	static constexpr byte demoIndexes[][16] = {
++		{0xcb, 0x15, 0x59, 0xe8, 0x40, 0x5d, 0x17, 0xa5,
++		 0xa2, 0x78, 0xa6, 0xb5, 0xad, 0x93, 0x38, 0xd1}, // Freddi Fish 3
++		{0xde, 0x4e, 0xfb, 0x91, 0x02, 0x10, 0x73, 0x68,
++		 0x13, 0xc9, 0xa1, 0x18, 0x53, 0x84, 0xba, 0xce}, // Putt-Putt Saves the Zoo
++		{0x0f, 0x59, 0x35, 0xbd, 0x5e, 0x88, 0xba, 0x6f,
++		 0x09, 0xe5, 0x58, 0xd6, 0x44, 0x59, 0x74, 0x6d}, // thinker1
++	};
++	for (const auto &index : demoIndexes) {
++		if (memcmp(md5, index, sizeof(index)) == 0)
++			return true;
++	}
++	return false;
++}
++
++bool ScummEngine::getHeDemoRoomBufferSizes(uint32 &screenBytes, uint32 &maskBytes) {
++	if (!getResourceAddress(rtBuffer, kMainVirtScreen + 1) ||
++		!getResourceAddress(rtBuffer, kMainVirtScreen + 5) || !getResourceAddress(rtBuffer, 9))
++		return false;
++
++	screenBytes = getResourceSize(rtBuffer, kMainVirtScreen + 1);
++	maskBytes = getResourceSize(rtBuffer, 9);
++	return screenBytes > 0 && screenBytes <= kMaxHeRoomBufferBytes && maskBytes > 0 &&
++		maskBytes <= kMaxHeRoomBufferBytes && screenBytes == uint32(getResourceSize(rtBuffer, kMainVirtScreen + 5));
++}
++
+ // The English DOS demo leaves its original menu disabled during play.
+ static bool hasFullThrottleDemoPlayerSaves(const GameSettings &game, const byte *md5) {
+ 	static const byte demoIndex[] = {0x32, 0xa4, 0x33, 0xde, 0xa5, 0x6b, 0x86, 0xa5,
+@@ -234,6 +267,10 @@
+ #ifdef __EMSCRIPTEN__
+ 		if (supportsFreddi3PlayerSaves())
+ 			return canUseFreddi3PlayerSlot();
++		if (supportsHeDemoRoomSaves(_game, _gameMD5))
++			return _agentControlBoundary && _roomResource && _currentRoom &&
++				_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++				vm.cutScenePtr[0] == 0 && !_saveLoadFlag;
+ #endif
+ 		if (msg)
+ 			*msg = _("This game does not support loading from the menu. Use in-game interface");
+@@ -361,6 +398,10 @@
+ #ifdef __EMSCRIPTEN__
+ 		if (supportsFreddi3PlayerSaves())
+ 			return canUseFreddi3PlayerSlot();
++		if (supportsHeDemoRoomSaves(_game, _gameMD5))
++			return _agentControlBoundary && _roomResource && _currentRoom &&
++				_userPut > 0 && _cursor.state > 0 && vm.cutSceneStackPointer == 0 &&
++				vm.cutScenePtr[0] == 0 && !_saveLoadFlag;
+ #endif
+ 		if (msg)
+ 			*msg = _("This game does not support saving from the menu. Use in-game interface");
+@@ -784,11 +825,35 @@
+ 	Serializer ser(nullptr, out);
+ 	ser.setVersion(CURRENT_VER);
+ 	saveLoadWithSerializer(ser);
++#ifdef __EMSCRIPTEN__
++	if (writeHeader && _agentControlBoundary && supportsHeDemoRoomSaves(_game, _gameMD5)) {
++		uint32 screenSize, maskSize;
++		if (!getHeDemoRoomBufferSizes(screenSize, maskSize))
++			return false;
++
++		// HE room scripts paint into the background and occlusion masks.
++		// The native VM save does not contain these buffers.
++		out->writeUint32BE(kHeRoomBuffersTag);
++		out->writeUint16LE(_roomResource);
++		out->writeUint32LE(screenSize);
++		out->writeUint32LE(maskSize);
++		out->write(getResourceAddress(rtBuffer, kMainVirtScreen + 1), screenSize);
++		out->write(getResourceAddress(rtBuffer, kMainVirtScreen + 5), screenSize);
++		out->write(getResourceAddress(rtBuffer, 9), maskSize);
++	}
++#endif
+ 	return true;
+ }
+ 
+ bool ScummEngine::saveState(int slot, bool compat, Common::String &filename) {
+ 	bool saveFailed = false;
++#ifdef __EMSCRIPTEN__
++	if (_agentControlBoundary && supportsHeDemoRoomSaves(_game, _gameMD5)) {
++		uint32 screenSize, maskSize;
++		if (!getHeDemoRoomBufferSizes(screenSize, maskSize))
++			return false;
++	}
++#endif
+ 
+ 	if (_game.heversion != 0)
+ 		_sound->stopAllSounds();
+@@ -969,6 +1034,25 @@
+ 	Serializer ser(in, nullptr);
+ 	ser.setVersion(hdr.ver);
+ 	saveLoadWithSerializer(ser);
++#ifdef __EMSCRIPTEN__
++	Common::Array<byte> heRoomBuffers;
++	uint16 savedHeRoom = 0;
++	uint32 savedScreenSize = 0, savedMaskSize = 0;
++	_restoredHeRoom = 0;
++	if (!compat && supportsHeDemoRoomSaves(_game, _gameMD5) &&
++		in->size() - in->pos() >= 14 && in->readUint32BE() == kHeRoomBuffersTag) {
++		savedHeRoom = in->readUint16LE();
++		savedScreenSize = in->readUint32LE();
++		savedMaskSize = in->readUint32LE();
++		if (savedScreenSize && savedScreenSize <= kMaxHeRoomBufferBytes &&
++			savedMaskSize && savedMaskSize <= kMaxHeRoomBufferBytes &&
++			in->size() - in->pos() == 2 * savedScreenSize + savedMaskSize) {
++			heRoomBuffers.resize(2 * savedScreenSize + savedMaskSize);
++			if (in->read(heRoomBuffers.data(), heRoomBuffers.size()) != heRoomBuffers.size())
++				heRoomBuffers.clear();
++		}
++	}
++#endif
+ 	delete in;
+ 
+ 	// Init NES costume data
+@@ -1102,6 +1186,18 @@
+ 	cameraMoved();
+ 
+ 	initBGBuffers(_roomHeight);
++
++#ifdef __EMSCRIPTEN__
++	uint32 screenBytes, maskBytes;
++	if (!heRoomBuffers.empty() && savedHeRoom == _roomResource &&
++		getHeDemoRoomBufferSizes(screenBytes, maskBytes) &&
++		savedScreenSize == screenBytes && savedMaskSize == maskBytes) {
++		memcpy(getResourceAddress(rtBuffer, kMainVirtScreen + 1), heRoomBuffers.data(), savedScreenSize);
++		memcpy(getResourceAddress(rtBuffer, kMainVirtScreen + 5), heRoomBuffers.data() + savedScreenSize, savedScreenSize);
++		memcpy(getResourceAddress(rtBuffer, 9), heRoomBuffers.data() + 2 * savedScreenSize, savedMaskSize);
++		_restoredHeRoom = _roomResource;
++	}
++#endif
+ 
+ 	if (VAR_ROOM_FLAG != 0xFF)
+ 		VAR(VAR_ROOM_FLAG) = 1;
+diff --git a/engines/scumm/scumm.h b/engines/scumm/scumm.h
+--- a/engines/scumm/scumm.h
++++ b/engines/scumm/scumm.h
+@@ -1030,6 +1030,8 @@
+ 	Common::String _saveLoadDescription;
+ #ifdef __EMSCRIPTEN__
+ 	bool _agentControlBoundary = false;
++	uint16 _restoredHeRoom = 0;
++	bool getHeDemoRoomBufferSizes(uint32 &screenBytes, uint32 &maskBytes);
+ 	bool _agentSaveLoadSucceeded = false;
+ #endif
+ 
+diff --git a/engines/scumm/gfx.cpp b/engines/scumm/gfx.cpp
+--- a/engines/scumm/gfx.cpp
++++ b/engines/scumm/gfx.cpp
+@@ -1098,6 +1098,17 @@
+  * Note that this only updated the virtual screen, not the actual display.
+  */
+ void ScummEngine::redrawBGAreas() {
++#ifdef __EMSCRIPTEN__
++	if (_fullRedraw && _restoredHeRoom) {
++		const bool preserveBuffers = _restoredHeRoom == _roomResource;
++		_restoredHeRoom = 0;
++		if (preserveBuffers) {
++			drawRoomObjects(0);
++			_bgNeedsRedraw = false;
++			return;
++		}
++	}
++#endif
+ 	int i;
+ 	int diff;
+ 	int val = 0;
+@@ -1162,7 +1173,13 @@
+ 	byte *room = getResourceAddress(rtRoomImage, _roomResource) + _IM00_offs;
+ 	if (_fullRedraw) {
+ 		_bgNeedsRedraw = false;
+-		_gdi->drawBMAPBg(room, &_virtscr[kMainVirtScreen]);
++#ifdef __EMSCRIPTEN__
++		if (_restoredHeRoom != _roomResource)
++#endif
++			_gdi->drawBMAPBg(room, &_virtscr[kMainVirtScreen]);
++#ifdef __EMSCRIPTEN__
++		_restoredHeRoom = 0;
++#endif
+ 	}
+ 
+ 	drawRoomObjects(0);
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -226,7 +226,7 @@
+ 		supported = false;
+ 	if (engineId == "mohawk" && gameId != "myst" && gameId != "riven")
+ 		supported = supported && meta.hasFeature(MetaEngine::kSavesUseExtendedFormat);
+-	if (engineId == "scumm" && gameId == "freddi3")
++	if (engineId == "scumm" && gameId == "freddi3" && !ConfMan.get("extra").equalsIgnoreCase("Demo"))
+ 		supported = false;
+ 	Common::String extra = ConfMan.get("extra");
+ 	extra.toLowercase();

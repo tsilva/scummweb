@@ -412,3 +412,18 @@ Do not apply this exception to compressed DIG/COMI bundles or lossy FT formats.
   delayed restore selector. Service the browser drawer at the interpreter
   event boundary. Keep the stack and user-control checks when allowing the
   drawer in this edition with no original save or restore menu entry.
+- The voiced Space Quest 6, interactive Lighthouse, and Larry 7 dice demos also
+  retain functional SCI32 save and delayed restore paths. Match their detected
+  resource signatures and preserve the input and VM-stack checks. Exercise
+  both a manual restore and a fresh Continue; a slot listing alone cannot
+  verify that the demo restarted in the saved scene.
+
+- The supported Myst preview draws its library from `sneak.dat` after the
+  narrated introduction. Its isolated extended slots retain the active view,
+  pushed return card, open book page and library puzzle values. Continue
+  dispatches through the same loader as the player’s Load Game action.
+
+- Gobliins 2’s DOS v1.01 demo shares its variable block with MENU.TOT. Use
+  the script’s native checkpoint and scene-restart callbacks at the primary
+  gameplay hotspots. Revalidate the menu layout, room input blocks, and
+  deferred Continue after changes to the Gob interpreter.
