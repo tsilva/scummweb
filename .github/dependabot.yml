@@ -6,6 +6,7 @@ multi-ecosystem-groups:
       day: monday
       time: "08:00"
       timezone: Europe/Lisbon
+    open-pull-requests-limit: 5
 
 updates:
   - package-ecosystem: npm
@@ -15,7 +16,6 @@ updates:
     multi-ecosystem-group: routine-maintenance
     cooldown:
       default-days: 7
-    open-pull-requests-limit: 5
     allow:
       - dependency-type: direct
         update-types:
@@ -29,7 +29,6 @@ updates:
     multi-ecosystem-group: routine-maintenance
     cooldown:
       default-days: 7
-    open-pull-requests-limit: 5
     allow:
       - dependency-type: direct
         update-types:
