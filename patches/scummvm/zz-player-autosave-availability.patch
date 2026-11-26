@@ -1,0 +1,87 @@
+diff --git a/backends/modular-backend.cpp b/backends/modular-backend.cpp
+index 285252b9..39b5d84c 100644
+--- a/backends/modular-backend.cpp
++++ b/backends/modular-backend.cpp
+@@ -83,10 +83,13 @@ static void scummwebServicePresentedFrame(bool gameLoop = false) {
+ 		const bool restoreAtStartup = startupSlot >= 0 && startupSlot <= maxSlot &&
+ 			engine->canLoadGameStateCurrently() &&
+ 			EM_ASM_INT({ return Boolean(globalThis.__scummwebTakeStartupLoad?.()); });
++		const bool canAutosaveNow = !restoreAtStartup && player && canSave && canLoad &&
++			scummwebPlayerAutosaveDue() &&
++			(pause.isActive() ? canSaveWhileHeld : engine->canSaveGameStateCurrently());
+ 		const int control = restoreAtStartup ? (startupSlot == 0 ? 2 * maxSlot + 1 : maxSlot + startupSlot)
+ 			: EM_ASM_INT({
+-				return globalThis.__scummwebAgentFrameBoundary($0, $1, $2, $3, $4, $5);
+-			}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop);
++				return globalThis.__scummwebAgentFrameBoundary($0, $1, $2, $3, $4, $5, $6);
++			}, completedFrame, maxSlot, autoSlot, canSave, canLoad, gameLoop, canAutosaveNow);
+ 		completedFrame = false;
+ 		if (control < 0) {
+ 			if (!pause.isActive()) {
+diff --git a/engines/engine.cpp b/engines/engine.cpp
+index 2f0d6e70..87af0e2f 100644
+--- a/engines/engine.cpp
++++ b/engines/engine.cpp
+@@ -675,6 +675,13 @@ void Engine::saveAutosaveIfEnabled() {
+ 	// (as is the case with the AGS engine for example, or when showing a prompt).
+ 	if (_autoSaving || _autosaveInterval == 0)
+ 		return;
++#ifdef __EMSCRIPTEN__
++	// The hosted scheduler captures an isolated manual slot for supported games.
++	if (hasFeature(kSupportsSavingDuringRuntime) && hasFeature(kSupportsLoadingDuringRuntime) &&
++			getMetaEngine()->getMaximumSaveSlot() >= (getMetaEngine()->getAutosaveSlot() == 1 ? 2 : 1) &&
++			EM_ASM_INT({ return Boolean(globalThis.__scummwebAutosaves?.managesAutosaves?.()); }))
++		return;
++#endif
+ 	const int autoSaveSlot = getAutosaveSlot();
+ 	if (autoSaveSlot < 0)
+ 		return;
+diff --git a/engines/queen/queen.cpp b/engines/queen/queen.cpp
+index a24287cd..4066d91d 100644
+--- a/engines/queen/queen.cpp
++++ b/engines/queen/queen.cpp
+@@ -145,9 +145,10 @@ void QueenEngine::serviceAgentControls(bool canChangeState) {
+ 	const int maxSlot = getAutosaveSlot() - (player ? 0 : 1);
+ 	bool held = false;
+ 	while (!shouldQuit()) {
++		const bool canAutosaveNow = player && scummwebPlayerAutosaveDue() && canSaveGameStateCurrently();
+ 		const int control = EM_ASM_INT({
+-			return globalThis.__scummwebAgentBoundary($0, $1, $2);
+-		}, _agentCompletedTick, maxSlot, player ? getAutosaveSlot() : 0);
++			return globalThis.__scummwebAgentBoundary($0, $1, $2, $3);
++		}, _agentCompletedTick, maxSlot, player ? getAutosaveSlot() : 0, canAutosaveNow);
+ 		_agentCompletedTick = false;
+ 		if (control < 0) {
+ 			if (player)
+diff --git a/engines/scummweb-player.h b/engines/scummweb-player.h
+index 0bd2417c..f05aeaa5 100644
+--- a/engines/scummweb-player.h
++++ b/engines/scummweb-player.h
+@@ -10,6 +10,10 @@ inline bool scummwebIsPlayerControl() {
+ 	return EM_ASM_INT({ return Boolean(globalThis.scummwebPlayerControls); });
+ }
+ 
++inline bool scummwebPlayerAutosaveDue() {
++	return EM_ASM_INT({ return Boolean(globalThis.__scummwebPlayerAutosaveDue?.()); });
++}
++
+ inline void scummwebPublishSaveAvailability(bool available) {
+ 	EM_ASM({ globalThis.__scummwebPublishSaveAvailability?.(Boolean($0)); }, available);
+ }
+diff --git a/engines/sky/sky.cpp b/engines/sky/sky.cpp
+index fea2cd20..e0a4ba8b 100644
+--- a/engines/sky/sky.cpp
++++ b/engines/sky/sky.cpp
+@@ -269,9 +269,10 @@ Common::Error SkyEngine::go() {
+ #ifdef __EMSCRIPTEN__
+ 		// Only this outer game loop advances game logic. While held, yield
+ 		// to the browser without polling and consuming queued player input.
++		const bool canAutosaveNow = scummwebPlayerAutosaveDue() && canSaveGameStateCurrently(nullptr);
+ 		const int control = EM_ASM_INT({
+-			return globalThis.__scummwebAgentBoundary?.($0, $1) ?? 0;
+-		}, agentCompletedTick, MAX_SAVE_GAMES);
++			return globalThis.__scummwebAgentBoundary?.($0, $1, 0, $2) ?? 0;
++		}, agentCompletedTick, MAX_SAVE_GAMES, canAutosaveNow);
+ 		agentCompletedTick = false;
+ 		if (control < 0) {
+ 			if (scummwebIsPlayerControl())

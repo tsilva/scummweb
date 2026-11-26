@@ -148,14 +148,15 @@ export async function getLatestBrowserSave(game, assetVersion) {
     const key = saveIndexKey(namespace, game.target);
     let index = readIndex(namespace, game, await activeStorage());
     const revision = saveRevision(files);
-    // Older AGS queries could fail before inspecting save files. Reconcile an
-    // empty index once with the current runtime even when the files match it.
-    const uncheckedAgs = index?.engineId === "ags" && index.checkedByRuntime !== assetVersion
-      && !latestPlayerSave(index, files);
+    // Older AGS queries could fail before listing saves. Older Elvira II
+    // scans could look for the wrong platform's filenames.
+    const emptyIndexNeedsQuery = index?.checkedByRuntime !== assetVersion &&
+      (index?.engineId === "ags" || (index?.engineId === "agos" && index.gameId === "elvira2")) &&
+      !latestPlayerSave(index, files);
     // Runtime support can change without changing any existing save bytes.
     const uncheckedUnsupported = index?.supported === false
       && index.checkedByRuntime !== assetVersion && supportsContinue(index.engineId, index.gameId, index.extra);
-    if (index?.schemaVersion !== 1 || index.revision !== revision || uncheckedAgs || uncheckedUnsupported) {
+    if (index?.schemaVersion !== 1 || index.revision !== revision || emptyIndexNeedsQuery || uncheckedUnsupported) {
       const queryKey = `${key}:${revision}`;
       if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
         const generation = queryGeneration;
@@ -163,8 +164,14 @@ export async function getLatestBrowserSave(game, assetVersion) {
         const request = queryQueue.then(async () => {
           if (generation !== queryGeneration || saveRevision(readSaveFiles(namespace, game.target, await activeStorage()).files) !== revision) return null;
           attempts.set(key, Date.now());
-          return queryNativeSaves({ ...game,
-            engineId: index?.engineId || game.engineId, gameId: index?.gameId || game.gameId,
+          const gameId = index?.gameId || game.gameId;
+          let platform = game.platform;
+          // Older isolated imports can identify the DOS sequel by its native save prefix.
+          if (!platform && namespace && gameId === "elvira2" &&
+              files.some(({ name }) => /^elvira2-pc\.\d{3}$/.test(name)) &&
+              !files.some(({ name }) => /^elvira2\.\d{3}$/.test(name))) platform = "dos";
+          return queryNativeSaves({ ...game, platform, gameId,
+            engineId: index?.engineId || game.engineId,
             extra: index?.extra ?? game.extra, nativeTarget: index?.target || game.nativeTarget,
           }, namespace, assetVersion, generation);
         });

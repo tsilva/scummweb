@@ -149,6 +149,12 @@ export function installPlayerControls(scope, requestMenu) {
     if (pending?.dispatched && pending.operation === "save") pending.written.add(name);
   };
 
+  scope.__scummwebPlayerAutosaveDue = () => {
+    const due = scope.__scummwebAutosaves?.due();
+    return !pending && !startupLoad && !scope.__scummwebSaveWriteInProgress?.() &&
+      Boolean(exitSave || (!menuOpen && due));
+  };
+
   scope.__scummwebQueueStartupLoad = (slot, files) => {
     if (startupLoad || !Number.isInteger(slot) || slot < 0) return false;
     startupLoad = { slot, files };
@@ -171,7 +177,7 @@ export function installPlayerControls(scope, requestMenu) {
     return true;
   };
 
-  function boundary(completedFrame, max, reserved, save, load) {
+  function boundary(completedFrame, max, reserved, save, load, canAutosaveNow) {
     // The native adapters report deferred results before their next completed
     // frame. While held or still loading, keep the original request in place.
     if (completedFrame && pending?.timedOut) {
@@ -185,16 +191,15 @@ export function installPlayerControls(scope, requestMenu) {
     reservedSlot = reserved;
     canSave = save;
     canLoad = load;
-    const autosaveDue = scope.__scummwebAutosaves?.due();
-    if (!pending && !startupLoad && (exitSave || (!menuOpen && autosaveDue))) {
-      if (canSave && canLoad) {
-        const slot = reserved === 1 ? 2 : 1;
-        scope.__scummwebAutosaves.retry();
-        if (slot <= maxSlot && scope.__scummwebDiagnosticSaves?.begin()) {
-          pending = { operation: "autosave", slot, dispatched: true, exitSave };
-          return slot;
-        }
+    if (!pending && !startupLoad && canAutosaveNow) {
+      const slot = reserved === 1 ? 2 : 1;
+      if (slot <= maxSlot && scope.__scummwebDiagnosticSaves?.begin()) {
+        pending = { operation: "autosave", slot, dispatched: true, exitSave };
+        return slot;
       }
+      if (!exitSave) scope.__scummwebAutosaves.retry();
+    }
+    if (!pending && !startupLoad) {
       finishExitSave();
     }
     if (pending && !pending.dispatched) {
@@ -219,9 +224,10 @@ export function installPlayerControls(scope, requestMenu) {
     return menuOpen ? -1 : 0;
   }
 
-  scope.__scummwebAgentBoundary = (tick, max, reserved = 0) => boundary(tick, max, reserved, true, true);
-  scope.__scummwebAgentFrameBoundary = (frame, max, reserved, save, load) =>
-    boundary(frame, max, reserved, Boolean(save), Boolean(load));
+  scope.__scummwebAgentBoundary = (tick, max, reserved = 0, canAutosaveNow) =>
+    boundary(tick, max, reserved, true, true, Boolean(canAutosaveNow));
+  scope.__scummwebAgentFrameBoundary = (frame, max, reserved, save, load, _gameLoop, canAutosaveNow) =>
+    boundary(frame, max, reserved, Boolean(save), Boolean(load), Boolean(canAutosaveNow));
   scope.__scummwebAgentSaveResult = (error) => {
     if (!pending?.dispatched) return;
     const { operation, slot, timer, resolve, written, isolated, exitSave: exitRequest } = pending;
@@ -232,6 +238,8 @@ export function installPlayerControls(scope, requestMenu) {
         const result = scope.__scummwebDiagnosticSaves.finish(error);
         if ((!exitRequest || exitRequest === exitSave) && scope.__scummwebAutosaves.save(result, slot)) {
           scope.Module?._scummweb_refresh_saves?.();
+        } else if (!exitRequest) {
+          scope.__scummwebAutosaves.retry();
         }
       } finally {
         if (!exitRequest || exitRequest === exitSave) finishExitSave();

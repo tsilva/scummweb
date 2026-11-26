@@ -121,6 +121,9 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   assert.equal(supportsContinue("mads", "nebular", "Demo"), true);
   assert.equal(supportsContinue("mads", "nebular"), true);
   assert.equal(supportsContinue("mads", "phantom", "Demo"), true);
+  assert.equal(supportsContinue("agos", "elvira1"), true);
+  assert.equal(supportsContinue("agos", "elvira2"), true);
+  assert.equal(supportsContinue("agos", "elvira1", "Non-Interactive Demo"), false);
   assert.equal(supportsContinue("agos", "simon2", "CD Demo"), true);
   assert.equal(supportsContinue("gob", "gob2", "Interactive Demo (v1.01)"), true);
   assert.equal(supportsContinue("gob", "gob2", "CD"), false);

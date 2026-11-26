@@ -1,0 +1,50 @@
+diff --git a/base/main.cpp b/base/main.cpp
+index 03e8ffff..674f8dfe 100644
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -232,7 +232,9 @@ int scummwebReportSaves(const MetaEngine &meta, const Common::String &engineId,
+ 	extra.toLowercase();
+ 	if (engineId == "mohawk" && extra.contains("demo") && !meta.hasFeature(MetaEngine::kSavesUseExtendedFormat))
+ 		supported = false;
+-	if (engineId == "agos" && (gameId == "simon1" || gameId == "simon2") && extra == "cd demo")
++	if (engineId == "agos" &&
++			(((gameId == "simon1" || gameId == "simon2") && extra == "cd demo") ||
++			((gameId == "elvira1" || gameId == "elvira2") && !extra.contains("demo"))))
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	if ((engineId == "gob" && gameId == "gob1" && target == "gob1-demo" && extra == "interactive demo (v2.0)") ||
+ 			(engineId == "gob" && gameId == "gob2" && extra == "interactive demo (v1.01)") ||
+@@ -370,6 +372,12 @@ static Common::Error runGame(const Plugin *enginePlugin, OSystem &system, const
+ 			ConfMan.setBool("subtitles", true);
+ 			ConfMan.setBool("speech_mute", false);
+ 		}
++		// Auto-detected imports can lack a platform setting before the engine is created.
++		// Elvira II uses a different save filename on DOS.
++		if (game.engineId == "agos" && game.gameId == "elvira2" &&
++				game.platform != Common::kPlatformUnknown &&
++				Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformUnknown)
++			ConfMan.set("platform", Common::getPlatformCode(game.platform), target);
+ 		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
+ 		if (resumeSlot >= 0) {
+ 			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
+diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
+index bcee75a9..6e67081d 100644
+--- a/engines/agos/input.cpp
++++ b/engines/agos/input.cpp
+@@ -236,13 +236,15 @@ void AGOSEngine::waitForInput() {
+ 				if (!ScummWebIntro::startupFinished() && canSaveGameStateCurrently() &&
+ 					!getBitFlag(9)) {
+ 					_openingScript = false;
+-					if (isSimon2CdDemo() && ConfMan.hasKey("save_slot", Common::ConfigManager::kTransientDomain)) {
++					const bool fullElvira = (getGameType() == GType_ELVIRA1 || getGameType() == GType_ELVIRA2) &&
++						!(getFeatures() & GF_DEMO);
++					if ((isSimon2CdDemo() || fullElvira) && ConfMan.hasKey("save_slot", Common::ConfigManager::kTransientDomain)) {
+ 						const int slot = ConfMan.getInt("save_slot", Common::ConfigManager::kTransientDomain);
+ 						ConfMan.removeKey("save_slot", Common::ConfigManager::kTransientDomain);
+ 						// Restore through the native redraw before exposing the first gameplay frame.
+ 						_scummWebAgentIdle = false;
+ 						if (slot >= 0 && !quickRestoreGame(slot))
+-							warning("Could not restore Simon II save slot %d at startup", slot);
++							warning("Could not restore AGOS save slot %d at startup", slot);
+ 						_scummWebAgentIdle = true;
+ 					}
+ 					ScummWebIntro::gameplayStarted();

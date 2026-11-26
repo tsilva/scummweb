@@ -223,8 +223,10 @@ hidden. They return to their normal visibility when the action disappears.
 
 **Continue** loads the latest intact ScummWEB autosave or eligible native save
 for the selected edition. It skips damaged checkpoints. Supported games keep up
-to three checkpoints, updated about every two minutes, at the first safe moment
-after loading, and when you select **Exit game** in a scene that allows saving.
+to three checkpoints. When the two-minute timer comes due, an autosave waits
+until the game allows saving. The next interval starts after the save succeeds.
+ScummWEB also saves at the first safe moment after loading and when you select
+**Exit game** in a scene that allows saving.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. SCUMM keeps the selected checkpoint available
@@ -233,6 +235,8 @@ compatible story map is available. In the game hero, the version picker appears 
 **Play** or **Continue** when several versions are available. For a single
 version, **Start from beginning** appears beside **Continue** and keeps your saves.
 Games without compatible save and startup-load support use their in-game menu.
+Both full Elvira games restore existing native saves once the opening scripts
+reach playable input.
 
 The browser-local index supplies launch actions from checked save files.
 Changed or unknown entries trigger a background native metadata query that
