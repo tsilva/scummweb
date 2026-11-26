@@ -55,18 +55,15 @@ workflow → main**. To stage a Production-configured artifact without
 assigning production domains, use **Stage prebuilt deployment** from
 `main`. Its run summary links to the staged deployment.
 
-## GitHub-maintained action updates
+## Dependency updates
 
-The [Dependabot auto-merge workflow](../.github/workflows/dependabot-automerge.yml)
-uses a GitHub App installation token scoped to ScummWEB. The
-`dependabot-automerge` GitHub environment supplies the app client ID and
-private key. The workflow runs its checked-in review script from `main` and
-requires the existing application CI and dependency review rules.
+[Dependabot](../.github/dependabot.yml) groups npm and GitHub Actions patch and
+minor version updates into one Monday pull request for manual review. Both
+ecosystems use a seven-day release cooldown. Open a separate pull request for
+major upgrades. Dependabot security updates follow their own policy.
 
-Run the workflow manually without **Queue eligible Dependabot PRs for auto-merge**
-to preview candidates. The schedule runs only when the repository variable
-`DEPENDABOT_AUTOMERGE_ENABLED` is `true`. A merged update follows the same
-main-push CI and Production delivery path as any other merge.
+After you merge a Dependabot pull request, the update follows the main-push CI
+and Production delivery path.
 
 ## Privacy request intake
 
