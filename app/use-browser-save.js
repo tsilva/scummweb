@@ -9,10 +9,10 @@ const noSubscription = () => () => {};
 
 export default function useBrowserSave(game, enabled = true, readSave = getCachedBrowserSave) {
   const key = JSON.stringify([game.target, game.engineId, game.gameId, game.extra,
-    game.saveVersionId, game.saveNamespace, game.nativeTarget]);
+    game.saveVersionId, game.saveNamespace, game.nativeTarget, game.platform]);
   const identity = () => {
-    const [target, engineId, gameId, extra, saveVersionId, saveNamespace, nativeTarget] = JSON.parse(key);
-    return { target, engineId, gameId, extra, saveVersionId, saveNamespace, nativeTarget };
+    const [target, engineId, gameId, extra, saveVersionId, saveNamespace, nativeTarget, platform] = JSON.parse(key);
+    return { target, engineId, gameId, extra, saveVersionId, saveNamespace, nativeTarget, platform };
   };
   const snapshot = useCallback(() => readSave(identity()), [key, readSave]);
   const subscribe = useCallback((notify) => subscribeBrowserSaves(identity(), scummvmAssetVersion, notify), [key]);

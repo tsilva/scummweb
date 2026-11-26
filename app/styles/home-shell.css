@@ -1303,7 +1303,8 @@ button.nav-icon-link {
 
 .poster-media-image {
   --artwork-fit: contain;
-  --artwork-position: center top;
+  --artwork-position: center;
+  --poster-backdrop: var(--artwork-placeholder) center / cover no-repeat;
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1316,6 +1317,17 @@ button.nav-icon-link {
     transform 320ms ease;
 }
 
+.poster-media-image.artwork-placeholder {
+  /* Reuse the inline preview to fill the space around the full cover. */
+  background: var(--poster-backdrop);
+}
+
+.poster-media-image.artwork-placeholder:not([data-artwork-loaded]) {
+  background:
+    var(--artwork-placeholder) var(--artwork-position) / var(--artwork-fit) no-repeat,
+    var(--poster-backdrop);
+}
+
 .poster-card:hover .poster-media-image,
 .poster-card:focus-visible .poster-media-image {
   filter: brightness(1.12) contrast(1.04) saturate(1.06);
@@ -1324,13 +1336,13 @@ button.nav-icon-link {
 
 .poster-card.tone-dreamweb .poster-media::after {
   background:
-    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.78)),
+    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.48)),
     radial-gradient(circle at 50% 35%, rgba(144, 67, 115, 0.22), transparent 24%);
 }
 
 .poster-card.tone-default .poster-media::after {
   background:
-    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.78)),
+    linear-gradient(180deg, rgba(12, 12, 12, 0.16), rgba(12, 12, 12, 0.48)),
     radial-gradient(circle at 50% 35%, rgba(85, 170, 85, 0.16), transparent 24%);
 }
 
@@ -1338,7 +1350,7 @@ button.nav-icon-link {
   position: absolute;
   inset: auto 0 0;
   padding: 1rem;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.94));
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.8));
 }
 
 .poster-title {

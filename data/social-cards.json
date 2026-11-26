@@ -2,1708 +2,1708 @@
   "version": 1,
   "cards": {
     "3-skulls-of-the-toltecs": {
-      "file": "3-skulls-of-the-toltecs-d796b7b883e825dcca56c941668df9a8e3ed2c8a6badbfe7766a7b2146514120.jpg",
-      "inputHash": "d796b7b883e825dcca56c941668df9a8e3ed2c8a6badbfe7766a7b2146514120",
+      "file": "3-skulls-of-the-toltecs-1b8f51c5eb968af12e9b50710e017de0863e8de8e459527ccf213a386def02f9.jpg",
+      "inputHash": "1b8f51c5eb968af12e9b50710e017de0863e8de8e459527ccf213a386def02f9",
       "imageHash": "8dc61687d6efb2b50f78f9fca5453d8e886173615cd5723a69a89a05450223c1"
     },
     "aesop-s-fables-the-tortoise-and-the-hare": {
-      "file": "aesop-s-fables-the-tortoise-and-the-hare-5a1cddcb6cee2896560052a0d011cf14e711492f66550b4d784dbc4d6c0568ca.jpg",
-      "inputHash": "5a1cddcb6cee2896560052a0d011cf14e711492f66550b4d784dbc4d6c0568ca",
+      "file": "aesop-s-fables-the-tortoise-and-the-hare-a12117facc55febddd1969de58278dd0232b73c279b38acc1ae1fcc54af67f7b.jpg",
+      "inputHash": "a12117facc55febddd1969de58278dd0232b73c279b38acc1ae1fcc54af67f7b",
       "imageHash": "acb2d1785b37d707934df736b74c3ef743b8ef0290f57495f223afad1277420d"
     },
     "aesop-s-fables-the-tortoise-and-the-hare-demo": {
-      "file": "aesop-s-fables-the-tortoise-and-the-hare-demo-9a31d50b45b59bbbb3a1833ee4289f0154faed86f7fe5cda75b95a3e7f2d8966.jpg",
-      "inputHash": "9a31d50b45b59bbbb3a1833ee4289f0154faed86f7fe5cda75b95a3e7f2d8966",
+      "file": "aesop-s-fables-the-tortoise-and-the-hare-demo-bc3426793164984e366c88fe866b832c40619ba7a01c8c404fb0009e7013ef0c.jpg",
+      "inputHash": "bc3426793164984e366c88fe866b832c40619ba7a01c8c404fb0009e7013ef0c",
       "imageHash": "b621dfc15f4838f0c2b2f9147e4ceb7fbcf7ae65b8d7673ca61c8ea31a12de4c"
     },
     "amazon-guardians-of-eden": {
-      "file": "amazon-guardians-of-eden-8b5da327c35e7a8ea582b97953d89aaa575abf1c910db4e81692447be2c770d7.jpg",
-      "inputHash": "8b5da327c35e7a8ea582b97953d89aaa575abf1c910db4e81692447be2c770d7",
+      "file": "amazon-guardians-of-eden-63b66867a39e119e02ccfa99d0ab8bc41d909714706e8621347e18e546dfbeaa.jpg",
+      "inputHash": "63b66867a39e119e02ccfa99d0ab8bc41d909714706e8621347e18e546dfbeaa",
       "imageHash": "af19af4b8997b05fce0220bb3d2fb7ae5db32f85c7a7b95c53f50f891b29502a"
     },
     "arthur-s-birthday": {
-      "file": "arthur-s-birthday-738b621840bc30896dd008b7846c3fca44d6759520fbf3ce5e120925ddaf15d6.jpg",
-      "inputHash": "738b621840bc30896dd008b7846c3fca44d6759520fbf3ce5e120925ddaf15d6",
+      "file": "arthur-s-birthday-bfa7da0485e1c0a8bfa8b2c64281f0c6f00121c310c047872cd587969e20411e.jpg",
+      "inputHash": "bfa7da0485e1c0a8bfa8b2c64281f0c6f00121c310c047872cd587969e20411e",
       "imageHash": "38135fd598994f3cf28c06b720b7e7f2568e86514e2b1bdab3266cb65f0660fe"
     },
     "arthur-s-birthday-demo": {
-      "file": "arthur-s-birthday-demo-2c8684871061395b16f4302de731a20761d549e9a12a6714b527bc54d38bdf5b.jpg",
-      "inputHash": "2c8684871061395b16f4302de731a20761d549e9a12a6714b527bc54d38bdf5b",
+      "file": "arthur-s-birthday-demo-76ed4a6d8fcae3af8d6324544b2982da3118efaab52a9b5dabb684b06ec01a65.jpg",
+      "inputHash": "76ed4a6d8fcae3af8d6324544b2982da3118efaab52a9b5dabb684b06ec01a65",
       "imageHash": "a5183c59c83d09710c2a1515e09195e6a78023c13c11505fb52c764c77acc25f"
     },
     "arthur-s-computer-adventure": {
-      "file": "arthur-s-computer-adventure-c4c5ece92ddadcd69d8499c49f75137f96622f038b1d8de23d7397c1455f38a5.jpg",
-      "inputHash": "c4c5ece92ddadcd69d8499c49f75137f96622f038b1d8de23d7397c1455f38a5",
+      "file": "arthur-s-computer-adventure-01b3784a6bc5b8ea13fc0b55b04b28260ae8e2d833d841e11fd2245a0f7ffe1d.jpg",
+      "inputHash": "01b3784a6bc5b8ea13fc0b55b04b28260ae8e2d833d841e11fd2245a0f7ffe1d",
       "imageHash": "24c8dfc4c2a64dedc80247da3f74415d40e482342861a3bd1380e9b1df197c2b"
     },
     "arthur-s-reading-race": {
-      "file": "arthur-s-reading-race-c6cc68cc462be2a8d6da0f3019039154acfb021fae4955ceff42c2eeefe042f7.jpg",
-      "inputHash": "c6cc68cc462be2a8d6da0f3019039154acfb021fae4955ceff42c2eeefe042f7",
+      "file": "arthur-s-reading-race-a0959a9cf9c7c372b199c227781ed3317fff0d9d582cadd74f06969a829c1223.jpg",
+      "inputHash": "a0959a9cf9c7c372b199c227781ed3317fff0d9d582cadd74f06969a829c1223",
       "imageHash": "a7cce3db86e2f53b4f371e4aa359585b8b6ecde1bc2bb26c58efd7a00fa07e08"
     },
     "arthur-s-teacher-trouble-demo": {
-      "file": "arthur-s-teacher-trouble-demo-0fe0ee51a79247d6fd5bda95997fa8877ad88245323a58fb9213624456462645.jpg",
-      "inputHash": "0fe0ee51a79247d6fd5bda95997fa8877ad88245323a58fb9213624456462645",
+      "file": "arthur-s-teacher-trouble-demo-df435ec6a9be571b532195922e3c491e854180b8b97a8275e3e68c8f41889799.jpg",
+      "inputHash": "df435ec6a9be571b532195922e3c491e854180b8b97a8275e3e68c8f41889799",
       "imageHash": "8ab387aa5ae98ed8caa00d284c468acdd717875af99f8b0d296cdd3fce9555a1"
     },
     "astro-chicken-demo": {
-      "file": "astro-chicken-demo-def9440e048bf6ef79b44aee1ea8221160e7f7913a21202587fc4c1bd1fec1a6.jpg",
-      "inputHash": "def9440e048bf6ef79b44aee1ea8221160e7f7913a21202587fc4c1bd1fec1a6",
+      "file": "astro-chicken-demo-22ecd0b6961aae07fb88c798bd154c604fc284e286d0b01b45b7f20aabf45f9c.jpg",
+      "inputHash": "22ecd0b6961aae07fb88c798bd154c604fc284e286d0b01b45b7f20aabf45f9c",
       "imageHash": "a243bc6889e66b107cc55dd8c316d02cae19aa2138e0cf85a518bf95f0c2a1e4"
     },
     "backyard-baseball": {
-      "file": "backyard-baseball-7df95c3baeb53b9455ee20247c5bc0c101990c15b4b3c1f3d04ec2eb688f608a.jpg",
-      "inputHash": "7df95c3baeb53b9455ee20247c5bc0c101990c15b4b3c1f3d04ec2eb688f608a",
+      "file": "backyard-baseball-a882e6e786943a9b67075502df5ebf18d3455bfcd21bb9a28fea710e759616f3.jpg",
+      "inputHash": "a882e6e786943a9b67075502df5ebf18d3455bfcd21bb9a28fea710e759616f3",
       "imageHash": "f4db8eacfc2db5de9def6397f0823d26d2cce9d63be3fa09ac5ec832828f0fc3"
     },
     "backyard-baseball-2001": {
-      "file": "backyard-baseball-2001-f5e5716739ca858f1546bdd870e09cd2aef2980f14e16170ab12a47932ca3512.jpg",
-      "inputHash": "f5e5716739ca858f1546bdd870e09cd2aef2980f14e16170ab12a47932ca3512",
+      "file": "backyard-baseball-2001-94596aef612a435a2da87d73a25f89d78f1d1a3c94655151f50c83fc9b480f15.jpg",
+      "inputHash": "94596aef612a435a2da87d73a25f89d78f1d1a3c94655151f50c83fc9b480f15",
       "imageHash": "e866315f4795149323ae88dbaea6875fcd53be4ce403e2d72f0a532533092603"
     },
     "backyard-baseball-2003": {
-      "file": "backyard-baseball-2003-11e4a35bdecc3ec73d232c49cf3cba2b57f7b01777cabf7b3aaa2b9bdcf4aacf.jpg",
-      "inputHash": "11e4a35bdecc3ec73d232c49cf3cba2b57f7b01777cabf7b3aaa2b9bdcf4aacf",
+      "file": "backyard-baseball-2003-5d347adb3636608fb9acc2834c1ee20339b21874f4d780ca70e145c61e3ef76a.jpg",
+      "inputHash": "5d347adb3636608fb9acc2834c1ee20339b21874f4d780ca70e145c61e3ef76a",
       "imageHash": "f4853a1f932bbdc3bf5c3ebe377a6ba5b6c1f73fe02ae31b4aca0b613ecb1aa0"
     },
     "backyard-basketball": {
-      "file": "backyard-basketball-31a8e361ef0cbb37500a109ad5c559bda000dea1eb3b31fa4402c3ccb1ede8a4.jpg",
-      "inputHash": "31a8e361ef0cbb37500a109ad5c559bda000dea1eb3b31fa4402c3ccb1ede8a4",
+      "file": "backyard-basketball-f7a0e603764d01a87a72e44b773f0530a83e6cbbfb3cec313fda3b4e6ff62a6a.jpg",
+      "inputHash": "f7a0e603764d01a87a72e44b773f0530a83e6cbbfb3cec313fda3b4e6ff62a6a",
       "imageHash": "5fc92ecef6266c1e42fdd9f4ed82859b528ad545f67f3bb6b7306e04cc6dc3dd"
     },
     "backyard-football": {
-      "file": "backyard-football-8ad590f7e405b0ec76751ebb34803cfb9cd5d382e33677c1b0dd930e939f53b8.jpg",
-      "inputHash": "8ad590f7e405b0ec76751ebb34803cfb9cd5d382e33677c1b0dd930e939f53b8",
+      "file": "backyard-football-b25f2e36792de9dc8144f03df0584e6e72e85e4c62fc1dd99e95ef924113a1d9.jpg",
+      "inputHash": "b25f2e36792de9dc8144f03df0584e6e72e85e4c62fc1dd99e95ef924113a1d9",
       "imageHash": "e3f0bbf59aca02bc4aa67f7812af496995281a6d66b6e9b4121573f70edebf5f"
     },
     "backyard-football-2002": {
-      "file": "backyard-football-2002-43eca47a7c22264b1021a3824eb314e40a20dc0f490bc3920bc85de628736f5e.jpg",
-      "inputHash": "43eca47a7c22264b1021a3824eb314e40a20dc0f490bc3920bc85de628736f5e",
+      "file": "backyard-football-2002-38b57f3aa005d5f4d9e6525e65a0e6824f7834d3543ff27f342e93416687b0ee.jpg",
+      "inputHash": "38b57f3aa005d5f4d9e6525e65a0e6824f7834d3543ff27f342e93416687b0ee",
       "imageHash": "a1444d17a02c20b47a3a49a217c8fa1476cfc2a49a075f3d09d8d759c8e25ec1"
     },
     "backyard-football-demo": {
-      "file": "backyard-football-demo-cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b.jpg",
-      "inputHash": "cb06d5e89fcbafaebe7cb4a898c4f0fce404f9a5d5701ac06028a755dca8167b",
+      "file": "backyard-football-demo-f033c188f1040d67d364c0b40662fd0ca0bb1d35e03205bab1749a3345634c4f.jpg",
+      "inputHash": "f033c188f1040d67d364c0b40662fd0ca0bb1d35e03205bab1749a3345634c4f",
       "imageHash": "9889db8bfa4b3a2e9fb2b2a0c293f3e7aa951e2ff9c0eb1b189115882addce09"
     },
     "bargon-attack": {
-      "file": "bargon-attack-5bd26e2dd96416292999425aa3b276bcfe371d763dfbda8dc9a7e65531a28b01.jpg",
-      "inputHash": "5bd26e2dd96416292999425aa3b276bcfe371d763dfbda8dc9a7e65531a28b01",
+      "file": "bargon-attack-ae1d475bcc34cfcde0851f6caf00d7c6b517793ce1e6120772c4c6af97f00cf5.jpg",
+      "inputHash": "ae1d475bcc34cfcde0851f6caf00d7c6b517793ce1e6120772c4c6af97f00cf5",
       "imageHash": "6e7f992d297e0fe9e778bce0437815d3c92b1db78cd568d301ae5aca6ffc842a"
     },
     "bear-stormin": {
-      "file": "bear-stormin-ad53a4f9088a0c696d784597cbd33fb1b46faa987aa6279ac2af80607971b517.jpg",
-      "inputHash": "ad53a4f9088a0c696d784597cbd33fb1b46faa987aa6279ac2af80607971b517",
+      "file": "bear-stormin-98efa2f8b3c8a64f411e797bc9c3d63037e21909203605127f17352622822ae6.jpg",
+      "inputHash": "98efa2f8b3c8a64f411e797bc9c3d63037e21909203605127f17352622822ae6",
       "imageHash": "2eeff4f55ae575fe829518370918edf91f0ddbd39889cc49f17346d1b1e54a14"
     },
     "bear-stormin-demo": {
-      "file": "bear-stormin-demo-6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f.jpg",
-      "inputHash": "6f585fd9fa5c9ed7ffd7e3d42eb874cf6889182987cd68fbb19322113ea0ee4f",
+      "file": "bear-stormin-demo-0f9be354779f80353fa26b2fc1d8f0605637ec3fd88db89e6560125d0dfc97d4.jpg",
+      "inputHash": "0f9be354779f80353fa26b2fc1d8f0605637ec3fd88db89e6560125d0dfc97d4",
       "imageHash": "37cc19a6d37853c997b193442c6618e395744b4713d16ffd2c5910bb89486a21"
     },
     "beneath-a-steel-sky": {
-      "file": "beneath-a-steel-sky-5f752d1fd44010106f0ba7f6933c04bd8c82d22c44ddf4b81c2cc26f5a165c57.jpg",
-      "inputHash": "5f752d1fd44010106f0ba7f6933c04bd8c82d22c44ddf4b81c2cc26f5a165c57",
+      "file": "beneath-a-steel-sky-a8dd883a9b2c47fb68d47712659ddcaacacb37e4d31ea6e682cdda7bfda5fdfc.jpg",
+      "inputHash": "a8dd883a9b2c47fb68d47712659ddcaacacb37e4d31ea6e682cdda7bfda5fdfc",
       "imageHash": "b5fda3c0202c6d740102f5fec55e654c1a7b8d11f1c10b6578ae73290a33fb93"
     },
     "big-thinkers-1st-grade": {
-      "file": "big-thinkers-1st-grade-210c2e34fe87ecdb4a49c6aa9b57c569ee8a117201ceed0e34b2c5535f20dda2.jpg",
-      "inputHash": "210c2e34fe87ecdb4a49c6aa9b57c569ee8a117201ceed0e34b2c5535f20dda2",
+      "file": "big-thinkers-1st-grade-4a73bdcf8033824aa82a91eeeebe8d4849c0e105d9f6bb4d70d3b6ffc4f1115a.jpg",
+      "inputHash": "4a73bdcf8033824aa82a91eeeebe8d4849c0e105d9f6bb4d70d3b6ffc4f1115a",
       "imageHash": "a57bf58d69c2a841c403a43238987ab36fcabc4e38b534cd1c9e2ca859463a4e"
     },
     "big-thinkers-1st-grade-demo": {
-      "file": "big-thinkers-1st-grade-demo-70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85.jpg",
-      "inputHash": "70eb4e7dbd200d52fb963c1058a29ef92bdf971f9967b07ed43d493a0c7bab85",
+      "file": "big-thinkers-1st-grade-demo-5a9a2ac307e23b0adc06c0fac61fa484d80f4ac887be7f7946f3d1f6367c8f80.jpg",
+      "inputHash": "5a9a2ac307e23b0adc06c0fac61fa484d80f4ac887be7f7946f3d1f6367c8f80",
       "imageHash": "dbc05c143381df3c7bf7c948ac229030650d23ac31ba9c125fcaeb4f1926afe9"
     },
     "big-thinkers-kindergarten": {
-      "file": "big-thinkers-kindergarten-5062edb8b66962c02d58bfc12993ca21a6428aa6d170ef8deac242c24e06537e.jpg",
-      "inputHash": "5062edb8b66962c02d58bfc12993ca21a6428aa6d170ef8deac242c24e06537e",
+      "file": "big-thinkers-kindergarten-d13995d4f62e57c6d67947a617b03e115ff41dc88f354c60a6506a9057124b02.jpg",
+      "inputHash": "d13995d4f62e57c6d67947a617b03e115ff41dc88f354c60a6506a9057124b02",
       "imageHash": "230ebba10c4df68f19dd2d907438b9844cc13f36ac94449dfbfdf49298719846"
     },
     "big-thinkers-kindergarten-demo": {
-      "file": "big-thinkers-kindergarten-demo-46017640da7f37fa0513873460af3e70c6dd6e71762f592d8e3eb6351bab3540.jpg",
-      "inputHash": "46017640da7f37fa0513873460af3e70c6dd6e71762f592d8e3eb6351bab3540",
+      "file": "big-thinkers-kindergarten-demo-d22e7ee73ed85f5a1ee04ffb836e86f2fa95350aeb4cdae085f1ef3cf32002c5.jpg",
+      "inputHash": "d22e7ee73ed85f5a1ee04ffb836e86f2fa95350aeb4cdae085f1ef3cf32002c5",
       "imageHash": "96698f718f2024de0a9b3bf4a4989060059534185403322303c22ccfc24d97e5"
     },
     "blue-force": {
-      "file": "blue-force-d87a576dba5068958215f39da4c160160d2a6d7dea5268da3ccf04bee2c73b65.jpg",
-      "inputHash": "d87a576dba5068958215f39da4c160160d2a6d7dea5268da3ccf04bee2c73b65",
+      "file": "blue-force-470da746cc96569a841c56acb6d7f239abd480805fd43cc3b23768e3e76a3375.jpg",
+      "inputHash": "470da746cc96569a841c56acb6d7f239abd480805fd43cc3b23768e3e76a3375",
       "imageHash": "ba4b291b7c6f31987dd2d4a936ca3efa5944a9188b36db003b0f2d839395d387"
     },
     "blue-s-123-time-activities": {
-      "file": "blue-s-123-time-activities-9b3f9d79952b4b0ea179cd43d79a565d1ae1248b804becd852295aa84e958a4c.jpg",
-      "inputHash": "9b3f9d79952b4b0ea179cd43d79a565d1ae1248b804becd852295aa84e958a4c",
+      "file": "blue-s-123-time-activities-f6750a78b026bd471069d7927dbb89dbbd4f0adc4fb110e4c0d5d89bfb787367.jpg",
+      "inputHash": "f6750a78b026bd471069d7927dbb89dbbd4f0adc4fb110e4c0d5d89bfb787367",
       "imageHash": "9f6f57b8630439699552448a7d41aa9f23bd253a708ca8dfc8d0b4ed1f976c50"
     },
     "blue-s-abc-time-activities": {
-      "file": "blue-s-abc-time-activities-90279c1088ec3972b1c6f5e678233f7409ab91d0c02ec2588b42b4ab8fe23ec0.jpg",
-      "inputHash": "90279c1088ec3972b1c6f5e678233f7409ab91d0c02ec2588b42b4ab8fe23ec0",
+      "file": "blue-s-abc-time-activities-486bf5d896c65b73c6c2dde3c83576fe2c1e6b0a05a3c2ca7a9513489e3b1139.jpg",
+      "inputHash": "486bf5d896c65b73c6c2dde3c83576fe2c1e6b0a05a3c2ca7a9513489e3b1139",
       "imageHash": "8788014a818c042e2ec524af7519d46c3a35fea596ca0e57670cb2d3951c0765"
     },
     "blue-s-abc-time-activities-demo": {
-      "file": "blue-s-abc-time-activities-demo-491de9dd21f3a6225270373cb8a9c6f2ba98e9ca98ebf15965bc62de3393b68a.jpg",
-      "inputHash": "491de9dd21f3a6225270373cb8a9c6f2ba98e9ca98ebf15965bc62de3393b68a",
+      "file": "blue-s-abc-time-activities-demo-cd40a09aca4530144611c0601b42300007bc6bef9eade8ef5d5dae9d1f934934.jpg",
+      "inputHash": "cd40a09aca4530144611c0601b42300007bc6bef9eade8ef5d5dae9d1f934934",
       "imageHash": "42c101263af43588799819bd58c2ffe5d5b1c66ef21ff8e81c3eb284c37bb63c"
     },
     "blue-s-clues-blue-s-art-time-activities": {
-      "file": "blue-s-clues-blue-s-art-time-activities-7b6a6376d9b2018686ab79a0e6a318a13461b397a3196c9207b511a8c1d4b70e.jpg",
-      "inputHash": "7b6a6376d9b2018686ab79a0e6a318a13461b397a3196c9207b511a8c1d4b70e",
+      "file": "blue-s-clues-blue-s-art-time-activities-7cbd3bf4d509ab59975241c3824536d4b597460c53c548a848e33bc4b6024322.jpg",
+      "inputHash": "7cbd3bf4d509ab59975241c3824536d4b597460c53c548a848e33bc4b6024322",
       "imageHash": "b696b26d6cd620729b1aed7cc53547c5958bdd9b2bb58a161f530d1560374952"
     },
     "blue-s-clues-blue-s-birthday-adventure": {
-      "file": "blue-s-clues-blue-s-birthday-adventure-40e5e79c6063b2c3f6a1a5bc924f4c62c6c3f7b441557b6aa0e42e195bdfd6d7.jpg",
-      "inputHash": "40e5e79c6063b2c3f6a1a5bc924f4c62c6c3f7b441557b6aa0e42e195bdfd6d7",
+      "file": "blue-s-clues-blue-s-birthday-adventure-96e4b3ed4880e68cb5bb64b8970f04a2d55fde229d0970bb207266099346584a.jpg",
+      "inputHash": "96e4b3ed4880e68cb5bb64b8970f04a2d55fde229d0970bb207266099346584a",
       "imageHash": "276bcd31e1be0cc366df2be22a3515f5bc0eb3976d7b4a7438631d6e1624afc6"
     },
     "blue-s-clues-blue-s-birthday-adventure-demo": {
-      "file": "blue-s-clues-blue-s-birthday-adventure-demo-40ccc16a2d6627ffb4094be27ea9dd3e247ec843652dbfaeb21ab6ff9e570972.jpg",
-      "inputHash": "40ccc16a2d6627ffb4094be27ea9dd3e247ec843652dbfaeb21ab6ff9e570972",
+      "file": "blue-s-clues-blue-s-birthday-adventure-demo-60f802b3a6cee8941d597d5ee6341db4730497b5b9e3f3c7d3e52d1648560535.jpg",
+      "inputHash": "60f802b3a6cee8941d597d5ee6341db4730497b5b9e3f3c7d3e52d1648560535",
       "imageHash": "5d6e89f78eef4504e1a08a0f4a1459a38046e0d2c1b4160ba820bd9ba669873b"
     },
     "blue-s-reading-time-activities": {
-      "file": "blue-s-reading-time-activities-b676028e405b6496bb66258ad8df8a491abd1ca7a7cd5f6d2e6325686f1b4584.jpg",
-      "inputHash": "b676028e405b6496bb66258ad8df8a491abd1ca7a7cd5f6d2e6325686f1b4584",
+      "file": "blue-s-reading-time-activities-eaf132f329b3566b85695916ece4005f7ef60401e5c3d7df5fcea6aa7dc8dd39.jpg",
+      "inputHash": "eaf132f329b3566b85695916ece4005f7ef60401e5c3d7df5fcea6aa7dc8dd39",
       "imageHash": "cfb54e2443ff4423685143bb661ded93cc1add7b55344b9cd3b2077fb18032ab"
     },
     "blue-s-treasure-hunt": {
-      "file": "blue-s-treasure-hunt-fd23136f1631e8bbb844569e9fe37d8e72e344aee22c4d6fc15b51c4b99bad79.jpg",
-      "inputHash": "fd23136f1631e8bbb844569e9fe37d8e72e344aee22c4d6fc15b51c4b99bad79",
+      "file": "blue-s-treasure-hunt-80d8e0c3f2f56d506b2b13fcdae6b9619485eb6b87272b381b98c0766675f9f2.jpg",
+      "inputHash": "80d8e0c3f2f56d506b2b13fcdae6b9619485eb6b87272b381b98c0766675f9f2",
       "imageHash": "5284f58078149120e5fdf9b484cc521f23fbc7cf031f567f80a2353c9f6302f3"
     },
     "broken-sword-2-5-the-return-of-the-templars": {
-      "file": "broken-sword-2-5-the-return-of-the-templars-7e27f5f4ff5040bdc18e087917f9d66d4dd6b217cca847457f1029d9b6c98442.jpg",
-      "inputHash": "7e27f5f4ff5040bdc18e087917f9d66d4dd6b217cca847457f1029d9b6c98442",
+      "file": "broken-sword-2-5-the-return-of-the-templars-cb2676d564c9a37ca783fa2c0fc0d6d12ddbb25b8ffaa9cba798032c534029ab.jpg",
+      "inputHash": "cb2676d564c9a37ca783fa2c0fc0d6d12ddbb25b8ffaa9cba798032c534029ab",
       "imageHash": "1b7812cd64034a6b9e33e8558b3b1d1dff052ac2c580d6bad5adcfbce7863ae0"
     },
     "broken-sword-ii-the-smoking-mirror": {
-      "file": "broken-sword-ii-the-smoking-mirror-1b51f0bf9d8938a524aa79e3a59658fd4398b838f962c146e7f9d128f07674cb.jpg",
-      "inputHash": "1b51f0bf9d8938a524aa79e3a59658fd4398b838f962c146e7f9d128f07674cb",
+      "file": "broken-sword-ii-the-smoking-mirror-2fdaecfe4b000ed918ce0bf660b35033fdb8084cea57cb0e997492876ebb489c.jpg",
+      "inputHash": "2fdaecfe4b000ed918ce0bf660b35033fdb8084cea57cb0e997492876ebb489c",
       "imageHash": "2c7db31a40674af0140960e78872ffbcd8eaadcaf78b6bc56861bc5c5c607efd"
     },
     "broken-sword-ii-the-smoking-mirror-demo": {
-      "file": "broken-sword-ii-the-smoking-mirror-demo-26dfaa6028e6f0901f048fc110efbe5d50641c5411ef623fb066167139251434.jpg",
-      "inputHash": "26dfaa6028e6f0901f048fc110efbe5d50641c5411ef623fb066167139251434",
+      "file": "broken-sword-ii-the-smoking-mirror-demo-a3fc23cb1be8b8787c6fdbd4537e0db0f2b4fb3967e3e17e55c4841871c6ec9e.jpg",
+      "inputHash": "a3fc23cb1be8b8787c6fdbd4537e0db0f2b4fb3967e3e17e55c4841871c6ec9e",
       "imageHash": "7c3e645a8b3541651c356f794493de2ea9dbd5d598a0c2f9c0271007228b90cc"
     },
     "broken-sword-the-shadow-of-the-templars": {
-      "file": "broken-sword-the-shadow-of-the-templars-ecaccc1176b32d1df912c1ed6c3fe38a92e2febd498a607b0266623b25977e2e.jpg",
-      "inputHash": "ecaccc1176b32d1df912c1ed6c3fe38a92e2febd498a607b0266623b25977e2e",
+      "file": "broken-sword-the-shadow-of-the-templars-603eadfac5921c8f9c156d68e951ce8d5ddbcd890ec0b7a02228e3ed15bff4a9.jpg",
+      "inputHash": "603eadfac5921c8f9c156d68e951ce8d5ddbcd890ec0b7a02228e3ed15bff4a9",
       "imageHash": "79214f9bf8c8b408719355c53f39fba909309245f53a1481193bbe33fd90c6b8"
     },
     "broken-sword-the-shadow-of-the-templars-demo": {
-      "file": "broken-sword-the-shadow-of-the-templars-demo-351ed0ce92db2be8aa180e88029092b75c88e1eed088b7871fcf957f09107499.jpg",
-      "inputHash": "351ed0ce92db2be8aa180e88029092b75c88e1eed088b7871fcf957f09107499",
+      "file": "broken-sword-the-shadow-of-the-templars-demo-9b8e3f9feb02e53e9c184bd5cff292f10c960e0f4c47de8dc0fe26ea60fcd1d4.jpg",
+      "inputHash": "9b8e3f9feb02e53e9c184bd5cff292f10c960e0f4c47de8dc0fe26ea60fcd1d4",
       "imageHash": "2a052eaf20abda4d9da6fdfb51d316f15effe44e61aaaeb0259ef0ea3364e896"
     },
     "bud-tucker-in-double-trouble": {
-      "file": "bud-tucker-in-double-trouble-3eb556a6deb84170b05ad5ba8ddc762d1fcd02d1551ceb3ae2e38eb5cc6bfdf4.jpg",
-      "inputHash": "3eb556a6deb84170b05ad5ba8ddc762d1fcd02d1551ceb3ae2e38eb5cc6bfdf4",
+      "file": "bud-tucker-in-double-trouble-20cdbac5e9fe498db32ab640697cfd9cf4ad84300dc69b5772869979ff776c71.jpg",
+      "inputHash": "20cdbac5e9fe498db32ab640697cfd9cf4ad84300dc69b5772869979ff776c71",
       "imageHash": "849a85bfe4626310bb961101a67ca6675c1c6570ec0662f9dcb662111cbd3ce8"
     },
     "bud-tucker-in-double-trouble-demo": {
-      "file": "bud-tucker-in-double-trouble-demo-8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab.jpg",
-      "inputHash": "8fc769f116d86209949eb6bfbfe22b2cfebda5632269258b78828c9ea8815dab",
+      "file": "bud-tucker-in-double-trouble-demo-cc6c307eba0071e2b15e59139b005fd3035b1d291989e425b22a6519dd48e8c9.jpg",
+      "inputHash": "cc6c307eba0071e2b15e59139b005fd3035b1d291989e425b22a6519dd48e8c9",
       "imageHash": "7bf0c914ebcbef7d388e2f512d3ed961b33d47863a710b6dcfda85de64f8f1ba"
     },
     "castle-master-demo": {
-      "file": "castle-master-demo-e34da78bc2e4b8296f7c197fcbdb33bf165d643328240b3c745dbfdfa88d6fd2.jpg",
-      "inputHash": "e34da78bc2e4b8296f7c197fcbdb33bf165d643328240b3c745dbfdfa88d6fd2",
+      "file": "castle-master-demo-057697c41fa7db2b05a9b3a67337e3c72d8f220446e8686df5d4f86831886a6c.jpg",
+      "inputHash": "057697c41fa7db2b05a9b3a67337e3c72d8f220446e8686df5d4f86831886a6c",
       "imageHash": "7b566049069c5e4ae641442dbc5cb62cf521955abf80c3817af4fcba577a7f99"
     },
     "castle-of-dr-brain": {
-      "file": "castle-of-dr-brain-60756a51d6f09a47dd34031084697a5ac9ea85b92ca596584c13d5016a9f0be1.jpg",
-      "inputHash": "60756a51d6f09a47dd34031084697a5ac9ea85b92ca596584c13d5016a9f0be1",
+      "file": "castle-of-dr-brain-3c9b5632300d79840a3d8dcb90b8f6fe03e0c3d909ae8784487dbb625f351689.jpg",
+      "inputHash": "3c9b5632300d79840a3d8dcb90b8f6fe03e0c3d909ae8784487dbb625f351689",
       "imageHash": "ab416fa21f4fa9e59d81c2996d3fddd03805ef0193af84f3895a1a2141a9900b"
     },
     "chivalry-is-not-dead": {
-      "file": "chivalry-is-not-dead-d8ec876005e85a4aea4c7dfd96613d597314d7c72e270377ccf9a1a5c0e4f1bc.jpg",
-      "inputHash": "d8ec876005e85a4aea4c7dfd96613d597314d7c72e270377ccf9a1a5c0e4f1bc",
+      "file": "chivalry-is-not-dead-3de6f586e02932a6287876874cf81516eedf6c5ada8aa525f415bd1774fbc5a9.jpg",
+      "inputHash": "3de6f586e02932a6287876874cf81516eedf6c5ada8aa525f415bd1774fbc5a9",
       "imageHash": "75d46fd582ee26d48b3e3c02a39cd4c1813a4c320881c5955e677dd1f9b50587"
     },
     "code-name-iceman": {
-      "file": "code-name-iceman-7f9c48ded82a32ddec2e3601db5877db130aedc93e009b562ef23782a23fd7b5.jpg",
-      "inputHash": "7f9c48ded82a32ddec2e3601db5877db130aedc93e009b562ef23782a23fd7b5",
+      "file": "code-name-iceman-d1a26699c7a09b749ce6908f5c22b3ccd52e333140d027c85e8e54c51d8e1c17.jpg",
+      "inputHash": "d1a26699c7a09b749ce6908f5c22b3ccd52e333140d027c85e8e54c51d8e1c17",
       "imageHash": "d72233557cce736e4e7c366121b3761654205f6819cd7bc8827e01dd91a74061"
     },
     "conquests-of-camelot-the-search-for-the-grail": {
-      "file": "conquests-of-camelot-the-search-for-the-grail-7a374c3aa95edbddaea4f15979504abe731dc482a8a4f54074530118c505fa87.jpg",
-      "inputHash": "7a374c3aa95edbddaea4f15979504abe731dc482a8a4f54074530118c505fa87",
+      "file": "conquests-of-camelot-the-search-for-the-grail-f95fb44ef07c3e467f0da137eff7713ec07cbd715b2857ba7e7ad2857f951ad3.jpg",
+      "inputHash": "f95fb44ef07c3e467f0da137eff7713ec07cbd715b2857ba7e7ad2857f951ad3",
       "imageHash": "4df30434ec7d6326478df79c0a81a9f692b5374505a89bbb62397ea279fe40c6"
     },
     "conquests-of-the-longbow-the-legend-of-robin-hood": {
-      "file": "conquests-of-the-longbow-the-legend-of-robin-hood-feae8ab50427fd6697a6ce82bf6b4938bf0a6bb47193a3c25a75f73e08064969.jpg",
-      "inputHash": "feae8ab50427fd6697a6ce82bf6b4938bf0a6bb47193a3c25a75f73e08064969",
+      "file": "conquests-of-the-longbow-the-legend-of-robin-hood-4076d6831f383ed7cfc8ff015dbf1fd23a339bc5d68bdfbe0f7708a7ee4a98a8.jpg",
+      "inputHash": "4076d6831f383ed7cfc8ff015dbf1fd23a339bc5d68bdfbe0f7708a7ee4a98a8",
       "imageHash": "5e15fcd8c1c26d704916bf0f37d29ff4019b5928f235e953ec9d5b1013ec3947"
     },
     "crazy-nick-s-software-picks-king-graham-s-board-game-challenge": {
-      "file": "crazy-nick-s-software-picks-king-graham-s-board-game-challenge-954c45ffa729dea8f96fe84046ddba14be4771c3c7fa82be15bf3009f5a63dce.jpg",
-      "inputHash": "954c45ffa729dea8f96fe84046ddba14be4771c3c7fa82be15bf3009f5a63dce",
+      "file": "crazy-nick-s-software-picks-king-graham-s-board-game-challenge-c131b7e03086f169ca2a5202110827b6e8947383a1584bb383463c66102769ce.jpg",
+      "inputHash": "c131b7e03086f169ca2a5202110827b6e8947383a1584bb383463c66102769ce",
       "imageHash": "9fc0079ce534b8b876eea6b70f945614af80afdedf400cc7235965ad25fd15f5"
     },
     "crazy-nick-s-software-picks-leisure-suit-larry-s-casino": {
-      "file": "crazy-nick-s-software-picks-leisure-suit-larry-s-casino-b8dd8a8ea172f0f8a25437e3b1f63b35c39e19b51d40d25ad0793a6457478204.jpg",
-      "inputHash": "b8dd8a8ea172f0f8a25437e3b1f63b35c39e19b51d40d25ad0793a6457478204",
+      "file": "crazy-nick-s-software-picks-leisure-suit-larry-s-casino-4f6bd5dd60789fcad9782575dcf3ccb2dc301dbd3eb5f3437f789bf52a72525c.jpg",
+      "inputHash": "4f6bd5dd60789fcad9782575dcf3ccb2dc301dbd3eb5f3437f789bf52a72525c",
       "imageHash": "66285a20a4b1535eeb77f91f68b0708402cda845d80bf9c0a0871c4227e3ce3c"
     },
     "crazy-nick-s-software-picks-parlor-games-with-laura-bow": {
-      "file": "crazy-nick-s-software-picks-parlor-games-with-laura-bow-2b96bc8c2f1a889994d60a0d77670d6e47321e6d96bdd42921c93d91f055bc5b.jpg",
-      "inputHash": "2b96bc8c2f1a889994d60a0d77670d6e47321e6d96bdd42921c93d91f055bc5b",
+      "file": "crazy-nick-s-software-picks-parlor-games-with-laura-bow-e23df9a620163240f2ccae077ccf22db4549a460fb8813e7422006c46c9372c7.jpg",
+      "inputHash": "e23df9a620163240f2ccae077ccf22db4549a460fb8813e7422006c46c9372c7",
       "imageHash": "9dba538a39144bbc05c3fc6f5c1b86f122dc8f27131761b8874ef78ed19ebd8b"
     },
     "crazy-nick-s-software-picks-robin-hood-s-game-of-skill-and-chance": {
-      "file": "crazy-nick-s-software-picks-robin-hood-s-game-of-skill-and-chance-692e441937163e2b12130a22512c5813d40daef468b705707c473d214175ef33.jpg",
-      "inputHash": "692e441937163e2b12130a22512c5813d40daef468b705707c473d214175ef33",
+      "file": "crazy-nick-s-software-picks-robin-hood-s-game-of-skill-and-chance-73d28c34321655079dfe910c926ace37f71631df903747f8b36696470e732200.jpg",
+      "inputHash": "73d28c34321655079dfe910c926ace37f71631df903747f8b36696470e732200",
       "imageHash": "c6b1ed07a147be5c02fdd277b5c0c0213d4bf8bade8907246ba3bd84dff36057"
     },
     "crazy-nick-s-software-picks-roger-wilco-s-spaced-out-game-pack": {
-      "file": "crazy-nick-s-software-picks-roger-wilco-s-spaced-out-game-pack-af38cf7b9a931278ee033d39b085b1d09b07a8ce04012828aab2a281b217d6ef.jpg",
-      "inputHash": "af38cf7b9a931278ee033d39b085b1d09b07a8ce04012828aab2a281b217d6ef",
+      "file": "crazy-nick-s-software-picks-roger-wilco-s-spaced-out-game-pack-1109336dec54c655aa431294aa946df04dbed95e062e81a95ae9c9fc3d3845ae.jpg",
+      "inputHash": "1109336dec54c655aa431294aa946df04dbed95e062e81a95ae9c9fc3d3845ae",
       "imageHash": "a667ad381a6d7d3e5639d603eac8672232f6c366723f2620d3f21df92495c814"
     },
     "cruise-for-a-corpse": {
-      "file": "cruise-for-a-corpse-38fb9544d3800916f29cec3fbc50824db0e5fae79f2fdd2dca59d46a601e0a8d.jpg",
-      "inputHash": "38fb9544d3800916f29cec3fbc50824db0e5fae79f2fdd2dca59d46a601e0a8d",
+      "file": "cruise-for-a-corpse-4ac5924e3d033854af0e508649e8370a3811e6dace3cd47d5973ef748993ef4f.jpg",
+      "inputHash": "4ac5924e3d033854af0e508649e8370a3811e6dace3cd47d5973ef748993ef4f",
       "imageHash": "437ce63bd0cc268c404b9fa5fe1cce69ce0b402b515d5f35d1969aca7262f7cd"
     },
     "darby-the-dragon": {
-      "file": "darby-the-dragon-b2fb61b5dae9cef5ae8b8f9a77dd6a3739c1a5c4d5fac8713a5cbcf44be53e8e.jpg",
-      "inputHash": "b2fb61b5dae9cef5ae8b8f9a77dd6a3739c1a5c4d5fac8713a5cbcf44be53e8e",
+      "file": "darby-the-dragon-2e110730f7cec6e0f110950986e0ffe57f1191c2a1ab2841470e7f656832abec.jpg",
+      "inputHash": "2e110730f7cec6e0f110950986e0ffe57f1191c2a1ab2841470e7f656832abec",
       "imageHash": "c0c71cbdd7c95b0d5e2c9ececcea956218b59aeed961d19330f06b38cd82ee67"
     },
     "day-of-the-tentacle": {
-      "file": "day-of-the-tentacle-8c18016db8dacfdf6124ab9432ee4d8f9bbde8414492846c0a63435ce4ea5445.jpg",
-      "inputHash": "8c18016db8dacfdf6124ab9432ee4d8f9bbde8414492846c0a63435ce4ea5445",
+      "file": "day-of-the-tentacle-60dc05399a3f946f477be6912549e53f3f95d712f0be1b7b542303dc9da3e164.jpg",
+      "inputHash": "60dc05399a3f946f477be6912549e53f3f95d712f0be1b7b542303dc9da3e164",
       "imageHash": "6463d6b1c610c317b4d43f9b3244c8889dcbe71ee61cad537716421087061b6a"
     },
     "discworld": {
-      "file": "discworld-b13971118a718fefb68b73457c2eee31c1de3a5faa99cb19586e4b67c4cb516e.jpg",
-      "inputHash": "b13971118a718fefb68b73457c2eee31c1de3a5faa99cb19586e4b67c4cb516e",
+      "file": "discworld-4c8ee0bfdbe4438091337441eaa0d7e56c1cbfd76221bb4abd59058a767c50e4.jpg",
+      "inputHash": "4c8ee0bfdbe4438091337441eaa0d7e56c1cbfd76221bb4abd59058a767c50e4",
       "imageHash": "33ac005ca40c9acc40b050f226f04327adc3c5cc766bfbf3844ab5a45bed7660"
     },
     "discworld-demo": {
-      "file": "discworld-demo-8c2f4229f121505c11fac71d80d816208efbcb6b168e3c18849ee826ab67de1b.jpg",
-      "inputHash": "8c2f4229f121505c11fac71d80d816208efbcb6b168e3c18849ee826ab67de1b",
+      "file": "discworld-demo-90d63e67d31a769b8fbe9f4e5cd1335fb2da317e2daf7907bfb5ac67f12c5a0a.jpg",
+      "inputHash": "90d63e67d31a769b8fbe9f4e5cd1335fb2da317e2daf7907bfb5ac67f12c5a0a",
       "imageHash": "8eed325a935794a30ec61914b3f806b63cf806d54e036ec34c61baf42f38488d"
     },
     "discworld-ii-missing-presumed": {
-      "file": "discworld-ii-missing-presumed-e7d4a2d2d9757b3af52d0b0b076749e36c6999ba62296bd331110041e3a4fc17.jpg",
-      "inputHash": "e7d4a2d2d9757b3af52d0b0b076749e36c6999ba62296bd331110041e3a4fc17",
+      "file": "discworld-ii-missing-presumed-473d2bb12cdc0d8359136dbe38d320c1ea28fcb5984f4b50fb33caeb8db965f2.jpg",
+      "inputHash": "473d2bb12cdc0d8359136dbe38d320c1ea28fcb5984f4b50fb33caeb8db965f2",
       "imageHash": "b60b2fe9ce40e66b62800a6e212d83d9b69552e1bb326736b375f5bbb815fe50"
     },
     "donald-duck-s-playground": {
-      "file": "donald-duck-s-playground-4444c2beb8be6ba588dcc39b203e5746e1f45ed58d07bc8f45defc09d4e06396.jpg",
-      "inputHash": "4444c2beb8be6ba588dcc39b203e5746e1f45ed58d07bc8f45defc09d4e06396",
+      "file": "donald-duck-s-playground-84aa2216c7ee636d0b1348208d75b38ce075fa15c47d90178fab8a0d6f54f98d.jpg",
+      "inputHash": "84aa2216c7ee636d0b1348208d75b38ce075fa15c47d90178fab8a0d6f54f98d",
       "imageHash": "0be94cfb216d807aa0615af2eba14011038f579673d217bcfcf2a5c67e4bc124"
     },
     "dr-seuss-s-abc": {
-      "file": "dr-seuss-s-abc-817f0d3840e2d0028d787740aaca76cf4844ccc4979c73699af411a73d43b4ab.jpg",
-      "inputHash": "817f0d3840e2d0028d787740aaca76cf4844ccc4979c73699af411a73d43b4ab",
+      "file": "dr-seuss-s-abc-231dacf7cde192aaac7484d54ed7d20224ec14bab4e37653989738501c8e5c42.jpg",
+      "inputHash": "231dacf7cde192aaac7484d54ed7d20224ec14bab4e37653989738501c8e5c42",
       "imageHash": "a376dc5024d9228592ccf5d03f6efb508b952cd56af43f3160280856512e4020"
     },
     "dragon-history": {
-      "file": "dragon-history-dc6ac1294f6f0d526810c79c2517c424f9e538013c5b8af24d5d3a11404272af.jpg",
-      "inputHash": "dc6ac1294f6f0d526810c79c2517c424f9e538013c5b8af24d5d3a11404272af",
+      "file": "dragon-history-aaa1136962e54c972dc3170e77ca9c329b1fbc910b48cec36e0ce7785f31d159.jpg",
+      "inputHash": "aaa1136962e54c972dc3170e77ca9c329b1fbc910b48cec36e0ce7785f31d159",
       "imageHash": "cf708685879641eab7e8e0b18a2e07e08b6531254568062be20ce08f182907ae"
     },
     "drascula-the-vampire-strikes-back": {
-      "file": "drascula-the-vampire-strikes-back-99f98b6ffccb401efadc87fd76d19678b0227c2a6c01132be99f4cb21f9f57e8.jpg",
-      "inputHash": "99f98b6ffccb401efadc87fd76d19678b0227c2a6c01132be99f4cb21f9f57e8",
+      "file": "drascula-the-vampire-strikes-back-be2e3ba1b2f5d45b0316f18b770d90acd47090843ad16b825337f3fb68efa71b.jpg",
+      "inputHash": "be2e3ba1b2f5d45b0316f18b770d90acd47090843ad16b825337f3fb68efa71b",
       "imageHash": "c1028cafaf019efb159ae9ea592283acdd47204659344c29050d124c1f05d173"
     },
     "dreamweb": {
-      "file": "dreamweb-1e8e7eb571e37b4acf37bcd3cea05c7c262172d94543c780a87f24efc20198f3.jpg",
-      "inputHash": "1e8e7eb571e37b4acf37bcd3cea05c7c262172d94543c780a87f24efc20198f3",
+      "file": "dreamweb-219068e174721a402292a7d30975262478ba9c67fe70dec4d88a6e95ca6fedf8.jpg",
+      "inputHash": "219068e174721a402292a7d30975262478ba9c67fe70dec4d88a6e95ca6fedf8",
       "imageHash": "a1a999e3e7b11a8c1ba3e067ea5abf30afb892e10b12543289490af61dd357a5"
     },
     "ecoquest-ii-lost-secret-of-the-rainforest": {
-      "file": "ecoquest-ii-lost-secret-of-the-rainforest-12a86581aa7674429cabc21469394171b73ec3a0b90d58b628289d21bcb1dbd2.jpg",
-      "inputHash": "12a86581aa7674429cabc21469394171b73ec3a0b90d58b628289d21bcb1dbd2",
+      "file": "ecoquest-ii-lost-secret-of-the-rainforest-5489779af4d9c2d6418d375d9eeccf11f450915950300685cdf60beede1ae118.jpg",
+      "inputHash": "5489779af4d9c2d6418d375d9eeccf11f450915950300685cdf60beede1ae118",
       "imageHash": "60da7193179e8568d89556c7c31bf3f88b06030c69818e144e7adc3ccba86ece"
     },
     "ecoquest-the-search-for-cetus": {
-      "file": "ecoquest-the-search-for-cetus-bfa58482aff3b8db27c1090a098fd5a73e466f1e8f2e073fd4d0c74298428bb6.jpg",
-      "inputHash": "bfa58482aff3b8db27c1090a098fd5a73e466f1e8f2e073fd4d0c74298428bb6",
+      "file": "ecoquest-the-search-for-cetus-51153b7b1e6e57cc3535df566e29e5857a170db40617934d27ee9cfc3aa5e85c.jpg",
+      "inputHash": "51153b7b1e6e57cc3535df566e29e5857a170db40617934d27ee9cfc3aa5e85c",
       "imageHash": "792c42a79c189c832df514c0101de5226f61b915d216c08aee26a46c8f4ca28a"
     },
     "elvira-ii-the-jaws-of-cerberus": {
-      "file": "elvira-ii-the-jaws-of-cerberus-2ac51f3c0371e65390c9f7ade3f3e480d56d42f66cd4d2cad9cc6d99ed1dd04e.jpg",
-      "inputHash": "2ac51f3c0371e65390c9f7ade3f3e480d56d42f66cd4d2cad9cc6d99ed1dd04e",
+      "file": "elvira-ii-the-jaws-of-cerberus-b8babaad56b2221980ac2518ec7ed0ace64536a64ff84604dceb028178750ccb.jpg",
+      "inputHash": "b8babaad56b2221980ac2518ec7ed0ace64536a64ff84604dceb028178750ccb",
       "imageHash": "dd17861722288336bd55a951b9cd66995c3be1b7e241f66e252403318a9d26b1"
     },
     "elvira-mistress-of-the-dark": {
-      "file": "elvira-mistress-of-the-dark-1dfba8bf544e18c8d7eb18001bd157669d5fdd4203ea646b1a870061135d130a.jpg",
-      "inputHash": "1dfba8bf544e18c8d7eb18001bd157669d5fdd4203ea646b1a870061135d130a",
+      "file": "elvira-mistress-of-the-dark-48b757d8745938f9592648b71d4b16ab89f7928b0771a6faa90e3f401b61867f.jpg",
+      "inputHash": "48b757d8745938f9592648b71d4b16ab89f7928b0771a6faa90e3f401b61867f",
       "imageHash": "1f119add938c4e61562523ba1d7969f8a79794894965986e5eaefdf87a7bff93"
     },
     "escape-from-monkey-island": {
-      "file": "escape-from-monkey-island-051d006a9542135a962bcfc753def6d24a6e993796ca024f60cba7e29ac5d0d4.jpg",
-      "inputHash": "051d006a9542135a962bcfc753def6d24a6e993796ca024f60cba7e29ac5d0d4",
+      "file": "escape-from-monkey-island-04033865768f4e3e4611deb7d17fbe499c7c3604162cf8231b81e623e5733d2b.jpg",
+      "inputHash": "04033865768f4e3e4611deb7d17fbe499c7c3604162cf8231b81e623e5733d2b",
       "imageHash": "499c6e3a40e1275a743733019d5a47f806ac8a7bf94311e343351f48d6254ee8"
     },
     "escape-from-monkey-island-demo": {
-      "file": "escape-from-monkey-island-demo-84411b4ecb6c6680a46f13ee151731990b9862a7d555e03dcde2ddb33a4c1ca9.jpg",
-      "inputHash": "84411b4ecb6c6680a46f13ee151731990b9862a7d555e03dcde2ddb33a4c1ca9",
+      "file": "escape-from-monkey-island-demo-249305cb3c46def5f403bc73f8a7f09f9d434abeed73b910b3c16418f77bb685.jpg",
+      "inputHash": "249305cb3c46def5f403bc73f8a7f09f9d434abeed73b910b3c16418f77bb685",
       "imageHash": "452e94273b2448cdb9787564d43f58799cd14789cce3b03ad8e75561d4c200d5"
     },
     "eye-of-the-beholder": {
-      "file": "eye-of-the-beholder-e02fd8d442bef205094fc32ddd133706a91e8dbd88918cf16eb1f1b8a376ebed.jpg",
-      "inputHash": "e02fd8d442bef205094fc32ddd133706a91e8dbd88918cf16eb1f1b8a376ebed",
+      "file": "eye-of-the-beholder-eac644ec426a4247d62ff729bd832475c43d3c915a8d55dde5f65632e04fdd29.jpg",
+      "inputHash": "eac644ec426a4247d62ff729bd832475c43d3c915a8d55dde5f65632e04fdd29",
       "imageHash": "c88ff80edfa8cbcd3a3a93b73d13c2b3853ffcbc53af32e67b5f3ff8cde2ae16"
     },
     "eye-of-the-beholder-ii-the-legend-of-darkmoon": {
-      "file": "eye-of-the-beholder-ii-the-legend-of-darkmoon-574c29be11dbdb481d0a68594ce02251302578a5a5c91fed06310ca9f63c1cbd.jpg",
-      "inputHash": "574c29be11dbdb481d0a68594ce02251302578a5a5c91fed06310ca9f63c1cbd",
+      "file": "eye-of-the-beholder-ii-the-legend-of-darkmoon-23d57abd8d0ed38ac813d4dcde210b2c59262e5d98a04c7c8bf3aff2de37c387.jpg",
+      "inputHash": "23d57abd8d0ed38ac813d4dcde210b2c59262e5d98a04c7c8bf3aff2de37c387",
       "imageHash": "9ffe8ca2ebfda89f442f2503c8085da2518e50afbe62ef54754fd8f42c9a75fd"
     },
     "fascination": {
-      "file": "fascination-963c93f11c7cfc8226b29e5a74adb333e09445d9398508c33e431ddafe5bee66.jpg",
-      "inputHash": "963c93f11c7cfc8226b29e5a74adb333e09445d9398508c33e431ddafe5bee66",
+      "file": "fascination-f9eab0cc24c3ddb9fcbc8d71d4512a4c33aec0993903cecee2edb10d5eede72d.jpg",
+      "inputHash": "f9eab0cc24c3ddb9fcbc8d71d4512a4c33aec0993903cecee2edb10d5eede72d",
       "imageHash": "51eea7ed03d48dbf5aa4ebab961af6dc36a0e35c2fda99228d639a154c6b22f8"
     },
     "fatty-bear-s-birthday-surprise": {
-      "file": "fatty-bear-s-birthday-surprise-fe97a7315b123b469b61c6761a1d4884d97d65717056e2460036ac0be3428d0a.jpg",
-      "inputHash": "fe97a7315b123b469b61c6761a1d4884d97d65717056e2460036ac0be3428d0a",
+      "file": "fatty-bear-s-birthday-surprise-6c306bedd5a274b164543fd1258e82d7ddf6e6454611838d4bcf799c775116b7.jpg",
+      "inputHash": "6c306bedd5a274b164543fd1258e82d7ddf6e6454611838d4bcf799c775116b7",
       "imageHash": "4902fb2ebc27e9e36e665757c16f40fa03268ab3444865d9b9a832dfe7f36ad5"
     },
     "fatty-bear-s-birthday-surprise-demo": {
-      "file": "fatty-bear-s-birthday-surprise-demo-18cc684f85f810201f1a917207d03e12f3de5f30aa476f26d989f6a64b39a71c.jpg",
-      "inputHash": "18cc684f85f810201f1a917207d03e12f3de5f30aa476f26d989f6a64b39a71c",
+      "file": "fatty-bear-s-birthday-surprise-demo-49c8fe126cfc25deb6dba3448dd3bbb529cb5823c21b62a2aa70690d230cb5ca.jpg",
+      "inputHash": "49c8fe126cfc25deb6dba3448dd3bbb529cb5823c21b62a2aa70690d230cb5ca",
       "imageHash": "c2555b8e406779b8ebe732a0d1f073ed869a7529bbdc29f22fcc6a92235528a4"
     },
     "fatty-bear-s-funpack": {
-      "file": "fatty-bear-s-funpack-a8bf514de527283440bfef9d3312e52db62dd9c688237c15aeca31708707d7c0.jpg",
-      "inputHash": "a8bf514de527283440bfef9d3312e52db62dd9c688237c15aeca31708707d7c0",
+      "file": "fatty-bear-s-funpack-51fdafef86db3b1ba5fac54283fe0e6d48f983c88512a452ae309e0e534ca3b4.jpg",
+      "inputHash": "51fdafef86db3b1ba5fac54283fe0e6d48f983c88512a452ae309e0e534ca3b4",
       "imageHash": "0afeca7768d0e44f21047879fcfd2185d9aa542df8eb6d86da9343ebe5168ac5"
     },
     "flight-of-the-amazon-queen": {
-      "file": "flight-of-the-amazon-queen-1dc340a090dc0dc1e47141a05134e99101bb61e0b42322a8454ebbdcab46014d.jpg",
-      "inputHash": "1dc340a090dc0dc1e47141a05134e99101bb61e0b42322a8454ebbdcab46014d",
+      "file": "flight-of-the-amazon-queen-f3995dfe7fb9272dc1b9822deda64e3099f66db5043fe573caa8cee77c45e27f.jpg",
+      "inputHash": "f3995dfe7fb9272dc1b9822deda64e3099f66db5043fe573caa8cee77c45e27f",
       "imageHash": "574996f063b85430b562ecc18afed3cfa725cd4a6e241bb27ca670b9d1467f3a"
     },
     "freddi-fish-2-the-case-of-the-haunted-schoolhouse": {
-      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-a177586cdb87f14bb0b8b5ce2812708ff7a176aa9f5c54866d3a5972fb1c9c3c.jpg",
-      "inputHash": "a177586cdb87f14bb0b8b5ce2812708ff7a176aa9f5c54866d3a5972fb1c9c3c",
+      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-6d4d5ab7c7c0b6b9d404f9512767f1311945e56d121f5e38bcc0e3b7d57e81b5.jpg",
+      "inputHash": "6d4d5ab7c7c0b6b9d404f9512767f1311945e56d121f5e38bcc0e3b7d57e81b5",
       "imageHash": "40dde884d3e2f4fb497da0146649adb908e9e5c6ece42d6db7371ebb94cad35b"
     },
     "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo": {
-      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo-3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77.jpg",
-      "inputHash": "3fad95efdf7e7e0c25d936424551bfd73fa2e9e477af0fc9604482e4037ebd77",
+      "file": "freddi-fish-2-the-case-of-the-haunted-schoolhouse-demo-186c37ea1d9d247bca0aae846ae43eb81854aceae0defb6392f0a433b4d047be.jpg",
+      "inputHash": "186c37ea1d9d247bca0aae846ae43eb81854aceae0defb6392f0a433b4d047be",
       "imageHash": "2e715d0d01d5763f312a3d961fffe299c99690ce447dbba053829bb1bd4cabf8"
     },
     "freddi-fish-3-the-case-of-the-stolen-conch-shell": {
-      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-ae73ac2b9e6a7eb9c41d8aa557830db557a5b7f6f477b9314de233bab59f437a.jpg",
-      "inputHash": "ae73ac2b9e6a7eb9c41d8aa557830db557a5b7f6f477b9314de233bab59f437a",
+      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-ecfae311d9d6af1d40c39be3dad293192f2703277aaf0152477d034b589b9c97.jpg",
+      "inputHash": "ecfae311d9d6af1d40c39be3dad293192f2703277aaf0152477d034b589b9c97",
       "imageHash": "3b480366e7b6247d055cd4783e4cecd810f0e2455c16e3154483ae5f9e2e2494"
     },
     "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo": {
-      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo-8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8.jpg",
-      "inputHash": "8b50c0db41a0bde5a4e4f7f7152c5782a8b54622008b89e895737e93c29808c8",
+      "file": "freddi-fish-3-the-case-of-the-stolen-conch-shell-demo-95a10e1b1eaaacc513896e1c5272b8f7bbb1c064ba9aecc11f2c38722b1b2400.jpg",
+      "inputHash": "95a10e1b1eaaacc513896e1c5272b8f7bbb1c064ba9aecc11f2c38722b1b2400",
       "imageHash": "a4b60cfc54524b727209070346ccc18d32d926afbfb0c5945f820971e65ead5d"
     },
     "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch": {
-      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-ad6a158f402b1cf8dd0c245f9449313d893520eb031b73ca02fd4f7428aee8dc.jpg",
-      "inputHash": "ad6a158f402b1cf8dd0c245f9449313d893520eb031b73ca02fd4f7428aee8dc",
+      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-060a4e302820e05d860328730d7379cbcdb1dd60afebe387e506cd5ff6e67ae9.jpg",
+      "inputHash": "060a4e302820e05d860328730d7379cbcdb1dd60afebe387e506cd5ff6e67ae9",
       "imageHash": "db12d486ffa2b4dee274ebaed8ce2b45ade3e4ee6a380c3feb9e48a3f3688536"
     },
     "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo": {
-      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo-5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1.jpg",
-      "inputHash": "5866746e40c268171c027f5c3d759a3de334493d4ae0d786da4d59ed4394c9f1",
+      "file": "freddi-fish-4-the-case-of-the-hogfish-rustlers-of-briny-gulch-demo-520e14485f4792a4dacf732fa8555ec3c27f5048f69e204192279b15b4da3265.jpg",
+      "inputHash": "520e14485f4792a4dacf732fa8555ec3c27f5048f69e204192279b15b4da3265",
       "imageHash": "3ac6d381b6577001e656651c5790da427d524eb36fec0bd6dc8f4ff84494f1b3"
     },
     "freddi-fish-5-the-case-of-the-creature-of-coral-cove": {
-      "file": "freddi-fish-5-the-case-of-the-creature-of-coral-cove-4731ae57a47463ab05fcad5b1a0556f5642afb7a9f3f6b1fa2e60a6818aa3486.jpg",
-      "inputHash": "4731ae57a47463ab05fcad5b1a0556f5642afb7a9f3f6b1fa2e60a6818aa3486",
+      "file": "freddi-fish-5-the-case-of-the-creature-of-coral-cove-cf21276bc76940e13331f8248e9290c9d7a21a810ef4d9f7920624a2e6f3a08a.jpg",
+      "inputHash": "cf21276bc76940e13331f8248e9290c9d7a21a810ef4d9f7920624a2e6f3a08a",
       "imageHash": "ab04a24d20f0b090f32d75f523ebc9f98452294dacc02fa7029c25579bf71053"
     },
     "freddi-fish-and-luther-s-maze-madness": {
-      "file": "freddi-fish-and-luther-s-maze-madness-c65874947411b040056d9fd4b86921ca29231a8bc972942ad377505e2a7d2692.jpg",
-      "inputHash": "c65874947411b040056d9fd4b86921ca29231a8bc972942ad377505e2a7d2692",
+      "file": "freddi-fish-and-luther-s-maze-madness-16bbaa9f587a35a4a396e76c61abb4a6293b5a030c919e124f84a7ddab8c8cd2.jpg",
+      "inputHash": "16bbaa9f587a35a4a396e76c61abb4a6293b5a030c919e124f84a7ddab8c8cd2",
       "imageHash": "341943e286bb6f337e4fe49a6dfbd312b36550c559fa78e50190b6056ae6c985"
     },
     "freddi-fish-and-luther-s-water-worries": {
-      "file": "freddi-fish-and-luther-s-water-worries-0bda58953e2c195e2a3db9cb55436fe59844e5ceb41f2521292fa15da2187d6c.jpg",
-      "inputHash": "0bda58953e2c195e2a3db9cb55436fe59844e5ceb41f2521292fa15da2187d6c",
+      "file": "freddi-fish-and-luther-s-water-worries-6b4fa6dcfd938fc644d8038c4d126aa5b206ccd71767ed53580ea15922b8174d.jpg",
+      "inputHash": "6b4fa6dcfd938fc644d8038c4d126aa5b206ccd71767ed53580ea15922b8174d",
       "imageHash": "3a35f3a4b0989ec4c079b7e9acf78ce53391c5eae174d4b8a113df7e4b8c0008"
     },
     "freddi-fish-and-the-case-of-the-missing-kelp-seeds": {
-      "file": "freddi-fish-and-the-case-of-the-missing-kelp-seeds-c25ebd316ca968d774264e5e4ca1dba4fadc277362509f36bd8932b0f8c846a5.jpg",
-      "inputHash": "c25ebd316ca968d774264e5e4ca1dba4fadc277362509f36bd8932b0f8c846a5",
+      "file": "freddi-fish-and-the-case-of-the-missing-kelp-seeds-d5786bee94f4c0d021508401083c10b8ae81045e13b70783d9830b1e16b4b28c.jpg",
+      "inputHash": "d5786bee94f4c0d021508401083c10b8ae81045e13b70783d9830b1e16b4b28c",
       "imageHash": "bebd4b5f41cb2cd9d25510e48d642dcb809ea05aeeafcb9009ba764789b10f1e"
     },
     "freddi-fish-and-the-case-of-the-missing-kelp-seeds-demo": {
-      "file": "freddi-fish-and-the-case-of-the-missing-kelp-seeds-demo-dc1e9f7c080d6624ce0d0f6909fd75edb318e7c5ac20b1e7548532abf59f100d.jpg",
-      "inputHash": "dc1e9f7c080d6624ce0d0f6909fd75edb318e7c5ac20b1e7548532abf59f100d",
+      "file": "freddi-fish-and-the-case-of-the-missing-kelp-seeds-demo-940f02e6da2ef6ebf16061f18c1a37937c3b006af7cea9776d43117552c35bb3.jpg",
+      "inputHash": "940f02e6da2ef6ebf16061f18c1a37937c3b006af7cea9776d43117552c35bb3",
       "imageHash": "29c4f9a8573839b53df4865ed418d2a188a2b62f2ad6751558dcfafa10c2ea07"
     },
     "freddy-pharkas-frontier-pharmacist": {
-      "file": "freddy-pharkas-frontier-pharmacist-aac1e2870749adccd343b15b605d6a7721ee8460c36ed729f9bfee04112bb772.jpg",
-      "inputHash": "aac1e2870749adccd343b15b605d6a7721ee8460c36ed729f9bfee04112bb772",
+      "file": "freddy-pharkas-frontier-pharmacist-e97373df2eab65aa873ea6d9245c877a7365b5d38776bec67bee9c13f39e8e34.jpg",
+      "inputHash": "e97373df2eab65aa873ea6d9245c877a7365b5d38776bec67bee9c13f39e8e34",
       "imageHash": "a5e3370353353a25dd3fba1db405b691a6896f6440b4d09e91fa2590378f73e0"
     },
     "freddy-pharkas-frontier-pharmacist-demo": {
-      "file": "freddy-pharkas-frontier-pharmacist-demo-e9462bf7dcac84a98fa5de7c22b7869431094dd14ababb5030d163c2dfae62c0.jpg",
-      "inputHash": "e9462bf7dcac84a98fa5de7c22b7869431094dd14ababb5030d163c2dfae62c0",
+      "file": "freddy-pharkas-frontier-pharmacist-demo-2b24bd551defd4b17b2e28d3f034f313e5b8c3ee2aaa07a679fd99a821739e9e.jpg",
+      "inputHash": "2b24bd551defd4b17b2e28d3f034f313e5b8c3ee2aaa07a679fd99a821739e9e",
       "imageHash": "8e6b03be0b2ee82b5c8ba944066bec20d1623ec90bb484dae48b6ed848c35bbe"
     },
     "full-pipe": {
-      "file": "full-pipe-5ed701181bc615827ec013dbcfb08deb17cb51fed7589662b6c30021896e5137.jpg",
-      "inputHash": "5ed701181bc615827ec013dbcfb08deb17cb51fed7589662b6c30021896e5137",
+      "file": "full-pipe-054823be8c673a6eb151b8b93bba25354005bdafae0a8dcb8035b190c70dcf72.jpg",
+      "inputHash": "054823be8c673a6eb151b8b93bba25354005bdafae0a8dcb8035b190c70dcf72",
       "imageHash": "252b45a3d3bf75ff402df4a7418b94c7ed39a6f43d77079aa987aa506f470883"
     },
     "full-throttle": {
-      "file": "full-throttle-a98a322df58b2e843b91e54622dd6402b46ed3ef9b1ac39385f321d6d22c116c.jpg",
-      "inputHash": "a98a322df58b2e843b91e54622dd6402b46ed3ef9b1ac39385f321d6d22c116c",
+      "file": "full-throttle-7cd4e3657a5f2d2d121d6fae2c5d5207d17c82ba1bb3995bc1747dc6c0b2a0da.jpg",
+      "inputHash": "7cd4e3657a5f2d2d121d6fae2c5d5207d17c82ba1bb3995bc1747dc6c0b2a0da",
       "imageHash": "0e1895cc1ca2ed68fa8bcb342bf8ec4681c2a1732fe7359d0f9d551b0fa1220a"
     },
     "full-throttle-demo": {
-      "file": "full-throttle-demo-8c497f600176b0cbd9bcfe1890daf8e12e4887eeda3f9ac47408c310946f4a07.jpg",
-      "inputHash": "8c497f600176b0cbd9bcfe1890daf8e12e4887eeda3f9ac47408c310946f4a07",
+      "file": "full-throttle-demo-e7ce5b8bdaf863da18fbc80b44a15255c9b48ec12912c060f239555c765c10eb.jpg",
+      "inputHash": "e7ce5b8bdaf863da18fbc80b44a15255c9b48ec12912c060f239555c765c10eb",
       "imageHash": "869f0da1902f730eab4f406c60fa2c39ab5204260dd2b765a42a2bef41e2c88f"
     },
     "fun-seeker-s-guide-to-eastern-madera-county": {
-      "file": "fun-seeker-s-guide-to-eastern-madera-county-572b03dc2eb81f05b8eddcd3026423a8578eae3081bb499daff0de1a40472838.jpg",
-      "inputHash": "572b03dc2eb81f05b8eddcd3026423a8578eae3081bb499daff0de1a40472838",
+      "file": "fun-seeker-s-guide-to-eastern-madera-county-32ba44aaf9b3aabdb11dfb9146a6521ed936dacc3d6bc214797b1446e9c718ee.jpg",
+      "inputHash": "32ba44aaf9b3aabdb11dfb9146a6521ed936dacc3d6bc214797b1446e9c718ee",
       "imageHash": "f77dc8692458636b9b9966f5a69ac47ceaedf7411a8445fd5e77d92b1a3f31a4"
     },
     "fun-seeker-s-guide-to-eastern-madera-county-demo": {
-      "file": "fun-seeker-s-guide-to-eastern-madera-county-demo-1290b3db5eb9870ea9488fc4fe848b4f3a48e19ad8993c01eacfd47be7adcec9.jpg",
-      "inputHash": "1290b3db5eb9870ea9488fc4fe848b4f3a48e19ad8993c01eacfd47be7adcec9",
+      "file": "fun-seeker-s-guide-to-eastern-madera-county-demo-7e249927e915568e8601a3db124dc042e53bd9a81f94348329744cdc4230dcc5.jpg",
+      "inputHash": "7e249927e915568e8601a3db124dc042e53bd9a81f94348329744cdc4230dcc5",
       "imageHash": "6e047db0772e55f2e141be212c14aa31aeec61d717a32de8f4a86ac207e3a60a"
     },
     "future-wars-adventures-in-time": {
-      "file": "future-wars-adventures-in-time-8c86ee5ab0abafbd77719d9c3157e84e865444da3d99a42fe4b9017ca2891482.jpg",
-      "inputHash": "8c86ee5ab0abafbd77719d9c3157e84e865444da3d99a42fe4b9017ca2891482",
+      "file": "future-wars-adventures-in-time-e337fd273405ac5277c78ceaaeff7dbd628f9c37f73fac02f57d90696e6aeb92.jpg",
+      "inputHash": "e337fd273405ac5277c78ceaaeff7dbd628f9c37f73fac02f57d90696e6aeb92",
       "imageHash": "c2a6acfd082e90dec85cf8afc223c7d5a99b6c7b24467eab100864b3886217ca"
     },
     "gabriel-knight-sins-of-the-fathers": {
-      "file": "gabriel-knight-sins-of-the-fathers-78761c1b15a88ff77e89ff56799361af7a97c9b16c85503ab08cd40312c3db0a.jpg",
-      "inputHash": "78761c1b15a88ff77e89ff56799361af7a97c9b16c85503ab08cd40312c3db0a",
+      "file": "gabriel-knight-sins-of-the-fathers-c536767ab6be6a3dfb8a8c953eae26ceb75315fbd3271a0b3605e98b0cea5f38.jpg",
+      "inputHash": "c536767ab6be6a3dfb8a8c953eae26ceb75315fbd3271a0b3605e98b0cea5f38",
       "imageHash": "3589368afe748aa23d68871587b6222a4d67460e146c36a13fc15e0a1700e12e"
     },
     "gabriel-knight-sins-of-the-fathers-demo": {
-      "file": "gabriel-knight-sins-of-the-fathers-demo-54ab14f56e457a6b73740bd1767132bddf555dc4b75a045e3f03d183cb855ffb.jpg",
-      "inputHash": "54ab14f56e457a6b73740bd1767132bddf555dc4b75a045e3f03d183cb855ffb",
+      "file": "gabriel-knight-sins-of-the-fathers-demo-3efb1bb66d4d4ae76153f1a6b7664ad5df7d38aebedcac14b6eb7a3241e09773.jpg",
+      "inputHash": "3efb1bb66d4d4ae76153f1a6b7664ad5df7d38aebedcac14b6eb7a3241e09773",
       "imageHash": "b05246055838f6b870a8a475feda491ec9d18281bc601dbba468195713480aa9"
     },
     "geisha": {
-      "file": "geisha-2b4b5bbe06616e9766ebef1513ce5294660891c5d5a6a1753439225d1174833f.jpg",
-      "inputHash": "2b4b5bbe06616e9766ebef1513ce5294660891c5d5a6a1753439225d1174833f",
+      "file": "geisha-6aa20173f7c51c1a2ff7975e0ed2c79fe0ef3e5283642c35b072bb090222e13e.jpg",
+      "inputHash": "6aa20173f7c51c1a2ff7975e0ed2c79fe0ef3e5283642c35b072bb090222e13e",
       "imageHash": "d3d2e215bc1f2dd38059fcd5db90900c1f5fcf1a5be322f551bc54a9556d8ddc"
     },
     "gemini-rue": {
-      "file": "gemini-rue-10860a8e26e5da027655106f724427b43ffffff7f2fbd7d1d0aa790ef3755a53.jpg",
-      "inputHash": "10860a8e26e5da027655106f724427b43ffffff7f2fbd7d1d0aa790ef3755a53",
+      "file": "gemini-rue-57d3b39361cf1ca8d79627e9cd1e6b9e829c13a2b10117d8a2d8ed639eb2797a.jpg",
+      "inputHash": "57d3b39361cf1ca8d79627e9cd1e6b9e829c13a2b10117d8a2d8ed639eb2797a",
       "imageHash": "f97ecbd129160d44801f2ae915222aa997e7603c4aad6e024463bc44a34fa3e4"
     },
     "gemini-rue-demo": {
-      "file": "gemini-rue-demo-27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a.jpg",
-      "inputHash": "27b0555ad5d1599d9d616edf2e9ce8c6e2016c5d5dead8626e31fb5ba855707a",
+      "file": "gemini-rue-demo-e980b8d7cc1607b791626450ef81263f6c4c6b7d8dfeac7d0bff7623d7d29db0.jpg",
+      "inputHash": "e980b8d7cc1607b791626450ef81263f6c4c6b7d8dfeac7d0bff7623d7d29db0",
       "imageHash": "1d7ecda48cdb3325af7a3c2b4fc2bda3a82f2052617872f5cf1b975b5b044675"
     },
     "gnap-u-f-o-s": {
-      "file": "gnap-u-f-o-s-eb160f1378a88827e8c2c1ccd9445ae117221309a33c6d88d36b591bc7f9d62f.jpg",
-      "inputHash": "eb160f1378a88827e8c2c1ccd9445ae117221309a33c6d88d36b591bc7f9d62f",
+      "file": "gnap-u-f-o-s-d316472d1f8662f26c7ac06a181ac31cbea181c4ff6b2146dc4f9548ead101e6.jpg",
+      "inputHash": "d316472d1f8662f26c7ac06a181ac31cbea181c4ff6b2146dc4f9548ead101e6",
       "imageHash": "7262f090988ae2259d6888454864514c306d6b4714b418ebf88575e7f1263dc7"
     },
     "gobliiins": {
-      "file": "gobliiins-a4a661642774fc235f77dbf832ed60c053fd00bc31ffbee27bc3775caf873954.jpg",
-      "inputHash": "a4a661642774fc235f77dbf832ed60c053fd00bc31ffbee27bc3775caf873954",
+      "file": "gobliiins-a85d892edcbbb65e572868ddadf0a2ebdfd63c07b9c66abb48702ac512f487cb.jpg",
+      "inputHash": "a85d892edcbbb65e572868ddadf0a2ebdfd63c07b9c66abb48702ac512f487cb",
       "imageHash": "2eb3277283e4f9757ab1bc12bc6f4f54f2b79981fa8853be2aebe580d121ab55"
     },
     "gobliiins-demo": {
-      "file": "gobliiins-demo-ce03ae1b3b17777a3ced5a9638836ae4afb522a153c04b745bd3d86d8e7e48dc.jpg",
-      "inputHash": "ce03ae1b3b17777a3ced5a9638836ae4afb522a153c04b745bd3d86d8e7e48dc",
+      "file": "gobliiins-demo-315afcfa7beadd53380235c477647cb86fa45d09b7a4547bd42354247001d965.jpg",
+      "inputHash": "315afcfa7beadd53380235c477647cb86fa45d09b7a4547bd42354247001d965",
       "imageHash": "86253f8b7f169a2478cce344d82ff07bf123b960e6122f66129a4c309a3020da"
     },
     "gobliins-2-the-prince-buffoon": {
-      "file": "gobliins-2-the-prince-buffoon-92166d96c61872d5f6cfefef3d832f0b92f46fd748cd6af62e8faf82d6e69bfa.jpg",
-      "inputHash": "92166d96c61872d5f6cfefef3d832f0b92f46fd748cd6af62e8faf82d6e69bfa",
+      "file": "gobliins-2-the-prince-buffoon-624a6cd309c5346cfcb3ee9b5ca2dfaf60bb63585a7be9f719215656fb34af07.jpg",
+      "inputHash": "624a6cd309c5346cfcb3ee9b5ca2dfaf60bb63585a7be9f719215656fb34af07",
       "imageHash": "f70ac7366b701a29d4c77ab4146ba311f8381e92fd1bd215262c173127188b31"
     },
     "gobliins-2-the-prince-buffoon-demo": {
-      "file": "gobliins-2-the-prince-buffoon-demo-75b599da43f163bc4c92f68522134ebaa167b2609e22d1a09dded26901a64536.jpg",
-      "inputHash": "75b599da43f163bc4c92f68522134ebaa167b2609e22d1a09dded26901a64536",
+      "file": "gobliins-2-the-prince-buffoon-demo-2e9c77fa0f5c5c0cc9b58bacf18f6e390b29e70a66d3e3ee8b67e0b212caa7d3.jpg",
+      "inputHash": "2e9c77fa0f5c5c0cc9b58bacf18f6e390b29e70a66d3e3ee8b67e0b212caa7d3",
       "imageHash": "39a52225dbcfdc45c400d21ab05c172a09b62112ca60d73dfc72562cf0dd4041"
     },
     "goblins-quest-3": {
-      "file": "goblins-quest-3-09391447ab7305c91931f355afdeb46e39cc9724ec2f72eb2d78c09cf38e3fe1.jpg",
-      "inputHash": "09391447ab7305c91931f355afdeb46e39cc9724ec2f72eb2d78c09cf38e3fe1",
+      "file": "goblins-quest-3-f6b016b42b40b632b7a230a555d4a3ed09ffdfa537e7c9bdb326ea80cab67c28.jpg",
+      "inputHash": "f6b016b42b40b632b7a230a555d4a3ed09ffdfa537e7c9bdb326ea80cab67c28",
       "imageHash": "ebf457a192a52a7076f50bf4fc7f8b2adba8c815b82db6496224c39b78c32b61"
     },
     "goblins-quest-3-demo": {
-      "file": "goblins-quest-3-demo-1cba59cb538ad95c32223dbc4f00259e0d586cb5b19f092f5757241479e4eece.jpg",
-      "inputHash": "1cba59cb538ad95c32223dbc4f00259e0d586cb5b19f092f5757241479e4eece",
+      "file": "goblins-quest-3-demo-e00b705f190e567b18364b6759c61d94a129a1dd6a222efb8e6b1614a9763cad.jpg",
+      "inputHash": "e00b705f190e567b18364b6759c61d94a129a1dd6a222efb8e6b1614a9763cad",
       "imageHash": "2a3b0ae44f5b1436a992f5fd8f0ac9a583fc3251aa2853b795359082d2e52dc8"
     },
     "god-of-thunder": {
-      "file": "god-of-thunder-81193f627a12d5547a890befa1415173313145d1543650d4729c254011a41f12.jpg",
-      "inputHash": "81193f627a12d5547a890befa1415173313145d1543650d4729c254011a41f12",
+      "file": "god-of-thunder-ce91bc81346e71829668945eefd5382019608d41a19aee43959dd2f9bac0f86d.jpg",
+      "inputHash": "ce91bc81346e71829668945eefd5382019608d41a19aee43959dd2f9bac0f86d",
       "imageHash": "a80f7d6b2c40e078877670601d2aa9280d190e426802f434740b14e4e9dd65ec"
     },
     "gold-rush": {
-      "file": "gold-rush-2cbfea1c3f7763b519681d326c5885deed47d1037a2af0b2b39a1d3d540dc860.jpg",
-      "inputHash": "2cbfea1c3f7763b519681d326c5885deed47d1037a2af0b2b39a1d3d540dc860",
+      "file": "gold-rush-35034a7d2770db285793e4b6eb3a91dcc4703cc97232be3a381b646af317ddec.jpg",
+      "inputHash": "35034a7d2770db285793e4b6eb3a91dcc4703cc97232be3a381b646af317ddec",
       "imageHash": "97fe3d1a5f2db1c6eee57d45aefa2ac2c137ccd4ffd3c139cf603541db64add9"
     },
     "green-eggs-and-ham": {
-      "file": "green-eggs-and-ham-fada79bbac64dda4806304e1e1fe18306faad14485ff2a80194a086c0af4f651.jpg",
-      "inputHash": "fada79bbac64dda4806304e1e1fe18306faad14485ff2a80194a086c0af4f651",
+      "file": "green-eggs-and-ham-2f7c797b09104be5d9727e8c2fdd35ec5c5e72f14a939e1b92d7e7b39081505b.jpg",
+      "inputHash": "2f7c797b09104be5d9727e8c2fdd35ec5c5e72f14a939e1b92d7e7b39081505b",
       "imageHash": "a8661b15e0ca9fcd949a7b19bc43dc84b1f0e38ebeb64c82b62d235c2db141a1"
     },
     "gregory-and-the-hot-air-balloon": {
-      "file": "gregory-and-the-hot-air-balloon-0928a7451a5cd108231f98bf4a8494b651defe381b4b21f7538774fb358034e5.jpg",
-      "inputHash": "0928a7451a5cd108231f98bf4a8494b651defe381b4b21f7538774fb358034e5",
+      "file": "gregory-and-the-hot-air-balloon-9785f1fa603f02291797155aa5208d64cae3e432a96563bd1a19a3543642b70a.jpg",
+      "inputHash": "9785f1fa603f02291797155aa5208d64cae3e432a96563bd1a19a3543642b70a",
       "imageHash": "b0217cf3879c18d3af2aa5ad84310968cc09784f05d9bff88e35fd8615448184"
     },
     "grim-fandango": {
-      "file": "grim-fandango-4f57230e3a21d4be44c4b1dd6703f6aa0c2a9d5e36a11fa08b8774139b404c48.jpg",
-      "inputHash": "4f57230e3a21d4be44c4b1dd6703f6aa0c2a9d5e36a11fa08b8774139b404c48",
+      "file": "grim-fandango-f48848c99365445cc259896c12191348f8422a813fcd53820c623d0910e57dce.jpg",
+      "inputHash": "f48848c99365445cc259896c12191348f8422a813fcd53820c623d0910e57dce",
       "imageHash": "6521ac6c56575ccb3743ee0b91bbb06f23722f4b87512d9fc562e6dc0d310b87"
     },
     "grim-fandango-demo": {
-      "file": "grim-fandango-demo-3bd5000bde545058686971aebf937208be0f7859176003e72b69ebeb740cea60.jpg",
-      "inputHash": "3bd5000bde545058686971aebf937208be0f7859176003e72b69ebeb740cea60",
+      "file": "grim-fandango-demo-05c11126e19485555aca9722fc38bd941a1f9fa03f55bece1428cf276151a52f.jpg",
+      "inputHash": "05c11126e19485555aca9722fc38bd941a1f9fa03f55bece1428cf276151a52f",
       "imageHash": "59b44936a092c766d7d998bc0e615afc721f3898897ac1a0ffb40be3c969223c"
     },
     "harlan-ellison-i-have-no-mouth-and-i-must-scream": {
-      "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-811de3605ed61172476e10ed50f849423bb65636ee73124791b6a2651b60b0cd.jpg",
-      "inputHash": "811de3605ed61172476e10ed50f849423bb65636ee73124791b6a2651b60b0cd",
+      "file": "harlan-ellison-i-have-no-mouth-and-i-must-scream-baaae78d5a337c60cb3cf28006576da4972752f48de0fa6d94edb6d2548a8d00.jpg",
+      "inputHash": "baaae78d5a337c60cb3cf28006576da4972752f48de0fa6d94edb6d2548a8d00",
       "imageHash": "e999e26fdaf84e6eae8dc036add8ef96169b6c9a9604c6e132f9605fb970bc35"
     },
     "harry-and-the-haunted-house": {
-      "file": "harry-and-the-haunted-house-b0d5a2367ef9882d166837ca79e4c48c893273b8c81b4fcbc3a6af1fa2769136.jpg",
-      "inputHash": "b0d5a2367ef9882d166837ca79e4c48c893273b8c81b4fcbc3a6af1fa2769136",
+      "file": "harry-and-the-haunted-house-26365b4aabf32675898b6a325dd09237dc0d765fa1f2f083d4c05e79b4f75830.jpg",
+      "inputHash": "26365b4aabf32675898b6a325dd09237dc0d765fa1f2f083d4c05e79b4f75830",
       "imageHash": "5307a69a84b8223025b7a160951d181a12356448e6f18b49001973f76fcd7358"
     },
     "hi-res-adventure-0-mission-asteroid": {
-      "file": "hi-res-adventure-0-mission-asteroid-f387c8eb52fe6e8b228d545165f4d16a330c37496bfd025a1d5f4bbf14c78f6e.jpg",
-      "inputHash": "f387c8eb52fe6e8b228d545165f4d16a330c37496bfd025a1d5f4bbf14c78f6e",
+      "file": "hi-res-adventure-0-mission-asteroid-4ec522232a259463db997d63f30c4863add3fb8abf2a21ef7b34f98dce160295.jpg",
+      "inputHash": "4ec522232a259463db997d63f30c4863add3fb8abf2a21ef7b34f98dce160295",
       "imageHash": "b16eccce1b3a90131be7471e958732f6adccdcb8965005f402d1265a0aa23798"
     },
     "hi-res-adventure-1-mystery-house": {
-      "file": "hi-res-adventure-1-mystery-house-042bec3fbba7210edf046514dbb01876089872ba5271ee6e6d94aca228617f0e.jpg",
-      "inputHash": "042bec3fbba7210edf046514dbb01876089872ba5271ee6e6d94aca228617f0e",
+      "file": "hi-res-adventure-1-mystery-house-2236ae90c2536bc2fa9d03295bf1ff31e1cdbad805e9d26ec89fc30e8e432a27.jpg",
+      "inputHash": "2236ae90c2536bc2fa9d03295bf1ff31e1cdbad805e9d26ec89fc30e8e432a27",
       "imageHash": "45ae02651de1565d83370984ea410d9978321b0e3c80580d2ac7c9329d4fceca"
     },
     "hi-res-adventure-2-the-wizard-and-the-princess": {
-      "file": "hi-res-adventure-2-the-wizard-and-the-princess-6afd93e3bfbb5ac8b638f02115060e61b4300109ff33562caea2e68ca3920c97.jpg",
-      "inputHash": "6afd93e3bfbb5ac8b638f02115060e61b4300109ff33562caea2e68ca3920c97",
+      "file": "hi-res-adventure-2-the-wizard-and-the-princess-8564a3856adf8d9005253061c14b7b168fe533255b9d94522af58adb207b9706.jpg",
+      "inputHash": "8564a3856adf8d9005253061c14b7b168fe533255b9d94522af58adb207b9706",
       "imageHash": "ffd0cdf63b2e665f238d98a325e081307d9d204b3c4a9f93fb085c3c1ba7c1fa"
     },
     "hi-res-adventure-5-time-zone": {
-      "file": "hi-res-adventure-5-time-zone-e872b99c26a84bc1910914b6a04900a5d4390071e54ae322482181f6efa59a8b.jpg",
-      "inputHash": "e872b99c26a84bc1910914b6a04900a5d4390071e54ae322482181f6efa59a8b",
+      "file": "hi-res-adventure-5-time-zone-d7ad4f0b5e1894e614d6ccd96480f67a00d14f23553f06d92a8cb456d10c2a50.jpg",
+      "inputHash": "d7ad4f0b5e1894e614d6ccd96480f67a00d14f23553f06d92a8cb456d10c2a50",
       "imageHash": "6ff100d6cb2f28e8d6f299df9665237434c97411499eea35ecd869cb90e06814"
     },
     "hi-res-adventure-6-the-dark-crystal": {
-      "file": "hi-res-adventure-6-the-dark-crystal-81fccaf61f4a938999ec351865d71181422be4bdd96c6bc464046d4507d4c64c.jpg",
-      "inputHash": "81fccaf61f4a938999ec351865d71181422be4bdd96c6bc464046d4507d4c64c",
+      "file": "hi-res-adventure-6-the-dark-crystal-bcc55cc2e61b0bcf8ba6b1f0c399004d47d911a72a2b49e569f78af3ad32363b.jpg",
+      "inputHash": "bcc55cc2e61b0bcf8ba6b1f0c399004d47d911a72a2b49e569f78af3ad32363b",
       "imageHash": "9dc2dd9bdac481579d39228fdc8362b4b9c8b24037f23538629d5c9b0f87da3f"
     },
     "hopkins-fbi": {
-      "file": "hopkins-fbi-1a03482d358ec993f41b6e9e1d3c7163d37112b43b7915757cca45a7a287d095.jpg",
-      "inputHash": "1a03482d358ec993f41b6e9e1d3c7163d37112b43b7915757cca45a7a287d095",
+      "file": "hopkins-fbi-353815bd4e221d4f4cd156031c0d36cbaff11a9174f14ba3c0341dfce3343113.jpg",
+      "inputHash": "353815bd4e221d4f4cd156031c0d36cbaff11a9174f14ba3c0341dfce3343113",
       "imageHash": "0c4c7a6b238a5696d0abf7255473b7d75a40e2c51de72fe6aaf6ae29c7db2aee"
     },
     "hoyle-s-official-book-of-games-volume-1": {
-      "file": "hoyle-s-official-book-of-games-volume-1-4de560d121414cd4884a8409e59cc5276cbd4132b5f5cb168b4235b20e20b2c2.jpg",
-      "inputHash": "4de560d121414cd4884a8409e59cc5276cbd4132b5f5cb168b4235b20e20b2c2",
+      "file": "hoyle-s-official-book-of-games-volume-1-5b3cc612c16cdd3dfc187103e231682b79bc260fd1e6df18b8f2addd842c63da.jpg",
+      "inputHash": "5b3cc612c16cdd3dfc187103e231682b79bc260fd1e6df18b8f2addd842c63da",
       "imageHash": "054e16bff1d3a16ae285067a1baf061bbfd81bb391464e9c8c8d9405d29c619d"
     },
     "hoyle-s-official-book-of-games-volume-2": {
-      "file": "hoyle-s-official-book-of-games-volume-2-0e3b6a98551d6f7fe23af9e50e524ad748e4b9a37ac906b7f3e724fb12632ec6.jpg",
-      "inputHash": "0e3b6a98551d6f7fe23af9e50e524ad748e4b9a37ac906b7f3e724fb12632ec6",
+      "file": "hoyle-s-official-book-of-games-volume-2-ff9ac01bf0cfd6dfb5454dde03460547bf5999f1cff2d92fcc0639f9aa2e1e4d.jpg",
+      "inputHash": "ff9ac01bf0cfd6dfb5454dde03460547bf5999f1cff2d92fcc0639f9aa2e1e4d",
       "imageHash": "29322c9f4d72a33314a158983e80473a4e18aac7ae420a05facf78aa3782d66a"
     },
     "hoyle-s-official-book-of-games-volume-3": {
-      "file": "hoyle-s-official-book-of-games-volume-3-2fb927b74499e58536c61a27763b0cec9eb80503c533a41dadddead0cdc67467.jpg",
-      "inputHash": "2fb927b74499e58536c61a27763b0cec9eb80503c533a41dadddead0cdc67467",
+      "file": "hoyle-s-official-book-of-games-volume-3-f4bb48675f3cfe75244b40f4b61bea0cca0f0c00d243c96d3291d3b27222bfe7.jpg",
+      "inputHash": "f4bb48675f3cfe75244b40f4b61bea0cca0f0c00d243c96d3291d3b27222bfe7",
       "imageHash": "95d9ab304a7b5b07f372f92b23fefdd760d39599167627e6d776170d56a8b7d2"
     },
     "hugo-ii-whodunit": {
-      "file": "hugo-ii-whodunit-14e3165c2a98bcd5bcb16814452496a2864802683f4936a87742aaed638d0530.jpg",
-      "inputHash": "14e3165c2a98bcd5bcb16814452496a2864802683f4936a87742aaed638d0530",
+      "file": "hugo-ii-whodunit-74fd1d64d93fcb7eac586c22525fac388750f13ee770ca63476ebf13cc6b5bef.jpg",
+      "inputHash": "74fd1d64d93fcb7eac586c22525fac388750f13ee770ca63476ebf13cc6b5bef",
       "imageHash": "7328658524e21b4b92a6fa4c964926281d84ee19610cff54f0abf760d2cffbb1"
     },
     "hugo-ii-whodunit-demo": {
-      "file": "hugo-ii-whodunit-demo-354da95d6f6cbf25200d24bd828f661ec0d717f8ee703023751401c427e0f4c7.jpg",
-      "inputHash": "354da95d6f6cbf25200d24bd828f661ec0d717f8ee703023751401c427e0f4c7",
+      "file": "hugo-ii-whodunit-demo-fe37823e559474d8147ead1fa17b9f9fa905691f9e9f56dcb2f2241343fe5962.jpg",
+      "inputHash": "fe37823e559474d8147ead1fa17b9f9fa905691f9e9f56dcb2f2241343fe5962",
       "imageHash": "d80786d9bea1cc9366acdf941f1481065460e8d4341fe6410f2e24bc90715af1"
     },
     "hugo-iii-jungle-of-doom": {
-      "file": "hugo-iii-jungle-of-doom-b092ec3a8443e6b7f48eb52e2242b19ec550d47a112e3d8c483101b433a26a11.jpg",
-      "inputHash": "b092ec3a8443e6b7f48eb52e2242b19ec550d47a112e3d8c483101b433a26a11",
+      "file": "hugo-iii-jungle-of-doom-b92f1baace6fe0c14f35fb6d028f99d1da85ef7f55a9181d38d69476fdf30545.jpg",
+      "inputHash": "b92f1baace6fe0c14f35fb6d028f99d1da85ef7f55a9181d38d69476fdf30545",
       "imageHash": "5bc9ec06b5678621369c871eda1800fd614ede800550da4f5e2757d57e920c5e"
     },
     "hugo-iii-jungle-of-doom-demo": {
-      "file": "hugo-iii-jungle-of-doom-demo-bd059ce7d8c3b759f138c52a037935dc3d9ad9f3bec5141534283beacd7fdce1.jpg",
-      "inputHash": "bd059ce7d8c3b759f138c52a037935dc3d9ad9f3bec5141534283beacd7fdce1",
+      "file": "hugo-iii-jungle-of-doom-demo-ca8ad47b3d2fda60e6322573ebdff48025c03c60b6e5bc68521225e5184b76d3.jpg",
+      "inputHash": "ca8ad47b3d2fda60e6322573ebdff48025c03c60b6e5bc68521225e5184b76d3",
       "imageHash": "11db8633312c6e41bda779df3323f0cbea31d494be9c973b6a6d24d92fdf1ba3"
     },
     "hugo-s-house-of-horrors": {
-      "file": "hugo-s-house-of-horrors-d62f31f576b904d0337594a7525ecbebd7fed0cb9ddfdd575ff2ade0053d3ae0.jpg",
-      "inputHash": "d62f31f576b904d0337594a7525ecbebd7fed0cb9ddfdd575ff2ade0053d3ae0",
+      "file": "hugo-s-house-of-horrors-50ca468e4f4242d461dda6b3863fec2e056c6255fd9c46850b4442867e6ada5c.jpg",
+      "inputHash": "50ca468e4f4242d461dda6b3863fec2e056c6255fd9c46850b4442867e6ada5c",
       "imageHash": "45f6d02cfa0a38846702102f468c6278a8faadeb50a8d06ed0632909ea8493af"
     },
     "hugo-s-house-of-horrors-demo": {
-      "file": "hugo-s-house-of-horrors-demo-ea7db2bff7b76bf1ad051fbcfc11cadd2dfca4dae3dffdbbb31c6536d86f248d.jpg",
-      "inputHash": "ea7db2bff7b76bf1ad051fbcfc11cadd2dfca4dae3dffdbbb31c6536d86f248d",
+      "file": "hugo-s-house-of-horrors-demo-f761a08fe1ab37b72d7bf1a8e2124f545d356dbafe38332e8bc8a57b9c588568.jpg",
+      "inputHash": "f761a08fe1ab37b72d7bf1a8e2124f545d356dbafe38332e8bc8a57b9c588568",
       "imageHash": "a070328fa08a2fe621e3fb179dc7df98ccb4b45f4f1bfa6c526a4d8e7a3bf23e"
     },
     "inca-ii-wiracocha": {
-      "file": "inca-ii-wiracocha-49a2defbe1f3a61b4d79e267ef463ec6568b6f04070756c4e118e94dfe6d8577.jpg",
-      "inputHash": "49a2defbe1f3a61b4d79e267ef463ec6568b6f04070756c4e118e94dfe6d8577",
+      "file": "inca-ii-wiracocha-9108e83c3354276cf90bb86a2a290d937ff02b046f3c13113343415885fb57a9.jpg",
+      "inputHash": "9108e83c3354276cf90bb86a2a290d937ff02b046f3c13113343415885fb57a9",
       "imageHash": "7fae1dd3540245d261655c146bcfee9bde0bfc9079ca9c1e372e287ed30a7db6"
     },
     "indiana-jones-and-the-fate-of-atlantis": {
-      "file": "indiana-jones-and-the-fate-of-atlantis-997d1500e6ba963020d92ee6a4078d11f05e4c37730d7098989d8ff4050c7a3b.jpg",
-      "inputHash": "997d1500e6ba963020d92ee6a4078d11f05e4c37730d7098989d8ff4050c7a3b",
+      "file": "indiana-jones-and-the-fate-of-atlantis-28ab9fce4041aa58be50df1647a302a4f347d42242e3619b4dddb5c7c8b1f1c3.jpg",
+      "inputHash": "28ab9fce4041aa58be50df1647a302a4f347d42242e3619b4dddb5c7c8b1f1c3",
       "imageHash": "0594667d47843ea1d3413285e5eb881c76e4fb3a60b8d4e1913cf4c601f4a7fe"
     },
     "indiana-jones-and-the-fate-of-atlantis-demo": {
-      "file": "indiana-jones-and-the-fate-of-atlantis-demo-0f0b72eb16ccf97a99b3fcf4dd31027bc682df2d0d568dcbc35e18adcae3389c.jpg",
-      "inputHash": "0f0b72eb16ccf97a99b3fcf4dd31027bc682df2d0d568dcbc35e18adcae3389c",
+      "file": "indiana-jones-and-the-fate-of-atlantis-demo-fbb374575a0bda9fd1ccbbedbf493619ac41fe8298aeac35843ad6af14e6f5b4.jpg",
+      "inputHash": "fbb374575a0bda9fd1ccbbedbf493619ac41fe8298aeac35843ad6af14e6f5b4",
       "imageHash": "a2b6ba5d51f2e16651fd39d6c207696a4f7f2feae605465049afda7a4464723e"
     },
     "indiana-jones-and-the-last-crusade": {
-      "file": "indiana-jones-and-the-last-crusade-1fa69950babbb586f64650c3abbc4378ff4f0016d16838e541f79657a3d017a1.jpg",
-      "inputHash": "1fa69950babbb586f64650c3abbc4378ff4f0016d16838e541f79657a3d017a1",
+      "file": "indiana-jones-and-the-last-crusade-ab3bc259b81a81d5d381b12605e69b215d0be12ae793f42fe8e0e18a05a30b36.jpg",
+      "inputHash": "ab3bc259b81a81d5d381b12605e69b215d0be12ae793f42fe8e0e18a05a30b36",
       "imageHash": "30e32b6720bf0618209a2e4a38dc4db5b621316ab1952ede6af648e0db84f8a2"
     },
     "inherit-the-earth-quest-for-the-orb": {
-      "file": "inherit-the-earth-quest-for-the-orb-03224c54602d9558c9f00fecf57148385f4def7c0ad0b002e0b9cca755f6a6d8.jpg",
-      "inputHash": "03224c54602d9558c9f00fecf57148385f4def7c0ad0b002e0b9cca755f6a6d8",
+      "file": "inherit-the-earth-quest-for-the-orb-28ad801ac89a663169eb474af14ddc6e4ea97b4d2ab7dbf8ca644e69ed5b79cc.jpg",
+      "inputHash": "28ad801ac89a663169eb474af14ddc6e4ea97b4d2ab7dbf8ca644e69ed5b79cc",
       "imageHash": "bf92a804659341830d34ff69f0bef03b5ffcf74f612d26cac20dba0a6f2e3999"
     },
     "jones-in-the-fast-lane": {
-      "file": "jones-in-the-fast-lane-5b28c1bf251e5a218c288eb3432cd962363f6a83293b884021343aec3b49fb9d.jpg",
-      "inputHash": "5b28c1bf251e5a218c288eb3432cd962363f6a83293b884021343aec3b49fb9d",
+      "file": "jones-in-the-fast-lane-0084500aea8db55ee00cdebb01ab5f96f0a9aa976a89b799f65f90951d6099ec.jpg",
+      "inputHash": "0084500aea8db55ee00cdebb01ab5f96f0a9aa976a89b799f65f90951d6099ec",
       "imageHash": "692274c46fc6753b8cbd410b483962c755723c6f8b571f42acd9a5191de6097c"
     },
     "just-grandma-and-me": {
-      "file": "just-grandma-and-me-49553d43f058e2804cdfa0824b43f4ac3b73d7faabb180f7716972dfcf524d4d.jpg",
-      "inputHash": "49553d43f058e2804cdfa0824b43f4ac3b73d7faabb180f7716972dfcf524d4d",
+      "file": "just-grandma-and-me-251e85a647e61b73da0c26141909afc3653312ab840263bbf8cb0a3e5ce2af01.jpg",
+      "inputHash": "251e85a647e61b73da0c26141909afc3653312ab840263bbf8cb0a3e5ce2af01",
       "imageHash": "4b7a1457ceaf8f1f714ac1478b1adc39e9d97b4627b72d4eb5f95d4ae5f536f8"
     },
     "just-grandma-and-me-demo": {
-      "file": "just-grandma-and-me-demo-8b0f2751872abb9b28e4036fe73719b69b8fab90068e693ff8e9da91697b972e.jpg",
-      "inputHash": "8b0f2751872abb9b28e4036fe73719b69b8fab90068e693ff8e9da91697b972e",
+      "file": "just-grandma-and-me-demo-91dc792bccdc171ebbc324692e064ef3d4e4968f1d5e925778826415b12a0215.jpg",
+      "inputHash": "91dc792bccdc171ebbc324692e064ef3d4e4968f1d5e925778826415b12a0215",
       "imageHash": "043e40c8dd460751618eb3511415d23b6a91cc215e845ab6cc984c98ce2772b5"
     },
     "king-s-quest-ii-romancing-the-throne": {
-      "file": "king-s-quest-ii-romancing-the-throne-aa4463ca4e9c91fb91bbf1cb2973c9bf5d9d13d8ba88bec9115bbec27f2ef9c1.jpg",
-      "inputHash": "aa4463ca4e9c91fb91bbf1cb2973c9bf5d9d13d8ba88bec9115bbec27f2ef9c1",
+      "file": "king-s-quest-ii-romancing-the-throne-66595b2341c7a68b2f141321ff3fa1ac7320dda1b3dc1c0654a71235e7a8f2da.jpg",
+      "inputHash": "66595b2341c7a68b2f141321ff3fa1ac7320dda1b3dc1c0654a71235e7a8f2da",
       "imageHash": "1d09bb2ea4e5e1fd21b331b56d8c1a1134187c92b555dd7864ed7223b651fd3d"
     },
     "king-s-quest-iii-to-heir-is-human": {
-      "file": "king-s-quest-iii-to-heir-is-human-cbcf9c04f3e96c44addd3e89de4de62b71fac12d641f3ce26e3a981a3dcd48d2.jpg",
-      "inputHash": "cbcf9c04f3e96c44addd3e89de4de62b71fac12d641f3ce26e3a981a3dcd48d2",
+      "file": "king-s-quest-iii-to-heir-is-human-f4decc9a9aadc311ed036ae1947dffe5295978dd47cf040e4a8ea9a374529503.jpg",
+      "inputHash": "f4decc9a9aadc311ed036ae1947dffe5295978dd47cf040e4a8ea9a374529503",
       "imageHash": "f1400e0b350291b15ac60259b934ac4b9df49d26e5dec44ca356fbb63b96502f"
     },
     "king-s-quest-iv-the-perils-of-rosella": {
-      "file": "king-s-quest-iv-the-perils-of-rosella-1b99a8e42fda4e151188bfb7b4d8a47673da313f36eab130c37ae5f254d9b765.jpg",
-      "inputHash": "1b99a8e42fda4e151188bfb7b4d8a47673da313f36eab130c37ae5f254d9b765",
+      "file": "king-s-quest-iv-the-perils-of-rosella-c18fd3b7fd51867b43fef5332bdcc7b45126401e373aad59ede1628a1c56469d.jpg",
+      "inputHash": "c18fd3b7fd51867b43fef5332bdcc7b45126401e373aad59ede1628a1c56469d",
       "imageHash": "eaf55eb0d4fc5f00fd43e5a5314a1b70be8bc3a6628931ef79221f161aa7ec33"
     },
     "king-s-quest-quest-for-the-crown": {
-      "file": "king-s-quest-quest-for-the-crown-fbac01e86f329fc82cfa4b7655abf9104a43f842130815f84f463d1ae59b1cb3.jpg",
-      "inputHash": "fbac01e86f329fc82cfa4b7655abf9104a43f842130815f84f463d1ae59b1cb3",
+      "file": "king-s-quest-quest-for-the-crown-bf03bc1af25ccdcc1d98022104482e2b28f697d3890652c86ea1b69e43d01ad6.jpg",
+      "inputHash": "bf03bc1af25ccdcc1d98022104482e2b28f697d3890652c86ea1b69e43d01ad6",
       "imageHash": "7f8a276c83aacddb2c75467660c9b6a866a60bc032b7ca2bc2117d6f5e586d00"
     },
     "king-s-quest-v-absence-makes-the-heart-go-yonder": {
-      "file": "king-s-quest-v-absence-makes-the-heart-go-yonder-3b3147f97599893802f1097c0fa6b6f9c8b1851e6c86b7807c5780df380b73a9.jpg",
-      "inputHash": "3b3147f97599893802f1097c0fa6b6f9c8b1851e6c86b7807c5780df380b73a9",
+      "file": "king-s-quest-v-absence-makes-the-heart-go-yonder-f7ca4b6f8e5c1eb5323f0329496255a5fcf9496097f274b7e95ef188a3817388.jpg",
+      "inputHash": "f7ca4b6f8e5c1eb5323f0329496255a5fcf9496097f274b7e95ef188a3817388",
       "imageHash": "4ffd976ef4df56ed7edf80225c2e78ec8311d9c9a71906ea21996959b98d2840"
     },
     "king-s-quest-vi-heir-today-gone-tomorrow": {
-      "file": "king-s-quest-vi-heir-today-gone-tomorrow-cec298f0676ada4f47120d9c1e143c4bb52f66712201c78830ea90f5c2237340.jpg",
-      "inputHash": "cec298f0676ada4f47120d9c1e143c4bb52f66712201c78830ea90f5c2237340",
+      "file": "king-s-quest-vi-heir-today-gone-tomorrow-b02bd63cd356a212f43e7fcaf56a2267353abac3c6d1722aa7bb4c3562cfa5e5.jpg",
+      "inputHash": "b02bd63cd356a212f43e7fcaf56a2267353abac3c6d1722aa7bb4c3562cfa5e5",
       "imageHash": "b3952e0298e78e00162cbbca5fd19fc14965b705a878d906958aeefc6d6c1ed3"
     },
     "king-s-quest-vii-the-princeless-bride": {
-      "file": "king-s-quest-vii-the-princeless-bride-5c367e479f7c27396213dab37a6dfd2d02418681f9ab49c0cfc5d757db20f74d.jpg",
-      "inputHash": "5c367e479f7c27396213dab37a6dfd2d02418681f9ab49c0cfc5d757db20f74d",
+      "file": "king-s-quest-vii-the-princeless-bride-0d25ae6cf6a938d5f0e1d147533894ffa48ebd3cd3f27cfd42c4dd1dcb3853c2.jpg",
+      "inputHash": "0d25ae6cf6a938d5f0e1d147533894ffa48ebd3cd3f27cfd42c4dd1dcb3853c2",
       "imageHash": "96aae2c3dc668f30c6393deb5b93f9a9a29b663d148452d3efe68a07b99047d8"
     },
     "king-s-questions": {
-      "file": "king-s-questions-d37c74d7d4390cbd3beadf996fbdf4f05b334e0c1052d590feb5b7fdf9edc52e.jpg",
-      "inputHash": "d37c74d7d4390cbd3beadf996fbdf4f05b334e0c1052d590feb5b7fdf9edc52e",
+      "file": "king-s-questions-48471d35227d5ae37289b7de15b66b2462d4bd1d27c00828e9b9ef3175cb222f.jpg",
+      "inputHash": "48471d35227d5ae37289b7de15b66b2462d4bd1d27c00828e9b9ef3175cb222f",
       "imageHash": "463813f4de969fb60da7816af01072eadd775354963a2b6becaadbd5fcf2519a"
     },
     "lands-of-lore-the-throne-of-chaos": {
-      "file": "lands-of-lore-the-throne-of-chaos-ddf6bf008e27db9d9ddef71efe70632a183ec2e0f2ee68250433d23641663f1d.jpg",
-      "inputHash": "ddf6bf008e27db9d9ddef71efe70632a183ec2e0f2ee68250433d23641663f1d",
+      "file": "lands-of-lore-the-throne-of-chaos-dee690d036b9f4ebe7a015cc8bfd3d2263d1e1f5bf85083ff88ce66353c78f08.jpg",
+      "inputHash": "dee690d036b9f4ebe7a015cc8bfd3d2263d1e1f5bf85083ff88ce66353c78f08",
       "imageHash": "83db22162dee58e9043c49dea70f429896834ca16bff9f0ed593938413cebd49"
     },
     "lands-of-lore-the-throne-of-chaos-demo": {
-      "file": "lands-of-lore-the-throne-of-chaos-demo-b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314.jpg",
-      "inputHash": "b780cc75f8738eece7c590e9e141e8cafeb7258b77bcb8ca867faae41214b314",
+      "file": "lands-of-lore-the-throne-of-chaos-demo-5c04b1d55f4ab34c481d35ee7d8770222fbb41ba64e462442e4f364433385779.jpg",
+      "inputHash": "5c04b1d55f4ab34c481d35ee7d8770222fbb41ba64e462442e4f364433385779",
       "imageHash": "8accf25514db474d2c7ac3f7f1b7d6a140951364520157b6744cb23fbea9d986"
     },
     "laura-bow-2-the-dagger-of-amon-ra": {
-      "file": "laura-bow-2-the-dagger-of-amon-ra-e3d427d8f603bb1037be10252e8338c3fc2ed1831036d2eb0277e21dbd254c38.jpg",
-      "inputHash": "e3d427d8f603bb1037be10252e8338c3fc2ed1831036d2eb0277e21dbd254c38",
+      "file": "laura-bow-2-the-dagger-of-amon-ra-d494c95643671653e3201b18c4e24eb9c5b0dde78c6125bd09f89ac7d002937b.jpg",
+      "inputHash": "d494c95643671653e3201b18c4e24eb9c5b0dde78c6125bd09f89ac7d002937b",
       "imageHash": "0dba53288da20fe2b04b5b204987940d998c2bca0e535ed285dbfd4092aad145"
     },
     "laura-bow-the-colonel-s-bequest": {
-      "file": "laura-bow-the-colonel-s-bequest-cf36283e9a1de84bbe89c8698e4cfb3e8c2c07f0f14c20f998def60eb4744893.jpg",
-      "inputHash": "cf36283e9a1de84bbe89c8698e4cfb3e8c2c07f0f14c20f998def60eb4744893",
+      "file": "laura-bow-the-colonel-s-bequest-5012e15fd4817dac5adfae56dba147b53c380e9593df7dcc069ffd538052cc50.jpg",
+      "inputHash": "5012e15fd4817dac5adfae56dba147b53c380e9593df7dcc069ffd538052cc50",
       "imageHash": "93414c1494b992112cb2f0a4cc4a1a185339bb4642bbde891a0521a419218750"
     },
     "leather-goddesses-of-phobos-2-gas-pump-girls-meet-the-pulsating-inconvenience-from-planet-x": {
-      "file": "leather-goddesses-of-phobos-2-gas-pump-girls-meet-the-pulsating-inconvenience-from-planet-x-e0c0a8135581f8385ff30e1d17aeddd180156111ad55d63ab775386ec8f65163.jpg",
-      "inputHash": "e0c0a8135581f8385ff30e1d17aeddd180156111ad55d63ab775386ec8f65163",
+      "file": "leather-goddesses-of-phobos-2-gas-pump-girls-meet-the-pulsating-inconvenience-from-planet-x-eca491dcce3e35573d08150f1ba5d1da4439a3c47bb7b39388953efb2721db95.jpg",
+      "inputHash": "eca491dcce3e35573d08150f1ba5d1da4439a3c47bb7b39388953efb2721db95",
       "imageHash": "09f54e393c1a282f0757e82679257701c5d3743bfb8fbd6bf4dbf223699b6437"
     },
     "leisure-suit-larry-2-goes-looking-for-love-in-several-wrong-places": {
-      "file": "leisure-suit-larry-2-goes-looking-for-love-in-several-wrong-places-1f855e4b89cb47e194fa05bdb53bd3b43df2aad468223b130bc417cea5f866a9.jpg",
-      "inputHash": "1f855e4b89cb47e194fa05bdb53bd3b43df2aad468223b130bc417cea5f866a9",
+      "file": "leisure-suit-larry-2-goes-looking-for-love-in-several-wrong-places-76304fdf5dbcc794cd104c2d92e9efa0a1bdf8aa717fad9a9d89ac3be9e42f95.jpg",
+      "inputHash": "76304fdf5dbcc794cd104c2d92e9efa0a1bdf8aa717fad9a9d89ac3be9e42f95",
       "imageHash": "70803f3af3705343f24c10b3c3f0739c6f1a2cc7e728368a0c1d9a55975f7ffe"
     },
     "leisure-suit-larry-3-passionate-patti-in-pursuit-of-the-pulsating-pectorals": {
-      "file": "leisure-suit-larry-3-passionate-patti-in-pursuit-of-the-pulsating-pectorals-88c5f662f6b4ae56ca2b6799aff6d76df8564454d43c978339de7d77d1999a9c.jpg",
-      "inputHash": "88c5f662f6b4ae56ca2b6799aff6d76df8564454d43c978339de7d77d1999a9c",
+      "file": "leisure-suit-larry-3-passionate-patti-in-pursuit-of-the-pulsating-pectorals-43a8ecf868238c32cec127b49fb0cf46538bf11e2c775a773c2a2f5c7dde4cba.jpg",
+      "inputHash": "43a8ecf868238c32cec127b49fb0cf46538bf11e2c775a773c2a2f5c7dde4cba",
       "imageHash": "146f2fdcba444a635b58ba094f4437e15a1a15dea74dcb84281b3c0172255a65"
     },
     "leisure-suit-larry-5-passionate-patti-does-a-little-undercover-work": {
-      "file": "leisure-suit-larry-5-passionate-patti-does-a-little-undercover-work-d25c2cbfee84836f1c6928d975a0528386d6e04571a18760f367b8c366d567da.jpg",
-      "inputHash": "d25c2cbfee84836f1c6928d975a0528386d6e04571a18760f367b8c366d567da",
+      "file": "leisure-suit-larry-5-passionate-patti-does-a-little-undercover-work-4edc20eac798151a1b015b57fe256088bb6947c0a8cb1da9c6468005194db870.jpg",
+      "inputHash": "4edc20eac798151a1b015b57fe256088bb6947c0a8cb1da9c6468005194db870",
       "imageHash": "f077d8817ec4f22ab35ab6569122032aee4dfe0c5facac425ccb37106b5efb31"
     },
     "leisure-suit-larry-6-shape-up-or-slip-out": {
-      "file": "leisure-suit-larry-6-shape-up-or-slip-out-f3745be86cf2ec069a572abc445549be063754b46b3671cca64031933db06ed1.jpg",
-      "inputHash": "f3745be86cf2ec069a572abc445549be063754b46b3671cca64031933db06ed1",
+      "file": "leisure-suit-larry-6-shape-up-or-slip-out-b090e15d4ec49e074adf9756802afa848a0e02858d7e5401321c7042e7a7d13e.jpg",
+      "inputHash": "b090e15d4ec49e074adf9756802afa848a0e02858d7e5401321c7042e7a7d13e",
       "imageHash": "679c0d0939b11d9d15fd1ebf5d229863d8958359cde32ccafc55a7360936d7a1"
     },
     "leisure-suit-larry-7-love-for-sail": {
-      "file": "leisure-suit-larry-7-love-for-sail-f71a5d86965f7cda0ee815866774816c620ffd307a70f332041fa38271167071.jpg",
-      "inputHash": "f71a5d86965f7cda0ee815866774816c620ffd307a70f332041fa38271167071",
+      "file": "leisure-suit-larry-7-love-for-sail-7cb007fa32a72dc69973d2e400b25d638db8063cc328f9b05c8f2eda34ae24ac.jpg",
+      "inputHash": "7cb007fa32a72dc69973d2e400b25d638db8063cc328f9b05c8f2eda34ae24ac",
       "imageHash": "bf4bb65693760df62264c73ca4b92018dc136f23e197652c1eb97a9b4a809072"
     },
     "leisure-suit-larry-7-love-for-sail-demo": {
-      "file": "leisure-suit-larry-7-love-for-sail-demo-e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e.jpg",
-      "inputHash": "e9d238443be6c148d6a2aa53257547a873f177bb93dafe5c144df9094314d92e",
+      "file": "leisure-suit-larry-7-love-for-sail-demo-36768d60606819daea6021c522bcc2229e812e85db7fad9ccaa4cbc62aff591a.jpg",
+      "inputHash": "36768d60606819daea6021c522bcc2229e812e85db7fad9ccaa4cbc62aff591a",
       "imageHash": "661c42c19fb2f95ecdaf11a10b7e6d9a746e9861f31968307664ed04d708ea92"
     },
     "leisure-suit-larry-in-the-land-of-the-lounge-lizards": {
-      "file": "leisure-suit-larry-in-the-land-of-the-lounge-lizards-d73ce69a6c93f80564c7a04c3c49397ce690b30f5b81a9a61c7e821eda970d2e.jpg",
-      "inputHash": "d73ce69a6c93f80564c7a04c3c49397ce690b30f5b81a9a61c7e821eda970d2e",
+      "file": "leisure-suit-larry-in-the-land-of-the-lounge-lizards-89ae63b6dfedf05f529e325109f664bcbca6ec556ae8da19e8abc4c0d2ac4d1c.jpg",
+      "inputHash": "89ae63b6dfedf05f529e325109f664bcbca6ec556ae8da19e8abc4c0d2ac4d1c",
       "imageHash": "96e5944d4f34b6fa7032aa9a0862574c6c51cad3a6b9c673267d276ea61db41e"
     },
     "let-s-explore-the-airport": {
-      "file": "let-s-explore-the-airport-f4ece141a49d8823b99c1e8714bb9d68d307f4d397e5bdd3003bd78cc85d9ad2.jpg",
-      "inputHash": "f4ece141a49d8823b99c1e8714bb9d68d307f4d397e5bdd3003bd78cc85d9ad2",
+      "file": "let-s-explore-the-airport-f666db4be081751ccc829db2255fbb8716fb872cafa77a5e78877e870928ad3e.jpg",
+      "inputHash": "f666db4be081751ccc829db2255fbb8716fb872cafa77a5e78877e870928ad3e",
       "imageHash": "9d650d0ee3fa4a0c53b985e9aa524025041be108e14a1e2841575040482e6728"
     },
     "let-s-explore-the-airport-demo": {
-      "file": "let-s-explore-the-airport-demo-dd9c318295a295cc0b34658099e9354b6af4f15dc61564b157d10a7f45fe0f79.jpg",
-      "inputHash": "dd9c318295a295cc0b34658099e9354b6af4f15dc61564b157d10a7f45fe0f79",
+      "file": "let-s-explore-the-airport-demo-07a3607fde842f5fb9a2a5d3a0d7a1d74beb81a2fa636754ae76a89b72dc3f1a.jpg",
+      "inputHash": "07a3607fde842f5fb9a2a5d3a0d7a1d74beb81a2fa636754ae76a89b72dc3f1a",
       "imageHash": "c8e8fa2a0852e9128e904185572e2ae2d55a118702ab2fd2947c50d0fd1ed49c"
     },
     "let-s-explore-the-farm": {
-      "file": "let-s-explore-the-farm-d5c3e5f182c79aea961632df8f1e500a6ad9e398822c4fc8efa0a9854e5c354a.jpg",
-      "inputHash": "d5c3e5f182c79aea961632df8f1e500a6ad9e398822c4fc8efa0a9854e5c354a",
+      "file": "let-s-explore-the-farm-3188620c177bcc52f930ea7223373694ebb08678af02a7e5365d85d40350ee23.jpg",
+      "inputHash": "3188620c177bcc52f930ea7223373694ebb08678af02a7e5365d85d40350ee23",
       "imageHash": "56ba01156eeb883f57f08cc93c0ea7ffd1f26257f2f80a9c6c67516e8c625a6d"
     },
     "let-s-explore-the-farm-demo": {
-      "file": "let-s-explore-the-farm-demo-c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95.jpg",
-      "inputHash": "c7e98017c7001e256040f531371b977ec8c1b56efa9b99eb204264206459ba95",
+      "file": "let-s-explore-the-farm-demo-3d6c0988522f96f18e0994d1f1f8e67a7c1f57d12c0e454a92d0a65cd048ec51.jpg",
+      "inputHash": "3d6c0988522f96f18e0994d1f1f8e67a7c1f57d12c0e454a92d0a65cd048ec51",
       "imageHash": "b7e1481259cf80923b94565ef92183b3478caa02627e1b70630b70f58a09a2b5"
     },
     "let-s-explore-the-jungle": {
-      "file": "let-s-explore-the-jungle-272df7dcf6d74b7d9bf74ca1aaa906419ded7db8c900be2a285d8a6b66000c1c.jpg",
-      "inputHash": "272df7dcf6d74b7d9bf74ca1aaa906419ded7db8c900be2a285d8a6b66000c1c",
+      "file": "let-s-explore-the-jungle-95a1a224f0f7b02e4af0f6cb1151c7c1f665aa4acf6e415a734409a863433655.jpg",
+      "inputHash": "95a1a224f0f7b02e4af0f6cb1151c7c1f665aa4acf6e415a734409a863433655",
       "imageHash": "40e3c4121593b12cf53872aa7f7d898114758364840483a2ccd02a7ab26876c7"
     },
     "lighthouse-the-dark-being": {
-      "file": "lighthouse-the-dark-being-4e95c56d185c52dae2ec38e14498b416122329147004cdd1b25b873eda614964.jpg",
-      "inputHash": "4e95c56d185c52dae2ec38e14498b416122329147004cdd1b25b873eda614964",
+      "file": "lighthouse-the-dark-being-fdf618519a2b4537e8f6940bb17d8a17fc29e0ee27816226337482907442e477.jpg",
+      "inputHash": "fdf618519a2b4537e8f6940bb17d8a17fc29e0ee27816226337482907442e477",
       "imageHash": "78bc8e0c23076c320336567a2808981b570ab8edc2451ee80d5088f6fdb39c7b"
     },
     "lighthouse-the-dark-being-demo": {
-      "file": "lighthouse-the-dark-being-demo-9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151.jpg",
-      "inputHash": "9ff9e9b3ee321efa84b8c03031405176e4777e1485b83c2324db93fc3cd62151",
+      "file": "lighthouse-the-dark-being-demo-8d6c24eb2f4795f06495a1a6da63d73916cd3a82959f90439923c7ecfa49790c.jpg",
+      "inputHash": "8d6c24eb2f4795f06495a1a6da63d73916cd3a82959f90439923c7ecfa49790c",
       "imageHash": "b32a7f3821f187954a03fcd457f7788f4ab590832128ee85d7502facaf1329a1"
     },
     "little-monster-at-school": {
-      "file": "little-monster-at-school-d52a516cd293d68f4938dcc4121e141706a544e33934dd1204a37d7de0e3cb29.jpg",
-      "inputHash": "d52a516cd293d68f4938dcc4121e141706a544e33934dd1204a37d7de0e3cb29",
+      "file": "little-monster-at-school-6a0b468e997d877ef22ac8f25694cf0ede0d24fba60ca7c6de31f40b05002fbf.jpg",
+      "inputHash": "6a0b468e997d877ef22ac8f25694cf0ede0d24fba60ca7c6de31f40b05002fbf",
       "imageHash": "2c01d6d525907ad43c18b629f9f59cf1ce29652c33ee275c08312a2d1d998700"
     },
     "loom": {
-      "file": "loom-015190f77b55d0016814c3d7637daeb5eebf6de12be3c56ddeec6c0e2dd2f446.jpg",
-      "inputHash": "015190f77b55d0016814c3d7637daeb5eebf6de12be3c56ddeec6c0e2dd2f446",
+      "file": "loom-50b7465fd94d8f689427fc4c3fbc508b0ebef649db47df08d3c7bab369d4bc83.jpg",
+      "inputHash": "50b7465fd94d8f689427fc4c3fbc508b0ebef649db47df08d3c7bab369d4bc83",
       "imageHash": "447f1141c7700f8275eeccf8c7984beaaa963cd1ad3b2bba2841c0855519a3f5"
     },
     "lost-in-time": {
-      "file": "lost-in-time-e649ec597a81b59b05edb58dfffa3aec8ef2b40c6184a963159b230d283bbc04.jpg",
-      "inputHash": "e649ec597a81b59b05edb58dfffa3aec8ef2b40c6184a963159b230d283bbc04",
+      "file": "lost-in-time-f929d2bc105dafdafc97093559bc4f1e7cdb6f148fd9adfb3314520c07d59d39.jpg",
+      "inputHash": "f929d2bc105dafdafc97093559bc4f1e7cdb6f148fd9adfb3314520c07d59d39",
       "imageHash": "209d823b7f08c6864a78008567bbd93c6e14400c2fe2ab7fe3a99ca3318a714f"
     },
     "lure-of-the-temptress": {
-      "file": "lure-of-the-temptress-12c8d7c995badf424a9466662164fac3a5d78bb892adea77b1ad601131ff5760.jpg",
-      "inputHash": "12c8d7c995badf424a9466662164fac3a5d78bb892adea77b1ad601131ff5760",
+      "file": "lure-of-the-temptress-d17525f007e00fdc75e3450e4d9259233f94535f6be6e15c98ea5e81e7c57c10.jpg",
+      "inputHash": "d17525f007e00fdc75e3450e4d9259233f94535f6be6e15c98ea5e81e7c57c10",
       "imageHash": "4bc00d95c3d45709f26677e7eeb7c3f7b099ffb45e01ad55563e45295a70c642"
     },
     "mage-s-initiation-reign-of-the-elements": {
-      "file": "mage-s-initiation-reign-of-the-elements-556e5f5bc2a3bd2e1255b3ad351a4f28cf4db4a3e3abf3e4e0ed0864a90522d0.jpg",
-      "inputHash": "556e5f5bc2a3bd2e1255b3ad351a4f28cf4db4a3e3abf3e4e0ed0864a90522d0",
+      "file": "mage-s-initiation-reign-of-the-elements-aea2537ce0fd572e0513bacc198466e9b091614278639a777732d98a63638d58.jpg",
+      "inputHash": "aea2537ce0fd572e0513bacc198466e9b091614278639a777732d98a63638d58",
       "imageHash": "0be2cf605b4d7fb525fbb8322b7593e2f8dabb0b6c1b50db5ec55ab3af818270"
     },
     "mage-s-initiation-reign-of-the-elements-demo": {
-      "file": "mage-s-initiation-reign-of-the-elements-demo-2443d7e3558c1c91de456c23b3a61033a36b653ca90043f883e80a9717aa41bc.jpg",
-      "inputHash": "2443d7e3558c1c91de456c23b3a61033a36b653ca90043f883e80a9717aa41bc",
+      "file": "mage-s-initiation-reign-of-the-elements-demo-47be921e6e2ba7946c4a67898e64e8a03847a70e0f3a32e59701db31809a2602.jpg",
+      "inputHash": "47be921e6e2ba7946c4a67898e64e8a03847a70e0f3a32e59701db31809a2602",
       "imageHash": "b4c6e9bf1ae2a4bcf5d039a1724234e44cdd3c036853641d582027f4c6f7ef68"
     },
     "magic-tales-liam-finds-a-story": {
-      "file": "magic-tales-liam-finds-a-story-117d7fbbefd222db6222c8f253063c760380d24a85c2ed74e29ab1f7d6242695.jpg",
-      "inputHash": "117d7fbbefd222db6222c8f253063c760380d24a85c2ed74e29ab1f7d6242695",
+      "file": "magic-tales-liam-finds-a-story-b64fccc76466fc91a788aaf5273384c0d070a6b537fe552a14d2650992b295bc.jpg",
+      "inputHash": "b64fccc76466fc91a788aaf5273384c0d070a6b537fe552a14d2650992b295bc",
       "imageHash": "fac34fa2a44f3c78c34a5207d40a55228f6018f1cf60d5569abf9b6eb03984f4"
     },
     "magic-tales-sleeping-cub-s-test-of-courage": {
-      "file": "magic-tales-sleeping-cub-s-test-of-courage-c4a99696db8d0a9e0f849a8f078d0d881ff307c22291a0003ce15883e5da2787.jpg",
-      "inputHash": "c4a99696db8d0a9e0f849a8f078d0d881ff307c22291a0003ce15883e5da2787",
+      "file": "magic-tales-sleeping-cub-s-test-of-courage-787454b85a5aab41beafcafac541dd69128d893330b07d43667f9ca2e9a7221b.jpg",
+      "inputHash": "787454b85a5aab41beafcafac541dd69128d893330b07d43667f9ca2e9a7221b",
       "imageHash": "058e5cc04d9bfd2df67b6b0d88cda6a9ad5a9f5c209ba0dedaa9697ef69ffc34"
     },
     "magic-tales-the-princess-and-the-crab": {
-      "file": "magic-tales-the-princess-and-the-crab-dda5e9a99a5d0efb0f2d59ec08c962a3d00e475bea050b7a724209368e96e5d5.jpg",
-      "inputHash": "dda5e9a99a5d0efb0f2d59ec08c962a3d00e475bea050b7a724209368e96e5d5",
+      "file": "magic-tales-the-princess-and-the-crab-b12226da99367cc990bfba55cce26172a9e20a7707a3b6f7826ff9f155f514b8.jpg",
+      "inputHash": "b12226da99367cc990bfba55cce26172a9e20a7707a3b6f7826ff9f155f514b8",
       "imageHash": "767bff35f66249aad7e9d9015d83c7be039abf5febfc7bcee15a95f4df839244"
     },
     "manhunter-2-san-francisco": {
-      "file": "manhunter-2-san-francisco-6d726c19e6951162f460ab18f6d1ae3754f37a40b5f3857bfe46f3b8d3689567.jpg",
-      "inputHash": "6d726c19e6951162f460ab18f6d1ae3754f37a40b5f3857bfe46f3b8d3689567",
+      "file": "manhunter-2-san-francisco-7462aec18431c45412222cffd6def28384592fd17800b9cad8dfbd5ee5af97a1.jpg",
+      "inputHash": "7462aec18431c45412222cffd6def28384592fd17800b9cad8dfbd5ee5af97a1",
       "imageHash": "cea276f37801aca393587ca4f3c06c1eaa2581ca785f71db8910555666ba8306"
     },
     "manhunter-new-york": {
-      "file": "manhunter-new-york-5291384bb4d0f87b3043442b08874159916d82021be1e1e1a3b7c3f850c724d1.jpg",
-      "inputHash": "5291384bb4d0f87b3043442b08874159916d82021be1e1e1a3b7c3f850c724d1",
+      "file": "manhunter-new-york-a724b3c7cbb887335e8f09356d5434ee5b54915ab916a3731ce3f2b7004baf23.jpg",
+      "inputHash": "a724b3c7cbb887335e8f09356d5434ee5b54915ab916a3731ce3f2b7004baf23",
       "imageHash": "8a1a906b4eecf5428e07fff508780a0c9fdf95de2926805faff5c7ce762746ee"
     },
     "maniac-mansion": {
-      "file": "maniac-mansion-be2718c29ac373284794f1cd73040962813fcd72eb6b974f2cd145a265a0a41e.jpg",
-      "inputHash": "be2718c29ac373284794f1cd73040962813fcd72eb6b974f2cd145a265a0a41e",
+      "file": "maniac-mansion-1f3aac8c85520f39550bf5156bbfa116660c0315d4a9d9ef4e18f6c9373ec8e6.jpg",
+      "inputHash": "1f3aac8c85520f39550bf5156bbfa116660c0315d4a9d9ef4e18f6c9373ec8e6",
       "imageHash": "45b37dab3cefdbe1270f0a23c3d5bbee970bfa63578767cbd5e3756b9b4717d2"
     },
     "maniac-mansion-demo": {
-      "file": "maniac-mansion-demo-64c46ab500c7cf0c77b73d664e7aaabd59f4cb691f99a0dcc5dc54b0205b5d38.jpg",
-      "inputHash": "64c46ab500c7cf0c77b73d664e7aaabd59f4cb691f99a0dcc5dc54b0205b5d38",
+      "file": "maniac-mansion-demo-e780a79d8ee28314bb3a9df5c8d0abc43b5abc0d294444b001290f5c92d917ae.jpg",
+      "inputHash": "e780a79d8ee28314bb3a9df5c8d0abc43b5abc0d294444b001290f5c92d917ae",
       "imageHash": "74522e7247bb4630776f16ceb02c9cdce2cef1eca4997f9b8aa56d2885edd6ee"
     },
     "marc-brown-s-arthur-s-teacher-trouble": {
-      "file": "marc-brown-s-arthur-s-teacher-trouble-70e8a9bbf587ee62b1bc674c41761d115a618e2141f27cab88d68ded91ff9163.jpg",
-      "inputHash": "70e8a9bbf587ee62b1bc674c41761d115a618e2141f27cab88d68ded91ff9163",
+      "file": "marc-brown-s-arthur-s-teacher-trouble-700b76668f9536c46523c340bcc99404c543cebaaa41543a00b6618524830c01.jpg",
+      "inputHash": "700b76668f9536c46523c340bcc99404c543cebaaa41543a00b6618524830c01",
       "imageHash": "21411ae95a402866a6a9fd97935fc7e749c39d3b7b75431c3ebafeb80d93e9f4"
     },
     "mickey-s-space-adventure": {
-      "file": "mickey-s-space-adventure-b056271768d09b4262ba2ac9de2c112e1966dbb414fb3c826dac855bd06a58c8.jpg",
-      "inputHash": "b056271768d09b4262ba2ac9de2c112e1966dbb414fb3c826dac855bd06a58c8",
+      "file": "mickey-s-space-adventure-6c36b75def4506ed542e6f9473a1b1bc3a669aa5ea0aac3df1efb3c44c0190b7.jpg",
+      "inputHash": "6c36b75def4506ed542e6f9473a1b1bc3a669aa5ea0aac3df1efb3c44c0190b7",
       "imageHash": "0f33d3c9fce8ec010d2d0012ab5c723d0259a32a02988c983d80caf6e4eaab7e"
     },
     "mixed-up-fairy-tales": {
-      "file": "mixed-up-fairy-tales-7f07aa097bc33df94907fc09a7ff742687d8e3f2dfbd81089e458cb90cbdde93.jpg",
-      "inputHash": "7f07aa097bc33df94907fc09a7ff742687d8e3f2dfbd81089e458cb90cbdde93",
+      "file": "mixed-up-fairy-tales-d5da18fc0c332125a1ab45c77de721d9b5c5b9d03c19f448d514ae1388a51e39.jpg",
+      "inputHash": "d5da18fc0c332125a1ab45c77de721d9b5c5b9d03c19f448d514ae1388a51e39",
       "imageHash": "04621f38aef8a412a07265a4949ea8ebf79b16f09b704d04654278424a91d0a8"
     },
     "mixed-up-mother-goose": {
-      "file": "mixed-up-mother-goose-4e13788b82219f8d13b74c4e166da1e6dbc5419868d7ecfc427afb0b00031adc.jpg",
-      "inputHash": "4e13788b82219f8d13b74c4e166da1e6dbc5419868d7ecfc427afb0b00031adc",
+      "file": "mixed-up-mother-goose-19f4703ad119c32d82032657288d776c4533857c58e68df1b23d49b0bde5dda4.jpg",
+      "inputHash": "19f4703ad119c32d82032657288d776c4533857c58e68df1b23d49b0bde5dda4",
       "imageHash": "0c8578f9d118e229d96fa08154d2a1318c45c1a038fd7d7eb368bc0959e506c8"
     },
     "mixed-up-mother-goose-deluxe": {
-      "file": "mixed-up-mother-goose-deluxe-308d05e53421978704e1b1eb9f54eae55c83e9e5a0d4a1077385c4745f61a4ee.jpg",
-      "inputHash": "308d05e53421978704e1b1eb9f54eae55c83e9e5a0d4a1077385c4745f61a4ee",
+      "file": "mixed-up-mother-goose-deluxe-7ab26b168e9a631de579d384331a33f71c7da3ab5f3bffa3044535ecb9aff1ad.jpg",
+      "inputHash": "7ab26b168e9a631de579d384331a33f71c7da3ab5f3bffa3044535ecb9aff1ad",
       "imageHash": "3b7073e8a0de587b963c125acff11a137985227137e1d7ba82608ff2ee37eb01"
     },
     "monkey-island-2-lechuck-s-revenge": {
-      "file": "monkey-island-2-lechuck-s-revenge-31fc0e24ae895e986309facb2c1f278210753846202028693a4d6bdf9460481f.jpg",
-      "inputHash": "31fc0e24ae895e986309facb2c1f278210753846202028693a4d6bdf9460481f",
+      "file": "monkey-island-2-lechuck-s-revenge-472bef8add3de1043772975e7602036fd53a554c2c0002bc1ffa23aa809e8607.jpg",
+      "inputHash": "472bef8add3de1043772975e7602036fd53a554c2c0002bc1ffa23aa809e8607",
       "imageHash": "802a6671f9825d9c939be9bdf78e94946d271a9260140f1b74570bdaf5445126"
     },
     "mortville-manor": {
-      "file": "mortville-manor-5edd01405d32c1bd9a3d5ebc16ca1fdc7608e89e579557469ecd7c9ba9daee1b.jpg",
-      "inputHash": "5edd01405d32c1bd9a3d5ebc16ca1fdc7608e89e579557469ecd7c9ba9daee1b",
+      "file": "mortville-manor-df62dce7315e59c8b741aa4174ba0129f0bb99f2b13b181d7a78c53ae3e7bdb2.jpg",
+      "inputHash": "df62dce7315e59c8b741aa4174ba0129f0bb99f2b13b181d7a78c53ae3e7bdb2",
       "imageHash": "3bc23dad307c3aa4e6487ba46e078c22003a2dbdf09c7e0507c0fd253395b723"
     },
     "ms-astro-chicken": {
-      "file": "ms-astro-chicken-9bec1afb0a9f8b26673675ea6fce1794712c521cabdc6265abd0fbd9f1b0030e.jpg",
-      "inputHash": "9bec1afb0a9f8b26673675ea6fce1794712c521cabdc6265abd0fbd9f1b0030e",
+      "file": "ms-astro-chicken-99dcbb3d8525b59f58e3332e0afafc95159108c0972652029ab8894685d02064.jpg",
+      "inputHash": "99dcbb3d8525b59f58e3332e0afafc95159108c0972652029ab8894685d02064",
       "imageHash": "4f2db9a0c7abb5651a68cfefd9a881fdac4cabfabda160757eb29c1a48d48611"
     },
     "ms-astro-chicken-demo": {
-      "file": "ms-astro-chicken-demo-950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f.jpg",
-      "inputHash": "950af0057d86d94c9ce98904971a004aec65846889d7dc68ff7211ff350f5c7f",
+      "file": "ms-astro-chicken-demo-82a87ca0929d5bd7f91d0d35d9fff6c537e41571183136396acc27685d8ac85c.jpg",
+      "inputHash": "82a87ca0929d5bd7f91d0d35d9fff6c537e41571183136396acc27685d8ac85c",
       "imageHash": "68ba08a93184a9709d6937ec2ca93cfad0cad8d8c644e81c4089ee709fe8ef04"
     },
     "mtv-s-beavis-and-butt-head-in-hock-a-loogie-demo": {
-      "file": "mtv-s-beavis-and-butt-head-in-hock-a-loogie-demo-beff6035176f399cc1bf20021c06304d6c74ecd6a320b3a55f0fc02657ba6a30.jpg",
-      "inputHash": "beff6035176f399cc1bf20021c06304d6c74ecd6a320b3a55f0fc02657ba6a30",
+      "file": "mtv-s-beavis-and-butt-head-in-hock-a-loogie-demo-c7ac8b153aab7df4c45cfa8bee576ca2faa5f9b227e8bb710a794d38d6737899.jpg",
+      "inputHash": "c7ac8b153aab7df4c45cfa8bee576ca2faa5f9b227e8bb710a794d38d6737899",
       "imageHash": "93865c902bb99aa6ab3389eb3216c8af50fd9f6ef4668ce022aaa84a486d0e64"
     },
     "mtv-s-beavis-and-butt-head-in-virtual-stupidity": {
-      "file": "mtv-s-beavis-and-butt-head-in-virtual-stupidity-f576611eb813b96d5e9a739a2627efe88a0f224473a2c6233620b061df94ec08.jpg",
-      "inputHash": "f576611eb813b96d5e9a739a2627efe88a0f224473a2c6233620b061df94ec08",
+      "file": "mtv-s-beavis-and-butt-head-in-virtual-stupidity-9e420b44695562ec63da1e025060162d41b6b4b2b8a032b5fbe4dcd64e438a6b.jpg",
+      "inputHash": "9e420b44695562ec63da1e025060162d41b6b4b2b8a032b5fbe4dcd64e438a6b",
       "imageHash": "a5527fe3226fb6965fe7f8dc4499017d6c3e4d836bd060712616cb6b16f62251"
     },
     "myst": {
-      "file": "myst-1652d3596dec1cffe2e4809320be82eb865863fe2f230ff692a943caca7b5dd7.jpg",
-      "inputHash": "1652d3596dec1cffe2e4809320be82eb865863fe2f230ff692a943caca7b5dd7",
+      "file": "myst-4c320854611ee163c0e10912e078441f7180fd4ae3cb0e62a7685dea8e727fc7.jpg",
+      "inputHash": "4c320854611ee163c0e10912e078441f7180fd4ae3cb0e62a7685dea8e727fc7",
       "imageHash": "0b1dfef97b61ab71dbbc42a51ce8d83be28f4962ca184093cd6c243443b3fdbf"
     },
     "myst-demo": {
-      "file": "myst-demo-6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320.jpg",
-      "inputHash": "6cde6569c76447701ded59d04b0f4880603e8596e2e3d3eeffb17e99b059e320",
+      "file": "myst-demo-3b3ea08097269fabaf9117109dc697f673d282bd8a51218c4e67721fad5cb706.jpg",
+      "inputHash": "3b3ea08097269fabaf9117109dc697f673d282bd8a51218c4e67721fad5cb706",
       "imageHash": "6d6dae3e5bf097bdfcae86307ac4204c0e3766b85478b6452b95064f0094c0c0"
     },
     "nippon-safes-inc": {
-      "file": "nippon-safes-inc-0334c0f23dea9477ed5bb85ff8150a6f7584b7c59f86d11a5d43d9c5b61486c2.jpg",
-      "inputHash": "0334c0f23dea9477ed5bb85ff8150a6f7584b7c59f86d11a5d43d9c5b61486c2",
+      "file": "nippon-safes-inc-ce4c811ecfab0ded697a6e82d41f3f2c51b8b3c8400f48a924ac1b1f8b57bfbc.jpg",
+      "inputHash": "ce4c811ecfab0ded697a6e82d41f3f2c51b8b3c8400f48a924ac1b1f8b57bfbc",
       "imageHash": "328cc6978d2789ad922eab496167055a45a8285b6ccbde18c3746c122bcd6949"
     },
     "once-upon-a-time-little-red-riding-hood": {
-      "file": "once-upon-a-time-little-red-riding-hood-b39d1f7051ca8f7bb6f8663fc90390f0c4fd616bfa2e06d38144453898473a23.jpg",
-      "inputHash": "b39d1f7051ca8f7bb6f8663fc90390f0c4fd616bfa2e06d38144453898473a23",
+      "file": "once-upon-a-time-little-red-riding-hood-de51d77b1b1ad777167f794972e8d35763506f242a7bd2a39ff4f6eb5d696f7e.jpg",
+      "inputHash": "de51d77b1b1ad777167f794972e8d35763506f242a7bd2a39ff4f6eb5d696f7e",
       "imageHash": "e949782e7f7179ffbaa94025729387f516859fb9330d3d32371a118ef5a4b7c2"
     },
     "open-quest": {
-      "file": "open-quest-af8be9bf2eff3d5da645cda9497e002be3af22fca2a127c0b68fc17a6b231c5c.jpg",
-      "inputHash": "af8be9bf2eff3d5da645cda9497e002be3af22fca2a127c0b68fc17a6b231c5c",
+      "file": "open-quest-35a93332ccfe2333ed51b51d1482dd77c942fb587f4268a7594354006a19739a.jpg",
+      "inputHash": "35a93332ccfe2333ed51b51d1482dd77c942fb587f4268a7594354006a19739a",
       "imageHash": "c6b4d8be52f8785850acd4ec8d99c80883278a1644c1ca5c345f29afb3c8f50e"
     },
     "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening": {
-      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-8e2d3c7bc90dec06efa115b1f0b0909a52d10692ca7c103d8fe5b4a4bbd08742.jpg",
-      "inputHash": "8e2d3c7bc90dec06efa115b1f0b0909a52d10692ca7c103d8fe5b4a4bbd08742",
+      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-42c5f92c6b3f3e775985f60781d5f7fffa9a8f5a3be2e0ea7631a3f33e9f264c.jpg",
+      "inputHash": "42c5f92c6b3f3e775985f60781d5f7fffa9a8f5a3be2e0ea7631a3f33e9f264c",
       "imageHash": "06d7f4e76b8bbb0570f4cb0057ddbad044dfe374675ca9e2ec1820645d214212"
     },
     "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo": {
-      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo-9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1.jpg",
-      "inputHash": "9eb9620d7f929ccb9bdf01139d3965b862bcb29813ab5669a5078f20463232d1",
+      "file": "pajama-sam-2-thunder-and-lightning-aren-t-so-frightening-demo-3aad65e900af0af77797013bf8339e09bc81cf0ec79c4ec03774b0f991e82126.jpg",
+      "inputHash": "3aad65e900af0af77797013bf8339e09bc81cf0ec79c4ec03774b0f991e82126",
       "imageHash": "d65d771ee10de8790201d95b3ce7f2adac7742ca5e6e25d0b3a55c5baa1d0f81"
     },
     "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet": {
-      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-37561c20e499b57d3ddf3364294046bb89bf2b854c85ae80444a146afca5d171.jpg",
-      "inputHash": "37561c20e499b57d3ddf3364294046bb89bf2b854c85ae80444a146afca5d171",
+      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-9f16d2a5bfb99e8022f1be38ff8de0f42a1ca54afdf342ebeefc2e4df9f3af92.jpg",
+      "inputHash": "9f16d2a5bfb99e8022f1be38ff8de0f42a1ca54afdf342ebeefc2e4df9f3af92",
       "imageHash": "7c574af1e957eb5f410e1dc186c24acb1fde49236faf2ad5d278414c24e4379d"
     },
     "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo": {
-      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo-535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da.jpg",
-      "inputHash": "535fc8c57f5c855e04fc4ea32d7c8dcff70f01a8768ff517d529f20cc3a104da",
+      "file": "pajama-sam-3-you-are-what-you-eat-from-your-head-to-your-feet-demo-7090298ed4cb1034c0860654acd4df1248fc7ee090f7f1a62427a58487d8a3cc.jpg",
+      "inputHash": "7090298ed4cb1034c0860654acd4df1248fc7ee090f7f1a62427a58487d8a3cc",
       "imageHash": "404427007edc0739cd8c8fb84d76d94f35cb22cbe25d1e76797034db2892d52f"
     },
     "pajama-sam-games-to-play-on-any-day": {
-      "file": "pajama-sam-games-to-play-on-any-day-b926d4f3f00307880e80ab2d0531cc503a287fc90a1366de56275a94d3246452.jpg",
-      "inputHash": "b926d4f3f00307880e80ab2d0531cc503a287fc90a1366de56275a94d3246452",
+      "file": "pajama-sam-games-to-play-on-any-day-96b0e8dcf745db771e13cc42f2ee3ffe4cc32c26c2cd0e3820b4b630f8fa9306.jpg",
+      "inputHash": "96b0e8dcf745db771e13cc42f2ee3ffe4cc32c26c2cd0e3820b4b630f8fa9306",
       "imageHash": "1fa656bf8a5dd7ad7997cbb6326176cd6e53980907bd2e3615ba9c99f2d89f86"
     },
     "pajama-sam-no-need-to-hide-when-it-s-dark-outside": {
-      "file": "pajama-sam-no-need-to-hide-when-it-s-dark-outside-552080c6730a1dc5e18e991824a8e016382fe436f960bc50871fcf0a69fc8b61.jpg",
-      "inputHash": "552080c6730a1dc5e18e991824a8e016382fe436f960bc50871fcf0a69fc8b61",
+      "file": "pajama-sam-no-need-to-hide-when-it-s-dark-outside-db34936ac79afb11615f034f133e770456bb0ce393db628c954570fa5734e28b.jpg",
+      "inputHash": "db34936ac79afb11615f034f133e770456bb0ce393db628c954570fa5734e28b",
       "imageHash": "8cdf91c5d344b9e1dfcc4ca408d365e3e8cb5819598839da5a3cc5be8dcc462f"
     },
     "pajama-sam-no-need-to-hide-when-it-s-dark-outside-demo": {
-      "file": "pajama-sam-no-need-to-hide-when-it-s-dark-outside-demo-b17d8233ea76219be8d8f88a00b9b97aa92d5a71fa0a70fa53ba0ba0b8d0deee.jpg",
-      "inputHash": "b17d8233ea76219be8d8f88a00b9b97aa92d5a71fa0a70fa53ba0ba0b8d0deee",
+      "file": "pajama-sam-no-need-to-hide-when-it-s-dark-outside-demo-3007ea331cc9cd867f7379b6d87eaeb787ce22457635f4fc8dd51d2db9982c86.jpg",
+      "inputHash": "3007ea331cc9cd867f7379b6d87eaeb787ce22457635f4fc8dd51d2db9982c86",
       "imageHash": "a4c7341cc8ec3de64c78b8b644c30025303488485b7c2ebaf2cfd86f2ce63fe9"
     },
     "pajama-sam-s-lost-and-found": {
-      "file": "pajama-sam-s-lost-and-found-bc8a813c055595a6790e95f29eac0815417d3f1203e1e590d1b3f6828c83c20f.jpg",
-      "inputHash": "bc8a813c055595a6790e95f29eac0815417d3f1203e1e590d1b3f6828c83c20f",
+      "file": "pajama-sam-s-lost-and-found-ff5c5430e0e29437baa68709d1555e35d82fd76e7ba97d47b121e0f8fa2fa6cd.jpg",
+      "inputHash": "ff5c5430e0e29437baa68709d1555e35d82fd76e7ba97d47b121e0f8fa2fa6cd",
       "imageHash": "98a26def7e3b7d3095cb662d0fce7006d4c5c0fb29039dc232648ee2240814d6"
     },
     "pajama-sam-s-sock-works": {
-      "file": "pajama-sam-s-sock-works-d01975e0b016d30dc2d8d6dccc455ac456714c2627cf4419f5186daca6d3af37.jpg",
-      "inputHash": "d01975e0b016d30dc2d8d6dccc455ac456714c2627cf4419f5186daca6d3af37",
+      "file": "pajama-sam-s-sock-works-b918a47c9508220350d6a4e03f99fec7039091117c120369d78698d19d4ab811.jpg",
+      "inputHash": "b918a47c9508220350d6a4e03f99fec7039091117c120369d78698d19d4ab811",
       "imageHash": "19f5c2b4e2445f864f517700387dcfadc2b5203814fbfab2f6e0404c5cab281b"
     },
     "passport-to-adventure-demo": {
-      "file": "passport-to-adventure-demo-81cff320e7e51baa957337d667b5fe3364e2ee35d97e18de2c822f5356b38219.jpg",
-      "inputHash": "81cff320e7e51baa957337d667b5fe3364e2ee35d97e18de2c822f5356b38219",
+      "file": "passport-to-adventure-demo-15211e435425f46c2399238cd94cf5da057820b59bee808a475b6796c82022e5.jpg",
+      "inputHash": "15211e435425f46c2399238cd94cf5da057820b59bee808a475b6796c82022e5",
       "imageHash": "a0673b356840c79ab6660a1392acc119f6a193edc589a3c5f7077174df7515c0"
     },
     "pepper-s-adventures-in-time": {
-      "file": "pepper-s-adventures-in-time-b0eaede88501efbfef4721d553109e8bb4ed08c8459aec7ad2629b12a09cc53c.jpg",
-      "inputHash": "b0eaede88501efbfef4721d553109e8bb4ed08c8459aec7ad2629b12a09cc53c",
+      "file": "pepper-s-adventures-in-time-6410b4a96540ccf7e50a3f2cf92714702dd68e5f82b0088e24d4f84e9b8bce29.jpg",
+      "inputHash": "6410b4a96540ccf7e50a3f2cf92714702dd68e5f82b0088e24d4f84e9b8bce29",
       "imageHash": "8c1077e285764a508a87463125985ab896484f3d73270fa004efaa441ecfe099"
     },
     "personal-nightmare": {
-      "file": "personal-nightmare-aaa90efae936c781f9ceb9ddec9ea491108a3bfe412765dfc0f4e0a39528f4cf.jpg",
-      "inputHash": "aaa90efae936c781f9ceb9ddec9ea491108a3bfe412765dfc0f4e0a39528f4cf",
+      "file": "personal-nightmare-15086a75a27c99aa0aa6209b232ec0d6362245aeae6a6e57fbd4cb9cdf72c094.jpg",
+      "inputHash": "15086a75a27c99aa0aa6209b232ec0d6362245aeae6a6e57fbd4cb9cdf72c094",
       "imageHash": "40d938426c46129117cf0b673a0ac0679d98cedb19f608bd0ccb011bc55d15c2"
     },
     "phantasmagoria": {
-      "file": "phantasmagoria-75e649487ec725de4be42c7a1658af381cc643101c119ae62de0969c6df107f0.jpg",
-      "inputHash": "75e649487ec725de4be42c7a1658af381cc643101c119ae62de0969c6df107f0",
+      "file": "phantasmagoria-ec719c8f5cc07e3c66a70d365be8ceeb977143ac04e04a43a7562903489dd522.jpg",
+      "inputHash": "ec719c8f5cc07e3c66a70d365be8ceeb977143ac04e04a43a7562903489dd522",
       "imageHash": "b5f30db34733d293e437cdefe309f1c4fe619815f564d3383e95b39e7b399b27"
     },
     "phantasmagoria-2-a-puzzle-of-flesh": {
-      "file": "phantasmagoria-2-a-puzzle-of-flesh-75acc7af620a24c070809280696d7b33838e2ec189bf91f1020ade052f9c5156.jpg",
-      "inputHash": "75acc7af620a24c070809280696d7b33838e2ec189bf91f1020ade052f9c5156",
+      "file": "phantasmagoria-2-a-puzzle-of-flesh-30a94c3f06eba37c0d5c0f7d9eae5f021ab6df44d2fe9d3faa7c092568f2a106.jpg",
+      "inputHash": "30a94c3f06eba37c0d5c0f7d9eae5f021ab6df44d2fe9d3faa7c092568f2a106",
       "imageHash": "09569445a175431f42cc0739eeee5a4fa5771c85668393f04d6c65a27661e778"
     },
     "phantasmagoria-demo": {
-      "file": "phantasmagoria-demo-9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951.jpg",
-      "inputHash": "9eaac1b0faa3882608e72ecf30ed5187386ca4eabec941f6ed4d9c66bc715951",
+      "file": "phantasmagoria-demo-9a6cdb95db09fad3db6b8ab0351b92a9df3d883348c276cebf4a836f5b88a01c.jpg",
+      "inputHash": "9a6cdb95db09fad3db6b8ab0351b92a9df3d883348c276cebf4a836f5b88a01c",
       "imageHash": "b9e7b024e1309e45f002ab02a647cee05b2146baf55178415ec72eebced58174"
     },
     "playtoons-1-uncle-archibald": {
-      "file": "playtoons-1-uncle-archibald-773115d5d7266d7b550e507e1c2dbcc79549690c2f866357d52f20224aecbabd.jpg",
-      "inputHash": "773115d5d7266d7b550e507e1c2dbcc79549690c2f866357d52f20224aecbabd",
+      "file": "playtoons-1-uncle-archibald-cc2c8da24967a0ef579e0961987fad6147ef07fa506850f66b6aef32a9de16a6.jpg",
+      "inputHash": "cc2c8da24967a0ef579e0961987fad6147ef07fa506850f66b6aef32a9de16a6",
       "imageHash": "a04a2be3a3bd9e8a4da9f8144829cc76bf806f1b80cc5688bd5ae78892116301"
     },
     "playtoons-2-the-case-of-the-counterfeit-collaborator": {
-      "file": "playtoons-2-the-case-of-the-counterfeit-collaborator-d1540977a7b75db9fe337288592933cab95f07d6c5cc78bd23a152c31f723119.jpg",
-      "inputHash": "d1540977a7b75db9fe337288592933cab95f07d6c5cc78bd23a152c31f723119",
+      "file": "playtoons-2-the-case-of-the-counterfeit-collaborator-9e4cb79f32f4ff06801ecd9f3579aca273b20b35346aa322b2d63c1b2d20f247.jpg",
+      "inputHash": "9e4cb79f32f4ff06801ecd9f3579aca273b20b35346aa322b2d63c1b2d20f247",
       "imageHash": "f2cd3d932dd712921ea80eaa4c8fb80f7a0c2efb3c819421e6d83001019e0153"
     },
     "playtoons-3-the-secret-of-the-castle": {
-      "file": "playtoons-3-the-secret-of-the-castle-0459a2ba3f98b6ee641166ebba218076ff5b95315b210ce17f9514099c03013a.jpg",
-      "inputHash": "0459a2ba3f98b6ee641166ebba218076ff5b95315b210ce17f9514099c03013a",
+      "file": "playtoons-3-the-secret-of-the-castle-6bd250c0ebf134950ca239baec9d19d9df70c392f1b11d9cd1c610c8757b554f.jpg",
+      "inputHash": "6bd250c0ebf134950ca239baec9d19d9df70c392f1b11d9cd1c610c8757b554f",
       "imageHash": "6c4e32364f47b4617762a8daf169f541daf47d5ef845b151d58d887e13fe0a44"
     },
     "playtoons-4-the-mandarine-prince": {
-      "file": "playtoons-4-the-mandarine-prince-47dc6e6940ca5296f8ff5326816b80d036fbf28db8e482d3c16a875dc4cd1e34.jpg",
-      "inputHash": "47dc6e6940ca5296f8ff5326816b80d036fbf28db8e482d3c16a875dc4cd1e34",
+      "file": "playtoons-4-the-mandarine-prince-80802e1828934c164b90ea091f0699dfa20b81a108ef7e78cf40f1b2d4f53e57.jpg",
+      "inputHash": "80802e1828934c164b90ea091f0699dfa20b81a108ef7e78cf40f1b2d4f53e57",
       "imageHash": "a9cfaa020b0105b939792311edadc9931fc09e7be593b258c5dbef0370d66661"
     },
     "playtoons-limited-edition-bambou-le-sauveur-de-la-jungle": {
-      "file": "playtoons-limited-edition-bambou-le-sauveur-de-la-jungle-a350de707bd90a014fc81ce734a42ddb9a4c5f0ec2e3e71a441f469d21a39b0f.jpg",
-      "inputHash": "a350de707bd90a014fc81ce734a42ddb9a4c5f0ec2e3e71a441f469d21a39b0f",
+      "file": "playtoons-limited-edition-bambou-le-sauveur-de-la-jungle-030cc7f68c7602ce43c86b976508c8ffcfeff4caab70c691caaac96acda0edc4.jpg",
+      "inputHash": "030cc7f68c7602ce43c86b976508c8ffcfeff4caab70c691caaac96acda0edc4",
       "imageHash": "64adb768d5559bfc0476bed8ac35d73fff870513e7baa2ebe0c2a4f0a3478453"
     },
     "plumbers-don-t-wear-ties": {
-      "file": "plumbers-don-t-wear-ties-5d65bf581c62fcab20bf08e728abede4dd870ecd95b2232702186de11662470d.jpg",
-      "inputHash": "5d65bf581c62fcab20bf08e728abede4dd870ecd95b2232702186de11662470d",
+      "file": "plumbers-don-t-wear-ties-7a392ff69517a927b80ad11238e147afbfff445c8e8082bacc1676e00f10a489.jpg",
+      "inputHash": "7a392ff69517a927b80ad11238e147afbfff445c8e8082bacc1676e00f10a489",
       "imageHash": "378c641e47359b983d55b01900fb87e011f1cbc5fafaaef409ca8052c6723b8b"
     },
     "police-quest-2-the-vengeance": {
-      "file": "police-quest-2-the-vengeance-d593933a6687adea9146a63a0694f5f1e8411664efb4689cff392bfaa60c92af.jpg",
-      "inputHash": "d593933a6687adea9146a63a0694f5f1e8411664efb4689cff392bfaa60c92af",
+      "file": "police-quest-2-the-vengeance-f8e6f19ccf3cbce18969360c2de48a5154b202b65ce4048164141cd8522a9f5e.jpg",
+      "inputHash": "f8e6f19ccf3cbce18969360c2de48a5154b202b65ce4048164141cd8522a9f5e",
       "imageHash": "0497fb7dbacf57ac6f2f02b0f47fa1d2694327b800040ab6d7a6c5e19a55085c"
     },
     "police-quest-3-the-kindred": {
-      "file": "police-quest-3-the-kindred-912ecbc45999dccd64129004f946cd77671722cff5a6ea448a07984dba9581a4.jpg",
-      "inputHash": "912ecbc45999dccd64129004f946cd77671722cff5a6ea448a07984dba9581a4",
+      "file": "police-quest-3-the-kindred-abf9e95e6fb1c9469c9d1d21d50c7da3d855f42dd193c73a8e9ea00b5eee9918.jpg",
+      "inputHash": "abf9e95e6fb1c9469c9d1d21d50c7da3d855f42dd193c73a8e9ea00b5eee9918",
       "imageHash": "8215831b7f69a3b86577c34a728240ed058d4500b9056fc0bed33676ab184a67"
     },
     "police-quest-in-pursuit-of-the-death-angel": {
-      "file": "police-quest-in-pursuit-of-the-death-angel-e2ca7a7a75a71819bbc72f70eb5f69d780eff69835c604b5f7c6232bbdc472ca.jpg",
-      "inputHash": "e2ca7a7a75a71819bbc72f70eb5f69d780eff69835c604b5f7c6232bbdc472ca",
+      "file": "police-quest-in-pursuit-of-the-death-angel-2bb03d9e93e4267f1e35c52500d7acb66714dcf91851a97cec62ee842b19567d.jpg",
+      "inputHash": "2bb03d9e93e4267f1e35c52500d7acb66714dcf91851a97cec62ee842b19567d",
       "imageHash": "15b8259cd947978a28583a4c467aaa16b2a8408a4b01a4a47d8bfa023098bacd"
     },
     "police-quest-in-pursuit-of-the-death-angel-pq1sci": {
-      "file": "police-quest-in-pursuit-of-the-death-angel-pq1sci-2606120dc0d0474887abd98ca6bceb9f7de771ad8793ec336b9f3847031ce508.jpg",
-      "inputHash": "2606120dc0d0474887abd98ca6bceb9f7de771ad8793ec336b9f3847031ce508",
+      "file": "police-quest-in-pursuit-of-the-death-angel-pq1sci-acee410dd7b6908bc42c6747adf62e0eba227d0bbeeacd128a7736a7d1729539.jpg",
+      "inputHash": "acee410dd7b6908bc42c6747adf62e0eba227d0bbeeacd128a7736a7d1729539",
       "imageHash": "38da7689aaf882f6aabb69e73a023c938c9180cbf100c0ce814f26b6e50a5d6e"
     },
     "police-quest-iv-open-season": {
-      "file": "police-quest-iv-open-season-22272093e85019309e77bad2e9ba69d9186e9646792b3d48ce5db3d99390dbe2.jpg",
-      "inputHash": "22272093e85019309e77bad2e9ba69d9186e9646792b3d48ce5db3d99390dbe2",
+      "file": "police-quest-iv-open-season-ec45539f2658b0a628d4babb09d6fcc6037d66b850e08e443964c0577675ae21.jpg",
+      "inputHash": "ec45539f2658b0a628d4babb09d6fcc6037d66b850e08e443964c0577675ae21",
       "imageHash": "82fa682f8b97a162ae19ac924f57d2c07c4a08d68f183402ccff40f40f737c6e"
     },
     "primordia": {
-      "file": "primordia-7ccc71c2722d222fab0ddb48e65837bf51d67901feb979e15fb483f0dd08f284.jpg",
-      "inputHash": "7ccc71c2722d222fab0ddb48e65837bf51d67901feb979e15fb483f0dd08f284",
+      "file": "primordia-caab67b6a64d8750e1a85c1caaad1a95d992fbd382db54fec03748922916ea1e.jpg",
+      "inputHash": "caab67b6a64d8750e1a85c1caaad1a95d992fbd382db54fec03748922916ea1e",
       "imageHash": "dd30be2b74c2cd0503d9e3007ff717605952df503312c65fdd62054685957211"
     },
     "primordia-demo": {
-      "file": "primordia-demo-ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7.jpg",
-      "inputHash": "ab5e76d3087bba00121ebeeffccacde7a0cbf75a234895bad42c495f0a4437d7",
+      "file": "primordia-demo-b022bec0a7296b3d6d11fcc013d0c971ed803315c1ae92393418ed2ba45e7c3f.jpg",
+      "inputHash": "b022bec0a7296b3d6d11fcc013d0c971ed803315c1ae92393418ed2ba45e7c3f",
       "imageHash": "c647b57849fbba67b9bd5662fc9ffa0e1ad74dd9651a9bed75295154d47e168f"
     },
     "putt-putt-and-fatty-bear-s-activity-pack": {
-      "file": "putt-putt-and-fatty-bear-s-activity-pack-bafaee2c2f2f84e20040b688039cf4e692c066ab3a2f72426fee6fbd6f842456.jpg",
-      "inputHash": "bafaee2c2f2f84e20040b688039cf4e692c066ab3a2f72426fee6fbd6f842456",
+      "file": "putt-putt-and-fatty-bear-s-activity-pack-565b9de486618a6189e15b0d6dea6e097ec15a942aa3997a2535ccca939e41f7.jpg",
+      "inputHash": "565b9de486618a6189e15b0d6dea6e097ec15a942aa3997a2535ccca939e41f7",
       "imageHash": "51460e1c5c871202c5c5dbd0d0618a3f120abf05f51caac2aa08b20e30ca54d3"
     },
     "putt-putt-and-pep-s-balloon-o-rama": {
-      "file": "putt-putt-and-pep-s-balloon-o-rama-aac424b0fdb6c8952d9789c68687b0f081eb663effa91611e1eb0d1c09d26476.jpg",
-      "inputHash": "aac424b0fdb6c8952d9789c68687b0f081eb663effa91611e1eb0d1c09d26476",
+      "file": "putt-putt-and-pep-s-balloon-o-rama-c3e7f96bfc4aa7405ed71dc6e5269a08e1239d7f1cf52e42d3f952ac2439f45e.jpg",
+      "inputHash": "c3e7f96bfc4aa7405ed71dc6e5269a08e1239d7f1cf52e42d3f952ac2439f45e",
       "imageHash": "f6ecf34df1e810c41b7fd1872b7106dff408a529ee1c2b2b02b3191fc897d1be"
     },
     "putt-putt-and-pep-s-dog-on-a-stick": {
-      "file": "putt-putt-and-pep-s-dog-on-a-stick-afbf2da5436de4662b2b51f82f82d53bbafc303202d9920e543eace5fe3b9a7a.jpg",
-      "inputHash": "afbf2da5436de4662b2b51f82f82d53bbafc303202d9920e543eace5fe3b9a7a",
+      "file": "putt-putt-and-pep-s-dog-on-a-stick-f4faafb2f45a766dfea17239bc6a1571a37d2ddf6088f969c3282c3b021c7428.jpg",
+      "inputHash": "f4faafb2f45a766dfea17239bc6a1571a37d2ddf6088f969c3282c3b021c7428",
       "imageHash": "62b40e2264fd6c51c76260c4554653428c37283e942d7cdaf09ebc6842891321"
     },
     "putt-putt-enters-the-race": {
-      "file": "putt-putt-enters-the-race-6f23dc385c503021553dd0b905f6a4f20759ef792d997003b9201c86cc57c6b5.jpg",
-      "inputHash": "6f23dc385c503021553dd0b905f6a4f20759ef792d997003b9201c86cc57c6b5",
+      "file": "putt-putt-enters-the-race-429ee6c743409f35fc735b5185ce1bc27d630fe4aa1dacb92a5b12d481b4e603.jpg",
+      "inputHash": "429ee6c743409f35fc735b5185ce1bc27d630fe4aa1dacb92a5b12d481b4e603",
       "imageHash": "1e106270a70e22fb656402ca704c33c0b4aacca676f6af20dabe6acb3f3edf52"
     },
     "putt-putt-enters-the-race-demo": {
-      "file": "putt-putt-enters-the-race-demo-7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86.jpg",
-      "inputHash": "7c26e4b7dc2983eaf99519a74b4de9d361a9efea0bef9ba59ac482c66c0fed86",
+      "file": "putt-putt-enters-the-race-demo-0863f5617cec07101be598a0453187da117c428e321dba554c8cb1e8eb14e61b.jpg",
+      "inputHash": "0863f5617cec07101be598a0453187da117c428e321dba554c8cb1e8eb14e61b",
       "imageHash": "a941b33ad7ee247d99070e718f9a64500b7d5c51953c618abe8c0bf785bc5ce7"
     },
     "putt-putt-goes-to-the-moon": {
-      "file": "putt-putt-goes-to-the-moon-c3621c82272ed706391e2e584077a466a70487cdf165c7745ad8cb43e5e0c477.jpg",
-      "inputHash": "c3621c82272ed706391e2e584077a466a70487cdf165c7745ad8cb43e5e0c477",
+      "file": "putt-putt-goes-to-the-moon-6636de63bdf6ec095e7fd472437cfd491d293239ead94f16b42830c10f0058fd.jpg",
+      "inputHash": "6636de63bdf6ec095e7fd472437cfd491d293239ead94f16b42830c10f0058fd",
       "imageHash": "fc9806d10aaa271d564a52e7d2924d95614a778ba31382c0855a38c359aa02f3"
     },
     "putt-putt-goes-to-the-moon-demo": {
-      "file": "putt-putt-goes-to-the-moon-demo-4e9c07adc41828b2a67b15e3b8160f1d07c14873a87fafca48b9df73e5fc9a0f.jpg",
-      "inputHash": "4e9c07adc41828b2a67b15e3b8160f1d07c14873a87fafca48b9df73e5fc9a0f",
+      "file": "putt-putt-goes-to-the-moon-demo-79b195ad4227be8ca571da124c64dca1c84ae31aa0c6cde819fb7339183910e4.jpg",
+      "inputHash": "79b195ad4227be8ca571da124c64dca1c84ae31aa0c6cde819fb7339183910e4",
       "imageHash": "2500566f358549ade94fd9ce4b66a154547b3b1d3dc011279ecc0853f4b6789e"
     },
     "putt-putt-joins-the-circus": {
-      "file": "putt-putt-joins-the-circus-d4d7cf7373bfe5c3c86c8255cefc0a53e6e8fd63f65b4dc71ea9e9eb661c40a4.jpg",
-      "inputHash": "d4d7cf7373bfe5c3c86c8255cefc0a53e6e8fd63f65b4dc71ea9e9eb661c40a4",
+      "file": "putt-putt-joins-the-circus-5c25cd922bcd09490b4d79cc2092a25f134dc58d9629ab865ef6d10b630beffb.jpg",
+      "inputHash": "5c25cd922bcd09490b4d79cc2092a25f134dc58d9629ab865ef6d10b630beffb",
       "imageHash": "099d41d5352565ca6a26d7d1268c04ee7fd1e716e427bcafa2b1297d4a7485d6"
     },
     "putt-putt-joins-the-parade": {
-      "file": "putt-putt-joins-the-parade-675e04c1d8a53136d2342e8cf4a716c1013c1813fbe0c0154fe8c3dcc8ceea87.jpg",
-      "inputHash": "675e04c1d8a53136d2342e8cf4a716c1013c1813fbe0c0154fe8c3dcc8ceea87",
+      "file": "putt-putt-joins-the-parade-60fac5221f33cc5cda7536f98a818dbf4d6188000ad7a68f9550e751b7710939.jpg",
+      "inputHash": "60fac5221f33cc5cda7536f98a818dbf4d6188000ad7a68f9550e751b7710939",
       "imageHash": "7f01d03ef88030fa3813fcd4bebe5c84386254f1447ab1b623e46620a61a1720"
     },
     "putt-putt-joins-the-parade-demo": {
-      "file": "putt-putt-joins-the-parade-demo-d2e2979334669c459c5b823d2681a8bb4f504fa008983f097edc9b2f2ffbe533.jpg",
-      "inputHash": "d2e2979334669c459c5b823d2681a8bb4f504fa008983f097edc9b2f2ffbe533",
+      "file": "putt-putt-joins-the-parade-demo-c41ff5b0b4d322a9302977e8214d70b8cb9c783c4ea8e7bfa0e5db1b8940b8c1.jpg",
+      "inputHash": "c41ff5b0b4d322a9302977e8214d70b8cb9c783c4ea8e7bfa0e5db1b8940b8c1",
       "imageHash": "ac82db1c9237cb81b6d83b99a538f743dd7bc79bb7aa1b5be15f7bca8a610198"
     },
     "putt-putt-s-fun-pack": {
-      "file": "putt-putt-s-fun-pack-f5ed3e7d47be1345fc1be2c0519e610412c55965ff9d554292b3f10da0033483.jpg",
-      "inputHash": "f5ed3e7d47be1345fc1be2c0519e610412c55965ff9d554292b3f10da0033483",
+      "file": "putt-putt-s-fun-pack-8ccfeda5416dd368c07ff39a94a1b2a5bb59e3cdc10276bf361900a263918ea3.jpg",
+      "inputHash": "8ccfeda5416dd368c07ff39a94a1b2a5bb59e3cdc10276bf361900a263918ea3",
       "imageHash": "fe4f422ff48ded0f260be30a6890533d1e23f763ed8ce53a40d9ed7e6cc0bf23"
     },
     "putt-putt-s-one-stop-fun-shop": {
-      "file": "putt-putt-s-one-stop-fun-shop-cfc1af0e789e8004c991d67b9ad9d1627f73b54b2e447e0dc21f91d97701cc35.jpg",
-      "inputHash": "cfc1af0e789e8004c991d67b9ad9d1627f73b54b2e447e0dc21f91d97701cc35",
+      "file": "putt-putt-s-one-stop-fun-shop-061cac79d8f1480aa1e806fe731250070f8b2059a87642ff6aa518f8abd0872e.jpg",
+      "inputHash": "061cac79d8f1480aa1e806fe731250070f8b2059a87642ff6aa518f8abd0872e",
       "imageHash": "f01ef70179cf960b84425fad1f6b346816a257b213b3bad56b194f9f86eae4a3"
     },
     "putt-putt-saves-the-zoo": {
-      "file": "putt-putt-saves-the-zoo-63e7e269b4ede27f196cd489608abfce649ce1a71d584af142dabe0c178c5601.jpg",
-      "inputHash": "63e7e269b4ede27f196cd489608abfce649ce1a71d584af142dabe0c178c5601",
+      "file": "putt-putt-saves-the-zoo-42e70039f9784e057fd7bb7458e31479ebb74b9cb0a4debbef1ab48acf93ef86.jpg",
+      "inputHash": "42e70039f9784e057fd7bb7458e31479ebb74b9cb0a4debbef1ab48acf93ef86",
       "imageHash": "64f7e440a7d121d7ed2288cfd441da57232b07a5ab229c40d956ccc6b3b0c260"
     },
     "putt-putt-saves-the-zoo-demo": {
-      "file": "putt-putt-saves-the-zoo-demo-0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c.jpg",
-      "inputHash": "0a15a4c8f47a7b021eddac9a7fbb5f492b84d03fec9bcb388a0b51be84e9397c",
+      "file": "putt-putt-saves-the-zoo-demo-0a91857f249342840191e25bbcd776442c892947aad9461a9d4a1f056a6785ec.jpg",
+      "inputHash": "0a91857f249342840191e25bbcd776442c892947aad9461a9d4a1f056a6785ec",
       "imageHash": "4a1abbc02a0e6abbc01ec7937327053858d8882de084728510049f4b7c04d08e"
     },
     "putt-putt-travels-through-time": {
-      "file": "putt-putt-travels-through-time-4388c7756f5333915a59e4bdb30ffab2f397700a4475a929a7527cf58d108fe5.jpg",
-      "inputHash": "4388c7756f5333915a59e4bdb30ffab2f397700a4475a929a7527cf58d108fe5",
+      "file": "putt-putt-travels-through-time-4a817fcf2e204e64563db54891510955bbf4e639439cccc28c75d400dde49923.jpg",
+      "inputHash": "4a817fcf2e204e64563db54891510955bbf4e639439cccc28c75d400dde49923",
       "imageHash": "80d542d259e01198eb7877f6c4c782b941899dc079e92be4e1db89583c211c88"
     },
     "putt-putt-travels-through-time-demo": {
-      "file": "putt-putt-travels-through-time-demo-8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe.jpg",
-      "inputHash": "8dbe933482c2f34d3094580ccd6454647293ed4a45b50d044fa76ecc296e89fe",
+      "file": "putt-putt-travels-through-time-demo-31fbf4ae6964fc11e6ac1c8ac64d3286655ff148659f097a9a6a2ee7c2fd05e4.jpg",
+      "inputHash": "31fbf4ae6964fc11e6ac1c8ac64d3286655ff148659f097a9a6a2ee7c2fd05e4",
       "imageHash": "53eab240e3b8b4d32197a03f56ca6a0e1079d53e202d7ca328c72ab3c979946f"
     },
     "quest-for-glory-i-so-you-want-to-be-a-hero": {
-      "file": "quest-for-glory-i-so-you-want-to-be-a-hero-057a8a6138c2a059d0ae38c6273df44d37b20d8c1582044dfec6cc2f8017a2ba.jpg",
-      "inputHash": "057a8a6138c2a059d0ae38c6273df44d37b20d8c1582044dfec6cc2f8017a2ba",
+      "file": "quest-for-glory-i-so-you-want-to-be-a-hero-776e3db2923de1bcfde34be17e0fccc345f192cf3b3553d6149b3d13db07b9ba.jpg",
+      "inputHash": "776e3db2923de1bcfde34be17e0fccc345f192cf3b3553d6149b3d13db07b9ba",
       "imageHash": "413e86614b56c44d918498c7e04103a747af7be3f093ff0f8797872ba23899ec"
     },
     "quest-for-glory-i-so-you-want-to-be-a-hero-qfg1vga": {
-      "file": "quest-for-glory-i-so-you-want-to-be-a-hero-qfg1vga-bb4881c5792334db642229dc8b50d5b5fffa70c1855d1f5db166ed62868cb82f.jpg",
-      "inputHash": "bb4881c5792334db642229dc8b50d5b5fffa70c1855d1f5db166ed62868cb82f",
+      "file": "quest-for-glory-i-so-you-want-to-be-a-hero-qfg1vga-93c467c8d788a18acb442a430e7fa11628e0d15b6f5bed8b1cac78c930a1334e.jpg",
+      "inputHash": "93c467c8d788a18acb442a430e7fa11628e0d15b6f5bed8b1cac78c930a1334e",
       "imageHash": "792c64cfc04279b9ea1178dac41448d6e0e5bbc6fec664336288b611be100b56"
     },
     "quest-for-glory-ii-trial-by-fire": {
-      "file": "quest-for-glory-ii-trial-by-fire-ecd7a66dab3c42af9f0674018116b20673e1b3aae93ec4a35c5b8862977b6e34.jpg",
-      "inputHash": "ecd7a66dab3c42af9f0674018116b20673e1b3aae93ec4a35c5b8862977b6e34",
+      "file": "quest-for-glory-ii-trial-by-fire-0f8aeb8c4d47d81b91ee5cba93ffe74542fd9a213b193641c56bfc2f75dc3396.jpg",
+      "inputHash": "0f8aeb8c4d47d81b91ee5cba93ffe74542fd9a213b193641c56bfc2f75dc3396",
       "imageHash": "33ceebab3f7be2764390d64a8d778de680eb864809394e2d8e997839a1f3cb26"
     },
     "quest-for-glory-iii-wages-of-war": {
-      "file": "quest-for-glory-iii-wages-of-war-d0bf1ee52b20458b585d29a0992892c636121368f8f83a635aad9c635aac5bc5.jpg",
-      "inputHash": "d0bf1ee52b20458b585d29a0992892c636121368f8f83a635aad9c635aac5bc5",
+      "file": "quest-for-glory-iii-wages-of-war-6c31cc9b4c98f90982ef85d74a092e429f88839712298d18efd2e1af76cbfadd.jpg",
+      "inputHash": "6c31cc9b4c98f90982ef85d74a092e429f88839712298d18efd2e1af76cbfadd",
       "imageHash": "3cb61df5752bd62dc4ee3460a32131706fbd21b89a37e50dfb3c249c13ca6c03"
     },
     "quest-for-infamy-demo": {
-      "file": "quest-for-infamy-demo-f9ca7f754419ab0416be280a70bd9c66c6f236bc90f5837d82c5eac9ac5ee413.jpg",
-      "inputHash": "f9ca7f754419ab0416be280a70bd9c66c6f236bc90f5837d82c5eac9ac5ee413",
+      "file": "quest-for-infamy-demo-61f33a95a230fa20a5e4f85a408c7574ff2f1e7be3236408d14d2f617ea277b5.jpg",
+      "inputHash": "61f33a95a230fa20a5e4f85a408c7574ff2f1e7be3236408d14d2f617ea277b5",
       "imageHash": "b27d81e9436c4ebf35cfdaaf2954534ceffe06e318dd301edf71dc690fe21950"
     },
     "rama": {
-      "file": "rama-341cdebebae9af065afbfb0c75949c347d163b7a93b104c26d09c22666b4af91.jpg",
-      "inputHash": "341cdebebae9af065afbfb0c75949c347d163b7a93b104c26d09c22666b4af91",
+      "file": "rama-f908cf7832f28a6de32cdb349950c3daebf1837d6bd68a01d128c72b4083d714.jpg",
+      "inputHash": "f908cf7832f28a6de32cdb349950c3daebf1837d6bd68a01d128c72b4083d714",
       "imageHash": "7dc7aeccd0976e6e11e0bf2dcf165f82a1a0fec6ef7ed908aa45058c7e92bf3c"
     },
     "return-to-ringworld": {
-      "file": "return-to-ringworld-5c892e1b346aa477dbcdb4d03bb6cabded07fbc9746744a8b37a987de5d55d25.jpg",
-      "inputHash": "5c892e1b346aa477dbcdb4d03bb6cabded07fbc9746744a8b37a987de5d55d25",
+      "file": "return-to-ringworld-355f5bb1a861c09333bf78a9fc6c01e66f9f9bd367d1e03ef2af292ddfb0983e.jpg",
+      "inputHash": "355f5bb1a861c09333bf78a9fc6c01e66f9f9bd367d1e03ef2af292ddfb0983e",
       "imageHash": "068f460cfd66b70132b9d563da87f2c888c96700581d0c61703536d9890528b2"
     },
     "return-to-zork": {
-      "file": "return-to-zork-efdbb7c3652c72d2d8f5031718c956ec99ae436792e26c69da623cb6afea0b0e.jpg",
-      "inputHash": "efdbb7c3652c72d2d8f5031718c956ec99ae436792e26c69da623cb6afea0b0e",
+      "file": "return-to-zork-f6fe241ac3f3c99a11990a50d03331fcbcdc60e69d6db46a34f04d4426740d33.jpg",
+      "inputHash": "f6fe241ac3f3c99a11990a50d03331fcbcdc60e69d6db46a34f04d4426740d33",
       "imageHash": "9141d6fdccb0637c33e32b9aef4c927b55326dbf72bf60a0bff0e794137b352d"
     },
     "return-to-zork-demo": {
-      "file": "return-to-zork-demo-58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40.jpg",
-      "inputHash": "58acdb472c613060622303215ada7927844ce81de1818f988367a62c448bab40",
+      "file": "return-to-zork-demo-35d0d01be5d7e5ba9e8b3027071171dfeaef3b8c23ba230e99baf3ef85a14e02.jpg",
+      "inputHash": "35d0d01be5d7e5ba9e8b3027071171dfeaef3b8c23ba230e99baf3ef85a14e02",
       "imageHash": "12ceeb29ca43c8a9974bbe44ebe531c3c43a4fd0349be87effe88174aed99663"
     },
     "rex-nebular-and-the-cosmic-gender-bender": {
-      "file": "rex-nebular-and-the-cosmic-gender-bender-be7eb5dc34f46de662f4e2f567609adade79aaaaf65dea78fafd1a7cfa49ab75.jpg",
-      "inputHash": "be7eb5dc34f46de662f4e2f567609adade79aaaaf65dea78fafd1a7cfa49ab75",
+      "file": "rex-nebular-and-the-cosmic-gender-bender-5b1452c815b6627c95bdd5b2855c9bd8b64869f88b34e3955cede7fc90844736.jpg",
+      "inputHash": "5b1452c815b6627c95bdd5b2855c9bd8b64869f88b34e3955cede7fc90844736",
       "imageHash": "abae8971090cae467599b07efe4723cad4d4e455090f4be011bfad34cb88824c"
     },
     "rex-nebular-and-the-cosmic-gender-bender-demo": {
-      "file": "rex-nebular-and-the-cosmic-gender-bender-demo-5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b.jpg",
-      "inputHash": "5553cf88ea76f8cb942dc1611b337d0513e46ae384dde494d63f89ae328a132b",
+      "file": "rex-nebular-and-the-cosmic-gender-bender-demo-ea002341850bc926ad8097de02eee89d4bcd410c5518698a042e8103b3c8ac53.jpg",
+      "inputHash": "ea002341850bc926ad8097de02eee89d4bcd410c5518698a042e8103b3c8ac53",
       "imageHash": "2848ac53fa4828bb9ad410bbf5b723da0bf48bf0b283c4d48373862b6aba075d"
     },
     "ringworld-revenge-of-the-patriarch": {
-      "file": "ringworld-revenge-of-the-patriarch-e4a3de8afa7de99fd607dcd436724db746c6ab718184e83db53aadfcac4e7773.jpg",
-      "inputHash": "e4a3de8afa7de99fd607dcd436724db746c6ab718184e83db53aadfcac4e7773",
+      "file": "ringworld-revenge-of-the-patriarch-34029734a55269fb1fec3e612b418c4d0781c618c031a08f5153152a6009d11f.jpg",
+      "inputHash": "34029734a55269fb1fec3e612b418c4d0781c618c031a08f5153152a6009d11f",
       "imageHash": "de0de2c5b462d668f524a2be05e13aaaef9a001ceedf64b7ac13896fffcfd729"
     },
     "riven-the-sequel-to-myst": {
-      "file": "riven-the-sequel-to-myst-e2b074cd01cef99605a0c28e30c36435b5d6903d848b74d45c405d4713b866c3.jpg",
-      "inputHash": "e2b074cd01cef99605a0c28e30c36435b5d6903d848b74d45c405d4713b866c3",
+      "file": "riven-the-sequel-to-myst-3a5c1c5859adf21f82b27a8a28c63708e38da75b19e7325977814167cd5491fe.jpg",
+      "inputHash": "3a5c1c5859adf21f82b27a8a28c63708e38da75b19e7325977814167cd5491fe",
       "imageHash": "5a3d0c52762af0440cfb55f70ba1f715c2e33f7e278855e261f706598bef5daf"
     },
     "road": {
-      "file": "road-ae56b877fbda5bad2b0c21beaeba4bb757d79b4211af207f2bc1654a50341e57.jpg",
-      "inputHash": "ae56b877fbda5bad2b0c21beaeba4bb757d79b4211af207f2bc1654a50341e57",
+      "file": "road-33c3915c5720eb609df04e8a003fa7d38f4b782107b011c5968278d22b224644.jpg",
+      "inputHash": "33c3915c5720eb609df04e8a003fa7d38f4b782107b011c5968278d22b224644",
       "imageHash": "161fac668bbbf587d40f313932d632d2efed2f16023092a060256ee4c1b67214"
     },
     "rodney-s-funscreen": {
-      "file": "rodney-s-funscreen-5c0f196834679faa75c8dfce106c6c12c62c1a4ae1b285ecabaec380a1782e54.jpg",
-      "inputHash": "5c0f196834679faa75c8dfce106c6c12c62c1a4ae1b285ecabaec380a1782e54",
+      "file": "rodney-s-funscreen-7ba79d80053153260738dbf624c9c5488120753acd436f47203e0a50cafa7670.jpg",
+      "inputHash": "7ba79d80053153260738dbf624c9c5488120753acd436f47203e0a50cafa7670",
       "imageHash": "6704f69915d9aa8184e3ae02a1a84bff49de2a220c5fbe0b3f8ab080e2441c89"
     },
     "ruff-s-bone": {
-      "file": "ruff-s-bone-ffed84ab07856b37fc938ccf4c9de05dad395d823c091cda2ecd4d851ea1b165.jpg",
-      "inputHash": "ffed84ab07856b37fc938ccf4c9de05dad395d823c091cda2ecd4d851ea1b165",
+      "file": "ruff-s-bone-f9db74556c21f038e19ad2ada8167e30416414671cc2fbb4f6850bce0309809e.jpg",
+      "inputHash": "f9db74556c21f038e19ad2ada8167e30416414671cc2fbb4f6850bce0309809e",
       "imageHash": "995f1a02f29c2a88ba3282048497660596b2aa4ee2f53ca63253e5d59aa45d2d"
     },
     "ruff-s-bone-demo": {
-      "file": "ruff-s-bone-demo-ca92e7907535bfe5f5acfc7ad52859ddee8ff710e8bc49257197823174c087c4.jpg",
-      "inputHash": "ca92e7907535bfe5f5acfc7ad52859ddee8ff710e8bc49257197823174c087c4",
+      "file": "ruff-s-bone-demo-81ee3f45e4a20004c0d8e49f2fb6a8d1e7e5a348e5b72a24dcfbfd461099032b.jpg",
+      "inputHash": "81ee3f45e4a20004c0d8e49f2fb6a8d1e7e5a348e5b72a24dcfbfd461099032b",
       "imageHash": "b608942ec7ec4a835873c6c86623058ad1c963010a41e3a7476e1d249e82f9a6"
     },
     "sam-and-max-hit-the-road": {
-      "file": "sam-and-max-hit-the-road-28973339fc65bf2b9b3731f22be194652117f29305ad99047fbbe376a148316a.jpg",
-      "inputHash": "28973339fc65bf2b9b3731f22be194652117f29305ad99047fbbe376a148316a",
+      "file": "sam-and-max-hit-the-road-4fb0a5550b0abffabec50daf1f3b0aaf6c1bce302fa37547af4d613d9e2b578c.jpg",
+      "inputHash": "4fb0a5550b0abffabec50daf1f3b0aaf6c1bce302fa37547af4d613d9e2b578c",
       "imageHash": "d1361ca6646e5b4b6aa964a352e437080d3536c5c0b2683def65d810d833f3f7"
     },
     "sam-and-max-hit-the-road-demo": {
-      "file": "sam-and-max-hit-the-road-demo-5a7514c385d9bdf328e83d893b9bba4b577f001273efa9bb2423f160eb2cb6b4.jpg",
-      "inputHash": "5a7514c385d9bdf328e83d893b9bba4b577f001273efa9bb2423f160eb2cb6b4",
+      "file": "sam-and-max-hit-the-road-demo-714e65542cfada3d69b93c93aad7066260c07403ab50376a0ffb4ec69e3f7313.jpg",
+      "inputHash": "714e65542cfada3d69b93c93aad7066260c07403ab50376a0ffb4ec69e3f7313",
       "imageHash": "67b6cfa1bb79251aca065b3382d3ba1d026304a657df238285a23ffb0f981752"
     },
     "sfinx": {
-      "file": "sfinx-d55d00d6b5af12238fe4b63a31e08cc7b6016bb9a1c950e0dd86dba1083a7ed8.jpg",
-      "inputHash": "d55d00d6b5af12238fe4b63a31e08cc7b6016bb9a1c950e0dd86dba1083a7ed8",
+      "file": "sfinx-7e51d3bae555202c279eb1ee003b538e6afa77589c667950915e18ce423763c1.jpg",
+      "inputHash": "7e51d3bae555202c279eb1ee003b538e6afa77589c667950915e18ce423763c1",
       "imageHash": "f02d1581828703569aa1f1bd8d37b2df3081e0df4423df6dc93f4c576a3f5c07"
     },
     "sheila-rae-the-brave": {
-      "file": "sheila-rae-the-brave-b01b75bcb555eea32895807209f2cc47778b3df2cc8fd15b133fe7da6b041057.jpg",
-      "inputHash": "b01b75bcb555eea32895807209f2cc47778b3df2cc8fd15b133fe7da6b041057",
+      "file": "sheila-rae-the-brave-a95110eba6df41ed74a30bb3be31bf66d94e8d3bc5929e2ebc04d39f0c69fea5.jpg",
+      "inputHash": "a95110eba6df41ed74a30bb3be31bf66d94e8d3bc5929e2ebc04d39f0c69fea5",
       "imageHash": "d21b4e11f379a7c894c2458cb646dbbf912ccda4e2ae57255410181580051a6f"
     },
     "shivers": {
-      "file": "shivers-4527bd0603f159eaf9d62f8e6f7b93f6ffdaa2e567702788a2b3c70dd748418e.jpg",
-      "inputHash": "4527bd0603f159eaf9d62f8e6f7b93f6ffdaa2e567702788a2b3c70dd748418e",
+      "file": "shivers-18fef9183a940d665be9f7e6456c740f83edc584b6127c90394f1357b4a14d99.jpg",
+      "inputHash": "18fef9183a940d665be9f7e6456c740f83edc584b6127c90394f1357b4a14d99",
       "imageHash": "37a2ba71f2d2cf6db5520ba4f349b522c03ef7ca9ae0103901c780f7e10c6934"
     },
     "shivers-demo": {
-      "file": "shivers-demo-8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d.jpg",
-      "inputHash": "8f23337ef8ec76c46fbd06244031bb4b8b1b04e25a1c5036b25f7ccd5fc9a98d",
+      "file": "shivers-demo-6247cc4956797067b0d6556a5b37fd77cf3f8dd75773d6cab998ef9d4b62cffb.jpg",
+      "inputHash": "6247cc4956797067b0d6556a5b37fd77cf3f8dd75773d6cab998ef9d4b62cffb",
       "imageHash": "d0b2bd7d34a973d60a9b5a027e18675b104ba4f1c6445a41c682ca37804d257d"
     },
     "simon-the-sorcerer": {
-      "file": "simon-the-sorcerer-c87dd6d5b05a17934be972a70d9eb0c4c988d55cc3775ccc164095dd599a656f.jpg",
-      "inputHash": "c87dd6d5b05a17934be972a70d9eb0c4c988d55cc3775ccc164095dd599a656f",
+      "file": "simon-the-sorcerer-cb79ae1af4d57823d8357a774ff756390e2be323f28fc8fcf5ff14ad06b82ce4.jpg",
+      "inputHash": "cb79ae1af4d57823d8357a774ff756390e2be323f28fc8fcf5ff14ad06b82ce4",
       "imageHash": "be718174ff8979ff9bc2c32dd1d04c7da6053ae9f6d23d959640b0915da516ba"
     },
     "simon-the-sorcerer-demo": {
-      "file": "simon-the-sorcerer-demo-6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30.jpg",
-      "inputHash": "6f285ea4e75f275f0901a7074e5c460e4a24713f1dc8368d2ee94c1a540f9f30",
+      "file": "simon-the-sorcerer-demo-f7d69d4bf4485f732b8fe41baa6e8be75d21cf6982d465e35828842a47704f45.jpg",
+      "inputHash": "f7d69d4bf4485f732b8fe41baa6e8be75d21cf6982d465e35828842a47704f45",
       "imageHash": "e6ae462697928646ac73bade074b6700cf36c77435eb60f24f44e1febd36a25a"
     },
     "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe": {
-      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-926fc386f4d39ebe1ad9025915a62aef5a48fd6c74dd626d9e52f6d64f24d864.jpg",
-      "inputHash": "926fc386f4d39ebe1ad9025915a62aef5a48fd6c74dd626d9e52f6d64f24d864",
+      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-bd8306ff2943b44547d2b2ecec693f505cbcd53f3447a11c0843b759f4c7063e.jpg",
+      "inputHash": "bd8306ff2943b44547d2b2ecec693f505cbcd53f3447a11c0843b759f4c7063e",
       "imageHash": "1d53efda30f16362052423921c2e8e6c750bd58cd6bc00ff696852012684e7a6"
     },
     "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo": {
-      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1.jpg",
-      "inputHash": "078450fa836a5b201ebe40fb1e2089778ded07a04c404e7c67cf2b7f9ecf26b1",
+      "file": "simon-the-sorcerer-ii-the-lion-the-wizard-and-the-wardrobe-demo-c9a2014cd6f397b7a4eaadc41fd80457ec08e13d8dec84da8252bae13854206f.jpg",
+      "inputHash": "c9a2014cd6f397b7a4eaadc41fd80457ec08e13d8dec84da8252bae13854206f",
       "imageHash": "6a5da97ab8bc6c18ea77ba94241363e7850ba9052ad8ad599e56d25a60d69f6f"
     },
     "simon-the-sorcerer-s-puzzle-pack": {
-      "file": "simon-the-sorcerer-s-puzzle-pack-096c29f2404e6ff50b211a3ac881d636b1c3b5f7361a9bc16e77c99a04c2f4ed.jpg",
-      "inputHash": "096c29f2404e6ff50b211a3ac881d636b1c3b5f7361a9bc16e77c99a04c2f4ed",
+      "file": "simon-the-sorcerer-s-puzzle-pack-a092b17447b9b6ed7e5db092f6de52ead581dbf54b17bae0377f4291b720495b.jpg",
+      "inputHash": "a092b17447b9b6ed7e5db092f6de52ead581dbf54b17bae0377f4291b720495b",
       "imageHash": "33e1d54b9710ae945884c2a8bf435eff5608a185f8fad486f486132bd70de73b"
     },
     "slater-and-charlie-go-camping": {
-      "file": "slater-and-charlie-go-camping-fd4857044fb6a24e57266584d0e48c2e3f16a35494a952a51b1b703d5664fa27.jpg",
-      "inputHash": "fd4857044fb6a24e57266584d0e48c2e3f16a35494a952a51b1b703d5664fa27",
+      "file": "slater-and-charlie-go-camping-f743897f14c69eded9ad464f51a8e0196ca977732496d18e1d539f182b6d4e52.jpg",
+      "inputHash": "f743897f14c69eded9ad464f51a8e0196ca977732496d18e1d539f182b6d4e52",
       "imageHash": "28bcc2847b540faca2e5716b931e564396d8af5cd32af1dc4cf13c6e0578625b"
     },
     "slater-and-charlie-go-camping-demo": {
-      "file": "slater-and-charlie-go-camping-demo-e4ddd823c867382a50a00eaa0165a30a8db88ecd447cc379b7c6218e47a53ba2.jpg",
-      "inputHash": "e4ddd823c867382a50a00eaa0165a30a8db88ecd447cc379b7c6218e47a53ba2",
+      "file": "slater-and-charlie-go-camping-demo-9a20d401c02483496a52a6944a15a7db649226293788eef7509240ed38af6456.jpg",
+      "inputHash": "9a20d401c02483496a52a6944a15a7db649226293788eef7509240ed38af6456",
       "imageHash": "9f651fcaefe83c4921604a5da7c0fa9bf8d27bb34b1432a366532571a93aa293"
     },
     "so-tys": {
-      "file": "so-tys-1b4b86acd61f93b84f8085869f9d6eb6115e353837684fa4374365cc08eeed24.jpg",
-      "inputHash": "1b4b86acd61f93b84f8085869f9d6eb6115e353837684fa4374365cc08eeed24",
+      "file": "so-tys-ceac3e726a47dff413c834e1bd172bbaa2ff0951ea416509ff6557e550e5fe70.jpg",
+      "inputHash": "ceac3e726a47dff413c834e1bd172bbaa2ff0951ea416509ff6557e550e5fe70",
       "imageHash": "d1b04833ab3ac50bd9aa6a6913ded7c0403b900c4b5831a421aaa09754840fce"
     },
     "space-quest-6-roger-wilco-in-the-spinal-frontier": {
-      "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-d5f65cfebdb73a377fd6d88518d9f744cae8be0a084d6d108f6307953883be24.jpg",
-      "inputHash": "d5f65cfebdb73a377fd6d88518d9f744cae8be0a084d6d108f6307953883be24",
+      "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-5b26163ea7f91a529452376f766e84605a0b55241bcfab694c888da710e15937.jpg",
+      "inputHash": "5b26163ea7f91a529452376f766e84605a0b55241bcfab694c888da710e15937",
       "imageHash": "4a78c536d1779d15f5de96e3aec9e10c85a5eb0e319e3838d72f974d175752da"
     },
     "space-quest-6-roger-wilco-in-the-spinal-frontier-demo": {
-      "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-demo-0cdc8ecf6082f41753420a80cf3504b716a09c8150c19c923840888039d8ae10.jpg",
-      "inputHash": "0cdc8ecf6082f41753420a80cf3504b716a09c8150c19c923840888039d8ae10",
+      "file": "space-quest-6-roger-wilco-in-the-spinal-frontier-demo-35e42917beb73be15044572c2f17f1f99211cad5afa7d445404e4aaf820f0989.jpg",
+      "inputHash": "35e42917beb73be15044572c2f17f1f99211cad5afa7d445404e4aaf820f0989",
       "imageHash": "7520989b668ca6bc716adcd0d5f170dc11df20754a8b5109d653745c31c492af"
     },
     "space-quest-ii-chapter-ii-vohaul-s-revenge": {
-      "file": "space-quest-ii-chapter-ii-vohaul-s-revenge-1a53f1d1ccc936d5e95f61313a47b11a2aa154c7ce75a044942d845cb872fd40.jpg",
-      "inputHash": "1a53f1d1ccc936d5e95f61313a47b11a2aa154c7ce75a044942d845cb872fd40",
+      "file": "space-quest-ii-chapter-ii-vohaul-s-revenge-31bb048b17c8a5207ca0aa4cfc55c77cdde3cda0531c367dd5548dac328467db.jpg",
+      "inputHash": "31bb048b17c8a5207ca0aa4cfc55c77cdde3cda0531c367dd5548dac328467db",
       "imageHash": "0cb51d9a3a6791a18f95d6f3023791bcbf93e20bda643e03fd0f9a0d01446684"
     },
     "space-quest-iii-the-pirates-of-pestulon": {
-      "file": "space-quest-iii-the-pirates-of-pestulon-e9a205ac3b3e37cfdee78f7c98ca3fbc78f673c2655ac7f64e5ca5f76b60c8af.jpg",
-      "inputHash": "e9a205ac3b3e37cfdee78f7c98ca3fbc78f673c2655ac7f64e5ca5f76b60c8af",
+      "file": "space-quest-iii-the-pirates-of-pestulon-50ab729af192ac2d4306384220d34afda516f01e9beb6f945ef265b2e0bc4442.jpg",
+      "inputHash": "50ab729af192ac2d4306384220d34afda516f01e9beb6f945ef265b2e0bc4442",
       "imageHash": "2ace2198c8e413005cb0c267f4d7ebbf256867aecf5db6c00d6248ac53d1f763"
     },
     "space-quest-iv-roger-wilco-and-the-time-rippers": {
-      "file": "space-quest-iv-roger-wilco-and-the-time-rippers-33a4646fbbab8e01ec00757e19cc48655cd8eaff09e94a35f6f88681dfe48403.jpg",
-      "inputHash": "33a4646fbbab8e01ec00757e19cc48655cd8eaff09e94a35f6f88681dfe48403",
+      "file": "space-quest-iv-roger-wilco-and-the-time-rippers-f6d92685b553899d7e25097cb233b1a63a975b07beb3fe1f9df66634ec694bbc.jpg",
+      "inputHash": "f6d92685b553899d7e25097cb233b1a63a975b07beb3fe1f9df66634ec694bbc",
       "imageHash": "c4d520d03cd5445b8bc95de39b434770d48ba72709b85bb4b6402782c53cd97d"
     },
     "space-quest-the-sarien-encounter": {
-      "file": "space-quest-the-sarien-encounter-7468dfd199dfcbee869045101d93799c8b6ed75dc1fbd7fc7f91cab1e9c11ba8.jpg",
-      "inputHash": "7468dfd199dfcbee869045101d93799c8b6ed75dc1fbd7fc7f91cab1e9c11ba8",
+      "file": "space-quest-the-sarien-encounter-bf9f18dcbb0d9e029312214fae1f6552e5259d53881201382ed6a4f3ee3a7af9.jpg",
+      "inputHash": "bf9f18dcbb0d9e029312214fae1f6552e5259d53881201382ed6a4f3ee3a7af9",
       "imageHash": "522c03c090b06dd2d935102a8280f8c41ba39d041034b06b9691323c35bf7eba"
     },
     "space-quest-the-sarien-encounter-sq1sci": {
-      "file": "space-quest-the-sarien-encounter-sq1sci-412c139d803443afa0ec7b79346b8ce39ef96473d43ad7a89d1b780f1de469cb.jpg",
-      "inputHash": "412c139d803443afa0ec7b79346b8ce39ef96473d43ad7a89d1b780f1de469cb",
+      "file": "space-quest-the-sarien-encounter-sq1sci-c22bb68dc5d402ab77b0d0db6c330337e2887ffaf14eda73888c464506bfc7b9.jpg",
+      "inputHash": "c22bb68dc5d402ab77b0d0db6c330337e2887ffaf14eda73888c464506bfc7b9",
       "imageHash": "3260d0d8db2462467cb5fae44ceaf248c37dc1cd21c9737abb2837bb05f13d64"
     },
     "space-quest-v-the-next-mutation": {
-      "file": "space-quest-v-the-next-mutation-17406adecd344acc389e49c1fa8097a57fdf3eeec614dcbf36fad51033b072be.jpg",
-      "inputHash": "17406adecd344acc389e49c1fa8097a57fdf3eeec614dcbf36fad51033b072be",
+      "file": "space-quest-v-the-next-mutation-730a0fd72e234f935e351186bf25aaec2fca83328b6297791cf6ba99a065934c.jpg",
+      "inputHash": "730a0fd72e234f935e351186bf25aaec2fca83328b6297791cf6ba99a065934c",
       "imageHash": "6a732c668527b492ba7b338b8b2c64bdfcde55d234bfd7990970d1980c1c87d6"
     },
     "spy-fox-2-some-assembly-required": {
-      "file": "spy-fox-2-some-assembly-required-c432bbdfee38fc843b605db9c04d9e4d2ea3344420bb4e88fb01198b8b333f6f.jpg",
-      "inputHash": "c432bbdfee38fc843b605db9c04d9e4d2ea3344420bb4e88fb01198b8b333f6f",
+      "file": "spy-fox-2-some-assembly-required-e3b3d1654f4b5c53675ea15dfa0dded73ed455ef95f93c1fc35e5758ca4d2233.jpg",
+      "inputHash": "e3b3d1654f4b5c53675ea15dfa0dded73ed455ef95f93c1fc35e5758ca4d2233",
       "imageHash": "11b88e89833b3d4f2cff7b5e8f363336cee23f1a45dd7cf39d1be0643b7172ef"
     },
     "spy-fox-3-operation-ozone-demo": {
-      "file": "spy-fox-3-operation-ozone-demo-9480a9ca4bfa3b4341fb1eb5cc65303397775593dd570779047cd2aee0524237.jpg",
-      "inputHash": "9480a9ca4bfa3b4341fb1eb5cc65303397775593dd570779047cd2aee0524237",
+      "file": "spy-fox-3-operation-ozone-demo-acc3468480a8f1add9c037e45675c1add7c889725b2b4814c3119a75a89643e7.jpg",
+      "inputHash": "acc3468480a8f1add9c037e45675c1add7c889725b2b4814c3119a75a89643e7",
       "imageHash": "6a4234171a95215ae7b19b1bc3ad10c513bdee614c9069ead763fd47be335d38"
     },
     "spy-fox-in-cheese-chase": {
-      "file": "spy-fox-in-cheese-chase-b98244dbfd988dbf51a35dfad5864be72d6fcc7e533523468ad2477ad797b530.jpg",
-      "inputHash": "b98244dbfd988dbf51a35dfad5864be72d6fcc7e533523468ad2477ad797b530",
+      "file": "spy-fox-in-cheese-chase-e4f9a8e0f5f4593b08220be1f0d37b9fddbcb75442b5fcdd10160c116ac859d6.jpg",
+      "inputHash": "e4f9a8e0f5f4593b08220be1f0d37b9fddbcb75442b5fcdd10160c116ac859d6",
       "imageHash": "bdc7d884a621798e104c31723c0a911cf8079b6afea1fe2737d640d8b9a8aca1"
     },
     "spy-fox-in-dry-cereal": {
-      "file": "spy-fox-in-dry-cereal-b94c6eff384dd48fa8a1bf68c37d221d76fc8f90350fe2838670c3c48639b2c4.jpg",
-      "inputHash": "b94c6eff384dd48fa8a1bf68c37d221d76fc8f90350fe2838670c3c48639b2c4",
+      "file": "spy-fox-in-dry-cereal-29e4d07cf58eb6525ee9342f3bb9c1d1e06dba31854c4f16d995ca92e967f3d2.jpg",
+      "inputHash": "29e4d07cf58eb6525ee9342f3bb9c1d1e06dba31854c4f16d995ca92e967f3d2",
       "imageHash": "8f2ec27513bfebcc78e7bcb5ecf4a01ff3416031024d0acfe25dc0737b862833"
     },
     "spy-fox-in-dry-cereal-demo": {
-      "file": "spy-fox-in-dry-cereal-demo-5a7a1cc98d621dd56060e701ff3c99e2a54b0b729a80d33072e40215e7bc5092.jpg",
-      "inputHash": "5a7a1cc98d621dd56060e701ff3c99e2a54b0b729a80d33072e40215e7bc5092",
+      "file": "spy-fox-in-dry-cereal-demo-5a14b2a6a2788a66ddde620502ab85ae8f8d6f1e1092fa88e07130689182421f.jpg",
+      "inputHash": "5a14b2a6a2788a66ddde620502ab85ae8f8d6f1e1092fa88e07130689182421f",
       "imageHash": "362c2ecd10204c0b10b86e2f681983a03a53d985db655acad2bd13bdf7e743af"
     },
     "spy-fox-in-hold-the-mustard": {
-      "file": "spy-fox-in-hold-the-mustard-2b6c98d3e825641847cdab7429f6d53693b9e0039b003a586bb3341d138fe91d.jpg",
-      "inputHash": "2b6c98d3e825641847cdab7429f6d53693b9e0039b003a586bb3341d138fe91d",
+      "file": "spy-fox-in-hold-the-mustard-52705e27ab0281b66bfe118e98bb72e5a5f0f000505703cd4409ffbcc5144b1a.jpg",
+      "inputHash": "52705e27ab0281b66bfe118e98bb72e5a5f0f000505703cd4409ffbcc5144b1a",
       "imageHash": "5cd48fc8780d3a63354b25223fb8dd3d89ab049537bda8dd108c7e3f4210e439"
     },
     "spy-fox-operation-ozone": {
-      "file": "spy-fox-operation-ozone-b9f067137da1c63cb4c1f53527b27eb78783de7b11233a202b81c9cd6a0cb22f.jpg",
-      "inputHash": "b9f067137da1c63cb4c1f53527b27eb78783de7b11233a202b81c9cd6a0cb22f",
+      "file": "spy-fox-operation-ozone-171ffa6aca3b0b452f98a6546b54e7717e56b501a47b148ff702ebc1f7a119e0.jpg",
+      "inputHash": "171ffa6aca3b0b452f98a6546b54e7717e56b501a47b148ff702ebc1f7a119e0",
       "imageHash": "ffce5facef240ebbbca1758d32c0ff0fa365f81f3e06f0e004190ef4e4b76700"
     },
     "starship-titanic": {
-      "file": "starship-titanic-841054a667128fffeb95313ef148a55ec5620bf558448a27134b2f534b1f72f7.jpg",
-      "inputHash": "841054a667128fffeb95313ef148a55ec5620bf558448a27134b2f534b1f72f7",
+      "file": "starship-titanic-9aeaca7e6e51fceab82b8a0ee0fc23fcacaea45ee9c6b9f4bf76e6febd330113.jpg",
+      "inputHash": "9aeaca7e6e51fceab82b8a0ee0fc23fcacaea45ee9c6b9f4bf76e6febd330113",
       "imageHash": "2cc128915f6b63ee1bddc68b76e93c0a87d12567e06846f742a3ed39b8327fe9"
     },
     "stellaluna": {
-      "file": "stellaluna-97c12b13b2fec486788daf4c9f23cca773bc70cfed6bb121f9f0e572726ac98e.jpg",
-      "inputHash": "97c12b13b2fec486788daf4c9f23cca773bc70cfed6bb121f9f0e572726ac98e",
+      "file": "stellaluna-5ddb0ecdde64b8c679f596361956a6202c461dd306d23b187097ad8463c561c1.jpg",
+      "inputHash": "5ddb0ecdde64b8c679f596361956a6202c461dd306d23b187097ad8463c561c1",
       "imageHash": "fefd6baa8f2bfaecacbce6617cbfb7c255bdb5ff2f36ecda99eb08f569161cfa"
     },
     "technobabylon": {
-      "file": "technobabylon-30c52c7f1eb9a55c87c69bbced3e46fe9128bf9e833d8f30737561e92ff26cc7.jpg",
-      "inputHash": "30c52c7f1eb9a55c87c69bbced3e46fe9128bf9e833d8f30737561e92ff26cc7",
+      "file": "technobabylon-6c2dec816d244e5ca03948fac92c9efa4a00188efed343a5e6ada8ad1d315249.jpg",
+      "inputHash": "6c2dec816d244e5ca03948fac92c9efa4a00188efed343a5e6ada8ad1d315249",
       "imageHash": "080e8310e804b091bdea4c859c135269eae81c21088a37a414a760a65b2e27b8"
     },
     "technobabylon-demo": {
-      "file": "technobabylon-demo-36583c981f084766817cf3a2633fccee827c6fdfa4e3a680b08c5aef262f9f86.jpg",
-      "inputHash": "36583c981f084766817cf3a2633fccee827c6fdfa4e3a680b08c5aef262f9f86",
+      "file": "technobabylon-demo-6bb428340cf3336e3a5f3235ed43112274914f6a09a21fdcd4bbed3fbb61164e.jpg",
+      "inputHash": "6bb428340cf3336e3a5f3235ed43112274914f6a09a21fdcd4bbed3fbb61164e",
       "imageHash": "bc1f64cb408ba54021e2cc26fa94db9c2adeca081b6830c744158851b180cb54"
     },
     "teen-agent": {
-      "file": "teen-agent-c2b5e6b544eb279ed2a79cfb0b19e5f72965a5d634647452fa3e170cc79b8bc5.jpg",
-      "inputHash": "c2b5e6b544eb279ed2a79cfb0b19e5f72965a5d634647452fa3e170cc79b8bc5",
+      "file": "teen-agent-9b0cf41b0fc45f2128ff59840a01da94dcfee8d1f268858f5e22add6f74fbf32.jpg",
+      "inputHash": "9b0cf41b0fc45f2128ff59840a01da94dcfee8d1f268858f5e22add6f74fbf32",
       "imageHash": "5941b950e1e23e0f126883fa6490d96b036c4133a882c0ee12cc255448d80f56"
     },
     "teen-agent-demo": {
-      "file": "teen-agent-demo-bc34f59d2ac77798e84010dfafce493bffe20646bc9d17a4d678c371e2c9f72f.jpg",
-      "inputHash": "bc34f59d2ac77798e84010dfafce493bffe20646bc9d17a4d678c371e2c9f72f",
+      "file": "teen-agent-demo-8545eb12c711a8d890cc7b2e91787bb61aa48d423ea78fac91d0f536a51a916f.jpg",
+      "inputHash": "8545eb12c711a8d890cc7b2e91787bb61aa48d423ea78fac91d0f536a51a916f",
       "imageHash": "95390cde4c709ed171eea193e6b9fdc489558f6345f14bbfa67a65cc3e68d71f"
     },
     "the-7th-guest": {
-      "file": "the-7th-guest-9cbd02f02dd9409778b9df1f39c6d8b370d4959d9b81432b2db44d8c39ece44f.jpg",
-      "inputHash": "9cbd02f02dd9409778b9df1f39c6d8b370d4959d9b81432b2db44d8c39ece44f",
+      "file": "the-7th-guest-679a3875a0c22a7deb9f7b8e83cf67b8aab146ff4cc15855990ff1a4b08e54d2.jpg",
+      "inputHash": "679a3875a0c22a7deb9f7b8e83cf67b8aab146ff4cc15855990ff1a4b08e54d2",
       "imageHash": "dffd55943841a804facc267c87ef127c82bcd29af0e0f34e234db727e602527f"
     },
     "the-beast-within-a-gabriel-knight-mystery": {
-      "file": "the-beast-within-a-gabriel-knight-mystery-b37bd87f508855bc6a351b1b821a45920f68726e5847a22d022942f522be84ba.jpg",
-      "inputHash": "b37bd87f508855bc6a351b1b821a45920f68726e5847a22d022942f522be84ba",
+      "file": "the-beast-within-a-gabriel-knight-mystery-c9f6afeac6bf572ae22e8e92158a5cd20b12a90a823f5e3baf4f5f6d3e79c26c.jpg",
+      "inputHash": "c9f6afeac6bf572ae22e8e92158a5cd20b12a90a823f5e3baf4f5f6d3e79c26c",
       "imageHash": "5c44939eb0adc2d1086063c9058f579977e0307df035e7053bd0cc23f1ac638d"
     },
     "the-berenstain-bears-get-in-a-fight": {
-      "file": "the-berenstain-bears-get-in-a-fight-c17acbb430735c059b48cb7bfeb6040d2b9ea5b5112000240efda3175fabfeb0.jpg",
-      "inputHash": "c17acbb430735c059b48cb7bfeb6040d2b9ea5b5112000240efda3175fabfeb0",
+      "file": "the-berenstain-bears-get-in-a-fight-5ee2ecaf1fc0ca9b41e1e3ee53ddf9545c7cbb7c2f802e51214a084f00791b95.jpg",
+      "inputHash": "5ee2ecaf1fc0ca9b41e1e3ee53ddf9545c7cbb7c2f802e51214a084f00791b95",
       "imageHash": "ab9914dba2c8e5afe6332e9080c821ad254d274479e28c4a68dc8d9841519db3"
     },
     "the-berenstain-bears-in-the-dark": {
-      "file": "the-berenstain-bears-in-the-dark-260382253abef47b94406d2a46dddae36dec1320c09ef0e80e9f037c26abef6f.jpg",
-      "inputHash": "260382253abef47b94406d2a46dddae36dec1320c09ef0e80e9f037c26abef6f",
+      "file": "the-berenstain-bears-in-the-dark-10bf07565bcc398cab1673026a2244d49e92b91219ea45c11f6602e68ea82a27.jpg",
+      "inputHash": "10bf07565bcc398cab1673026a2244d49e92b91219ea45c11f6602e68ea82a27",
       "imageHash": "a6d1e4fa587da6fb12f42ee507768634671766fbd4261eae1e9100d772a5f118"
     },
     "the-big-red-adventure": {
-      "file": "the-big-red-adventure-ca6c58806d374948e3b9b074b172861f5470904a8bf42895983b9de00b89d116.jpg",
-      "inputHash": "ca6c58806d374948e3b9b074b172861f5470904a8bf42895983b9de00b89d116",
+      "file": "the-big-red-adventure-15ecf01e9ce672dc23668cc2e3938a26feef9415711c26f688a229dfaee39870.jpg",
+      "inputHash": "15ecf01e9ce672dc23668cc2e3938a26feef9415711c26f688a229dfaee39870",
       "imageHash": "4d382e6cf5c5a0d65149117db4245ead545f57ada3549249eb1efd384e668864"
     },
     "the-bizarre-adventures-of-woodruff-and-the-schnibble": {
-      "file": "the-bizarre-adventures-of-woodruff-and-the-schnibble-9384128f7e19ea29bd498546ebc215913a0a5a0a164d6603f37eae5448d690a2.jpg",
-      "inputHash": "9384128f7e19ea29bd498546ebc215913a0a5a0a164d6603f37eae5448d690a2",
+      "file": "the-bizarre-adventures-of-woodruff-and-the-schnibble-411dc519a01179879153163aa3100143547ddd4d77e3b7e01d60364366ace559.jpg",
+      "inputHash": "411dc519a01179879153163aa3100143547ddd4d77e3b7e01d60364366ace559",
       "imageHash": "58189f6b411a6e85df1ef1a22fd96a69104d7aacf5093003c1e0254daa474ce0"
     },
     "the-black-cauldron": {
-      "file": "the-black-cauldron-f394b5f6e199127ef6930177b58373c07b5979f112b1ebf4b046be11e1086e62.jpg",
-      "inputHash": "f394b5f6e199127ef6930177b58373c07b5979f112b1ebf4b046be11e1086e62",
+      "file": "the-black-cauldron-ad984b65d4f2dc6b60420e1263143480d64cd499a6b5928af755f28186d20514.jpg",
+      "inputHash": "ad984b65d4f2dc6b60420e1263143480d64cd499a6b5928af755f28186d20514",
       "imageHash": "caf60d4ba8c99fce7429973618baa090450c5263ec553aa7d030c408548a9c2e"
     },
     "the-cat-in-the-hat": {
-      "file": "the-cat-in-the-hat-e4a3c8bcdc26272ad72ccee5f6fb1bc64c54a638179a3671b4add5499e079763.jpg",
-      "inputHash": "e4a3c8bcdc26272ad72ccee5f6fb1bc64c54a638179a3671b4add5499e079763",
+      "file": "the-cat-in-the-hat-57501358f627bd57641d99fa7ed4a6ee7aba2791a1a6feb3ed863e0453d7b5fe.jpg",
+      "inputHash": "57501358f627bd57641d99fa7ed4a6ee7aba2791a1a6feb3ed863e0453d7b5fe",
       "imageHash": "7888d9471d5d75529c37918a7dbde8efbabfb58b1c1d0d8586b23265b81d7d32"
     },
     "the-curse-of-monkey-island": {
-      "file": "the-curse-of-monkey-island-19a243e75258de54611a40454247904065bc09e10ad7603c712f163531117789.jpg",
-      "inputHash": "19a243e75258de54611a40454247904065bc09e10ad7603c712f163531117789",
+      "file": "the-curse-of-monkey-island-cabfc675af20b47dbe2445aa925d19d50a2d4ba20f9354d06b684505a7f9cddd.jpg",
+      "inputHash": "cabfc675af20b47dbe2445aa925d19d50a2d4ba20f9354d06b684505a7f9cddd",
       "imageHash": "e2b9fefe4240ad32f7173c061b957be9a4de3e33900f8917593bc114d3fb8879"
     },
     "the-curse-of-monkey-island-demo": {
-      "file": "the-curse-of-monkey-island-demo-3a653c6b1e9d33df9fe4f79dce1c85afd5b48b18d61bd292d076eb7de253beb0.jpg",
-      "inputHash": "3a653c6b1e9d33df9fe4f79dce1c85afd5b48b18d61bd292d076eb7de253beb0",
+      "file": "the-curse-of-monkey-island-demo-a5886ba97b8d667e899c7ae3bd8366fa8127f669b8ca3bfbb3e4a58236ba11da.jpg",
+      "inputHash": "a5886ba97b8d667e899c7ae3bd8366fa8127f669b8ca3bfbb3e4a58236ba11da",
       "imageHash": "ead86c5edbc47a83d37504ec34d094287aec84818ed594738ec0460b0a06c41b"
     },
     "the-dig": {
-      "file": "the-dig-7cd3df89b355bbfa7de6dc9f0647fd6d52e911db29450a880031ccc588e0e457.jpg",
-      "inputHash": "7cd3df89b355bbfa7de6dc9f0647fd6d52e911db29450a880031ccc588e0e457",
+      "file": "the-dig-d1deb95e8c14556a0a980f0fa6ae314a5eba1c4d5f07f1b833d697a65065937b.jpg",
+      "inputHash": "d1deb95e8c14556a0a980f0fa6ae314a5eba1c4d5f07f1b833d697a65065937b",
       "imageHash": "4fcd8f5235ac576bd2c83934e750e6a0ad8c3814b66d771390edf15b4fe1af4e"
     },
     "the-dig-demo": {
-      "file": "the-dig-demo-045d823c83cb2c53bd2c3bc4418380e19648087c537ae1c9d93eea89a9f401b7.jpg",
-      "inputHash": "045d823c83cb2c53bd2c3bc4418380e19648087c537ae1c9d93eea89a9f401b7",
+      "file": "the-dig-demo-7f0b4f011baba04edb0f85d48559f2b78dce20b486f529c39970f0a9b84ad9cf.jpg",
+      "inputHash": "7f0b4f011baba04edb0f85d48559f2b78dce20b486f529c39970f0a9b84ad9cf",
       "imageHash": "51d80ac6443b7248cf563bed3cec33dcc1f1b53778d55bc50d43ae4426eba2fe"
     },
     "the-feeble-files": {
-      "file": "the-feeble-files-6ea1d690801c9d882c53af8c29983bfd6d35e7a58b4073d71e9ba5c3051449e4.jpg",
-      "inputHash": "6ea1d690801c9d882c53af8c29983bfd6d35e7a58b4073d71e9ba5c3051449e4",
+      "file": "the-feeble-files-fbcd26f6ffa2df8779888aa2d382d2a712ee671a8374df6a49b00b8f374a56f6.jpg",
+      "inputHash": "fbcd26f6ffa2df8779888aa2d382d2a712ee671a8374df6a49b00b8f374a56f6",
       "imageHash": "78a254ca69be7f3fac9d98059acf127290886981c4ab2182a9f07ec76050a3aa"
     },
     "the-island-of-dr-brain": {
-      "file": "the-island-of-dr-brain-69e2804630534fcdef866dc886ab2fb679cc49eccd1c7357e16b3446c4da012b.jpg",
-      "inputHash": "69e2804630534fcdef866dc886ab2fb679cc49eccd1c7357e16b3446c4da012b",
+      "file": "the-island-of-dr-brain-f4bcd9ee99e96a5a7da2c1f0dcdfc42f74536111d331540c5bff4c87ed59fb2a.jpg",
+      "inputHash": "f4bcd9ee99e96a5a7da2c1f0dcdfc42f74536111d331540c5bff4c87ed59fb2a",
       "imageHash": "09a8ef1f0c2a4e9b2382275fc8fad621bd79c4a12defa87180c8ebc1b2fe5167"
     },
     "the-journeyman-project-pegasus-prime": {
-      "file": "the-journeyman-project-pegasus-prime-24d7d1a797d8762b4a0b596fe6741496400a17a5b21b1d200b8bc74bc1683d6f.jpg",
-      "inputHash": "24d7d1a797d8762b4a0b596fe6741496400a17a5b21b1d200b8bc74bc1683d6f",
+      "file": "the-journeyman-project-pegasus-prime-99f6ac16de152ef22100eac12edb6c0b75b1b9d1c84a450ff79175c47f1ce005.jpg",
+      "inputHash": "99f6ac16de152ef22100eac12edb6c0b75b1b9d1c84a450ff79175c47f1ce005",
       "imageHash": "59d4180c50b1cc97dd64d8e17fa8a26b66fca61cd767511c6009a652de96a65e"
     },
     "the-journeyman-project-pegasus-prime-demo": {
-      "file": "the-journeyman-project-pegasus-prime-demo-59dc65c8fd742e6a7be1d803edb8fbd6ebb0278b0abe21012306bb79854b74ab.jpg",
-      "inputHash": "59dc65c8fd742e6a7be1d803edb8fbd6ebb0278b0abe21012306bb79854b74ab",
+      "file": "the-journeyman-project-pegasus-prime-demo-9eaf4103b1603ddfbbcfd683e979b9423427bb275cc7fb932216db3b759e794b.jpg",
+      "inputHash": "9eaf4103b1603ddfbbcfd683e979b9423427bb275cc7fb932216db3b759e794b",
       "imageHash": "932996f9d2072bc2780b164bedcce670658dd6aa6c5ab9bb105ed4eb2f0edee9"
     },
     "the-labyrinth-of-time": {
-      "file": "the-labyrinth-of-time-f39a3e684ce5c4fd372e29c2daf181e914859413059a29f2bebf97599a780815.jpg",
-      "inputHash": "f39a3e684ce5c4fd372e29c2daf181e914859413059a29f2bebf97599a780815",
+      "file": "the-labyrinth-of-time-e20b9e5997f27966a21240ff4ea400d42ac37cac51568174a040316d22065270.jpg",
+      "inputHash": "e20b9e5997f27966a21240ff4ea400d42ac37cac51568174a040316d22065270",
       "imageHash": "555097eb06293060767fcf48a3630c000c5ae265225081e1b06de23732e2e741"
     },
     "the-legend-of-kyrandia": {
-      "file": "the-legend-of-kyrandia-3e6915643d0614f8c8db1bee549f9273e27319be091c97fe77b5c987bebfd230.jpg",
-      "inputHash": "3e6915643d0614f8c8db1bee549f9273e27319be091c97fe77b5c987bebfd230",
+      "file": "the-legend-of-kyrandia-85ec38fb2a85e72cf71473a9513e988c4ebbb1a9ff3c9c07e38a2dd854657618.jpg",
+      "inputHash": "85ec38fb2a85e72cf71473a9513e988c4ebbb1a9ff3c9c07e38a2dd854657618",
       "imageHash": "8c7bc31f8152b35075e7ff835b60e5a7a7478727a44f69af60ed7a8be56c498b"
     },
     "the-legend-of-kyrandia-book-3-malcolm-s-revenge": {
-      "file": "the-legend-of-kyrandia-book-3-malcolm-s-revenge-1389ad419190b86d08ec6edb612196481ac7e1c579dc16463bee024a1a4363b9.jpg",
-      "inputHash": "1389ad419190b86d08ec6edb612196481ac7e1c579dc16463bee024a1a4363b9",
+      "file": "the-legend-of-kyrandia-book-3-malcolm-s-revenge-1e9884492e996c7f6e11df69feb286650f21065ec72ed52342f66fc2092f373f.jpg",
+      "inputHash": "1e9884492e996c7f6e11df69feb286650f21065ec72ed52342f66fc2092f373f",
       "imageHash": "997b6002a4a2e9dd39db5585320502a1ffcf10a175076be3bbcf374c7b808b90"
     },
     "the-legend-of-kyrandia-hand-of-fate": {
-      "file": "the-legend-of-kyrandia-hand-of-fate-4a2029b36f5ed9beea7a70608910cd3dc66d3598c472b713746e06d717d4998b.jpg",
-      "inputHash": "4a2029b36f5ed9beea7a70608910cd3dc66d3598c472b713746e06d717d4998b",
+      "file": "the-legend-of-kyrandia-hand-of-fate-db572c431f7c1f4c8f778a8d217b5d8c69ed54e8bbab52abe1322befe3f40a3b.jpg",
+      "inputHash": "db572c431f7c1f4c8f778a8d217b5d8c69ed54e8bbab52abe1322befe3f40a3b",
       "imageHash": "1186f875f1ed110370eda528d1e9086f32086f2a20d27cb9e789062275d19e63"
     },
     "the-legend-of-kyrandia-hand-of-fate-demo": {
-      "file": "the-legend-of-kyrandia-hand-of-fate-demo-24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb.jpg",
-      "inputHash": "24f5c88926ef4c97d017295cfd33eabdb38c77c29f9fadcd5c0bb27ff04b06fb",
+      "file": "the-legend-of-kyrandia-hand-of-fate-demo-3bbc15f5e567e55823beca31616d143442f251631079d16cf2ad6bb6c4f9d8f4.jpg",
+      "inputHash": "3bbc15f5e567e55823beca31616d143442f251631079d16cf2ad6bb6c4f9d8f4",
       "imageHash": "aac1a20c8e93cbfc6cba773e7dd30c7b791b959397861181fdaabaa0313f576e"
     },
     "the-lost-files-of-sherlock-holmes-case-of-the-rose-tattoo": {
-      "file": "the-lost-files-of-sherlock-holmes-case-of-the-rose-tattoo-4788f50fc7ec572286df893afea37f74e22ea00176acf39e76a2e3150a0de96e.jpg",
-      "inputHash": "4788f50fc7ec572286df893afea37f74e22ea00176acf39e76a2e3150a0de96e",
+      "file": "the-lost-files-of-sherlock-holmes-case-of-the-rose-tattoo-f2e8d5f9cfed0113d14a078343d3ed08e6bdea389561ecd1df0376304f7d46ca.jpg",
+      "inputHash": "f2e8d5f9cfed0113d14a078343d3ed08e6bdea389561ecd1df0376304f7d46ca",
       "imageHash": "b93c31ef9162c0fc100873ee058709957a3e13f7658a49d7d3cb27d01571f41f"
     },
     "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel": {
-      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-8db6487ae2b2c573c2095d0aac7caba819f714e855d0dbe1933b0626e65d404a.jpg",
-      "inputHash": "8db6487ae2b2c573c2095d0aac7caba819f714e855d0dbe1933b0626e65d404a",
+      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-1bffcd74274e4f8dd4b4ee3c9e865571f2d24678ba16563348fa10c36014d1df.jpg",
+      "inputHash": "1bffcd74274e4f8dd4b4ee3c9e865571f2d24678ba16563348fa10c36014d1df",
       "imageHash": "a32b320400aa6f8969f1dd904507780cd54774d22fff29be88427a07029b51d1"
     },
     "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo": {
-      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811.jpg",
-      "inputHash": "a494258afe743e5cefb9175750b602a9509451340bbf7edf6fd48b1a8c9cc811",
+      "file": "the-lost-files-of-sherlock-holmes-the-case-of-the-serrated-scalpel-demo-1f7a49c55276d50fc0dafae8597817451db860b1bebe1cb951960902265df868.jpg",
+      "inputHash": "1f7a49c55276d50fc0dafae8597817451db860b1bebe1cb951960902265df868",
       "imageHash": "ba0e489583e6cec51984991aada71c8dc005dbb9e717df09bedf3b3f6784c7fb"
     },
     "the-manhole": {
-      "file": "the-manhole-b8c0be69b7f8140810334f309023ef4e411cdc716f25e7dfe65d8fd166a2fa88.jpg",
-      "inputHash": "b8c0be69b7f8140810334f309023ef4e411cdc716f25e7dfe65d8fd166a2fa88",
+      "file": "the-manhole-e08dbd6aa5163c74884b87204a55c0045dbe6ee3cd990a6aacc2659a557bab08.jpg",
+      "inputHash": "e08dbd6aa5163c74884b87204a55c0045dbe6ee3cd990a6aacc2659a557bab08",
       "imageHash": "fb60129b6656152d525042d888b023b49ef69682d1771c38b789de122376faff"
     },
     "the-neverhood": {
-      "file": "the-neverhood-07570c2fecda9585d848dc31b65fbd18e1be25d5ed3f991364400c544b6ccc82.jpg",
-      "inputHash": "07570c2fecda9585d848dc31b65fbd18e1be25d5ed3f991364400c544b6ccc82",
+      "file": "the-neverhood-5a9cf3d4c859087977033921b9827b769479257fa80f489768a76a620cae6f2b.jpg",
+      "inputHash": "5a9cf3d4c859087977033921b9827b769479257fa80f489768a76a620cae6f2b",
       "imageHash": "48481648e0f3c5ddfabeb608be01ce6b0fc1bf57f80e3c4db8437dd2b911eb1b"
     },
     "the-neverhood-demo": {
-      "file": "the-neverhood-demo-7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f.jpg",
-      "inputHash": "7c56228c57020dfdc24b6bff691822fc36edb73adca3ec70f56e2a52e18e8a9f",
+      "file": "the-neverhood-demo-db8421f8a033964f6595f585ad62e01f4d4ac13aade581273be8ae04e6acba92.jpg",
+      "inputHash": "db8421f8a033964f6595f585ad62e01f4d4ac13aade581273be8ae04e6acba92",
       "imageHash": "8f8371d6b4ba00d410bf34124cc136eeb7d36f90c3b982bef6cc8366f3a380e1"
     },
     "the-new-kid-on-the-block": {
-      "file": "the-new-kid-on-the-block-e93c44c5c3f2e0774126fcaa55074bea2f915948798e1d7f5172845f1d7c0570.jpg",
-      "inputHash": "e93c44c5c3f2e0774126fcaa55074bea2f915948798e1d7f5172845f1d7c0570",
+      "file": "the-new-kid-on-the-block-f9e53115260700a747a9dbd49f59d3a73316bae78cfb202062484f99815e11c8.jpg",
+      "inputHash": "f9e53115260700a747a9dbd49f59d3a73316bae78cfb202062484f99815e11c8",
       "imageHash": "353d33412aef30a327a1d262cc3f8126fe44ae389ee3ea4f2cf98d60b409a350"
     },
     "the-new-kid-on-the-block-demo": {
-      "file": "the-new-kid-on-the-block-demo-cc9ea6167f5108cef3f7651defc770408ed2d74fd4fbccf0bc0fca7a0ad1272d.jpg",
-      "inputHash": "cc9ea6167f5108cef3f7651defc770408ed2d74fd4fbccf0bc0fca7a0ad1272d",
+      "file": "the-new-kid-on-the-block-demo-ddbd31a0a89977794b85fa9f5e7fa6e28fc9ebe64a68a5b04332eb04cd501851.jpg",
+      "inputHash": "ddbd31a0a89977794b85fa9f5e7fa6e28fc9ebe64a68a5b04332eb04cd501851",
       "imageHash": "5ab40555ef7cabf2c85459c7b3726d24e03f3ae1395c8139d81daa2f603d4235"
     },
     "the-secret-of-monkey-island": {
-      "file": "the-secret-of-monkey-island-23fe5073f4aab2d12c3355bbf2871371e91d29dd50e1cbfb3cc4187994f96a67.jpg",
-      "inputHash": "23fe5073f4aab2d12c3355bbf2871371e91d29dd50e1cbfb3cc4187994f96a67",
+      "file": "the-secret-of-monkey-island-06eb68e21fd9ad36da899e70f9cf22276dc575b3256e45775ec0d247e0e6a9ed.jpg",
+      "inputHash": "06eb68e21fd9ad36da899e70f9cf22276dc575b3256e45775ec0d247e0e6a9ed",
       "imageHash": "06ef55f569e4527b50a10259c1bafd7932d6f7645f01b24b0cef1fb9e16041b2"
     },
     "the-secret-of-monkey-island-demo": {
-      "file": "the-secret-of-monkey-island-demo-9d769eb5e1920d864ba138ff8ef748aac80ef1a3ce8357ac46730a34ae1dc377.jpg",
-      "inputHash": "9d769eb5e1920d864ba138ff8ef748aac80ef1a3ce8357ac46730a34ae1dc377",
+      "file": "the-secret-of-monkey-island-demo-3379a517ee2423c3b08666cbffb98f11c919fed41e169ab27773bd9298eecfea.jpg",
+      "inputHash": "3379a517ee2423c3b08666cbffb98f11c919fed41e169ab27773bd9298eecfea",
       "imageHash": "65f7eefcd537e64a496e7f81853dfac3001ca5203edb2bcc40893f9fe4a8009d"
     },
     "tony-tough-and-the-night-of-roasted-moths": {
-      "file": "tony-tough-and-the-night-of-roasted-moths-cae2339b424cb2ff62d36793b5dfc61c484a79fc79b249e69256f9d0ee190528.jpg",
-      "inputHash": "cae2339b424cb2ff62d36793b5dfc61c484a79fc79b249e69256f9d0ee190528",
+      "file": "tony-tough-and-the-night-of-roasted-moths-44ceb7c857cf32125ab925962f1d01e36673139a9df7a8e7c886099a8adf39b0.jpg",
+      "inputHash": "44ceb7c857cf32125ab925962f1d01e36673139a9df7a8e7c886099a8adf39b0",
       "imageHash": "768d8026b37144b33bb01a7e887e6e1b7c6a55b6a012d721e11e9636757c2eae"
     },
     "tony-tough-and-the-night-of-roasted-moths-demo": {
-      "file": "tony-tough-and-the-night-of-roasted-moths-demo-98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302.jpg",
-      "inputHash": "98b4dcb0237e31f2ca33e6ab4345a847fa2fb0f4aec08f88fd06c3f1a1692302",
+      "file": "tony-tough-and-the-night-of-roasted-moths-demo-222d614945ef380b81e50424d4fadc042e6ae81f044ca183860ed3859a91cac1.jpg",
+      "inputHash": "222d614945ef380b81e50424d4fadc042e6ae81f044ca183860ed3859a91cac1",
       "imageHash": "e34b5226857c36753f66d1fb30ef3eb1c31b45049eb8a53fb63ef00739c9d9ad"
     },
     "toonstruck": {
-      "file": "toonstruck-589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a.jpg",
-      "inputHash": "589f2d840a3586fb889517f637087b68ff4b89bba6b34799ea54dc36d06c020a",
+      "file": "toonstruck-c174d7a2f9fc8ee6461534190879d29d4c8f279ed1063a0851dc0eb47136c585.jpg",
+      "inputHash": "c174d7a2f9fc8ee6461534190879d29d4c8f279ed1063a0851dc0eb47136c585",
       "imageHash": "8c190b5510ba2087fd0896e6fd38e5e2152a9e9f78f958c5894b9aed9cecb3a2"
     },
     "toonstruck-demo": {
-      "file": "toonstruck-demo-6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0.jpg",
-      "inputHash": "6be2cf6d8a1369c185c7c1eda4026eac39a4e5b94f74fa06a820725009fa63b0",
+      "file": "toonstruck-demo-d1258278ef245f02626f4d3d848ec9fe1e666cade608171effd77261c6149592.jpg",
+      "inputHash": "d1258278ef245f02626f4d3d848ec9fe1e666cade608171effd77261c6149592",
       "imageHash": "801fbca2c7bcc4d340e4f02f5e71ebcb3759aaabb2b26d5e677573a4031737a0"
     },
     "torin-s-passage": {
-      "file": "torin-s-passage-6cfbb0df580e9d180f7d253b37a72b13bf42be587017b2261ce7188c2b41450b.jpg",
-      "inputHash": "6cfbb0df580e9d180f7d253b37a72b13bf42be587017b2261ce7188c2b41450b",
+      "file": "torin-s-passage-3ab3c67afb73677098fce1974687c527b9bc8b38f7670bd2c434ae855ecf118f.jpg",
+      "inputHash": "3ab3c67afb73677098fce1974687c527b9bc8b38f7670bd2c434ae855ecf118f",
       "imageHash": "6679bcc02a95128c8225af86060786d4f6387bc6c36b7bd1e4c3aab1250a7fab"
     },
     "torin-s-passage-demo": {
-      "file": "torin-s-passage-demo-7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9.jpg",
-      "inputHash": "7c69d1e07dcebce3fcec5498bb81f4033522b7099b76643cf2ff7429fb2fa9a9",
+      "file": "torin-s-passage-demo-2bab8b4abb9c205f95d751913a4e961ce0c94b1b9bdf0a6e7c08fa8c6c04a05c.jpg",
+      "inputHash": "2bab8b4abb9c205f95d751913a4e961ce0c94b1b9bdf0a6e7c08fa8c6c04a05c",
       "imageHash": "21776412c95302aa6b05741534c99f332d606b89f6deaf0624ab7dee21678800"
     },
     "touche-the-adventures-of-the-fifth-musketeer": {
-      "file": "touche-the-adventures-of-the-fifth-musketeer-3a57fec55395bb3dee5ac2c3fdabba34a4e10169c4d5bc4b23f4358748ccf82a.jpg",
-      "inputHash": "3a57fec55395bb3dee5ac2c3fdabba34a4e10169c4d5bc4b23f4358748ccf82a",
+      "file": "touche-the-adventures-of-the-fifth-musketeer-98ff92740155f000ceaa140b7aa1a296fdddf6f2b87184842bae6b7da7dde51e.jpg",
+      "inputHash": "98ff92740155f000ceaa140b7aa1a296fdddf6f2b87184842bae6b7da7dde51e",
       "imageHash": "05952dcd551d671a1d5a416a8419e326bad1456dd2f88cc4b30c751e01adea69"
     },
     "touche-the-adventures-of-the-fifth-musketeer-demo": {
-      "file": "touche-the-adventures-of-the-fifth-musketeer-demo-8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef.jpg",
-      "inputHash": "8e39c536acc562cf92a87d8a57a9d909d4cb2fbb32e177802f86532cb7927cef",
+      "file": "touche-the-adventures-of-the-fifth-musketeer-demo-d73bfea68f115a95cf2a39d5420b151ca33faea09859aadcc6863cb6e6bf3c65.jpg",
+      "inputHash": "d73bfea68f115a95cf2a39d5420b151ca33faea09859aadcc6863cb6e6bf3c65",
       "imageHash": "0f32ab4eca2b06e50f1baa6c19943e94d352f2ac07b46aa53609ac66e283c982"
     },
     "troll-s-tale": {
-      "file": "troll-s-tale-9a0dd5de513bc8eb028e17f883b92bf4a3443513e9edc3b96106d58f25778cc5.jpg",
-      "inputHash": "9a0dd5de513bc8eb028e17f883b92bf4a3443513e9edc3b96106d58f25778cc5",
+      "file": "troll-s-tale-151aaeddcf5800c4b7ab98d2c2e6f8ad25deb7ff2d5308174a066d97968482f9.jpg",
+      "inputHash": "151aaeddcf5800c4b7ab98d2c2e6f8ad25deb7ff2d5308174a066d97968482f9",
       "imageHash": "99be73178717158f8915888fff2863508699a0fa35bdea182ada451a2262809d"
     },
     "urban-runner": {
-      "file": "urban-runner-b4f6b9f7b86210ad4c98056e72a2113a9f70ed0758bbcf4ad162924b1946c2d1.jpg",
-      "inputHash": "b4f6b9f7b86210ad4c98056e72a2113a9f70ed0758bbcf4ad162924b1946c2d1",
+      "file": "urban-runner-f9c0d058b1e84d5df458b5e4aca9df62fdd245271aba1362c352a0c69639d807.jpg",
+      "inputHash": "f9c0d058b1e84d5df458b5e4aca9df62fdd245271aba1362c352a0c69639d807",
       "imageHash": "38386647880d357f4ab5096ec50ab8458deed0e6007e1fc4d492a35b3e8008af"
     },
     "voyeur": {
-      "file": "voyeur-b7d849aebb7f1113038e8c1537e1b67d911195c8fd77f2ee77c78a47c14ee76d.jpg",
-      "inputHash": "b7d849aebb7f1113038e8c1537e1b67d911195c8fd77f2ee77c78a47c14ee76d",
+      "file": "voyeur-0fc831c7a853830efc43bf0debfba40d2230b549b9bbbfc2eeb019c363fc3af2.jpg",
+      "inputHash": "0fc831c7a853830efc43bf0debfba40d2230b549b9bbbfc2eeb019c363fc3af2",
       "imageHash": "dc69bf34df76f3a648b9fba5d847d59db332e5a94aac2ffa7ad111feffd1c771"
     },
     "waxworks": {
-      "file": "waxworks-074b516a6c45227ca27dddcd68df8d6e6654de83a9466a8d3f48470164122ea3.jpg",
-      "inputHash": "074b516a6c45227ca27dddcd68df8d6e6654de83a9466a8d3f48470164122ea3",
+      "file": "waxworks-35db071c2293fa340b04736271deae7d566c76cc0d1c7f5f5b4930c6daafec02.jpg",
+      "inputHash": "35db071c2293fa340b04736271deae7d566c76cc0d1c7f5f5b4930c6daafec02",
       "imageHash": "1e629e4341584c6cddbd4fd1b64d5aca057fbacf4d5918f3328167463c589252"
     },
     "ween-the-prophecy": {
-      "file": "ween-the-prophecy-4a7dd4233afd558378701b4594dc2873c7349e47b49def26df96e66f77903af5.jpg",
-      "inputHash": "4a7dd4233afd558378701b4594dc2873c7349e47b49def26df96e66f77903af5",
+      "file": "ween-the-prophecy-e521f8975918364e1ead5912a96526db26d423b62374d300b37a55b5b7c9295c.jpg",
+      "inputHash": "e521f8975918364e1ead5912a96526db26d423b62374d300b37a55b5b7c9295c",
       "imageHash": "72cb1dd3c59a84b379d3e93902da119945cf6c8f417f7748a3c8108450f741b4"
     },
     "winnie-the-pooh-in-the-hundred-acre-wood": {
-      "file": "winnie-the-pooh-in-the-hundred-acre-wood-872ad1530c46f46d3e1e1b18f28cd5ceecab49eb898b29dabff9dcbc4a3bd0c0.jpg",
-      "inputHash": "872ad1530c46f46d3e1e1b18f28cd5ceecab49eb898b29dabff9dcbc4a3bd0c0",
+      "file": "winnie-the-pooh-in-the-hundred-acre-wood-2c86ff387e17d94adaa71f413d247009cbbe6fef801eb4f04c4dc2a58d9270e5.jpg",
+      "inputHash": "2c86ff387e17d94adaa71f413d247009cbbe6fef801eb4f04c4dc2a58d9270e5",
       "imageHash": "1c526296d343371382b056f01abf62ebe9728a92037b319a78d00a994246789a"
     },
     "zak-mckracken-and-the-alien-mindbenders": {
-      "file": "zak-mckracken-and-the-alien-mindbenders-768895fdac097d702c9294f815be47c9c9c80a7673e6b8515357707400fce94a.jpg",
-      "inputHash": "768895fdac097d702c9294f815be47c9c9c80a7673e6b8515357707400fce94a",
+      "file": "zak-mckracken-and-the-alien-mindbenders-b0a0a9361bf1e600f82beaf23a14b458454f73a877347e0a0320a70662c5c24f.jpg",
+      "inputHash": "b0a0a9361bf1e600f82beaf23a14b458454f73a877347e0a0320a70662c5c24f",
       "imageHash": "2f4398f1e591e130c3236f622a950fadf8ae7f16a8b0fe2245aa0baeeb26a863"
     },
     "zork-grand-inquisitor": {
-      "file": "zork-grand-inquisitor-090179c46c444e5db409d6079a8081ef8c3c3f52b550a21c7ba70efb97d24526.jpg",
-      "inputHash": "090179c46c444e5db409d6079a8081ef8c3c3f52b550a21c7ba70efb97d24526",
+      "file": "zork-grand-inquisitor-d341448831f118818e270ea975bec265e0a53796be1b8e081d386c733c88b991.jpg",
+      "inputHash": "d341448831f118818e270ea975bec265e0a53796be1b8e081d386c733c88b991",
       "imageHash": "27bbdb8482f2dcb7226ea0b2753699e23e360bf5bec5e763902e2e441fc034b5"
     },
     "zork-i-the-great-underground-empire": {
-      "file": "zork-i-the-great-underground-empire-2cce89b79850610230bf732909e84fb091ef108e5d53ff86408429c75e20105d.jpg",
-      "inputHash": "2cce89b79850610230bf732909e84fb091ef108e5d53ff86408429c75e20105d",
+      "file": "zork-i-the-great-underground-empire-003f5847dbad8865e1f713225960cc895a836c5291512aa804995bff6141bd71.jpg",
+      "inputHash": "003f5847dbad8865e1f713225960cc895a836c5291512aa804995bff6141bd71",
       "imageHash": "062dfa93580b885e1055655f44eb447c5318f496464922f0ebf7caee916eaf43"
     },
     "zork-ii-the-wizard-of-frobozz": {
-      "file": "zork-ii-the-wizard-of-frobozz-9a13cbbb9778a5df455bda073931c991c80efaa237bd24bd3a573fae9ea31305.jpg",
-      "inputHash": "9a13cbbb9778a5df455bda073931c991c80efaa237bd24bd3a573fae9ea31305",
+      "file": "zork-ii-the-wizard-of-frobozz-8ed8a54ed3c6ac10cdab198923d8ec3b3847c95dfe74cca8153d39233f91ee5f.jpg",
+      "inputHash": "8ed8a54ed3c6ac10cdab198923d8ec3b3847c95dfe74cca8153d39233f91ee5f",
       "imageHash": "fa960faefcd3a6eeec29f5006d1744e1cf991aea8b443870c787961f6bcef8aa"
     },
     "zork-iii-the-dungeon-master": {
-      "file": "zork-iii-the-dungeon-master-17b085d6c72dd764f0cf856259526bccdf982ca7880cab2a2941fc3ef1518c90.jpg",
-      "inputHash": "17b085d6c72dd764f0cf856259526bccdf982ca7880cab2a2941fc3ef1518c90",
+      "file": "zork-iii-the-dungeon-master-948e9c8adc76c418c7340c6129356fd876b826ebf571c645a6d3926f7653b721.jpg",
+      "inputHash": "948e9c8adc76c418c7340c6129356fd876b826ebf571c645a6d3926f7653b721",
       "imageHash": "6a78f2ba1fdf15330a95d2f374db52fb4b6fdbd3b64bfbf196be54e8b4602854"
     },
     "zork-nemesis-the-forbidden-lands": {
-      "file": "zork-nemesis-the-forbidden-lands-108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856.jpg",
-      "inputHash": "108534972258666dc7b2fc57846d118cfc91dc70049447eb5827da71e9407856",
+      "file": "zork-nemesis-the-forbidden-lands-054c574eef98140a2dc71d89670a7254fded77d4b817adda1dce556ef0f3f06c.jpg",
+      "inputHash": "054c574eef98140a2dc71d89670a7254fded77d4b817adda1dce556ef0f3f06c",
       "imageHash": "eae9e06b8cefa2e3ede3113a6b615c163974f119d4df9387d2afad4fc9865699"
     }
   }

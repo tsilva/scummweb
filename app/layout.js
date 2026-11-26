@@ -6,7 +6,6 @@ import DropboxSaveSync from "./dropbox-save-sync";
 import SiteConsent from "./privacy/site-consent";
 import { initialHeroTitleFit } from "./home-shell/hero-title-fit.mjs";
 import { initialActionsScript } from "./home-shell/initial-actions.mjs";
-import { installPromptStartup } from "./home-shell/install-prompt-startup.mjs";
 import "./globals.css";
 import "./styles/home-shell.css";
 import "./styles/settings.css";
@@ -72,7 +71,6 @@ export default function RootLayout({ children }) {
         <meta content={APP_THEME_COLOR} name="theme-color" />
         <script dangerouslySetInnerHTML={{ __html: initialHeroTitleFit }} />
         <script dangerouslySetInnerHTML={{ __html: initialActionsScript }} />
-        <script dangerouslySetInnerHTML={{ __html: installPromptStartup }} />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <SiteConsent>{children}</SiteConsent>

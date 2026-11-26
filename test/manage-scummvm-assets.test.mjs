@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { parse } from "yaml";
 
 const rootDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const managerPath = path.join(rootDir, "scripts", "manage_scummvm_assets.mjs");
@@ -47,6 +48,42 @@ function runManager(...args) {
     stdio: "pipe",
   });
 }
+
+test("runtime cache keys ignore browser tools and change with tracked runtime inputs", (t) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-runtime-key-"));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const git = (...args) => execFileSync("git", args, { cwd: directory, stdio: "pipe" });
+  const action = parse(fs.readFileSync(path.join(rootDir, ".github/actions/prepare-scummvm/action.yml"), "utf8"));
+  const inputs = action.runs.steps.find(({ id }) => id === "inputs");
+  assert.match(action.runs.steps.find(({ id }) => id === "runtime").with.key, /steps\.inputs\.outputs\.digest/);
+
+  const output = path.join(directory, "action-output");
+  function fingerprint() {
+    fs.writeFileSync(output, "");
+    execFileSync("bash", ["-eo", "pipefail", "-c", inputs.run], {
+      cwd: directory,
+      env: { ...process.env, GITHUB_OUTPUT: output },
+    });
+    const digest = fs.readFileSync(output, "utf8");
+    assert.match(digest, /^digest=[a-f0-9]{64}\n$/);
+    return digest;
+  }
+
+  git("init", "-q");
+  const pin = "scripts/scummvm-version.sh";
+  writeFile(path.join(directory, pin), "first runtime version");
+  git("add", "--", pin);
+  const before = fingerprint();
+
+  writeFile(path.join(directory, "scripts/node_modules/.bin/playwright-core"));
+  writeFile(path.join(directory, "scripts/test/browser.integration.test.mjs"));
+  git("add", "--", "scripts/test");
+  assert.equal(fingerprint(), before);
+
+  writeFile(path.join(directory, pin), "next runtime version");
+  git("add", "--", pin);
+  assert.notEqual(fingerprint(), before);
+});
 
 test("asset manager sync reuses unchanged files, repairs changes and removes stale paths", (t) => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "scummweb-assets-sync-"));

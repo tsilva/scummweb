@@ -18,10 +18,11 @@ all history reachable from the new tip. Production delivery scans the checked-ou
 files by default.
 
 CI and the separate Vercel staging job prepare a complete ScummVM bundle before
-testing or building the app. They can reuse the bundle cache for the same
-runtime inputs. A cache miss builds the pinned engine and its corresponding
-source archive. Both jobs verify the runtime and archive checksums, and Vercel
-staging checks them again in the finished deployment artifact.
+testing or building the app. Both jobs use a shared cache key derived from the
+runner platform and tracked runtime build inputs. Browser-tool installs and
+test-only edits leave that key unchanged. A cache miss builds the pinned engine
+and its corresponding source archive. Both jobs verify the runtime and archive
+checksums, and Vercel staging checks them again in the finished deployment artifact.
 
 Automatic delivery accepts only successful main-push CI from this repository,
 for the same SHA as the delivery run and the current head of `main`. The CI
