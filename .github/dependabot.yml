@@ -1,47 +1,37 @@
 version: 2
+multi-ecosystem-groups:
+  routine-maintenance:
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: Europe/Lisbon
+
 updates:
   - package-ecosystem: npm
     directory: /
-    schedule:
-      interval: weekly
-      day: monday
-      time: "08:00"
-      timezone: Europe/Lisbon
+    patterns:
+      - "*"
+    multi-ecosystem-group: routine-maintenance
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
-    groups:
-      sentry:
-        patterns:
-          - "@sentry/*"
-      web-runtime:
-        patterns:
-          - next
-          - react
-          - react-dom
-      tooling:
-        dependency-type: development
-        patterns:
-          - "*"
+    allow:
+      - dependency-type: direct
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
 
   - package-ecosystem: github-actions
     directory: /
-    schedule:
-      interval: weekly
-      day: monday
-      time: "08:00"
-      timezone: Europe/Lisbon
+    patterns:
+      - "*"
+    multi-ecosystem-group: routine-maintenance
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
-    groups:
-      github-maintained:
-        patterns:
-          - "actions/*"
-          - "github/*"
-      github-actions:
-        patterns:
-          - "*"
-        exclude-patterns:
-          - "actions/*"
-          - "github/*"
+    allow:
+      - dependency-type: direct
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
