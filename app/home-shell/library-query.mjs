@@ -1,5 +1,6 @@
 import { compareGameTitles } from "../../lib/game-title-sort.mjs";
 import { isDemoGame } from "../game-versions.mjs";
+import { featuredDemoRanks } from "./featured-demo-order.mjs";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 const featuredTargets = ["sky", "queen", "lure", "dreamweb-cd", "sword25"];
@@ -15,8 +16,14 @@ export const libraryCategories = [
 const normalizeGenre = (value) => (value || "").trim().replace(/\s+/g, " ").toLocaleLowerCase("en");
 const categoriesByName = new Map(libraryCategories.map((category) => [normalizeGenre(category), category]));
 
-function featuredRank(game) {
-  if (isDemoGame(game)) return featuredTargets.length + 2;
+function featuredRank({ game, source }) {
+  if (isDemoGame(game)) {
+    const firstDemoRank = featuredTargets.length + 2;
+    const demoRank = source || game.importRequired
+      ? featuredDemoRanks.size + 1
+      : featuredDemoRanks.get(game.familyId) ?? featuredDemoRanks.size;
+    return firstDemoRank + demoRank;
+  }
   if (game.target === "hires1") return featuredTargets.length + 1;
   const index = featuredTargets.indexOf(game.target);
   return index >= 0 ? index : featuredTargets.length;
@@ -66,7 +73,7 @@ export function queryLibrary(items, query) {
   const sign = direction === "desc" ? -1 : 1;
   return result.sort((a, b) => {
     if (field === "featured") {
-      const rank = featuredRank(a.game) - featuredRank(b.game);
+      const rank = featuredRank(a) - featuredRank(b);
       if (rank) return rank;
     } else if (field === "year") {
       const aYear = libraryYear(a.game);
