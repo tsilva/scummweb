@@ -72,6 +72,7 @@ html:has(.game-route-boot-overlay.is-visible) {
   --hero-title-fit: none;
   display: block;
   width: 100%;
+  min-width: min-content;
   height: auto;
   margin: 0;
   font-family: var(--font-body), sans-serif;
@@ -84,7 +85,7 @@ html:has(.game-route-boot-overlay.is-visible) {
 
 .game-hero-title .hero-title-text {
   line-height: inherit;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
 
 .game-hero-scene.has-long-title .game-hero-copy .game-hero-title {

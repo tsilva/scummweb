@@ -32,13 +32,6 @@ recorded duration or date. These statistics are recorded per copy. With Dropbox
 connected, [play activity sync](dropbox-save-sync.md#recently-played-across-devices)
 shares them across devices with the same game edition.
 
-The app-install invitation becomes eligible on the third homepage visit in the
-same browser. A fresh page load counts once; client-side navigation and component
-remounts do not add visits. Dismissing it permanently suppresses the invitation,
-including in other open tabs, while the browser retains the site's local data.
-Installed apps, embedded pages and browsers without writable local storage do
-not show it. Installation still depends on browser support.
-
 Recognized in-app browsers show an **Open in browser** screen before the library
 or player loads. This covers Facebook, Messenger, Instagram, TikTok, LinkedIn,
 Snapchat, Pinterest, LINE, WeChat and Android webviews with explicit signatures.
@@ -302,15 +295,10 @@ space for both save trees. Quota failure preserves the active tree.
 
 ### Installing the web app
 
-Use **Install app** when offered. In Safari use **Add to Home Screen** on
-iPhone or iPad or **Add to Dock** on macOS Sonoma and later.
+Use your browser's web app installation option. In Safari use **Add to Home
+Screen** on iPhone or iPad or **Add to Dock** on macOS Sonoma and later.
 ScummWEB opens in its own window after installation. Fullscreen follows the
 same controls and device-specific rules as play in a browser tab.
-
-The homepage captures early browser installation offers before hydration. It
-loads the invitation stylesheet only after an eligible offer; keep the native
-installation prompt inside the click handler. `pnpm test` covers early offers,
-stylesheet failures, installation gestures, and persisted dismissal.
 
 ### Library and game files
 
@@ -1042,8 +1030,8 @@ illustrated compositions. The game mappings retain source credits and
 `heroImageMobilePosition` can adjust the narrow-screen crop.
 Demos and full versions share the same hero and box art; keep demo labels and
 edition-specific gameplay captures separate from those shared images.
-Card covers and their loading previews align to the top of the card and retain
-the proportions of the box front. Trim added padding at the artwork boundary.
+Card covers and their loading previews center the full box front over a soft
+backdrop made from the inline preview. Trim added padding at the artwork boundary.
 For an illustrated fallback such as Fun Seeker's Guide, set
 `posterImagePosition` to fill the card with the same crop for the artwork and
 its loading preview. Record the source illustration in the poster credit.

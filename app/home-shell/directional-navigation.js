@@ -20,7 +20,7 @@ export function focusDirectionalControl(element) {
   element.focus({ preventScroll: true });
   if (document.activeElement !== element) return;
 
-  const topControls = element.closest(".dashboard-nav-home, .install-prompt");
+  const topControls = element.closest(".dashboard-nav-home");
   const returningToHero = element.closest(".hero-stage") &&
     previous?.closest(".game-screenshots, .section-stack");
   // A visible control can still leave most of the hero above the viewport.

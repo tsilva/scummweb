@@ -4,12 +4,38 @@ description: Restore a verified runtime or build one from the pinned ScummVM sou
 runs:
   using: composite
   steps:
+    - name: Fingerprint tracked ScummVM build inputs
+      id: inputs
+      shell: bash
+      run: |
+        # Hash paths, modes and blob IDs from the checkout, before runtime outputs are generated.
+        digest=$(git ls-files --stage -z -- \
+          .github/actions/prepare-scummvm/action.yml \
+          .codex/skills/scummweb_upgrade-scummvm/references/patches.json \
+          .codex/skills/scummweb_upgrade-scummvm/scripts/upgrade_check.py \
+          LICENSE app/save-backups/filesystem.mjs branding/scummvm-logo-master.png \
+          data/classic-freeware.json launcher-game-overrides.json lib/scummvm-shell-assets.js \
+          patches/scummvm web-shell \
+          public/brand/web-seo/android-chrome-192.png \
+          public/brand/web-seo/android-chrome-512.png \
+          public/brand/web-seo/android-chrome-maskable-512.png \
+          public/brand/web-seo/favicon/favicon.ico public/brand/web-seo/favicon/favicon.svg \
+          scripts/build_helpers.sh scripts/build_scummvm_web.sh scripts/create_launcher_metadata.mjs \
+          scripts/finalize_scummvm_dist.sh scripts/generate-runtime-assets.mjs scripts/generate_logo_assets.py \
+          scripts/install_classic_freeware.py scripts/manage_scummvm_assets.mjs scripts/normalize_game_archive.py \
+          scripts/read-legacy-word-notice.mjs scripts/scummvm-version.sh scripts/stage_scummvm_web_shell.py \
+          scripts/write_scummvm_http_index.py scripts/write_source_info.py ':(glob)scripts/patch_scummvm_*' \
+          scummvm-shell/games.json scummvm-shell/index.html scummvm-shell/launcher \
+          scummvm-shell/logo-nav.png scummvm-shell/manifest.json scummvm-shell/scummvm.ini \
+          | sha256sum)
+        printf 'digest=%s\n' "${digest%% *}" >> "$GITHUB_OUTPUT"
+
     - name: Restore the runtime for these build inputs
       id: runtime
       uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: dist
-        key: scummvm-runtime-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/**', 'lib/scummvm-shell-assets.js', 'patches/**', 'web-shell/**', 'scummvm-shell/**', 'branding/**', 'public/brand/**', 'app/save-backups/filesystem.mjs', 'data/classic-freeware.json', '.codex/skills/scummweb_upgrade-scummvm/**', 'LICENSE') }}
+        key: scummvm-runtime-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.inputs.outputs.digest }}
 
     - name: Validate and stage the cached bundle
       if: steps.runtime.outputs.cache-hit == 'true'
@@ -29,4 +55,4 @@ runs:
 
     - name: Ensure the complete runtime is available
       shell: bash
-      run: pnpm run prepare:scummvm
+      run: node scripts/manage_scummvm_assets.mjs ensure

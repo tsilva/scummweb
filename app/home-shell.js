@@ -4,7 +4,6 @@ import { getVersionedSiteAssetPath } from "./asset-paths";
 import Icon from "./home-shell/shell-icon";
 import SourceLibrary from "./home-shell/deferred-source-library";
 import SettingsPanel from "./home-shell/settings-panel";
-import InstallPrompt from "./home-shell/install-prompt";
 import DirectionalNavigation from "./home-shell/directional-navigation";
 import DashboardNav from "./home-shell/dashboard-nav";
 import GalleryOrientation from "./home-shell/GalleryOrientation";
@@ -83,8 +82,6 @@ export default function HomeShell({
           <SettingsPanel catalog={catalog} officialUrl={getGamesOrigin()} scummvmVersion={scummvmVersion} sourceInfoDate={sourceInfoDate} />
         </div>
       </DashboardNav>
-
-      {isHomePage && <InstallPrompt />}
 
       <main className="page-shell">
         {children ?? <SourceLibrary
