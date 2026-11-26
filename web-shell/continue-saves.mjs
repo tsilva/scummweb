@@ -66,7 +66,8 @@ export function supportsContinue(engineId, gameId, extra = "") {
       || (gameId === "monkey4" && edition === "web demo");
   }
   if (engineId === "agos") {
-    return gameId === "simon2" && edition === "cd demo";
+    if (gameId === "simon2") return edition === "cd demo";
+    return (gameId === "elvira1" || gameId === "elvira2") && !edition.includes("demo");
   }
   if (engineId === "mohawk") {
     if (livingBooksDemos.has(gameId)) return edition.startsWith("demo");

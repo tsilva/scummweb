@@ -183,6 +183,37 @@
       "retire_when": "Upstream engines expose equivalent intro completion signals for the bundled editions."
     },
     {
+      "path": "patches/scummvm/zz-elvira-continue.patch",
+      "status": "active",
+      "sha256": "cabdd10f128bbd42a9f03e700700a975fa8fddc6967fa5110d404b943e17e742",
+      "purpose": "Continue the full Elvira games from their existing native slots after AGOS initializes the playable scene.",
+      "invariants": [
+        "Keep the full-game check separate from AGOS demo matching and preserve the Simon II CD restore path.",
+        "Consume an explicit transient startup slot once and use the ordinary native Elvira redraw.",
+        "Use the detector platform for the first save scan when the imported target has no configured platform."
+      ],
+      "verification": [
+        "In Brave import each full game, save at a distinguishable scene, then launch Continue from the library.",
+        "Check the Elvira II DOS save prefix and the Simon I and II CD demo restore paths."
+      ],
+      "retire_when": "Upstream restores full Elvira saves safely during startup and exposes their native listing to the browser."
+    },
+    {
+      "path": "patches/scummvm/zz-player-autosave-availability.patch",
+      "status": "active",
+      "sha256": "5d630f81212d863b47a4d6652a4ef4ea5d9159cacb95bd2e55e67d850be93ce1",
+      "purpose": "Check the current native save boundary before the hosted player captures an automatic checkpoint.",
+      "invariants": [
+        "Give deferred startup loads priority and preserve the SCUMM startup overlay through its native read.",
+        "Keep manual slots intact and suppress the duplicate native timer only when hosted rotating saves own the schedule."
+      ],
+      "verification": [
+        "Let a checkpoint become due in a blocked scene, then confirm one capture on the first safe boundary.",
+        "Exercise the shared backend and the Sky and Queen loops, along with an overlapping demo Continue."
+      ],
+      "retire_when": "Upstream offers an equivalent hosted autosave guard and single-owner scheduler."
+    },
+    {
       "path": "scripts/patch_scummvm_audio.py",
       "status": "active",
       "sha256": "4d922a197b7615b53caf650d8a51d96ca1341ea96e2cfa245f301eb5e9b2eb2a",

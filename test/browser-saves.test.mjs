@@ -227,6 +227,42 @@ for (const { game, supported } of [
   assert.equal(appended, 1);
 });
 
+for (const supported of [false, true]) test(`Elvira II DOS refreshes an older empty index with supported=${supported}`, async (t) => {
+  const game = { target: "elvira2", gameId: "elvira2", engineId: "agos", saveVersionId: `elvira2-dos-${supported}` };
+  const namespace = await getVersionSaveNamespace(game.saveVersionId);
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["elvira2-pc.003", "player", 123]] }));
+  await indexSaves(game, [], supported);
+  const key = saveIndexKey(namespace, game.target);
+  const old = JSON.parse(window.localStorage.getItem(key));
+  old.checkedByRuntime = "old-runtime";
+  window.localStorage.setItem(key, JSON.stringify(old));
+  const { files } = await readBrowserSaveFiles(game);
+  const previousDocument = globalThis.document;
+  t.after(() => { if (previousDocument === undefined) delete globalThis.document; else globalThis.document = previousDocument; });
+  const listeners = new Set();
+  Object.assign(window, { location: { href: "https://example.test/", origin: "https://example.test" },
+    setTimeout, clearTimeout, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
+  const frame = { contentWindow: {}, setAttribute() {}, remove() {} };
+  let queryUrl;
+  globalThis.document = {
+    createElement: () => frame,
+    body: { appendChild() {
+      queryUrl = new URL(frame.src);
+      const index = { ...old, supported: true, checkedByRuntime: "new-runtime", saves: [{ ...files[0], slot: 3 }] };
+      window.localStorage.setItem(key, JSON.stringify(index));
+      const data = { ...index, type: "scummweb:saves-listed", query: queryUrl.searchParams.get("saveQuery") };
+      queueMicrotask(() => {
+        for (const receive of [...listeners]) receive({ origin: window.location.origin, source: frame.contentWindow, data });
+      });
+    } },
+  };
+  assert.equal(getCachedBrowserSave(game), null);
+  assert.equal(await getLatestBrowserSave(game, "new-runtime"), 3);
+  assert.equal(queryUrl.searchParams.get("savePlatform"), "dos");
+  assert.equal(queryUrl.searchParams.get("saveNamespace"), namespace);
+  assert.equal(getCachedBrowserSave(game), 3);
+});
+
 test("cache reads are synchronous and never create a runtime, including missing/corrupt storage", async (t) => {
   const game = { target: "sky", engineId: "sky", gameId: "sky" };
   useStorage(t, makeBrowserStorage([["SKY-VM.001", "player", 20]]));

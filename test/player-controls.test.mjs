@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { installPlayerControls } from "../web-shell/player-controls.mjs";
+import { installRotatingAutosaves } from "../web-shell/rotating-autosaves.mjs";
 
 function createPlayer() {
   const storage = new Map();
@@ -111,6 +112,7 @@ test("deferred Continue restores once and keeps autosave files isolated until th
     finishRestore: () => events.push("restore finished") };
   scope.__scummwebAutosaves = { due: () => true, afterLoad: () => events.push("resumed") };
   assert.equal(scope.__scummwebQueueStartupLoad(1, files), true);
+  assert.equal(scope.__scummwebPlayerAutosaveDue(), false);
   assert.equal(scope.__scummwebIsStartupLoad(), true);
   assert.equal(scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true), 0);
   controls.setMenuOpen(true);
@@ -119,12 +121,14 @@ test("deferred Continue restores once and keeps autosave files isolated until th
   controls.setMenuOpen(false);
   assert.equal(scope.__scummwebPeekStartupLoad(), 1);
   assert.equal(scope.__scummwebTakeStartupLoad(), true);
+  assert.equal(scope.__scummwebPlayerAutosaveDue(), false);
   assert.equal(scope.__scummwebIsStartupLoad(), true);
   assert.equal(scope.__scummwebTakeStartupLoad(), false);
   assert.deepEqual(events, [files]);
   scope.__scummwebAgentSaveResult(null);
   assert.deepEqual(events, [files, "restore finished", "resumed"]);
   assert.equal(scope.__scummwebIsStartupLoad(), false);
+  assert.equal(scope.__scummwebPlayerAutosaveDue(), true);
 });
 
 test("the paused engine reports scene save availability before a manual request", async () => {
@@ -162,14 +166,64 @@ test("the paused engine reports scene save availability before a manual request"
   assert.deepEqual(await save, { slot: 1 });
 });
 
+test("a due autosave waits for the native save boundary and schedules from successful capture", (t) => {
+  const { scope, controls } = createPlayer();
+  let now = 1_000_000;
+  t.mock.method(Date, "now", () => now);
+  scope.__scummwebReadyState = { state: "ready" };
+  scope.__scummwebSaveStatus = { supported: true, engineId: "sky", gameId: "sky", target: "sky", extra: "" };
+  const files = new Map();
+  const fs = { readFile: name => files.get(name), writeFile: (name, contents) => files.set(name, contents) };
+  const autosaves = installRotatingAutosaves(scope, fs, "/saves", new URLSearchParams("hostPlayer=1&dropbox=true"));
+  scope.__scummwebAutosaves = autosaves;
+  let captures = 0;
+  scope.__scummwebDiagnosticSaves = {
+    begin() { captures++; return true; },
+    finish: error => error ? { status: "failed" } : {
+      status: "captured", files: [{ name: "SKY-VM.001", data: Uint8Array.of(1) }],
+    },
+  };
+  const boundary = canSaveHere => scope.__scummwebAgentFrameBoundary(true, 8, 0, true, true, false,
+    scope.__scummwebPlayerAutosaveDue() && canSaveHere);
+
+  assert.equal(boundary(true), 0);
+  now += 120_000;
+  assert.equal(boundary(false), 0);
+  now += 5 * 120_000;
+  assert.equal(boundary(false), 0);
+  assert.equal(captures, 0);
+  scope.__scummwebSaveWriteInProgress = () => true;
+  assert.equal(boundary(true), 0);
+  delete scope.__scummwebSaveWriteInProgress;
+  controls.setMenuOpen(true);
+  assert.equal(boundary(true), -1);
+  controls.setMenuOpen(false);
+  assert.equal(boundary(true), 1);
+  assert.equal(boundary(true), 0, "another boundary cannot dispatch while the save is in flight");
+  scope.__scummwebAgentSaveResult("temporary failure");
+  assert.equal(autosaves.list().length, 0);
+  assert.equal(boundary(true), 0);
+  now += 5_000;
+  assert.equal(boundary(false), 0);
+  assert.equal(boundary(true), 1, "the same due autosave retries when saving becomes possible");
+  now += 10_000;
+  scope.__scummwebAgentSaveResult(null);
+  assert.equal(autosaves.list().length, 1);
+  assert.equal(captures, 2);
+  now += 119_999;
+  assert.equal(boundary(true), 0);
+  now++;
+  assert.equal(boundary(true), 1);
+});
+
 test("exit captures an autosave in native slot 1 before the periodic save is due", async () => {
   const { scope, controls, timers } = createPlayer();
-  const boundary = () => scope.__scummwebAgentBoundary(true, 99);
+  const boundary = () => scope.__scummwebAgentBoundary(true, 99, 0, scope.__scummwebPlayerAutosaveDue());
   const capture = { status: "captured", files: [{ name: "SKY-VM.001" }] };
   const saved = [];
   scope.__scummwebAutosaves = {
     canCapture: () => true, due: () => false, retry() {},
-    save: (result, slot) => saved.push({ result, slot }),
+    save(result, slot) { saved.push({ result, slot }); return true; },
   };
   scope.__scummwebDiagnosticSaves = {
     supported: () => true, backupSupported: () => false, begin: () => true, finish: () => capture,
@@ -192,7 +246,7 @@ test("exit skips capture when the engine cannot save and times out without a nat
   scope.__scummwebDiagnosticSaves = { supported: () => true, begin: () => assert.fail("unexpected capture") };
 
   const blocked = controls.saveOnExit();
-  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, false, true), 0);
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, true, true, false, false), 0);
   await blocked;
   controls.setMenuOpen(true);
   scope.__scummwebPublishSaveAvailability(false);

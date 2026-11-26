@@ -44,6 +44,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
   Startup uses the isolated native checkpoint read path. Verify that a failed
   capture leaves old checkpoints and manual files intact and that a malformed
   checkpoint cannot prevent selecting an older one.
+  Check the native save guard before opening temporary storage. A blocked
+  checkpoint stays due, and a completed capture starts the next interval.
+  The shared backend dispatches queued Continue before checking the timer.
+  Keep SCUMM's overlay alive through its native read and suppress the native
+  automatic save only where the hosted scheduler owns the supported slot.
 
 - Host cloud transfers run in a dedicated MEMFS service before plugin or GUI
   initialization. Keep native provider implementations enabled with `--enable-cloud`.
@@ -231,9 +236,14 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
 - AGOS quick saves use the idle input path and the original redraw scripts.
   Plumbers checkpoints use the decision scene, its prior scene and the score.
   Keep either adapter away from unfinished transitions and cinematic frames.
-- The interactive Simon II CD demo consumes a transient save slot at its
-  first playable input boundary. Use the native intro skip and quick-restore
-  redraw. Preserve the fixed `simon2` filenames and rescan older save indexes.
+- The interactive Simon II CD demo and full Elvira games consume a transient
+  save slot at the first playable AGOS input boundary and use the native
+  quick-restore redraw. Preserve the Simon II intro skip and fixed `simon2`
+  filenames. Keep Simon I on its separate queued restore path and rescan older
+  indexes for newly supported games. Background Elvira II queries need the
+  detected platform or the DOS filename prefix from an isolated legacy save.
+  Use the detected platform in the first native save scan for unconfigured
+  imports, when the engine instance and its filename getter are unavailable.
 - Living Books demo saves record the page, subpage, mode and language. A book
   can number several visible pages as subpages of one logical page. Reopen
   through the original page loader once the book and resources are initialized.
