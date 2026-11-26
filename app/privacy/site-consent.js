@@ -38,8 +38,8 @@ export default function SiteConsent({ children }) {
     };
   }, [needsRegionCheck]);
 
-  return <ConsentControls title="Privacy choices"
-    message="We use site and game analytics to understand how people use ScummWEB. We track errors to fix problems and make the site and games run more reliably."
+  return <ConsentControls title="Help improve ScummWEB"
+    message="We use analytics to see which games people play most. Error reports help us find and fix problems on the site and in games."
     policyHref="/privacy"
     purposes={consentPurposes} store={consentStore} firstVisitPrompt={showFirstVisitPrompt === true}>
     {children}
