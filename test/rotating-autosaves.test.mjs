@@ -69,10 +69,12 @@ test("ordinary game launches neither load nor replace preview checkpoints", () =
   assert.deepEqual(files, before);
 });
 
-for (const { engineId, gameId, target, extra, filename } of [
+for (const { engineId, gameId, target, extra, filename, gameplayBoundary, catalog } of [
   { engineId: "scumm", gameId: "atlantis", target: "atlantis-demo", extra: "Demo", filename: "atlantis-demo.s01" },
   { engineId: "agos", gameId: "elvira1", target: "elvira1", extra: "", filename: "elvira1.001" },
   { engineId: "agos", gameId: "elvira2", target: "elvira2", extra: "", filename: "elvira2-pc.001" },
+  { engineId: "drascula", gameId: "drascula", target: "drascula", extra: "", filename: "drascula.001", gameplayBoundary: true, catalog: true },
+  { engineId: "lure", gameId: "lure", target: "lure-vga", extra: "VGA", filename: "lure.001", gameplayBoundary: true },
 ]) test(`${gameId} keeps the rotating checkpoint after its early ready frame`, () => {
   const detected = { engineId, gameId, target, extra, supported: true };
   const manualPath = `${path}/${filename}`;
@@ -85,13 +87,19 @@ for (const { engineId, gameId, target, extra, filename } of [
 
   const resumed = player(original.files, preview + "&continue=1");
   resumed.scope.__scummwebSaveStatus = detected;
+  let reports = 0;
+  if (catalog) resumed.scope.__scummwebReportGameplayStarted = () => reports++;
   assert.equal(resumed.checkpoint.startup(detected), 1);
   assert.equal(resumed.checkpoint.due(), false);
   assert.equal(resumed.checkpoint.canCapture(), false);
   assert.equal(resumed.scope.__scummwebHasIntroCheckpoint(filename), true);
   assert.equal(Buffer.from(resumed.files.get(temporaryPath)).toString(), "newer exit position");
 
-  resumed.checkpoint.finishNativeStartup();
+  if (gameplayBoundary) {
+    resumed.scope.__scummwebReportGameplayStarted();
+    assert.equal(resumed.scope.__scummwebReportGameplayStarted, undefined);
+    assert.equal(reports, catalog ? 1 : 0);
+  } else resumed.checkpoint.finishNativeStartup();
   assert.equal(resumed.scope.__scummwebHasIntroCheckpoint, undefined);
   assert.equal(resumed.files.has(temporaryPath), false);
   assert.equal(resumed.files.get(manualPath), "older manual position");

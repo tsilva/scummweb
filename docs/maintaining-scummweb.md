@@ -229,8 +229,9 @@ ScummWEB also saves at the first safe moment after loading and when you select
 **Exit game** in a scene that allows saving.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
-overwriting any manual slot. SCUMM keeps the selected checkpoint available
-through the engine's native startup load. Saved story progress uses checkpoint data where a
+overwriting any manual slot. SCUMM, Drascula and Lure of the Temptress keep the
+selected checkpoint available through the native startup load, even when the
+engine draws an earlier frame. Saved story progress uses checkpoint data where a
 compatible story map is available. In the game hero, the version picker appears beside
 **Play** or **Continue** when several versions are available. For a single
 version, **Start from beginning** appears beside **Continue** and keeps your saves.

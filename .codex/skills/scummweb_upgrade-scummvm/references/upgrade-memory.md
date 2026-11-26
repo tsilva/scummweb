@@ -49,6 +49,12 @@ tests when porting; do not treat an old implementation shape as the requirement.
   The shared backend dispatches queued Continue before checking the timer.
   Keep SCUMM's overlay alive through its native read and suppress the native
   automatic save only where the hosted scheduler owns the supported slot.
+  Drascula presents frames during chapter setup and reads the startup slot
+  again for the saved chapter. Lure presents a blank frame before its startup
+  read. Keep both checkpoints available until the native gameplay signal, even
+  on imported launches without a host gameplay listener. Verify Continue with
+  an older manual file in the same slot and an exit autosave at a different
+  position, then confirm the in-game load list still shows the manual file.
 
 - Host cloud transfers run in a dedicated MEMFS service before plugin or GUI
   initialization. Keep native provider implementations enabled with `--enable-cloud`.

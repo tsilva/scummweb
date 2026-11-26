@@ -123,9 +123,19 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
           }
           scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) &&
             !scope.__scummwebScanningSaves && !scope.__scummwebDiagnosticSaves?.active;
-          // These engines can present the title or an opening frame before loading the slot.
-          waitingForNativeStartup = identity.engineId === "scumm" ||
+          // These engines can present a frame before loading the slot.
+          const finishAtGameplay = identity.engineId === "drascula" || identity.engineId === "lure";
+          waitingForNativeStartup = finishAtGameplay || identity.engineId === "scumm" ||
             (identity.engineId === "agos" && (identity.gameId === "elvira1" || identity.gameId === "elvira2"));
+          if (finishAtGameplay) {
+            // The native gameplay signal follows the final startup save read.
+            const reportGameplayStarted = scope.__scummwebReportGameplayStarted;
+            scope.__scummwebReportGameplayStarted = () => {
+              delete scope.__scummwebReportGameplayStarted;
+              clearOverlay();
+              reportGameplayStarted?.();
+            };
+          }
           scope.__scummwebStartupAutosave = name;
           due = 0;
           return record.slot;
