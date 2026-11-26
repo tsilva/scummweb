@@ -244,6 +244,9 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   detected platform or the DOS filename prefix from an isolated legacy save.
   Use the detected platform in the first native save scan for unconfigured
   imports, when the engine instance and its filename getter are unavailable.
+  AGOS can render Elvira’s title before reading the slot. Keep the rotating
+  checkpoint available until the native quick restore returns, including when
+  the browser has already marked the first frame ready.
 - Living Books demo saves record the page, subpage, mode and language. A book
   can number several visible pages as subpages of one logical page. Reopen
   through the original page loader once the book and resources are initialized.
@@ -369,6 +372,13 @@ browser-integration lessons. Store verified conclusions, not guesses or raw QA.
   browser import. Its transient target can omit the configured edition fields.
   Refresh the Goblins Quest 3 save list after engine creation so slots from
   earlier sessions appear and stay occupied when the player reopens an import.
+  For DOS CD v1.02, copy the detected edition and platform into the temporary
+  target before the first scan. Continue uses a queued in-game restore, as for
+  the interactive demo. The library can use a matching INTRO.STK size to
+  query and upgrade an older empty index without starting gameplay.
+  Goblins 3’s management callback schedules the room reload. Keep the
+  validated Gob v3 reader until the later CAT.INF read, since the next
+  rendered frame can close the isolated autosave directory first.
   Humongous titles may use named slots and a separate caption catalog. Check
   the exact game data before enabling slot operations, and verify restores
   through both the hosted controls and the original game menu.

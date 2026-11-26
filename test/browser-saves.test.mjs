@@ -45,7 +45,7 @@ async function indexSaves(game, slots, supported = true) {
   const { namespace, files } = await readBrowserSaveFiles(game);
   window.localStorage.setItem(saveIndexKey(namespace, game.target), JSON.stringify({
     schemaVersion: 1, engineId: game.engineId || "sky", gameId: game.gameId || "sky", supported,
-    target: game.target, revision: saveRevision(files),
+    target: game.target, extra: game.extra, revision: saveRevision(files),
     saves: slots.map(([name, slot]) => ({ ...files.find((file) => file.name === name), slot })),
   }));
 }
@@ -126,6 +126,14 @@ test("Continue is isolated to the imported version, including an unknown ZIP tit
   assert.equal(await getLatestBrowserSave({ ...a, saveVersionId: "unplayed" }, "test"), null);
 });
 
+test("an imported Goblins Quest 3 uses the detected CD edition from its save index", async (t) => {
+  const game = { target: "gob3", engineId: "gob", saveVersionId: "gob3-import" };
+  const namespace = await getVersionSaveNamespace(game.saveVersionId);
+  useStorage(t, makeBrowserStorage([], { [namespace]: [["gob3.000", "player", 123]] }));
+  await indexSaves({ ...game, gameId: "gob3", extra: "CD v1.02" }, [["gob3.000", 0]]);
+  assert.equal(getCachedBrowserSave(game), 0);
+});
+
 test("Deleted or changed saves invalidate the index rather than loading a stale slot", async (t) => {
   const game = { target: "tentacle", engineId: "scumm", gameId: "tentacle" };
   useStorage(t, makeBrowserStorage([["tentacle.s02", "player save", 20]]));
@@ -188,15 +196,21 @@ test("unindexed imported saves use one native query with origin, source and nonc
   assert.equal(queryUrl.searchParams.get("saveEngine"), "scumm");
 });
 
-for (const { game, supported } of [
+for (const { game, supported, previousExtra = game.extra } of [
   { game: { target: "qfi-demo", gameId: "qfi", engineId: "ags", extra: "Demo 2.0" }, supported: true },
   { game: { target: "gob3-demo", gameId: "gob3", engineId: "gob", extra: "Interactive Demo 3 (v0.02)", platform: "dos" },
     supported: false },
+  { game: { target: "gob3", gameId: "gob3", engineId: "gob", extra: "CD v1.02", platform: "dos", saveVersionId: "older-gob3-cd" },
+    supported: false, previousExtra: "" },
+  { game: { target: "gob3", gameId: "gob3", engineId: "gob", extra: "CD v1.02", platform: "dos", saveVersionId: "listed-gob3-cd" },
+    supported: false, previousExtra: "cd v1.02" },
 ]) test(`an older ${game.engineId} index is reconciled even when the save files have not changed`, async (t) => {
-  useStorage(t, makeBrowserStorage([[`${game.target}.001`, "player", 123]]));
+  const saved = [[`${game.target}.001`, "player", 123]];
+  const namespace = game.saveVersionId ? await getVersionSaveNamespace(game.saveVersionId) : "";
+  useStorage(t, namespace ? makeBrowserStorage([], { [namespace]: saved }) : makeBrowserStorage(saved));
   const { files } = await readBrowserSaveFiles(game);
-  const key = saveIndexKey("", game.target);
-  const old = { schemaVersion: 1, ...game, supported, saves: [], revision: saveRevision(files) };
+  const key = saveIndexKey(namespace, game.target);
+  const old = { schemaVersion: 1, ...game, extra: previousExtra, supported, saves: [], revision: saveRevision(files) };
   window.localStorage.setItem(key, JSON.stringify(old));
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
   t.after(() => { if (descriptor) Object.defineProperty(globalThis, "document", descriptor); else delete globalThis.document; });
@@ -211,7 +225,8 @@ for (const { game, supported } of [
       appended++;
       const params = new URL(frame.src).searchParams;
       assert.equal(params.get("savePlatform"), game.platform || null);
-      const index = { ...old, supported: true, saves: [{ ...files[0], slot: 1 }] };
+      assert.equal(params.get("saveExtra"), game.extra);
+      const index = { ...old, extra: game.extra, supported: true, saves: [{ ...files[0], slot: 1 }] };
       if (!supported) index.checkedByRuntime = params.get("v");
       window.localStorage.setItem(key, JSON.stringify(index));
       const data = { ...index, type: "scummweb:saves-listed", persisted: true,

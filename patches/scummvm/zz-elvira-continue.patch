@@ -30,7 +30,7 @@ diff --git a/engines/agos/input.cpp b/engines/agos/input.cpp
 index bcee75a9..6e67081d 100644
 --- a/engines/agos/input.cpp
 +++ b/engines/agos/input.cpp
-@@ -236,13 +236,15 @@ void AGOSEngine::waitForInput() {
+@@ -236,13 +236,17 @@ void AGOSEngine::waitForInput() {
  				if (!ScummWebIntro::startupFinished() && canSaveGameStateCurrently() &&
  					!getBitFlag(9)) {
  					_openingScript = false;
@@ -45,6 +45,8 @@ index bcee75a9..6e67081d 100644
  						if (slot >= 0 && !quickRestoreGame(slot))
 -							warning("Could not restore Simon II save slot %d at startup", slot);
 +							warning("Could not restore AGOS save slot %d at startup", slot);
++						if (fullElvira)
++							EM_ASM({ globalThis.__scummwebAutosaves?.finishNativeStartup(); });
  						_scummWebAgentIdle = true;
  					}
  					ScummWebIntro::gameplayStarted();

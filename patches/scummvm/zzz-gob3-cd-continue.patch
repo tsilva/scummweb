@@ -1,0 +1,154 @@
+diff --git a/base/main.cpp b/base/main.cpp
+--- a/base/main.cpp
++++ b/base/main.cpp
+@@ -238,7 +238,8 @@
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	if ((engineId == "gob" && gameId == "gob1" && target == "gob1-demo" && extra == "interactive demo (v2.0)") ||
+ 			(engineId == "gob" && gameId == "gob2" && extra == "interactive demo (v1.01)") ||
+-			(engineId == "gob" && gameId == "gob3" && extra == "interactive demo 3 (v0.02)") ||
++			(engineId == "gob" && gameId == "gob3" && (extra == "interactive demo 3 (v0.02)" ||
++			(extra == "cd v1.02" && Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformDOS))) ||
+ 			(engineId == "made" && gameId == "rtz" && extra == "v1.2, 9/8/94, demo cd"))
+ 		supported = meta.hasFeature(MetaEngine::kSupportsListSaves);
+ 	EM_ASM({ if (globalThis.__scummwebBeginSaveScan) globalThis.__scummwebBeginSaveScan(UTF8ToString($0), UTF8ToString($1), UTF8ToString($2), $3, UTF8ToString($4)); },
+@@ -378,6 +379,12 @@
+ 				game.platform != Common::kPlatformUnknown &&
+ 				Common::parsePlatform(ConfMan.get("platform", target)) == Common::kPlatformUnknown)
+ 			ConfMan.set("platform", Common::getPlatformCode(game.platform), target);
++		// An imported game can have a temporary target without edition metadata.
++		if (game.engineId == "gob" && game.gameId == "gob3" &&
++				game.platform == Common::kPlatformDOS && game.extra == "CD v1.02") {
++			ConfMan.set("extra", game.extra, target);
++			ConfMan.set("platform", Common::getPlatformCode(game.platform), target);
++		}
+ 		const int resumeSlot = scummwebReportSaves(metaEngine, game.engineId, game.gameId, target);
+ 		if (resumeSlot >= 0) {
+ 			ConfMan.setInt("save_slot", resumeSlot, Common::ConfigManager::kTransientDomain);
+diff --git a/engines/gob/save/saveload.h b/engines/gob/save/saveload.h
+--- a/engines/gob/save/saveload.h
++++ b/engines/gob/save/saveload.h
+@@ -28,6 +28,9 @@
+ #ifndef GOB_SAVE_SAVELOAD_H
+ #define GOB_SAVE_SAVELOAD_H
+ 
++#ifdef __EMSCRIPTEN__
++#include "common/ptr.h"
++#endif
+ #include "gob/save/savefile.h"
+ #include "gob/save/savehandler.h"
+ 
+@@ -384,6 +387,10 @@
+ 	SaveLoad_v3(GobEngine *vm, const char *targetName, ScreenshotType sShotType);
+ 	~SaveLoad_v3() override;
+ 
++#ifdef __EMSCRIPTEN__
++	void setHostedRestoreReader(SaveReader *reader);
++#endif
++
+ 	SaveMode getSaveMode(const char *fileName) const override;
+ 
+ protected:
+@@ -411,6 +418,10 @@
+ 		bool saveScreenshot(int slot, const SavePartSprite *screenshot);
+ 		bool loadScreenshot(int slot, SavePartSprite *screenshot);
+ 
++#ifdef __EMSCRIPTEN__
++		void setHostedRestoreReader(SaveReader *reader) { _hostedRestoreReader.reset(reader); }
++#endif
++
+ 		/** Slot file construction. */
+ 		class File : public SlotFileIndexed {
+ 		public:
+@@ -435,6 +446,9 @@
+ 		bool _hasIndex;
+ 
+ 		SaveReader *_reader;
++#ifdef __EMSCRIPTEN__
++		Common::ScopedPtr<SaveReader> _hostedRestoreReader;
++#endif
+ 		SaveWriter *_writer;
+ 
+ 		void buildIndex(byte *buffer) const;
+diff --git a/engines/gob/save/saveload_v3.cpp b/engines/gob/save/saveload_v3.cpp
+--- a/engines/gob/save/saveload_v3.cpp
++++ b/engines/gob/save/saveload_v3.cpp
+@@ -162,16 +162,27 @@
+ 
+ 		_hasIndex = false;
+ 
+-		if (!createReader(slot))
+-			return false;
++		SaveReader *reader = nullptr;
++#ifdef __EMSCRIPTEN__
++		// MENU.TOT schedules the room reload. The temporary autosave folder
++		// can be gone by the time the room script reads its variables.
++		Common::ScopedPtr<SaveReader> staged(_hostedRestoreReader.release());
++		if (staged && staged->getSlot() == slot)
++			reader = staged.get();
++#endif
++		if (!reader) {
++			if (!createReader(slot))
++				return false;
++			reader = _reader;
++		}
+ 
+ 		SavePartInfo info(kSlotNameLength, (uint32) _vm->getGameType(), 0,
+ 				_vm->getEndianness(), varSize);
+ 		SavePartVars vars(_vm, varSize);
+ 
+-		if (!_reader->readPart(0, &info))
+-			return false;
+-		if (!_reader->readPart(1, &vars))
++		if (!reader->readPart(0, &info))
++			return false;
++		if (!reader->readPart(1, &vars))
+ 			return false;
+ 
+ 		// Get all variables
+@@ -515,6 +526,12 @@
+ 	_saveFiles[3].handler = _notesHandler;
+ }
+ 
++#ifdef __EMSCRIPTEN__
++void SaveLoad_v3::setHostedRestoreReader(SaveReader *reader) {
++	_gameHandler->setHostedRestoreReader(reader);
++}
++#endif
++
+ SaveLoad_v3::~SaveLoad_v3() {
+ 	delete _screenshotHandler;
+ 	delete _gameHandler;
+diff --git a/engines/gob/metaengine.cpp b/engines/gob/metaengine.cpp
+--- a/engines/gob/metaengine.cpp
++++ b/engines/gob/metaengine.cpp
+@@ -233,18 +233,26 @@
+ 	const uint32 varSize = gob2 ? kGob2SaveVarBytes : (gob3 ? kGob3SaveVarBytes : kWoodruffSaveVarBytes);
+ 	const uint32 nameLength = gob2 ? SaveLoad_v2::kSlotNameLength :
+ 		(gob3 ? SaveLoad_v3::kSlotNameLength : SaveLoad_v4::kSlotNameLength);
+-	SaveReader reader(gob2 ? 2 : 3, slot, getSaveStateName(slot));
++	Common::ScopedPtr<SaveReader> reader(new SaveReader(gob2 ? 2 : 3, slot, getSaveStateName(slot)));
+ 	SavePartInfo info(nameLength, getGameType(), 0, getEndianness(), varSize);
+-	if (!reader.load() || !reader.readPart(0, &info))
++	if (!reader->load() || !reader->readPart(0, &info))
+ 		return Common::kReadingFailed;
+ 
+ 	if (gob2 || gob3) {
+ 		SavePartVars vars(this, varSize);
+-		if (!reader.readPart(1, &vars))
++		if (!reader->readPart(1, &vars))
+ 			return Common::kReadingFailed;
+ 	}
+ 
+-	return _game->loadAgentCheckpoint(slot) ? Common::kNoError : Common::kReadingFailed;
++	if (!gob3)
++		return _game->loadAgentCheckpoint(slot) ? Common::kNoError : Common::kReadingFailed;
++
++	auto *saveLoad = static_cast<SaveLoad_v3 *>(_saveLoad);
++	saveLoad->setHostedRestoreReader(reader.release());
++	if (_game->loadAgentCheckpoint(slot))
++		return Common::kNoError;
++	saveLoad->setHostedRestoreReader(nullptr);
++	return Common::kReadingFailed;
+ }
+ #endif
+ 

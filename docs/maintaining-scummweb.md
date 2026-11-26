@@ -235,8 +235,9 @@ compatible story map is available. In the game hero, the version picker appears 
 **Play** or **Continue** when several versions are available. For a single
 version, **Start from beginning** appears beside **Continue** and keeps your saves.
 Games without compatible save and startup-load support use their in-game menu.
-Both full Elvira games restore existing native saves once the opening scripts
-reach playable input.
+Both full Elvira games restore existing native saves and rotating
+checkpoints once the opening scripts reach playable input. Goblins Quest 3 DOS CD v1.02 and the interactive DOS
+demo restore their native saves once the game reaches its playable input loop.
 
 The browser-local index supplies launch actions from checked save files.
 Changed or unknown entries trigger a background native metadata query that

@@ -6,7 +6,7 @@ diff --git a/engines/scumm/scumm.cpp b/engines/scumm/scumm.cpp
  	}
  
 +#ifdef __EMSCRIPTEN__
-+	EM_ASM({ globalThis.__scummwebAutosaves?.finishScummStartup(); });
++	EM_ASM({ globalThis.__scummwebAutosaves?.finishNativeStartup(); });
 +#endif
 +
  	// In ScummVM 2.7.0, original GUI support was added.

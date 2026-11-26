@@ -127,18 +127,21 @@ test("empty placeholders, missing files and unsupported native snapshots never e
   assert.equal(supportsContinue("agos", "simon2", "CD Demo"), true);
   assert.equal(supportsContinue("gob", "gob2", "Interactive Demo (v1.01)"), true);
   assert.equal(supportsContinue("gob", "gob2", "CD"), false);
+  assert.equal(supportsContinue("gob", "gob3", "CD v1.02"), true);
+  assert.equal(supportsContinue("gob", "gob3", "CD v1.00"), false);
   assert.equal(supportsContinue("agos", "simon2", "CD Non-Interactive Demo"), false);
   assert.equal(supportsContinue("agos", "simon1", "CD Demo"), true);
   assert.equal(supportsContinue("agos", "simon1", "Demo"), false);
   assert.equal(supportsContinue("agos", "pn"), false);
 });
 
-test("demos with deferred Continue queue the newest slot without a native startup slot", async () => {
+test("games with deferred Continue queue the newest slot without a native startup slot", async () => {
   for (const { name, ...identity } of [
     { engineId: "mads", gameId: "nebular", target: "nebular-demo", extra: "demo", name: "nebular-demo.001" },
     { engineId: "scumm", gameId: "freddi3", target: "freddi3-demo", extra: "demo", name: "freddi3-demo.s01" },
     { engineId: "scumm", gameId: "BluesABCTime", target: "bluesabctime-demo", extra: "Demo", name: "bluesabctime-demo.s01" },
     { engineId: "gob", gameId: "gob1", target: "gob1-demo", extra: "Interactive Demo (v2.0)", name: "gob1-demo.001" },
+    { engineId: "gob", gameId: "gob3", target: "gob3", extra: "CD v1.02", name: "gob3.001" },
     { engineId: "agos", gameId: "simon1", target: "simon1-demo", extra: "CD Demo", name: "simon1-demo.001" },
     { engineId: "mohawk", gameId: "myst", target: "myst-demo", extra: "Demo", name: "myst-demo.001" },
   ]) {

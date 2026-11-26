@@ -65,7 +65,9 @@ function readIndex(namespace, game, storage) {
 
 function getCachedSave(game, { includeContents, autosavesOnly, storage = cachedStorage || window.localStorage } = {}) {
   try {
-    if (game.engineId && !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
+    // Imported editions can be missing from launcher metadata until the engine detects them.
+    if (game.engineId && (!game.saveVersionId || game.extra) &&
+        !supportsContinue(game.engineId, game.gameId || game.target, game.extra)) return null;
     const namespace = game.saveVersionId ? game.saveNamespace || readVersionSaveNamespace(game.saveVersionId) : "";
     const save = readCachedSave(game, storage, namespace, { includeContents, autosavesOnly });
     return save && supportsContinue(save.engineId, save.gameId, save.extra) ? save : null;
@@ -104,9 +106,13 @@ async function queryNativeSaves(game, namespace, assetVersion, generation) {
     frame.title = "Checking saved games";
     const url = new URL("/scummvm.html", window.location.href);
     const target = game.nativeTarget || game.target || game.gameId;
-    const platform = /^[a-z0-9]+$/i.test(game.platform || "") ? game.platform.toLowerCase() : "";
+    const isGob3Cd = game.engineId === "gob" && gameId === "gob3" && /^cd v1[.]02$/i.test(game.extra || "");
+    // Native listings return a lowercase edition. Gob's DOS CD detector expects its original label.
+    const extra = isGob3Cd ? "CD v1.02" : game.extra;
+    const requestedPlatform = isGob3Cd ? "dos" : game.platform;
+    const platform = /^[a-z0-9]+$/i.test(requestedPlatform || "") ? requestedPlatform.toLowerCase() : "";
     for (const [key, value] of Object.entries({ saveQuery: query, saveEngine: game.engineId,
-      saveGameId: gameId, saveTarget: target, saveExtra: game.extra, savePlatform: platform, saveNamespace: namespace,
+      saveGameId: gameId, saveTarget: target, saveExtra: extra, savePlatform: platform, saveNamespace: namespace,
       catalogSaveTarget: namespace ? null : game.target, v: assetVersion })) {
       if (value) url.searchParams.set(key, value);
     }
@@ -154,8 +160,9 @@ export async function getLatestBrowserSave(game, assetVersion) {
       (index?.engineId === "ags" || (index?.engineId === "agos" && index.gameId === "elvira2")) &&
       !latestPlayerSave(index, files);
     // Runtime support can change without changing any existing save bytes.
+    const extra = index?.gameId === "gob3" ? index.extra || game.extra : index?.extra ?? game.extra;
     const uncheckedUnsupported = index?.supported === false
-      && index.checkedByRuntime !== assetVersion && supportsContinue(index.engineId, index.gameId, index.extra);
+      && index.checkedByRuntime !== assetVersion && supportsContinue(index.engineId, index.gameId, extra);
     if (index?.schemaVersion !== 1 || index.revision !== revision || emptyIndexNeedsQuery || uncheckedUnsupported) {
       const queryKey = `${key}:${revision}`;
       if (!queries.has(queryKey) && Date.now() - (attempts.get(key) || 0) >= 30000) {
@@ -172,7 +179,7 @@ export async function getLatestBrowserSave(game, assetVersion) {
               !files.some(({ name }) => /^elvira2\.\d{3}$/.test(name))) platform = "dos";
           return queryNativeSaves({ ...game, platform, gameId,
             engineId: index?.engineId || game.engineId,
-            extra: index?.extra ?? game.extra, nativeTarget: index?.target || game.nativeTarget,
+            extra, nativeTarget: index?.target || game.nativeTarget,
           }, namespace, assetVersion, generation);
         });
         queryQueue = request.catch(() => null);

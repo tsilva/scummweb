@@ -53,14 +53,15 @@ export async function isRetiredIntroCheckpoint(target, name, bytes) {
   const digest = new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes));
   return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("") === expected;
 }
-function usesDeferredDemoContinue(engineId, gameId, edition) {
-  return typeof gameId === "string" &&
-    deferredDemoContinue.get(`${engineId}:${gameId.toLowerCase()}`) === edition;
+function usesDeferredContinue(engineId, gameId, edition) {
+  if (typeof gameId !== "string") return false;
+  const identity = `${engineId}:${gameId.toLowerCase()}`;
+  return deferredDemoContinue.get(identity) === edition || (identity === "gob:gob3" && edition === "cd v1.02");
 }
 
 export function supportsContinue(engineId, gameId, extra = "") {
   const edition = typeof extra === "string" ? extra.toLowerCase() : "";
-  if (usesDeferredDemoContinue(engineId, gameId, edition)) return true;
+  if (usesDeferredContinue(engineId, gameId, edition)) return true;
   if (engineId === "grim") {
     return (gameId === "grim" && edition === "demo")
       || (gameId === "monkey4" && edition === "web demo");
@@ -305,7 +306,7 @@ export function installContinueSaves({ scope, FS, Module, launchUrl, assetUrl })
     if (playerSaves) scope.__scummwebPublishPlayerSaves(playerSaves, occupiedSlots);
     const save = latestPlayerSave(snapshot, listing);
     const deferred = params.get("continue") === "1" &&
-      usesDeferredDemoContinue(snapshot.engineId, snapshot.gameId, snapshot.extra.toLowerCase());
+      usesDeferredContinue(snapshot.engineId, snapshot.gameId, snapshot.extra.toLowerCase());
     const schedule = deferred ? scope.__scummwebQueueStartupLoad : undefined;
     const autoSlot = !deferred || schedule ? scope.__scummwebAutosaves?.startup(snapshot, save, schedule) ?? -1 : -1;
     const latestSlot = autoSlot >= 0 ? autoSlot : save?.slot ?? null;

@@ -183,13 +183,28 @@
       "retire_when": "Upstream engines expose equivalent intro completion signals for the bundled editions."
     },
     {
+      "path": "patches/scummvm/zzz-gob3-cd-continue.patch",
+      "status": "active",
+      "sha256": "602bec9941f47167396725d3ed717e62735a659f929eb85ac44ecc8b03aa6bd7",
+      "purpose": "Resume Goblins Quest 3 DOS CD v1.02 from existing native slots through the launcher.",
+      "invariants": [
+        "Use the detected CD edition and DOS platform before scanning a temporary import target.",
+        "List native Gob v3 slots and defer loading until the normal in-game restore boundary. Preserve the interactive demo and exclude unverified retail variants.",
+        "Let the original room script consume the validated Gob v3 reader once after the isolated autosave directory closes. Do not cache its bytes as a manual slot."
+      ],
+      "verification": [
+        "Reopen an existing full DOS CD save, confirm Continue appears, and restore a distinct scene position. Repeat with a rotating autosave and verify the interactive demo still resumes."
+      ],
+      "retire_when": "Upstream reports and restores the same Gob v3 CD slots at startup without an engine-specific bridge."
+    },
+    {
       "path": "patches/scummvm/zz-elvira-continue.patch",
       "status": "active",
-      "sha256": "cabdd10f128bbd42a9f03e700700a975fa8fddc6967fa5110d404b943e17e742",
+      "sha256": "dafb8fdd2705ab89db4e9e85d69d575136a045c73c2b0e614e833e75b4bef999",
       "purpose": "Continue the full Elvira games from their existing native slots after AGOS initializes the playable scene.",
       "invariants": [
         "Keep the full-game check separate from AGOS demo matching and preserve the Simon II CD restore path.",
-        "Consume an explicit transient startup slot once and use the ordinary native Elvira redraw.",
+        "Consume an explicit transient startup slot once and use the ordinary native Elvira redraw. Retain a rotating checkpoint until that attempt completes, even when the title already rendered.",
         "Use the detector platform for the first save scan when the imported target has no configured platform."
       ],
       "verification": [
@@ -2091,8 +2106,8 @@
     {
       "path": "patches/scummvm/99-scumm-startup-autosave-overlay.patch",
       "status": "active",
-      "sha256": "36056a5becbb9d2eb6685fc9f1c08d76f322db0726767b352afa342ce37dd4ad",
-      "purpose": "Keep a rotating SCUMM checkpoint available until the native cold-load attempt completes.",
+      "sha256": "5030ecba10b2c25c1e52c04c219c39d70856c16c979d0bc5db0f6014b9babf50",
+      "purpose": "Keep a rotating SCUMM checkpoint available until the native cold-load attempt completes through the shared startup acknowledgement.",
       "invariants": [
         "Initial frame presentation can precede SCUMM startup save reads. Release the temporary overlay after native startup and preserve older manual saves in the same slot."
       ],

@@ -115,6 +115,17 @@ test("Sky revision labels require a complete known file pair in one directory", 
   ]).revision, undefined);
 });
 
+test("Goblins Quest 3 CD save queries use inspected edition metadata", () => {
+  const game = { engineId: "gob", target: "gob3" };
+  const files = [["disc\\INTRO.STK", 612482, 1]];
+  const metadata = getVersionMetadata(game, "Goblins 3.zip", files);
+  assert.equal(metadata.extra, "CD v1.02");
+  assert.equal(formatVersionLabel(metadata), "DOS · CD · v1.02");
+  for (const otherFiles of [[["intro.stk", 105405, 1]], [...files, ["copy/intro.stk", 612482, 1]], []]) {
+    assert.equal(getVersionMetadata(game, "Goblins 3 (CD DOS).zip", otherFiles).extra, undefined);
+  }
+});
+
 test("version labels show known edition details without storage types or guessed languages", () => {
   const groups = libraryItems([], [imported("feeble", "The Feeble Files (2CD Amiga).zip")]);
   const version = groups[0].versions[0];

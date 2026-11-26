@@ -61,6 +61,13 @@ function getSkyCdRevision(game, files) {
   return signatures.find(([dnr, dsk]) => dnr === indexSize && dsk === dataSize)?.[2];
 }
 
+function isGob3DosCd(game, files) {
+  if (game.engineId !== "gob" || (game.gameId || game.target) !== "gob3" || isDemoGame(game)) return false;
+  const indexes = files.filter(([path]) => /(?:^|[\\/])intro\.stk$/i.test(path));
+  // These INTRO.STK sizes identify CD v1.02 in the pinned Gob detector.
+  return indexes.length === 1 && [612482, 616220, 619825].includes(indexes[0][1]);
+}
+
 export function getVersionMetadata(game, name = "", archiveFiles = []) {
   // Only parenthesized title/filename metadata is parsed: title words are not
   // evidence of a language or edition. Legacy edition/extra fields are fallbacks.
@@ -69,8 +76,10 @@ export function getVersionMetadata(game, name = "", archiveFiles = []) {
   const rawPlatform = knownValue(game.platform);
   const rawLanguage = knownValue(game.language);
   const rawRevision = knownValue(game.revision);
-  const revision = getSkyCdRevision(game, archiveFiles || []);
+  const gob3Cd = isGob3DosCd(game, archiveFiles || []);
+  const revision = getSkyCdRevision(game, archiveFiles || []) || (gob3Cd ? "v1.02" : undefined);
   return {
+    ...(gob3Cd && { extra: "CD v1.02" }),
     language: readLanguage(labels) || (rawLanguage && (languageNames[rawLanguage.toLowerCase()]
       || readLanguage(rawLanguage) || rawLanguage)) || readLanguage(fallback),
     platform: revision ? "DOS" : readPlatform(labels)
