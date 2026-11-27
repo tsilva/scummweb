@@ -55,6 +55,11 @@ tests when porting; do not treat an old implementation shape as the requirement.
   on imported launches without a host gameplay listener. Verify Continue with
   an older manual file in the same slot and an exit autosave at a different
   position, then confirm the in-game load list still shows the manual file.
+  Lands of Lore also presents a frame between checking the startup save header
+  and reading the saved state. Keep its checkpoint mounted until the native
+  load succeeds. Older web builds could then capture an uninitialized level
+  zero with a valid header and checksum. Reject it before modifying engine
+  state, preserve the saved files, and try the next most recent eligible save.
 
 - Host cloud transfers run in a dedicated MEMFS service before plugin or GUI
   initialization. Keep native provider implementations enabled with `--enable-cloud`.

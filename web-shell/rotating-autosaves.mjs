@@ -71,6 +71,8 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
   }
   let overlay;
   let attemptedStartup = false;
+  let landsOfLoreSlot = -1;
+  let retryLandsOfLore;
   let lastSavedAt = 0;
   const intervalMs = 120_000;
   let due = Date.now() + intervalMs;
@@ -80,8 +82,33 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
       try { FS.unlink(`/tmp/scummweb-intro/${name}`); } catch { /* Temporary files die with the frame. */ }
     }
     overlay = null;
-    waitingForNativeStartup = false;
     delete scope.__scummwebHasIntroCheckpoint;
+  }
+  function finishNativeStartup() {
+    if (!waitingForNativeStartup) return;
+    waitingForNativeStartup = false;
+    landsOfLoreSlot = -1;
+    retryLandsOfLore = undefined;
+    clearOverlay();
+  }
+  function mountStartupCheckpoint({ name, record }) {
+    try {
+      try { FS.mkdir("/tmp/scummweb-intro"); } catch { /* Directory may already exist. */ }
+      overlay = new Set();
+      for (const file of record.files) {
+        const bytes = Uint8Array.from(atob(file.contents), char => char.charCodeAt(0));
+        FS.writeFile(`/tmp/scummweb-intro/${file.name}`, bytes);
+        overlay.add(file.name);
+      }
+      scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) &&
+        !scope.__scummwebScanningSaves && !scope.__scummwebDiagnosticSaves?.active;
+      scope.__scummwebStartupAutosave = name;
+      due = 0;
+      return record.slot;
+    } catch {
+      clearOverlay();
+      return -1;
+    }
   }
   return {
     list() {
@@ -96,52 +123,60 @@ export function installRotatingAutosaves(scope, FS, savePath, params) {
       if (!waitingForNativeStartup && scope.__scummwebReadyState?.state === "ready") clearOverlay();
       return canCapture() && Date.now() >= due;
     },
-    finishNativeStartup() {
-      if (waitingForNativeStartup) clearOverlay();
-    },
+    finishNativeStartup,
+    landsOfLoreStartupSlot: () => landsOfLoreSlot,
+    retryLandsOfLoreStartup: () => retryLandsOfLore?.() ?? -1,
     retry() { due = Date.now() + 5000; },
     afterLoad() { due = 0; },
     startup(identity, manualSave, schedule) {
       if (!enabled || !identity.supported || attemptedStartup || params.get("continue") !== "1") return -1;
       attemptedStartup = true;
+      if (scope.__scummwebHasIntroCheckpoint) return -1;
       const excluded = new Set([...(identity.pending || []), ...(params.get("excludeAutosaves") || "").split(",")]);
-      for (const { name, record } of readAutosaveRing(read, data => matches(data, identity), excluded)) {
-        if (!record || scope.__scummwebHasIntroCheckpoint) continue;
-        if (manualSave && record.savedAt <= manualSave.modifiedAt) break;
-        if (schedule) {
+      const candidates = readAutosaveRing(read, data => matches(data, identity), excluded)
+        .filter(({ record }) => record && (!manualSave || record.savedAt > manualSave.modifiedAt));
+      if (schedule) {
+        for (const { name, record } of candidates) {
           if (!schedule(record.slot, record.files)) continue;
           scope.__scummwebStartupAutosave = name;
           return record.slot;
         }
-        try {
-          try { FS.mkdir("/tmp/scummweb-intro"); } catch { /* Directory may already exist. */ }
-          overlay = new Set();
-          for (const file of record.files) {
-            const bytes = Uint8Array.from(atob(file.contents), char => char.charCodeAt(0));
-            FS.writeFile(`/tmp/scummweb-intro/${file.name}`, bytes);
-            overlay.add(file.name);
-          }
-          scope.__scummwebHasIntroCheckpoint = name => overlay?.has(name) &&
-            !scope.__scummwebScanningSaves && !scope.__scummwebDiagnosticSaves?.active;
-          // These engines can present a frame before loading the slot.
-          const finishAtGameplay = identity.engineId === "drascula" || identity.engineId === "lure";
-          waitingForNativeStartup = finishAtGameplay || identity.engineId === "scumm" ||
-            (identity.engineId === "agos" && (identity.gameId === "elvira1" || identity.gameId === "elvira2"));
-          if (finishAtGameplay) {
-            // The native gameplay signal follows the final startup save read.
-            const reportGameplayStarted = scope.__scummwebReportGameplayStarted;
-            scope.__scummwebReportGameplayStarted = () => {
-              delete scope.__scummwebReportGameplayStarted;
-              clearOverlay();
-              reportGameplayStarted?.();
-            };
-          }
-          scope.__scummwebStartupAutosave = name;
-          due = 0;
-          return record.slot;
-        } catch { clearOverlay(); }
+        return -1;
       }
-      return -1;
+      const mountNext = () => {
+        clearOverlay();
+        while (candidates.length) {
+          const slot = mountStartupCheckpoint(candidates.shift());
+          if (slot >= 0) return slot;
+        }
+        return -1;
+      };
+      const slot = mountNext();
+      if (slot < 0) return -1;
+
+      // Some engines present a frame before reading the startup slot.
+      const landsOfLore = identity.engineId === "kyra" && identity.gameId === "lol";
+      const finishAtGameplay = landsOfLore || identity.engineId === "drascula" || identity.engineId === "lure";
+      waitingForNativeStartup = finishAtGameplay || identity.engineId === "scumm" ||
+        (identity.engineId === "agos" && (identity.gameId === "elvira1" || identity.gameId === "elvira2"));
+      if (finishAtGameplay) {
+        const reportGameplayStarted = scope.__scummwebReportGameplayStarted;
+        scope.__scummwebReportGameplayStarted = () => {
+          delete scope.__scummwebReportGameplayStarted;
+          finishNativeStartup();
+          reportGameplayStarted?.();
+        };
+      }
+      if (landsOfLore) {
+        landsOfLoreSlot = slot;
+        retryLandsOfLore = () => {
+          const nextSlot = mountNext();
+          if (nextSlot >= 0) return nextSlot;
+          retryLandsOfLore = undefined;
+          return manualSave?.slot ?? -1;
+        };
+      }
+      return slot;
     },
     save(result, slot) {
       const identity = scope.__scummwebSaveStatus;

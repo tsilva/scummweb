@@ -1,8 +1,8 @@
 {
-  "version": "sha-b5d535cef4900db44d905299",
+  "version": "sha-708c5aac64fb956b21aac700",
   "files": {
     "/scummvm.js": "sha-466cda7ed9b43d324d4ebd8a",
-    "/scummvm.wasm": "sha-938451a554054a069ac79f6e",
+    "/scummvm.wasm": "sha-f9bde49d01eab39499481c06",
     "/scummvm_fs.js": "sha-2ad07c01f6a87d406c611213",
     "/audio-start-control.mjs": "sha-5be22420debc1de1477fe594",
     "/scummvm.ini": "sha-8c24e022760c52e6e07134cc",
@@ -25,14 +25,14 @@
     "/data/gui-icons.dat": "sha-e772a8bb64ad3d7a807e859a",
     "/data/helpdialog.zip": "sha-9ff3c7964a63b18ffa0e9cfc",
     "/data/hugo.dat": "sha-228dd029399ce7318a60aebe",
-    "/data/index.json": "sha-20a41247033e94a18edab655",
+    "/data/index.json": "sha-e70016f16b2a80bbe9cc4025",
     "/data/kyra.dat": "sha-6b2cc168d3201305039e78bc",
     "/data/lure.dat": "sha-9c17cfb5349c4bd13e56b065",
     "/data/macgui.dat": "sha-5e55c29903809bf5297a28fe",
     "/data/monkey4-patch.m4b": "sha-6d0141a132bf34eb4c81d7db",
     "/data/mort.dat": "sha-ed4f797fd4aff885000ebe58",
     "/data/neverhood.dat": "sha-b86cb788237ace2988f7a8b7",
-    "/data/plugins/index.json": "sha-ac076dd2577717fd1f574727",
+    "/data/plugins/index.json": "sha-f5a719e6bae2be682adb4c90",
     "/data/plugins/libaccess.so": "sha-1f094a7e9d6b686c3dd58f90",
     "/data/plugins/libadl.so": "sha-82b18d9b3a8c589fbbd74a3a",
     "/data/plugins/libagi.so": "sha-d06d9611a5e3139241eed2f5",
@@ -56,7 +56,7 @@
     "/data/plugins/libgroovie.so": "sha-ea25d11de88140387c57d7c1",
     "/data/plugins/libhopkins.so": "sha-34c289314f567e28779ea965",
     "/data/plugins/libhugo.so": "sha-e58b07c133ab531b61551435",
-    "/data/plugins/libkyra.so": "sha-3f15805f40b4f2ea691534df",
+    "/data/plugins/libkyra.so": "sha-2552114daee12ec88636826a",
     "/data/plugins/liblab.so": "sha-be377184fa89fcfa80ee89ff",
     "/data/plugins/liblure.so": "sha-10516197c562b169b93d6667",
     "/data/plugins/libmade.so": "sha-8fc5fb8e22332c073e94410e",
@@ -180,6 +180,6 @@
     "/launcher/skip-intro/soltys/soltys.001": "sha-a228224141169a9874a5f13a",
     "/launcher/skip-intro/sword2-demo/sword2-demo.090": "sha-78be5e51bbb930a02ffd917b",
     "/launcher/skip-intro/sword25/sword25.000": "sha-182cf3396ee26d6ea6d3d567",
-    "/scummvm.html": "sha-b5d535cef4900db44d905299"
+    "/scummvm.html": "sha-708c5aac64fb956b21aac700"
   }
 }

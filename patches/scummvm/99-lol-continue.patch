@@ -1,0 +1,114 @@
+diff --git a/engines/kyra/engine/lol.cpp b/engines/kyra/engine/lol.cpp
+--- a/engines/kyra/engine/lol.cpp
++++ b/engines/kyra/engine/lol.cpp
+@@ -21,6 +21,7 @@
+ 
+ #ifdef ENABLE_LOL
+ 
++#include "engines/scummweb-intro.h"
+ #include "engines/scummweb-telemetry.h"
+ 
+ #include "kyra/engine/lol.h"
+@@ -532,6 +533,14 @@
+ }
+ 
+ Common::Error LoLEngine::go() {
++#ifdef __EMSCRIPTEN__
++	// A rejected checkpoint header can clear _gameToLoad during init().
++	const int checkpoint = EM_ASM_INT({
++		return globalThis.__scummwebAutosaves?.landsOfLoreStartupSlot() ?? -1;
++	});
++	if (checkpoint >= 0)
++		_gameToLoad = checkpoint;
++#endif
+ 	int action = -1;
+ 	if (_gameToLoad == -1) {
+ 		action = processPrologue();
+@@ -576,16 +585,33 @@
+ 	if (action == 0) {
+ 		startupNew();
+ 	} else if (_gameToLoad != -1) {
++#ifdef __EMSCRIPTEN__
++		for (;;) {
++			const Common::Error result = loadGameState(_gameToLoad);
++			if (result.getCode() == Common::kNoError)
++				break;
++			_gameToLoad = EM_ASM_INT({
++				return globalThis.__scummwebAutosaves?.retryLandsOfLoreStartup() ?? -1;
++			});
++			if (_gameToLoad < 0)
++				return result;
++		}
++#else
+ 		// FIXME: Instead of throwing away the error returned by
+ 		// loadGameState, we should use it / augment it.
+ 		if (loadGameState(_gameToLoad).getCode() != Common::kNoError)
+ 			error("Couldn't load game slot %d on startup", _gameToLoad);
++#endif
+ 		_gameToLoad = -1;
+ 	}
+ 
+ 	_screen->_fadeFlag = 3;
+ 	_sceneUpdateRequired = true;
+ 	enableSysTimer(1);
++#ifdef __EMSCRIPTEN__
++	// The first presented frame can precede the second read of the startup save.
++	ScummWebIntro::gameplayStarted();
++#endif
+ 	runLoop();
+ 
+ 	return Common::kNoError;
+@@ -944,7 +970,11 @@
+ 			// FIXME: Instead of throwing away the error returned by
+ 			// loadGameState, we should use it / augment it.
+ 			if (loadGameState(_gameToLoad).getCode() != Common::kNoError)
++#ifdef __EMSCRIPTEN__
++				warning("Couldn't load game slot %d", _gameToLoad);
++#else
+ 				error("Couldn't load game slot %d", _gameToLoad);
++#endif
+ 			_gameToLoad = -1;
+ 		}
+ 
+diff --git a/engines/kyra/gui/saveload_lol.cpp b/engines/kyra/gui/saveload_lol.cpp
+--- a/engines/kyra/gui/saveload_lol.cpp
++++ b/engines/kyra/gui/saveload_lol.cpp
+@@ -39,10 +39,27 @@
+ 
+ 	SaveHeader header;
+ 	Common::InSaveFile *saveFile = openSaveForReading(fileName, header);
++#ifdef __EMSCRIPTEN__
++	if (saveFile && !header.originalSave) {
++		// Old web builds could save before the first level had been loaded.
++		// Check the level byte before changing the current party or room.
++		const int64 bodyStart = saveFile->pos();
++		const uint characterBytes = 126; // One serialized character.
++		const uint levelOffset = 4 * characterBytes + 18 + (header.version < 17 ? 80 : 0);
++		const uint8 level = saveFile->skip(levelOffset) ? saveFile->readByte() : 0;
++		if (level == 0 || level > ARRAYSIZE(_lvlTempData) || !saveFile->seek(bodyStart)) {
++			delete saveFile;
++			saveFile = nullptr;
++		}
++	}
++	if (!saveFile)
++		return Common::kReadingFailed;
++#else
+ 	if (!saveFile) {
+ 		_txt->printMessage(2, "%s", getLangString(0x425D));
+ 		return Common::kNoError;
+ 	}
++#endif
+ 
+ 	if (header.originalSave)
+ 		warning("Trying to load savegame from original interpreter, while this is possible, it is not officially supported");
+@@ -337,6 +354,10 @@
+ }
+ 
+ Common::Error LoLEngine::saveGameStateIntern(int slot, const char *saveName, const Graphics::Surface *thumbnail) {
++#ifdef __EMSCRIPTEN__
++	if (_currentLevel < 1 || _currentLevel > ARRAYSIZE(_lvlTempData))
++		return Common::kWritingFailed;
++#endif
+ 	const char *fileName = getSavegameFilename(slot);
+ 
+ 	Common::OutSaveFile *out = openSaveForWriting(fileName, saveName, thumbnail);

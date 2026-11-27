@@ -1542,6 +1542,22 @@
       "retire_when": "Upstream exposes an equivalent reliable dialogue-choice state to the hosted web player."
     },
     {
+      "path": "patches/scummvm/99-lol-continue.patch",
+      "status": "active",
+      "sha256": "a1c23be27a98149f7d8856f4e419bffb906af3f1edc6fefc24d9f599ee93cb2c",
+      "purpose": "Keep Lands of Lore startup autosaves readable through the engine's final startup load, and recover from legacy level-zero autosaves.",
+      "invariants": [
+        "In the web build, acknowledge startup after the native load succeeds. Preserve ordinary launch behavior and the native save format.",
+        "Reject uninitialized ScummVM save levels before changing the party or room. Retry older checkpoints and the eligible manual slot without writing into the save directory.",
+        "Never serialize the level-zero startup state. Keep the legacy original-interpreter format on its native read path."
+      ],
+      "verification": [
+        "In Brave, exit the CD demo from a recognizable position, use Continue, and confirm the same position and working input. Repeat with a pre-fix level-zero autosave newer than the valid checkpoint.",
+        "Choose a level-zero autosave from Load Game and verify an error with the current scene intact. Load the valid checkpoint and confirm the manual slot is preserved."
+      ],
+      "retire_when": "The web startup load keeps its selected checkpoint mounted and the native engine rejects invalid levels before mutating state or writing saves, with equivalent fallback behavior."
+    },
+    {
       "path": "patches/scummvm/99-route-nippon-load-to-player-menu.patch",
       "status": "active",
       "sha256": "361942d870ba0266aa515ef55ddb11fe60787bd589a80dbe038b24e1211c2c8d",

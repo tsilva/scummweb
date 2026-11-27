@@ -75,6 +75,7 @@ for (const { engineId, gameId, target, extra, filename, gameplayBoundary, catalo
   { engineId: "agos", gameId: "elvira2", target: "elvira2", extra: "", filename: "elvira2-pc.001" },
   { engineId: "drascula", gameId: "drascula", target: "drascula", extra: "", filename: "drascula.001", gameplayBoundary: true, catalog: true },
   { engineId: "lure", gameId: "lure", target: "lure-vga", extra: "VGA", filename: "lure.001", gameplayBoundary: true },
+  { engineId: "kyra", gameId: "lol", target: "lol-demo", extra: "cd/demo", filename: "lol-demo.001", gameplayBoundary: true, catalog: true },
 ]) test(`${gameId} keeps the rotating checkpoint after its early ready frame`, () => {
   const detected = { engineId, gameId, target, extra, supported: true };
   const manualPath = `${path}/${filename}`;
@@ -104,4 +105,32 @@ for (const { engineId, gameId, target, extra, filename, gameplayBoundary, catalo
   assert.equal(resumed.files.has(temporaryPath), false);
   assert.equal(resumed.files.get(manualPath), "older manual position");
   assert.equal(resumed.checkpoint.due(), true);
+});
+
+test("Lands of Lore can retry a rejected startup checkpoint through the next eligible save", () => {
+  const detected = { engineId: "kyra", gameId: "lol", target: "lol-demo", extra: "cd/demo", supported: true };
+  const filename = "lol-demo.001";
+  const temporaryPath = `/tmp/scummweb-intro/${filename}`;
+  const original = player(new Map([[`${path}/${filename}`, "manual bytes"]]));
+  original.scope.__scummwebSaveStatus = detected;
+  for (const state of ["older playable state", "newer rejected state"]) {
+    assert.equal(original.checkpoint.save({
+      status: "captured", files: [{ name: filename, data: data.encode(state) }],
+    }, 1), true);
+  }
+  const resumed = player(new Map(original.files), preview + "&continue=1");
+  assert.equal(resumed.checkpoint.startup(detected, { slot: 1, modifiedAt: 0 }), 1);
+  assert.equal(resumed.checkpoint.landsOfLoreStartupSlot(), 1);
+  assert.equal(Buffer.from(resumed.files.get(temporaryPath)).toString(), "newer rejected state");
+  assert.equal(resumed.checkpoint.retryLandsOfLoreStartup(), 1);
+  assert.equal(Buffer.from(resumed.files.get(temporaryPath)).toString(), "older playable state");
+  assert.equal(resumed.checkpoint.canCapture(), false);
+  assert.equal(resumed.checkpoint.retryLandsOfLoreStartup(), 1);
+  assert.equal(resumed.files.has(temporaryPath), false);
+  assert.equal(resumed.files.get(`${path}/${filename}`), "manual bytes");
+  assert.equal(resumed.checkpoint.canCapture(), false);
+  assert.equal(resumed.checkpoint.retryLandsOfLoreStartup(), -1);
+  resumed.scope.__scummwebReportGameplayStarted();
+  assert.equal(resumed.checkpoint.landsOfLoreStartupSlot(), -1);
+  assert.equal(resumed.checkpoint.canCapture(), true);
 });
