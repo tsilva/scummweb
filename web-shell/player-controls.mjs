@@ -76,7 +76,7 @@ export function installPlayerControls(scope, requestMenu) {
     },
     saveOnExit() {
       if (exitSave) return exitSave.promise;
-      if (canSaveHere === false || !scope.__scummwebAutosaves?.canCapture() ||
+      if (startupLoad || pending?.startup || !scope.__scummwebAutosaves?.canCapture() ||
           !scope.__scummwebDiagnosticSaves?.supported()) return;
       const promise = new Promise((resolve) => {
         exitSave = { resolve, timer: scope.setTimeout(finishExitSave, 5000) };
@@ -197,31 +197,35 @@ export function installPlayerControls(scope, requestMenu) {
         pending = { operation: "autosave", slot, dispatched: true, exitSave };
         return slot;
       }
-      if (!exitSave) scope.__scummwebAutosaves.retry();
+      if (exitSave) finishExitSave();
+      else scope.__scummwebAutosaves.retry();
     }
-    if (!pending && !startupLoad) {
+    // A drawing or dialogue frame can reject saving just before the engine
+    // reaches its saveable input loop. Let the exit request survive that frame.
+    if (!pending && (!canSave || !canLoad)) {
       finishExitSave();
     }
+    const idleControl = menuOpen && !exitSave ? -1 : 0;
     if (pending && !pending.dispatched) {
       if (pending.operation === "report" && !scope.__scummwebDiagnosticSaves.begin()) {
         scope.clearTimeout(pending.timer);
         pending.resolve({ status: "unavailable", files: [], reason: "temporary-storage-unavailable" });
         pending = undefined;
-        return menuOpen ? -1 : 0;
+        return idleControl;
       }
       if (pending.isolated && (!canLoad || pending.slot > max || scope.__scummwebSaveWriteInProgress?.() ||
           !scope.__scummwebDiagnosticSaves?.beginRestore(pending.isolated.files))) {
         scope.clearTimeout(pending.timer);
         pending.resolve({ error: "This saved game could not be opened." });
         pending = undefined;
-        return menuOpen ? -1 : 0;
+        return idleControl;
       }
       pending.dispatched = true;
       const { operation, slot } = pending;
       if (operation === "save" || operation === "report") return slot;
       return slot === 0 ? 2 * max + 1 : max + slot;
     }
-    return menuOpen ? -1 : 0;
+    return idleControl;
   }
 
   scope.__scummwebAgentBoundary = (tick, max, reserved = 0, canAutosaveNow) =>
@@ -234,15 +238,17 @@ export function installPlayerControls(scope, requestMenu) {
     pending = undefined;
     scope.clearTimeout(timer);
     if (operation === "autosave") {
+      let saved = false;
       try {
         const result = scope.__scummwebDiagnosticSaves.finish(error);
-        if ((!exitRequest || exitRequest === exitSave) && scope.__scummwebAutosaves.save(result, slot)) {
+        saved = (!exitRequest || exitRequest === exitSave) && scope.__scummwebAutosaves.save(result, slot);
+        if (saved) {
           scope.Module?._scummweb_refresh_saves?.();
         } else if (!exitRequest) {
           scope.__scummwebAutosaves.retry();
         }
       } finally {
-        if (!exitRequest || exitRequest === exitSave) finishExitSave();
+        if (exitRequest ? exitRequest === exitSave : saved) finishExitSave();
       }
       return;
     }

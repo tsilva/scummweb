@@ -240,26 +240,66 @@ test("exit captures an autosave in native slot 1 before the periodic save is due
   assert.equal(timers.size, 0);
 });
 
-test("exit skips capture when the engine cannot save and times out without a native boundary", async () => {
+test("exit releases the menu hold and waits across frames where saving is temporarily unavailable", async () => {
+  const { scope, controls, timers } = createPlayer();
+  scope.__scummwebAutosaves = { canCapture: () => true, due: () => false, save: () => true };
+  scope.__scummwebDiagnosticSaves = {
+    supported: () => true, begin: () => true, finish: () => ({ status: "captured" }),
+  };
+  const boundary = (saveable) => scope.__scummwebAgentFrameBoundary(
+    true, 99, 0, true, true, false, saveable && scope.__scummwebPlayerAutosaveDue(),
+  );
+
+  controls.setMenuOpen(true);
+  scope.__scummwebPublishSaveAvailability(false);
+  assert.equal(boundary(false), -1);
+  const exit = controls.saveOnExit();
+  assert.equal(boundary(false), 0);
+  assert.equal(boundary(false), 0);
+  assert.equal(timers.size, 1);
+  assert.equal(boundary(true), 1);
+  scope.__scummwebAgentSaveResult(null);
+  await exit;
+  assert.equal(timers.size, 0);
+});
+
+test("exit skips unsupported engines and times out if no boundary allows saving", async () => {
   const { scope, controls, timers } = createPlayer();
   scope.__scummwebAutosaves = { canCapture: () => true, due: () => false };
   scope.__scummwebDiagnosticSaves = { supported: () => true, begin: () => assert.fail("unexpected capture") };
 
-  const blocked = controls.saveOnExit();
-  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, true, true, false, false), 0);
-  await blocked;
-  controls.setMenuOpen(true);
-  scope.__scummwebPublishSaveAvailability(false);
-  await controls.saveOnExit();
+  const unsupported = controls.saveOnExit();
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, false, true, false, false), 0);
+  await unsupported;
   assert.equal(timers.size, 0);
 
-  controls.setMenuOpen(false);
   const stalled = controls.saveOnExit();
+  assert.equal(scope.__scummwebAgentFrameBoundary(true, 99, 0, true, true, false, false), 0);
   const [timer] = timers.values();
   timer();
   await stalled;
   assert.equal(timers.size, 0);
   assert.equal(scope.__scummwebAgentBoundary(true, 99), 0);
+});
+
+test("a failed periodic autosave does not consume a pending exit request", async () => {
+  const { scope, controls, timers } = createPlayer();
+  const boundary = () => scope.__scummwebAgentBoundary(true, 99, 0, scope.__scummwebPlayerAutosaveDue());
+  scope.__scummwebAutosaves = {
+    canCapture: () => true, due: () => true, retry() {}, save: (result) => !result.error,
+  };
+  scope.__scummwebDiagnosticSaves = {
+    supported: () => true, begin: () => true, finish: (error) => ({ error }),
+  };
+
+  assert.equal(boundary(), 1);
+  const exit = controls.saveOnExit();
+  scope.__scummwebAgentSaveResult("save unavailable");
+  assert.equal(timers.size, 1);
+  assert.equal(boundary(), 1);
+  scope.__scummwebAgentSaveResult(null);
+  await exit;
+  assert.equal(timers.size, 0);
 });
 
 test("a timed-out dispatched load cannot complete a newer request", async () => {

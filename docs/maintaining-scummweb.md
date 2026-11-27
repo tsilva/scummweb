@@ -225,8 +225,9 @@ hidden. They return to their normal visibility when the action disappears.
 for the selected edition. It skips damaged checkpoints. Supported games keep up
 to three checkpoints. When the two-minute timer comes due, an autosave waits
 until the game allows saving. The next interval starts after the save succeeds.
-ScummWEB also saves at the first safe moment after loading and when you select
-**Exit game** in a scene that allows saving.
+ScummWEB also saves at the first safe moment after loading. When you select
+**Exit game**, the player waits up to five seconds for the engine to allow an
+autosave before closing it.
 **Load Game** lists them alongside manual saves.
 The browser captures the engine's native save and companion files without
 overwriting any manual slot. SCUMM, Drascula, Lure of the Temptress and Lands of
