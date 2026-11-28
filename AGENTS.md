@@ -9,6 +9,9 @@
 - Use [$scummweb_verify-dropbox](.codex/skills/scummweb_verify-dropbox/SKILL.md)
   for Dropbox save-sync regression checks, live-account QA and interruption recovery.
 
+- Use [$scummweb_audit-skip-intro](.codex/skills/scummweb_audit-skip-intro/SKILL.md)
+  for the production Skip intro audit across bundled demos.
+
 - Edit runtime templates in `web-shell/` and native patches in `patches/scummvm/`.
   Rebuild the managed `scummvm-shell/` using the [runtime build guide](docs/maintaining-scummweb.md#rebuilding-and-upgrading-scummvm).
   App commands validate and stage that bundle into `public/`.

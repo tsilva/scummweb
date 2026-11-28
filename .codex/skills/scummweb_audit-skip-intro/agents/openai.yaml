@@ -1,0 +1,4 @@
+interface:
+  display_name: "scummweb: Audit Skip Intro"
+  short_description: "Audit Skip intro across production demos"
+  default_prompt: "Use $scummweb_audit-skip-intro to run the production demo audit with GPT-6.1 Terra low and aggregate the results with GPT-6.2 Sol high."
