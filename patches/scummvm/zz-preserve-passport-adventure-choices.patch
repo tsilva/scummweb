@@ -1,0 +1,49 @@
+--- a/engines/scumm/input.cpp
++++ b/engines/scumm/input.cpp
+@@ -414,7 +414,7 @@
+ 		const bool protectionPrompt = _game.id == GID_MONKEY2 && _game.platform == Common::kPlatformAmiga &&
+ 			!(_game.features & GF_DEMO) && _currentRoom == 108 && _roomResource == 108 &&
+ 			!memcmp(_gameMD5, "\x13\x2b\xff\x65\xe6\x36\x7c\x09\xcc\x69\x31\x8c\xe1\xb5\x93\x33", 16);
+-		if (protectionPrompt) {
++		if (protectionPrompt || isPassportChoiceRoom()) {
+ 			skipOpening = false;
+ 			canSkip = false;
+ 		}
+--- a/engines/scumm/scumm.cpp
++++ b/engines/scumm/scumm.cpp
+@@ -142,6 +142,14 @@
+ 
+ 
+ const char *const insaneKeymapId = "scumm-insane";
++
++#ifdef __EMSCRIPTEN__
++bool ScummEngine::isPassportChoiceRoom() const {
++	return _game.id == GID_PASS && _game.platform == Common::kPlatformDOS &&
++		!memcmp(_gameMD5, "\xe6\xcd\x81\xb2\x5a\xb1\x45\x3a\x8a\x6d\x34\x82\x11\x8c\x39\x1e", 16) &&
++		(_currentRoom == 1 || _currentRoom == 2) && _roomResource == _currentRoom;
++}
++#endif
+ 
+ ScummEngine::ScummEngine(OSystem *syst, const DetectorResult &dr)
+ 	: Engine(syst),
+@@ -2969,7 +2977,7 @@
+ 			const bool curseOpening = _game.id == GID_CMI && _currentRoom == 87;
+ 			if (_roomResource != 0 && _userPut > 0 && vm.cutSceneStackPointer == 0 &&
+ 				(!ScummWebIntro::nativeSkipEnabled() ||
+-				 (!loomOpening && !maniacOpening && !curseOpening && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
++				 (!loomOpening && !maniacOpening && !curseOpening && !isPassportChoiceRoom() && _cursor.state > 0 && vm.cutScenePtr[0] == 0)))
+ 				ScummWebIntro::gameplayStarted();
+ #endif
+ 			if (VAR_LAST_FRAME_SCUMM_TIME != 0xFF)
+--- a/engines/scumm/scumm.h
++++ b/engines/scumm/scumm.h
+@@ -691,6 +691,9 @@
+ 	uint32 getIntegralTime(double fMsecs);
+ 	double _msecFractParts = 0.0;
+ 
++#ifdef __EMSCRIPTEN__
++	bool isPassportChoiceRoom() const;
++#endif
+ 	virtual void processInput();
+ 	virtual void processKeyboard(Common::KeyState lastKeyHit);
+ 	virtual void clearClickedStatus();

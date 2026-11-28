@@ -1,0 +1,73 @@
+diff --git a/engines/ags/engine/main/game_run.cpp b/engines/ags/engine/main/game_run.cpp
+index 190ceed4..fb1bb4c3 100644
+--- a/engines/ags/engine/main/game_run.cpp
++++ b/engines/ags/engine/main/game_run.cpp
+@@ -72,6 +72,8 @@
+ #include "ags/plugins/plugin_engine.h"
+ #include "ags/engine/script/script.h"
+ #include "ags/engine/script/script_runtime.h"
++#include "ags/ags.h"
++#include "engines/advancedDetector.h"
+ #include "ags/events.h"
+ #include "ags/globals.h"
+ 
+@@ -81,6 +83,38 @@ namespace AGS3 {
+ 
+ using namespace AGS::Shared;
+ 
++#ifdef __EMSCRIPTEN__
++// The two verified demos use a native opening cutscene in their title room.
++// The menu occupies that same room, so end availability at EndCutscene.
++static bool scummwebAgsOpeningSeen = false;
++static bool scummwebAgsOpeningDone = false;
++static bool scummwebAgsOpeningEdition() {
++	if (!(::AGS::g_vm->getFeatures() & ADGF_DEMO))
++		return false;
++	const auto gameId = ::AGS::g_vm->getGameId();
++	return (gameId == "primordia" && _GP(game).uniqueid == 263302343 && _G(displayed_room) == 27) ||
++	       (gameId == "technobabylon" && _GP(game).uniqueid == 1186933 && _G(displayed_room) == 2);
++}
++static void scummwebAgsOpeningTick() {
++	if (scummwebAgsOpeningDone || !scummwebAgsOpeningEdition())
++		return;
++	if (_GP(play).in_cutscene) {
++		scummwebAgsOpeningSeen = true;
++		const auto mode = get_cutscene_skipstyle();
++		const bool keyboard = mode == eSkipSceneAnyKey || mode == eSkipSceneKeyMouse ||
++		                      mode == eSkipSceneEscOnly || mode == eSkipSceneEscOrRMB;
++		if (ScummWebIntro::nativeSkipEnabled() && ScummWebIntro::skipRequested(keyboard)) {
++			check_skip_cutscene_keypress(eAGSKeyCodeEscape);
++			ScummWebIntro::skipRequested(false);
++			scummwebAgsOpeningDone = true;
++		}
++	} else if (scummwebAgsOpeningSeen) {
++		ScummWebIntro::skipRequested(false);
++		scummwebAgsOpeningDone = true;
++	}
++}
++#endif
++
+ static bool ShouldStayInWaitMode();
+ 
+ #define UNTIL_ANIMEND   1
+@@ -585,7 +619,8 @@ static void game_loop_check_controls(bool checkControls) {
+ 		int inRoom = _G(displayed_room);
+ 		size_t numevents_was = _GP(events).size();
+ #ifdef __EMSCRIPTEN__
+-		if (_G(displayed_room) == 2 && !_GP(play).in_cutscene && !_GP(play).disabled_user_interface)
++		if (_G(displayed_room) == 2 && !_GP(play).in_cutscene && !_GP(play).disabled_user_interface &&
++		    (!scummwebAgsOpeningEdition() || scummwebAgsOpeningDone))
+ 			ScummWebIntro::gameplayStarted();
+ #endif
+ 		check_controls();
+@@ -793,6 +828,10 @@ void UpdateGameOnce(bool checkControls, IDriverDependantBitmap *extraBitmap, int
+ 
+ 	int res;
+ 
++#ifdef __EMSCRIPTEN__
++	scummwebAgsOpeningTick();
++#endif
++
+ 	sys_evt_process_pending();
+ 
+ 	_G(numEventsAtStartOfFunction) = _GP(events).size();

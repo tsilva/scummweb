@@ -670,15 +670,26 @@ test("native Load Game opens the load drawer only from the ready active frame", 
   player.unmount();
 });
 
-test("the Curse demo opens without offering Skip intro over its playable scene", async () => {
+test("checkpoint-only Curse demo offers only an advertised native skip", async () => {
   const library = JSON.parse(await readFile(new URL("../scummvm-shell/games.json", import.meta.url), "utf8"));
   const game = library.games.find(({ target }) => target === "comi-demo");
   const skipIntro = skipIntroConfig.normalizeSkipIntroConfig(game.skipIntro);
   assert.equal(skipIntro.strategy, "save-slot", "the explicit seed remains available");
 
-  const player = pendingArchivePlayer({ skipIntro });
+  const player = pendingArchivePlayer({ skipIntro, catalog: true });
   player.render();
   player.setBootCompleted();
+  assert.equal(player.controls.showSkipIntroAction, false, "checkpoint alone does not offer a skip");
+  player.nativeIntro(true);
+  assert.equal(player.controls.showSkipIntroAction, true, "native availability exposes the action");
+  const href = player.frame.contentDocument.URL;
+  let requests = 0;
+  player.frame.contentWindow.__scummwebRequestIntroSkip = () => { requests++; return true; };
+  player.controls.onSkipIntro();
+  player.render();
+  assert.equal(requests, 1);
+  assert.equal(player.frame.contentDocument.URL, href, "native skip does not load the checkpoint");
+  player.nativeIntro(false);
   assert.equal(player.controls.showSkipIntroAction, false);
   player.unmount();
 });

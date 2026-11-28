@@ -221,7 +221,7 @@ export default function GameRouteFrame({
     });
   }, [restoreRemoteFullscreen]);
   const skipIntro = isResuming || intro?.checkpointOnly ? null : intro;
-  const canSkipNativeIntro = (!catalogLaunch || !intro) && !isResuming &&
+  const canSkipNativeIntro = (!catalogLaunch || !intro || intro.checkpointOnly) && !isResuming &&
     frameSrc !== null && nativeIntroFrameHref === frameSrc;
   const gameplayStarted = frameSrc !== null && gameplayFrameHref === frameSrc;
   const currentReadySignal = readySignal?.href === frameSrc ? readySignal : null;

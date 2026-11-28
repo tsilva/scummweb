@@ -144,7 +144,9 @@ each axis to preserve symmetric spacing around cutouts.
   command prompt. Demon in my Pocket and Swampy Adventures each share a single
   slot with their native saves. Swampy restores unlocked levels on the map.
 - Discworld (Demo), the DOS CD edition, supports **Save Game** and **Load Game**
-  through the shared menu once Rincewind is controllable.
+  through the shared menu once Rincewind is controllable. **Skip intro**
+  reaches the original title. The title’s idle credits leave the control
+  hidden until an eligible opening after the player starts the game.
 - **Report a bug** is the last game-menu action. Describe the problem and send
   the report; game identity and player settings are included automatically.
   Opening the form requests a native diagnostic save when the engine permits
@@ -346,7 +348,9 @@ before the first player decision. Preserve language, character, or control
 selection when the original game requires it. An edition without a checkpoint
 can use its engine's live intro action, shown only while that engine reports
 an opening segment that can be skipped. Full Throttle's demo uses this path
-because saving is unavailable before its first decision. Imported games offer **Skip intro**
+because saving is unavailable before its first decision. The Curse of Monkey
+Island demo also uses the live action during its skippable opening dialogue.
+Its packaged checkpoint stays out of the player action. Imported games offer **Skip intro**
 while their engine exposes a supported opening segment. The action advances
 through the game's original transition and preserves its menus and choices.
 Continue omits the action. The Big Red Adventure can skip its publisher slides
@@ -359,6 +363,23 @@ of Monkey Island and Fate of Atlantis demos use their bundled intro checkpoints
 for Skip intro. Save and Load are available while the original scene accepts
 input. Continue opens the latest player checkpoint. Castle Master’s DOS demo
 continues directly into the saved 3D area.
+Geisha’s Amiga opening keeps its original Start and Resume choices. After
+Start, **Skip intro** advances through the opening text to the camera screen.
+The original Discworld DOS CD title and its idle credits remain separate
+from the skippable story after starting a game.
+In Hoyle’s Book of Games Volume 3 for DOS EGA, **Skip intro** advances from
+the credits to the original six-game selection. In the DOS VGA remake of
+Space Quest I and the DOS CD edition of Space Quest IV, it hands off to the
+game’s original Skip, Watch, or Restore choice. Space Quest III’s English
+Amiga publisher opening plays through to its original story.
+The English Amiga edition of Monkey Island 2 keeps its original
+copy-protection prompt with **Skip intro** hidden there.
+Passport to Adventure offers separate **Skip intro** actions for the
+publisher logo and the selected game’s opening. The original game chooser
+and F1 help remain available between them.
+The English Amiga edition of Maniac Mansion preserves the original team
+selection. **Skip intro** appears during the mansion movie after Start and
+keeps the selected team.
 Gobliiins’ bundled interactive DOS v2.0 demo uses the native intro action.
 ScummWEB saves during puzzle play preserve the scene, characters and puzzle
 objects. Continue advances through the original intro to restore the latest
@@ -381,8 +402,9 @@ are supported in this edition. Its bundled intro checkpoint starts at the first
 playable town scene after the original narration, before any player action.
 
 Space Quest 6’s voiced interactive demo retains its original title, instructions
-and opening scenes. The ScummWEB menu saves the active scene once gameplay
-accepts input. Continue restores the latest checkpoint.
+and opening scenes. **Skip intro** advances the skippable opening stage and
+keeps the original story and control instructions. The ScummWEB menu saves the
+active scene once gameplay accepts input. Continue restores the latest checkpoint.
 
 The Macintosh Pegasus Prime demo uses numbered ScummWEB saves in the
 prehistoric area. Load restores the saved view, and Continue can resume the
@@ -443,13 +465,17 @@ Torin’s Passage’s English DOS/Windows interactive demo keeps its complete un
 
 The English Windows Myst preview uses its own ScummWEB save slots. Save, Load and Continue preserve the current library view and the open page of a book. Fresh Play opens the original preview menu.
 
-Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. The original menu, New Game movie and office start prompt are preserved without a seeded browser checkpoint. Scrapbook interaction and page navigation work. ScummWEB saves use the native SCI32 format. Load Game can restore the office from the scrapbook, and Continue can reopen the saved office or scrapbook.
+Shivers’ English Windows interactive demo keeps its complete unchanged official ZIP, including packed Sierra setup, Microsoft video runtimes, Help and original movies. It fits the ordinary archive limits. **Skip intro** advances the opening fly-through to the original menu. The separate New Game movie and office start prompt remain available. Scrapbook interaction and page navigation work. ScummWEB saves use the native SCI32 format. Load Game can restore the office from the scrapbook, and Continue can reopen the saved office or scrapbook.
+
+In the original English Windows CD edition of Shivers, **Skip intro**
+advances the opening fly-through to the original title. New Game opens the
+museum guest setup.
 
 The interactive English demos of Space Quest 6, Lighthouse, Leisure Suit Larry 7 and Torin’s Passage also use native SCI32 saves. Use the ScummWEB menu when gameplay is active. Continue restores the saved game, and Play from the beginning opens the original demo menu or introduction. The English DOS Full Throttle demo uses its native SCUMM format once gameplay input is available.
 
 Lighthouse: The Dark Being’s English interactive demo keeps its complete unchanged official Windows ZIP, including original packed setup, Help, robot movies and notices. The pinned native detector identifies this edition as DOS/English. Its original menu and Island Fortress prompt are preserved without a seeded browser checkpoint; scene navigation works. ScummWEB Save, Load and Continue restore the saved Island Fortress view. Its Word 6 README, named README.WRI upstream, is delivered as readable UTF-8 text with the original ZIP unchanged.
 
-Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. Its original menu, game naming and chapter selection are preserved without a seeded browser checkpoint. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. ScummWEB Save, Load and Continue restore the kitchen state between movies. The original P control-panel bookmark and Continue Old Game remain available inside the demo. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
+Phantasmagoria’s English DOS v1.100.000 interactive demo keeps the complete unchanged official ZIP, including all movies, drivers, packed setup and original notices. **Skip intro** advances the skippable title stage and preserves the original Watch Intro, Start New Game, and chapter choices. Shift+Escape sends the native movie skip action while Escape opens the browser game menu. ScummWEB Save, Load and Continue restore the kitchen state between movies. The original P control-panel bookmark and Continue Old Game remain available inside the demo. The original PDOCO.TXT gameplay guide is exposed as readable text. Only this demo receives a 400 MiB archive/450 MiB expanded limit and a 15-minute download timeout, covering its pinned 363,714,852-byte ZIP and 436,843,348-byte expansion.
 
 Leisure Suit Larry 7: Love for Sail!’s English DOS v1.0 demo keeps its complete unchanged official ZIP, including original drivers, PKLITE-packed installer, DOS Help, audio/music and README. The pinned demo uses SCI2.1, while the full edition uses SCI3. Its original menu offers a promotional tour and a playable Liar’s Dice scene; tutorial and dice quantity selection work. ScummWEB Save, Load and Continue preserve the current dice selection and roll once the introductory dialogue ends.
 
@@ -506,7 +532,7 @@ Fun Seeker’s Guide to Eastern Madera County opens at its original instructions
 
 Ms. Astro Chicken begins its scrolling arcade sequence after launch. Move the pointer over the playfield to guide the chicken. Save, Load and Continue restore the active stage and its counters.
 
-The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. Dismiss the original instructions, click the picture to animate a character, or select the reading icon beside the sentence. Save, Load and Continue reopen the story page. The original stop sign opens Sierra’s end card.
+The original DOS Slater & Charlie Go Camping demo contains one interactive storybook page. **Skip intro** advances the final opening slide and retains the original instructions. Dismiss them, then click the picture to animate a character or select the reading icon beside the sentence. Save, Load and Continue reopen the story page. The original stop sign opens Sierra’s end card.
 
 The Hock-A-Loogie demo opens at the original character choice. Choose Beavis or Butt-Head, then use the mouse in the rooftop round. A brief click-and-hold can help the game register character selection. Save, Load and Continue restore the selected character and the current rooftop round, including the hit counter. Its artwork is shared with Virtual Stupidity and the gallery shows captures from that game.
 
@@ -545,14 +571,16 @@ the opening, and the first road scene accepts click-point input. ScummWEB Save, 
 Continue restore the road scene once the introduction reaches player control.
 Its existing shared artwork is reused.
 
-Technobabylon’s English Windows demo preserves its original Start menu and
-opening. Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,
+Technobabylon’s English Windows demo offers native **Skip intro** during the
+studio opening, then leaves its original Start and Restore choices available.
+Its approximately 206 MiB unchanged ZIP has a target-only 300 MiB download,
 900 MiB expanded-data allowance and 10-minute timeout. The first playable Trance
 scene supports Save, Load and Continue. Its embedded nedraed fonts retain their CC BY-SA 3.0
 notices; a separate launcher notice provides the original font titles, creator,
 source links and license link. This font license does not cover the game itself.
 
-Primordia’s English Windows demo retains its original Start Game menu and opening.
+Primordia’s English Windows demo offers native **Skip intro** during the
+studio opening and retains the original Start Game and Load Game choices.
 The unchanged archive is approximately 804 MiB, so this target alone allows a
 900 MiB download, 1 GiB expanded data and a 15-minute download timeout. Its
 first deck scene accepts walking input. Save, Load and Continue restored

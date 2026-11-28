@@ -6,6 +6,7 @@ import { BlobWriter, Uint8ArrayReader, ZipWriter } from "@zip.js/zip.js";
 import { importLibraryRoots } from "../app/home-shell/game-import-controller.mjs";
 import { fileNode, handleNode, prepareLocalArchive } from "../app/local-game-import.mjs";
 import { gameIso } from "./helpers/game-iso.mjs";
+import { withGameTelemetry } from "../app/game-player/telemetry.mjs";
 
 const source = await readFile(new URL("../app/home-shell/source-library.js", import.meta.url), "utf8");
 const runSource = source.slice(source.indexOf("  async function run("), source.indexOf("  function removeLibraryVersions("));
@@ -64,6 +65,48 @@ test("failed controller load restores controls and can be retried without losing
   fail = false;
   await f.start(roots);
   assert.equal(processed, roots);
+});
+
+test("imported play preserves explicit isolation and telemetry through client navigation", async () => {
+  const playSource = source.slice(source.indexOf("  function play(source, game,"), source.indexOf("  async function allowAccess("));
+  for (const [current, resume, expected] of [
+    ["https://example.test/game?telemetry=1&agentSaveScope=scope", false, "/game/play?telemetry=1&agentSaveScope=scope"],
+    ["https://example.test/game?telemetry=1&agentSaveScope=scope", true, "/game/play?telemetry=1&agentSaveScope=scope#continue"],
+    ["https://example.test/game", true, "/game/play#continue"],
+  ]) {
+    const navigations = [];
+    const context = {
+      isLocalArchiveSource: () => true, run: callback => callback(),
+      sourcePresentation: { prepareGameSourcePlayer: async (_source, game) => ({ game, loadArchive() {} }),
+        getGamePlayHref: () => "/game/play" },
+      sourceActivityVersion: () => "fixture", selectGameArchive() {}, rememberGameVersion() {},
+      getGameFamilyKey: () => "fixture", onPlayArchive: undefined,
+      router: { push: href => navigations.push(href) }, window: { location: { href: current } },
+      withGameTelemetry, exitImmersiveMode() {},
+    };
+    const play = runInNewContext(`${playSource}\nplay;`, context);
+    assert.equal(await play({ id: "fixture", url: "https://example.test/game.zip" }, {}, resume), true);
+    assert.deepEqual(navigations, [expected]);
+  }
+});
+
+test("imported selection preserves scope and telemetry without changing route matching", () => {
+  const selectSource = source.slice(source.indexOf("  function selectGame(game)"), source.indexOf("\n  return (", source.indexOf("  function selectGame(game)")));
+  for (const [current, expected] of [
+    ["https://example.test/?telemetry=1&agentSaveScope=scope", "/game?telemetry=1&agentSaveScope=scope"],
+    ["https://example.test/", "/game"],
+  ]) {
+    const history = [];
+    const context = {
+      playerRoute: false, buildGameExitHref: game => game.href,
+      groups: [{ game: { href: "/game" }, key: "fixture" }],
+      window: { location: new URL(current), history: { pushState: (_state, _title, href) => history.push(href) } },
+      withGameTelemetry, setSelection() {}, setNavigationId() {},
+    };
+    const select = runInNewContext(`${selectSource}\nselectGame;`, context);
+    assert.equal(select({ href: "/game" }), true);
+    assert.deepEqual(history, [expected]);
+  }
 });
 
 async function zip() {

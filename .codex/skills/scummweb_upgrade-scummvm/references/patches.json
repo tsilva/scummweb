@@ -2173,6 +2173,158 @@
         "Check a changed puzzle object and the third room. Reject other Gob editions and invalid checkpoint headers."
       ],
       "retire_when": "Upstream provides a reliable native checkpoint path for the pinned DOS Gobliiins demo."
+    },
+    {
+      "path": "patches/scummvm/zz-skip-ags-demo-opening-cutscenes.patch",
+      "status": "active",
+      "sha256": "49a9ff2503522a7b218f84f9bae73d40202e869120a599c93362cc95d14e343a",
+      "purpose": "Expose the original AGS cutscene skip during the pre-menu openings of the verified Primordia and Technobabylon demos.",
+      "invariants": [
+        "Match the detected demo edition, game UID and title room. Use only the native cutscene key mode and retire at the end of the cutscene.",
+        "Preserve the original same-room menu, the player\u2019s Start and Restore choices, and subsequent cutscenes."
+      ],
+      "verification": [
+        "In separately scoped Brave launches, skip each pre-menu opening and exercise the original menu. Check unskipped launch, Continue and a nearby AGS title."
+      ],
+      "retire_when": "A native browser intro lifecycle exposes these pre-menu cutscenes and retires at their original menu."
+    },
+    {
+      "path": "patches/scummvm/zz-skip-sci-demo-opening-segments.patch",
+      "status": "active",
+      "sha256": "5ed04cf6749908fd3b9cfefa72f09360036c8b826e7fa885624bec29dfc40616",
+      "purpose": "Expose the observed native opening transitions for the bundled Phantasmagoria, Space Quest 6, Shivers and Slater & Charlie demos.",
+      "invariants": [
+        "Match the catalog target and detected demo. Use original Escape in the known active script state, or the original movie stop flags.",
+        "Keep required instructions, chapter and menu choices, later movies, save handling and the normal unskipped sequence."
+      ],
+      "verification": [
+        "In isolated Brave launches exercise each visible skip and the first original menu, instruction or interactive page.",
+        "Check normal launch and Continue where supported. Confirm the control disappears after each verified opening."
+      ],
+      "retire_when": "Upstream exposes equivalent browser skip handling with the same opening and player-choice boundaries."
+    },
+    {
+      "path": "patches/scummvm/zz-preserve-discworld-demo-title-idle-credits.patch",
+      "status": "active",
+      "sha256": "22aef4207d7e9c93957553474b16947ef07bd8287dcdd0209af577c38aac6653",
+      "purpose": "Recognize the Discworld DOS CD demo\u2019s title idle credits in its own resource layout.",
+      "invariants": [
+        "Preserve the original title attract loop, initial skip and any real post-start story handling.",
+        "An idle credits scene does not announce gameplay or advertise the story skip."
+      ],
+      "verification": [
+        "In fresh isolated Brave launches skip an initial logo to the title, wait for the original idle credits, and confirm the control stays hidden.",
+        "Start the demo normally and verify player control. Check full DW1 retains its existing title and opening behavior."
+      ],
+      "retire_when": "Upstream identifies title idle credits and original player-control boundaries across DW1 DOS resource layouts."
+    },
+    {
+      "path": "patches/scummvm/zz-skip-geisha-amiga-opening-text-wait.patch",
+      "status": "active",
+      "sha256": "4612cd9af258f19c85e07ec92c74ce410376eb42cabfa958587506768e9c6e8e",
+      "purpose": "Complete an accepted Geisha Amiga story skip through the original Paris text advance.",
+      "invariants": [
+        "Scope the added Space event to the already identified Amiga opening and the verified photo script wait. Preserve the original Start/Resume choice and real key input.",
+        "Clear the opening latch before the camera controls and leave normal unskipped text waits intact."
+      ],
+      "verification": [
+        "In fresh isolated Brave imports, choose Start and click Skip once. Reach the camera scene without another key.",
+        "Compare an unskipped run that still waits for the original Space, and exercise the first camera controls."
+      ],
+      "retire_when": "Upstream handles the original photo text advance during an accepted native opening skip."
+    },
+    {
+      "path": "patches/scummvm/zz-preserve-discworld-original-title-idle-credits.patch",
+      "status": "active",
+      "sha256": "946ec7554e4afa7633348a27cfbf982a88155d6fcfcec257ca753f94ee01c857",
+      "purpose": "Recognize the original imported Discworld DOS CD title idle credits in its distinct resource layout.",
+      "invariants": [
+        "Use the verified title and credits handles for the original CD and retain the existing demo and later CD behavior.",
+        "Do not classify idle credits as story or gameplay. Retain original title Start and real post-start skip."
+      ],
+      "verification": [
+        "In a fresh scoped Brave import skip to the original title, wait for idle credits, and check that Skip remains hidden.",
+        "Start from the original menu and exercise the real post-start intro. Check the later CD and bundled demo separately."
+      ],
+      "retire_when": "Upstream distinguishes the original DOS CD idle credits from the story after Start."
+    },
+    {
+      "path": "patches/scummvm/zz-skip-sci-hoyle3-ega-credit-opening.patch",
+      "status": "active",
+      "sha256": "c0e9d73bd82cc07239c7de2495cec037c92543463f53d25c9b7e9468b3f2dad0",
+      "purpose": "Advance the original Hoyle III EGA DOS opening at its verified native credit-panel mouse handler.",
+      "invariants": [
+        "Match the pinned EGA DOS edition. Advertise the control only when the original credit handler permits the native left press.",
+        "Consume one accepted request, preserve actual input, and stop before the original six-game choice. Preserve other Hoyle editions."
+      ],
+      "verification": [
+        "In a fresh Brave import, observe no ineffective control at the Sierra logo and click during the verified credits. Exercise the original game choice.",
+        "Compare an unskipped launch and run a different Hoyle edition."
+      ],
+      "retire_when": "Upstream exposes the equivalent browser-native opening action and original menu boundary."
+    },
+    {
+      "path": "patches/scummvm/zz-skip-sci-retro-opening-boundaries.patch",
+      "status": "active",
+      "sha256": "414b1e8fa6c95166d782be1b664cf6572a604b61e632f9bfada2b87fd1b602a7",
+      "purpose": "Keep selected original SCI editions on their verified intro and choice boundaries.",
+      "invariants": [
+        "Suppress unsafe Escape and timed requests in room 900 for the detected English Amiga Space Quest III only.",
+        "Retire the timed offer after the opening Escape in room 1 for the detected DOS Space Quest I VGA and Space Quest IV CD. Preserve original Skip, Watch, and Restore choices.",
+        "Keep the detected Windows Shivers CD eligible through publisher room 900 and fly-through room 937. Use native video stop flags and retain the original New Game, Slide Show, Credits, and Quit choices."
+      ],
+      "verification": [
+        "Import the original English Windows Shivers CD and click Skip during the fly-through. Verify the original title responds, its New Game choice opens original setup, and the interactive demo can still skip its own opening.",
+        "Import both DOS Space Quest editions and check that a single host Skip leaves the responsive original decisions while retiring the host offer. Compare unskipped launches.",
+        "Import English Amiga Space Quest III and verify the title proceeds naturally without a false opening offer that pauses it under the Sierra menu."
+      ],
+      "retire_when": "Upstream exposes the same browser-native opening boundaries and preserves the original choices for these editions."
+    },
+    {
+      "path": "patches/scummvm/zz-preserve-monkey2-amiga-protection-prompt.patch",
+      "status": "active",
+      "sha256": "b8ea37bdcecf930d10becadcf05a3555a71c65dc5851f5401ad03ed8677f12bb",
+      "purpose": "Retire browser Skip intro while the original Monkey Island 2 Amiga protection prompt is active.",
+      "invariants": [
+        "Match the detected index digest and native room and resource 108.",
+        "Clear any previous browser intro skip request at the required original prompt. Preserve the original prompt, keyboard and cutscene handlers, and native opening evaluation in other rooms."
+      ],
+      "verification": [
+        "Import the exact English Amiga original and confirm its original Enter-to-begin prompt remains visible with no browser Skip control. Leave the prompt untouched.",
+        "Keep subsequent native opening eligibility scoped to its original override rules."
+      ],
+      "retire_when": "Upstream distinguishes this required original protection prompt from a skippable opening for browser availability."
+    },
+    {
+      "path": "patches/scummvm/zz-preserve-passport-adventure-choices.patch",
+      "status": "active",
+      "sha256": "3d72da9c06ee8872b07f306085e3d52411b634283db6f8615dd7820a2af093ad",
+      "purpose": "Keep the Passport to Adventure game chooser and help separate from the selected opening.",
+      "invariants": [
+        "Match the detected DOS index digest and the original chooser and help rooms 1 and 2.",
+        "Keep Skip unavailable in original choice rooms and retire any accepted publisher skip request there.",
+        "After the original selection, let native opening overrides and gameplay completion drive Skip as usual."
+      ],
+      "verification": [
+        "Confirm the publisher skip reaches the original chooser and the original F1 help returns to it without an active Skip control.",
+        "Check fresh Indy, Monkey Island and Loom selections for native opening eligibility and the preserved original next state."
+      ],
+      "retire_when": "Upstream handles the compilation chooser and its independent selected openings at the same native boundaries."
+    },
+    {
+      "path": "patches/scummvm/zz-protect-maniac-amiga-team-choice.patch",
+      "status": "active",
+      "sha256": "358841299acf84da1e929d818ebcca94dfbb595a12976ab9171db0a477a4651f",
+      "purpose": "Preserve the original Maniac Mansion Amiga team choice before offering Skip for the mansion movie.",
+      "invariants": [
+        "Match the detected Amiga index digest and room/resource 45. Clear the host latch only at that required choice.",
+        "Keep room 33 eligible and keep the original choice, startup input and first gate scene."
+      ],
+      "verification": [
+        "Check the original team picker with no Skip control, choose two teammates, and start normally.",
+        "Click the movie Skip and verify the selected team and native entry gate input. Compare a fresh unskipped opening."
+      ],
+      "retire_when": "Upstream separates this exact Amiga edition\u2019s mandatory team choice from its native opening movie for browser Skip."
     }
   ]
 }

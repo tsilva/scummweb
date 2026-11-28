@@ -12,6 +12,7 @@ import { libraryItems } from "../app/home-shell/library-items.mjs";
 import * as seo from "../lib/seo.mjs";
 import * as initialActions from "../app/home-shell/initial-actions.mjs";
 import * as libraryRemoval from "../app/home-shell/library-removal.mjs";
+import * as telemetry from "../app/game-player/telemetry.mjs";
 
 await swc.loadBindings();
 async function component(file, imports, globals = {}) {
@@ -29,6 +30,7 @@ async function component(file, imports, globals = {}) {
       if (name === "./hero-order.mjs") return heroOrder;
       if (name === "./initial-actions.mjs") return initialActions;
       if (name === "./library-removal.mjs") return imports[name] ?? libraryRemoval;
+      if (name === "../game-player/telemetry.mjs") return telemetry;
       if (name === "./artwork-delivery") return imports[name] ?? { useArtworkDelivery: () => undefined };
       return imports[name] ?? {};
     },

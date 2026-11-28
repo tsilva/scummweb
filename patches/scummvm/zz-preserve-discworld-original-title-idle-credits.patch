@@ -1,0 +1,40 @@
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -160,16 +160,17 @@
+ 		if (TinselVersion == 1 && ScummWebIntro::nativeSkipEnabled()) {
+ 			const bool initialOpening = InDw1Intro();
+ 			const auto scene = GetSceneHandle();
++			const auto title = _vm->_handle->GetDw1TitleSceneHandle();
++			const bool idleCredits = _vm->isV1CD() &&
++				((_vm->getIsADGFDemo() && title == 0x03800000 && scene == 0x03000000) ||
++				 (!_vm->getIsADGFDemo() && title == 0x05000000 && scene == 0x05800000));
+ 			// The title and its idle credits precede the original start choice.
+ 			// The story after that choice retains its native Escape handlers.
+ 			const bool story = _vm->getGameID() == GID_DW1 && _vm->getPlatform() == Common::kPlatformDOS &&
+ 				!ScummWebIntro::startupFinished() && !initialOpening && scene &&
+ 				scene != _vm->_handle->GetDw1TitleSceneHandle() &&
+ 				(scene != 0x06000000 || _vm->_browserDw1NewGame) &&
+-				// This CD demo reuses its credits as the title's idle loop.
+-				(!(_vm->getIsADGFDemo() && _vm->isV1CD() &&
+-				   _vm->_handle->GetDw1TitleSceneHandle() == 0x03800000 && scene == 0x03000000) ||
+-				 _vm->_browserDw1NewGame) &&
++				(!idleCredits || _vm->_browserDw1NewGame) &&
+ 				!ControlIsOn() && !_vm->_dialogs->menuActive();
+ 			if (!story)
+ 				_vm->_browserSkipDw1Story = false;
+@@ -1251,10 +1252,13 @@
+ #ifdef __EMSCRIPTEN__
+ 	{
+ 		const auto handle = GetSceneHandle();
++		const auto title = _handle->GetDw1TitleSceneHandle();
++		const bool idleCredits = isV1CD() &&
++			((getIsADGFDemo() && title == 0x03800000 && handle == 0x03000000) ||
++			 (!getIsADGFDemo() && title == 0x05000000 && handle == 0x05800000));
+ 		if (getGameID() == GID_DW1 && getPlatform() == Common::kPlatformDOS && handle &&
+ 				handle != _handle->GetDw1TitleSceneHandle() && handle != 0x06000000 &&
+-				!(getIsADGFDemo() && isV1CD() && _handle->GetDw1TitleSceneHandle() == 0x03800000 &&
+-				  handle == 0x03000000) &&
++				!idleCredits &&
+ 				ControlIsOn() && !_dialogs->menuActive()) {
+ 			EndDw1Intro();
+ 			_browserSkipDw1Story = false;

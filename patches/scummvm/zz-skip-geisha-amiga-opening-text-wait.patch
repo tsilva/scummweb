@@ -1,0 +1,23 @@
+--- a/engines/gob/util.cpp
++++ b/engines/gob/util.cpp
+@@ -433,7 +433,19 @@
+ 				memcmp(signature, expected, sizeof(expected)) == 0;
+ 		}
+ 		if (_browserGeishaOpening) {
+-			if (!_vm->isCurrentTot("intro.tot") && !_vm->isCurrentTot("intro2.tot")) {
++			// Carry an accepted opening skip only through the known Paris text wait.
++			if (_browserGeishaIntroSkipped && _vm->isCurrentTot("photo.tot") &&
++					script.getSize() == 2295 && position == 735) {
++				// The next check is the original text advance; preserve the latch.
++				return translateKey(key);
++			} else if (_browserGeishaIntroSkipped && _vm->isCurrentTot("photo.tot") &&
++					script.getSize() == 2295 && position == 806) {
++				_browserGeishaOpening = false;
++				_browserGeishaIntroSkipped = false;
++				ScummWebIntro::gameplayStarted();
++				if (key.keycode == Common::KEYCODE_INVALID)
++					return kKeySpace;
++			} else if (!_vm->isCurrentTot("intro.tot") && !_vm->isCurrentTot("intro2.tot")) {
+ 				_browserGeishaOpening = false;
+ 				_browserGeishaIntroSkipped = false;
+ 				ScummWebIntro::gameplayStarted();

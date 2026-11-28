@@ -1,0 +1,98 @@
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -160,8 +160,23 @@
+ 			}
+ 		}
+ 	}
++	const bool hoyle3Ega = g_sci->isScummwebHoyle3Ega();
++	bool hoyle3CreditsReady = false;
++	if (hoyle3Ega && openingRoom == 2 && globals && size > kGlobalVarCurrentRoom &&
++			segMan->getObject(globals[kGlobalVarCurrentRoom])) {
++		const int scriptSelector = g_sci->getKernel()->findSelector("script");
++		const int stateSelector = g_sci->getKernel()->findSelector("state");
++		if (scriptSelector >= 0 && stateSelector >= 0) {
++			const reg_t script = readSelector(segMan, globals[kGlobalVarCurrentRoom], scriptSelector);
++			if (segMan->getObject(script)) {
++				const char *name = segMan->getObjectName(script);
++				hoyle3CreditsReady = name && !strcmp(name, "introScript") && readSelectorValue(segMan, script, stateSelector) == 5;
++			}
++		}
++	}
++	const bool hoyle3OpeningStage = hoyle3Ega && (openingRoom == 900 || openingRoom == 2);
+ 	const bool opening = ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
+-		(isBrowserOpeningRoom(g_sci->getGameId(), openingRoom) || verifiedDemoOpening);
++		((!hoyle3Ega && isBrowserOpeningRoom(g_sci->getGameId(), openingRoom)) || verifiedDemoOpening || hoyle3CreditsReady);
+ 	if (!opening && s->_browserIntroAvailable) {
+ 		s->_browserIntroAvailable = false;
+ 		ScummWebIntro::skipRequested(false);
+@@ -172,7 +187,7 @@
+ 	const bool shiversDemoOpening = g_sci->getGameId() == GID_SHIVERS && g_sci->isDemo() &&
+ 		ConfMan.get("extra").equalsIgnoreCase("Demo") && demoTarget == 4 &&
+ 		(openingRoom == 900 || openingRoom == 937);
+-	if (!opening && !shiversDemoOpening && !(selectedDemo && demoTarget == 1 && openingRoom == 90) && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
++	if (!opening && !hoyle3OpeningStage && !shiversDemoOpening && !(selectedDemo && demoTarget == 1 && openingRoom == 90) && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
+ 		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false) &&
+ 		(!ScummWebIntro::nativeSkipEnabled() || !s->isBrowserTimedOpening()))
+ 		ScummWebIntro::gameplayStarted();
+@@ -229,9 +244,10 @@
+ 			}
+ 		}
+ 	}
++	const SciEventType skipEventType = hoyle3CreditsReady ? kSciEventMousePress : kSciEventKeyDown;
+ 	if (opening && openingHandlerReady && (s->_browserIntroSkippedRoom != openingRoom || finishLongbowOpening) &&
+ 			curEvent.type == kSciEventNone &&
+-		(mask & kSciEventKeyDown) && !(mask & kSciEventPeek)) {
++		(mask & skipEventType) && !(mask & kSciEventPeek)) {
+ 		s->_browserIntroAvailable = true;
+ 		// Longbow's second opening room can use the same request. Do not
+ 		// repeat it in the same room or carry it into the actual game.
+@@ -246,10 +262,16 @@
+ 				s->_browserLongbowFinalEscape = true;
+ 			if (g_sci->getGameId() == GID_ICEMAN)
+ 				s->_browserSkipTimedOpening = true;
+-			curEvent.type = kSciEventKeyDown;
+-			// Police Quest II's original Introduction accepts Return or a
+-			// printable character. Its Escape handler does not skip credits.
+-			curEvent.character = (g_sci->getGameId() == GID_PQ2 || g_sci->getGameId() == GID_ICEMAN) ? kSciKeyEnter : kSciKeyEsc;
++			curEvent.type = skipEventType;
++			if (hoyle3CreditsReady) {
++				curEvent.mousePos = Common::Point(152, 108);
++				curEvent.modifiers = kSciKeyModNone;
++				curEvent.character = 0;
++			} else {
++				// Police Quest II's original Introduction accepts Return or a
++				// printable character. Its Escape handler does not skip credits.
++				curEvent.character = (g_sci->getGameId() == GID_PQ2 || g_sci->getGameId() == GID_ICEMAN) ? kSciKeyEnter : kSciKeyEsc;
++			}
+ 			s->_browserIntroSkippedRoom = openingRoom;
+ 			s->_browserIntroAvailable = false;
+ 			ScummWebIntro::skipRequested(false);
+--- a/engines/sci/sci.h
++++ b/engines/sci/sci.h
+@@ -198,6 +198,9 @@
+ 	/** Returns the original platform of the game. */
+ 	Common::Platform getPlatform() const;
+ 	bool isDemo() const;
++#ifdef __EMSCRIPTEN__
++	bool isScummwebHoyle3Ega() const;
++#endif
+ 	bool isCD() const;
+ 	bool useHiresGraphics() const;
+ 
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -928,6 +928,14 @@
+ 	default:
+ 		return false;
+ 	}
++}
++#endif
++
++#ifdef __EMSCRIPTEN__
++bool SciEngine::isScummwebHoyle3Ega() const {
++	const ADGameFileDescription &sig = _gameDescription->filesDescriptions[0];
++	return getGameId() == GID_HOYLE3 && getPlatform() == Common::kPlatformDOS && !isDemo() &&
++		sig.md5 && strcmp(sig.md5, "1728af1f6a85938c3522e64449e76ca1") == 0 && sig.fileSize == 2205;
+ }
+ #endif
+ 

@@ -1,0 +1,47 @@
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -137,13 +137,42 @@
+ 			return NULL_REG;
+ 		}
+ 	}
++	// Only the catalog demos and original script states verified to consume
++	// Escape are eligible. Keep each following instruction/menu untouched.
++	static const int demoTarget = EM_ASM_INT({
++		const t = new URLSearchParams(location.search).get("catalogSaveTarget");
++		return t == "phantasmagoria-demo" ? 1 : t == "sq6-demo" ? 2 : t == "slater-demo" ? 3 : t == "shivers-demo" ? 4 : 0;
++	});
++	const bool selectedDemo = g_sci->isDemo() && ((demoTarget == 1 && g_sci->getGameId() == GID_PHANTASMAGORIA) ||
++		(demoTarget == 2 && g_sci->getGameId() == GID_SQ6) || (demoTarget == 3 && g_sci->getGameId() == GID_SLATER));
++	bool verifiedDemoOpening = false;
++	if (selectedDemo && globals && size > kGlobalVarCurrentRoom && segMan->getObject(globals[kGlobalVarCurrentRoom])) {
++		const int scriptSelector = g_sci->getKernel()->findSelector("script");
++		const int stateSelector = g_sci->getKernel()->findSelector("state");
++		if (scriptSelector >= 0 && stateSelector >= 0) {
++			const reg_t script = readSelector(segMan, globals[kGlobalVarCurrentRoom], scriptSelector);
++			if (segMan->getObject(script)) {
++				const char *name = segMan->getObjectName(script);
++				const uint16 state = readSelectorValue(segMan, script, stateSelector);
++				verifiedDemoOpening = (demoTarget == 1 && openingRoom == 90 && !strcmp(name, "doTitle") && state == 3) ||
++					(demoTarget == 2 && openingRoom == 100 && !strcmp(name, "sIntroScript") && state == 3) ||
++					(demoTarget == 3 && openingRoom == 14 && !strcmp(name, "waitAWhile") && state == 0);
++			}
++		}
++	}
+ 	const bool opening = ScummWebIntro::nativeSkipEnabled() && !ScummWebIntro::startupFinished() &&
+-		isBrowserOpeningRoom(g_sci->getGameId(), openingRoom);
++		(isBrowserOpeningRoom(g_sci->getGameId(), openingRoom) || verifiedDemoOpening);
+ 	if (!opening && s->_browserIntroAvailable) {
+ 		s->_browserIntroAvailable = false;
+ 		ScummWebIntro::skipRequested(false);
+ 	}
+-	if (!opening && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
++	// The interactive Shivers demo reports user control during its publisher
++	// logo, before the original fly-through video and New Game menu. Keep the
++	// native video skip available until that opening leaves these rooms.
++	const bool shiversDemoOpening = g_sci->getGameId() == GID_SHIVERS && g_sci->isDemo() &&
++		ConfMan.get("extra").equalsIgnoreCase("Demo") && demoTarget == 4 &&
++		(openingRoom == 900 || openingRoom == 937);
++	if (!opening && !shiversDemoOpening && !(selectedDemo && demoTarget == 1 && openingRoom == 90) && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
+ 		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false) &&
+ 		(!ScummWebIntro::nativeSkipEnabled() || !s->isBrowserTimedOpening()))
+ 		ScummWebIntro::gameplayStarted();

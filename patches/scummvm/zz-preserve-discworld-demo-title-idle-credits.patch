@@ -1,0 +1,22 @@
+--- a/engines/tinsel/tinsel.cpp
++++ b/engines/tinsel/tinsel.cpp
+@@ -166,6 +166,10 @@
+ 				!ScummWebIntro::startupFinished() && !initialOpening && scene &&
+ 				scene != _vm->_handle->GetDw1TitleSceneHandle() &&
+ 				(scene != 0x06000000 || _vm->_browserDw1NewGame) &&
++				// This CD demo reuses its credits as the title's idle loop.
++				(!(_vm->getIsADGFDemo() && _vm->isV1CD() &&
++				   _vm->_handle->GetDw1TitleSceneHandle() == 0x03800000 && scene == 0x03000000) ||
++				 _vm->_browserDw1NewGame) &&
+ 				!ControlIsOn() && !_vm->_dialogs->menuActive();
+ 			if (!story)
+ 				_vm->_browserSkipDw1Story = false;
+@@ -1249,6 +1253,8 @@
+ 		const auto handle = GetSceneHandle();
+ 		if (getGameID() == GID_DW1 && getPlatform() == Common::kPlatformDOS && handle &&
+ 				handle != _handle->GetDw1TitleSceneHandle() && handle != 0x06000000 &&
++				!(getIsADGFDemo() && isV1CD() && _handle->GetDw1TitleSceneHandle() == 0x03800000 &&
++				  handle == 0x03000000) &&
+ 				ControlIsOn() && !_dialogs->menuActive()) {
+ 			EndDw1Intro();
+ 			_browserSkipDw1Story = false;

@@ -1,0 +1,84 @@
+--- a/engines/sci/engine/kevent.cpp
++++ b/engines/sci/engine/kevent.cpp
+@@ -74,7 +74,7 @@
+ 	case GID_SQ4:
+ 		return room == 1;
+ 	case GID_SQ3:
+-		return room == 900;
++		return room == 900 && !g_sci->isScummwebSq3Amiga();
+ 	case GID_LSL1:
+ 		return room == 710;
+ 	case GID_LSL6HIRES:
+@@ -187,7 +187,9 @@
+ 	const bool shiversDemoOpening = g_sci->getGameId() == GID_SHIVERS && g_sci->isDemo() &&
+ 		ConfMan.get("extra").equalsIgnoreCase("Demo") && demoTarget == 4 &&
+ 		(openingRoom == 900 || openingRoom == 937);
+-	if (!opening && !hoyle3OpeningStage && !shiversDemoOpening && !(selectedDemo && demoTarget == 1 && openingRoom == 90) && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
++	const bool shiversFullOpening = g_sci->isScummwebShiversFull() &&
++		(openingRoom == 900 || openingRoom == 937);
++	if (!opening && !hoyle3OpeningStage && !shiversDemoOpening && !shiversFullOpening && !(selectedDemo && demoTarget == 1 && openingRoom == 90) && openingRoom > 0 && !ScummWebIntro::startupFinished() && globals && size > kGlobalVarUser &&
+ 		(mask & kSciEventKeyDown) && g_sci->_guestAdditions->userHasControl(false) &&
+ 		(!ScummWebIntro::nativeSkipEnabled() || !s->isBrowserTimedOpening()))
+ 		ScummWebIntro::gameplayStarted();
+--- a/engines/sci/engine/state.cpp
++++ b/engines/sci/engine/state.cpp
+@@ -190,7 +190,7 @@
+ 	case GID_SQ4:
+ 		return room == 803 || room == 1;
+ 	case GID_SQ3:
+-		return room == 777 || room == 900;
++		return room == 777 || (room == 900 && !g_sci->isScummwebSq3Amiga());
+ 	case GID_GK1:
+ 		return room == 94;
+ 	case GID_KQ5:
+--- a/engines/sci/sci.h
++++ b/engines/sci/sci.h
+@@ -200,6 +200,8 @@
+ 	bool isDemo() const;
+ #ifdef __EMSCRIPTEN__
+ 	bool isScummwebHoyle3Ega() const;
++	bool isScummwebSq3Amiga() const;
++	bool isScummwebShiversFull() const;
+ #endif
+ 	bool isCD() const;
+ 	bool useHiresGraphics() const;
+--- a/engines/sci/sci.cpp
++++ b/engines/sci/sci.cpp
+@@ -932,6 +932,20 @@
+ #endif
+ 
+ #ifdef __EMSCRIPTEN__
++bool SciEngine::isScummwebShiversFull() const {
++	const ADGameFileDescription &sig = _gameDescription->filesDescriptions[0];
++	return getGameId() == GID_SHIVERS && getPlatform() == Common::kPlatformWindows &&
++		getLanguage() == Common::EN_ANY && !isDemo() && sig.md5 && sig.fileSize == 46525 &&
++		!strcmp(sig.md5, "f2ead37749ed8f6535a2445a7d05a0cc");
++}
++
++bool SciEngine::isScummwebSq3Amiga() const {
++	const ADGameFileDescription &sig = _gameDescription->filesDescriptions[0];
++	return getGameId() == GID_SQ3 && getPlatform() == Common::kPlatformAmiga &&
++		getLanguage() == Common::EN_ANY && !isDemo() && sig.md5 && sig.fileSize == 5868 &&
++		!strcmp(sig.md5, "bad41385acde6d677a8d55a7b20437e3");
++}
++
+ bool SciEngine::isScummwebHoyle3Ega() const {
+ 	const ADGameFileDescription &sig = _gameDescription->filesDescriptions[0];
+ 	return getGameId() == GID_HOYLE3 && getPlatform() == Common::kPlatformDOS && !isDemo() &&
+@@ -1043,7 +1057,15 @@
+ #ifdef __EMSCRIPTEN__
+ 	if (_gamestate && ScummWebIntro::nativeSkipEnabled()) {
+ 		auto &state = *_gamestate;
+-		if (!ScummWebIntro::startupFinished() && state.isBrowserTimedOpening()) {
++		// Once Escape has reached these original opening dialogs, leave their
++		// Skip / Watch / Restore decision to the player instead of re-advertising.
++		const bool timedOpening = state.isBrowserTimedOpening();
++		const ADGameFileDescription &sig = _gameDescription->filesDescriptions[0];
++		const bool consumedSqDialog = timedOpening && getPlatform() == Common::kPlatformDOS && getLanguage() == Common::EN_ANY &&
++			state.currentRoomNumber() == 1 && state._browserIntroSkippedRoom == 1 && sig.md5 &&
++			((getGameId() == GID_SQ1 && sig.fileSize == 5913 && !strcmp(sig.md5, "38a74d8f555a2da9ca4f21d14e3c1d33")) ||
++			 (getGameId() == GID_SQ4 && isCD() && sig.fileSize == 7054 && !strcmp(sig.md5, "ed90a8e3ccc53af6633ff6ab58392bae")));
++		if (!ScummWebIntro::startupFinished() && timedOpening && !consumedSqDialog) {
+ 			if (!state._browserSkipTimedOpening) {
+ 				state._browserTimedOpeningAvailable = true;
+ 				if (ScummWebIntro::skipRequested()) {

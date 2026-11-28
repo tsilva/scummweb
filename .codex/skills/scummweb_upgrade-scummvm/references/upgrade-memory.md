@@ -146,6 +146,19 @@ tests when porting; do not treat an old implementation shape as the requirement.
 
 - Intro skip is edition-specific. Patch 24 uses the engine's normal first-scene transition or native intro abort and keeps original input and menu choices. Patch 97 deliberately bypasses the bundled Castle Master DOS demo's character prompt and selects the prince on both ordinary and skipped intros; keep that choice before native game-state initialization and outside save restoration. Exercise both paths and keep the original Play path for fresh launches.
 - Patch 41 separates intro completion from first-frame readiness. Report at the native transition to player input or a preserved selection screen. Recheck the exact first playable states when a bundled edition changes. A rendered frame, cursor alone, or elapsed time cannot establish that the intro ended.
+- A demo can report control during a publisher logo or reuse a room for both
+  a scripted opening and its menu. Match the detected edition and the active
+  native script or cutscene. Compare launches with and without input, and
+  verify the original choice remains accessible. In Tinsel, resolve scene
+  IDs using the edition's resource-index shift and distinguish title idle
+  credits from the story that follows the original start choice.
+- In SCI, check both the native event handler and timed waits when an intro
+  hands off to an original choice in the same room. A timed wait can reopen
+  the browser affordance after the event handler has retired it. Confirm
+  the native meaning of Escape for the detected edition and script phase.
+- A compilation can accept input at its chooser before the selected game’s
+  opening. Defer completion at that verified boundary, and retire an earlier
+  publisher Skip request when the original chooser or help is active.
 - Imported intro requests belong to the native opening sequence that owns the transition. Keep an ordinary abort path shared when it preserves the expected state. Kyrandia I's keyboard abort can restore slot zero, so its browser request uses a separate opening flag and leaves fresh launches independent of existing saves.
 - Source coverage must follow each subengine and the opening after required choices. A first menu or instructions frame does not verify later intro support. Big Red Adventure has separate GUI code from Nippon Safes; Chivalry runs its title initializer after the instructions dialog. Its browser skip wakes only the verified intro script's timed waits, preserving script setup and the normal scene transition. Keep ordinary Wintermute waits and restored games outside this scope.
 

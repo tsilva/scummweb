@@ -1,0 +1,18 @@
+--- a/engines/scumm/input.cpp
++++ b/engines/scumm/input.cpp
+@@ -409,6 +409,15 @@
+ 		canSkip |= isSmushActive();
+ #endif
+ 		canSkip &= exitEnabled;
++		// This edition's room 108 is the original copy-protection prompt,
++		// which uses a cutscene override despite requiring player input.
++		const bool protectionPrompt = _game.id == GID_MONKEY2 && _game.platform == Common::kPlatformAmiga &&
++			!(_game.features & GF_DEMO) && _currentRoom == 108 && _roomResource == 108 &&
++			!memcmp(_gameMD5, "\x13\x2b\xff\x65\xe6\x36\x7c\x09\xcc\x69\x31\x8c\xe1\xb5\x93\x33", 16);
++		if (protectionPrompt) {
++			skipOpening = false;
++			canSkip = false;
++		}
+ 		if (!skipOpening && ScummWebIntro::skipRequested(canSkip)) {
+ 			// Apply the request to subsequent native overrides until the first playable state.
+ 			skipOpening = true;
